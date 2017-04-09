@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Error {{ status_code }}. {{ status_text }} {% endblock %}
+
+{% block header %} Error {{ status_code }}. {{ status_text }} {% endblock %}
+
+{% block content %}
+	{{ exception.message }}	<br>
+	Вам запрещен доступ к этой странице.<br> 
+	Пожалуйста воспользуйтесь меню, чтобы перейти на нужную вам страницу.
+{% endblock %}

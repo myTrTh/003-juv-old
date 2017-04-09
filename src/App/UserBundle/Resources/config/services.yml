@@ -1,0 +1,41 @@
+services:
+    app.activity_listener:
+        class: App\UserBundle\EventListener\ActivityListener
+        arguments: ['@security.token_storage', '@doctrine.orm.entity_manager', '@request_stack']
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }
+    app.notification_listener:
+        class: App\UserBundle\EventListener\NotificationListener
+        arguments: ['@security.token_storage', '@doctrine.orm.entity_manager', '@request_stack', '@twig']
+        tags:
+            - { name: kernel.event_listener, event: kernel.request, method: onKernelRequest }            
+    app.image_uploader:
+        class: App\UserBundle\Services\uploadService
+    app.date_mode:
+        class: App\UserBundle\Services\dateService
+        arguments: ['@security.token_storage']
+    app.text_mode:
+        class: App\UserBundle\Services\textService
+        arguments: ['@app.date_mode']        
+    app.admintext_mode:
+        class: App\UserBundle\Services\admintextService
+    twig.extension.mode_date:
+        class: App\UserBundle\Twig\ModeDateExtension
+        arguments: ['@security.token_storage']
+        public: true
+        tags:
+          - { name: twig.extension }
+    twig.extension.mode_text:
+        class: App\UserBundle\Twig\ModeTextExtension
+        arguments: ['@twig.extension.mode_date']
+        public: true
+        tags:
+          - { name: twig.extension }
+    twig.extension.mode_admintext:
+        class: App\UserBundle\Twig\ModeAdminTextExtension
+        public: true
+        tags:
+          - { name: twig.extension }                  
+#    app_user.example:
+#        class: App\UserBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

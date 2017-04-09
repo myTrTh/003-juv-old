@@ -1,0 +1,60 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Админка: Загрузка изображений {% endblock %}
+
+{% block lowheader %} Загрузка изображений {% endblock %}
+
+{% block lowbody %}
+
+	{{ form_start(form) }}
+	{{ form_widget(form.folder[0]) }} Лого турнира<br>
+	{{ form_widget(form.folder[1]) }} Нашивка пользователя в гостевой<br>
+	{{ form_widget(form.folder[2]) }} Кубок в профиле пользователя<br>
+	{{ form_errors(form.folder) }}
+	<table class='table-file'>
+		<tr>
+			<td class='file-button'><span class="glyphicon glyphicon-folder-open"></span></td>
+			<td class='file-name'></td>
+		</tr>
+	</table>
+	{{ form_widget(form.image, {'attr': {'class': 'form-control input-upload'}} ) }}
+	{{ form_errors(form.image) }}
+	<input class='upload_image btn btn-default' type='submit' name='submit_image_user' value='Загрузить'>
+	{{ form_end(form) }}
+
+	{% if images.logo is defined %}
+		<div class='img-panel'>
+		<h3>Лого турниров</h3>
+		{% for img in images.logo %}
+			<div>
+				<img src="/public/images/custom/logo/{{ img.1 }}">
+				<button type="button" title='Удалить изображение' class="close" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/upload/delete/{{ img.0 }}'">&times;</button>
+			</div>
+		{% endfor %}
+		</div>
+	{% endif %}
+
+	{% if images.achive is defined %}
+		<h3>Нашивки пользователей в гостевой</h3>
+		<div class='img-panel'>
+		{% for img in images.achive %}
+			<div>
+				<img src="/public/images/custom/achive/{{ img.1 }}">
+				<button type="button" title='Удалить изображение' class="close" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/upload/delete/{{ img.0 }}'">&times;</button>				
+			</div>
+		{% endfor %}
+		</div>
+	{% endif %}
+
+	{% if images.cup is defined %}
+		<h3>Кубки пользователей в профиле</h3>
+		<div class='img-panel'>
+		{% for img in images.cup %}
+			<div>
+				<img src="/public/images/custom/cup/{{ img.1 }}">
+				<button type="button" title='Удалить изображение' class="close" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/upload/delete/{{ img.0 }}'">&times;</button>				
+			</div>
+		{% endfor %}
+		</div>
+	{% endif %}		
+{% endblock %}

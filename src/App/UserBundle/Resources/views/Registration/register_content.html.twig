@@ -1,0 +1,10 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<a class='link-back' href='{{ path('fos_user_security_login') }}'><i class='fa fa-arrow-left'></i> Вернуться</a>
+
+{{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
+    {{ form_widget(form, {'attr': {'class': 'middle'}}) }}
+    <div>
+        <input class='button button-main' type="submit" value="{{ 'registration.submit'|trans }}" />
+    </div>
+{{ form_end(form) }}

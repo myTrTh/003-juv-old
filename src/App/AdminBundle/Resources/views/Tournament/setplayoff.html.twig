@@ -1,0 +1,13 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Админка: Плей-офф {% endblock %}
+
+{% block lowheader %} {{ tournament.name }}. Плей-офф {% endblock %}
+
+{% block lowbody %}
+<a class='back-link' href='{{ path("app_admin_tournaments") }}'>К СПИСКУ ТУРНИРОВ</a>
+<br><br>
+
+
+
+{% endblock %}

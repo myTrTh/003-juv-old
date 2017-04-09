@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} ERROR {{ status_text }} {% endblock %}
+
+{% block header %} ERROR {{ status_code }} {% endblock %}
+
+{% block content %}
+	ERROR {{ status_code }}: {{ status_text }}
+{% endblock %}

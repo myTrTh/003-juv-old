@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Пользователи {% endblock %}
+
+{% block header %} Пользователи {% endblock %}
+
+{% block content %}
+
+	{% set abc_sort = 'alpha_desc' %}
+	{% set abc_name = "aлфавиту <i class='fa fa-long-arrow-up'></i>" %}
+	{% set date_sort = 'since_asc' %}
+	{% set date_name = "дате регистрации <i class='fa fa-long-arrow-down'></i>" %}
+
+	{% if sort == 'alpha_desc' %}
+		{% set abc_sort = 'alpha_asc' %}
+		{% set abc_name = "алфавиту <i class='fa fa-long-arrow-down'></i>" %}
+	{% elseif sort == 'since_asc' %}
+		{% set date_sort = 'since_desc' %}
+		{% set date_name = "дате регистрации <i class='fa fa-long-arrow-up'></i>" %}
+	{% endif %}
+
+<div class="board-sort">
+	Сортировать по 
+	<a class='nostyle' href='{{ path('app_user_list', {'sort': abc_sort}) }}'>
+		<span class='strong-600'>{{ abc_name|raw }}</span>
+	</a> | <a class='nostyle' href='{{ path('app_user_list', {'sort': date_sort}) }}'>
+		<span class='strong-600'>{{ date_name|raw }}</span>
+	</a>	
+</div>
+
+<div class="container-users">
+
+	{% for user in users %}
+	<div class="board-user">
+		<div>
+			{% if user.image is not null %}
+				<img src="/public/images/users/{{ user.image }}"><br>
+			{% else %}
+				<img src="/public/images/interface/no_photo.png"><br>				
+			{% endif %}
+		</div>
+		<div>
+			<a class='nostyle' href='{{ path('app_user_show', {'id': user.id}) }}'><span>{{ user.username }}</span></a><br>
+			since: {{ user.created|date('d.m.Y') }}<br>
+			shirt number:
+			{% if numbers[user.id] is defined %}
+				{{ numbers[user.id] }}
+			{% else %}
+				-
+			{% endif %}
+			<br>
+			{% if achives[user.id] is defined %}
+				{% for achive in achives[user.id] %}
+					<img class='achive-little' title="{{ achive.1 }}" src='/public/images/custom/achive/{{ achive.0 }}'>
+				{% endfor %}
+			{% endif %}
+		</div>
+{# 	{{ user.username }} <br>
+
+	{% if achives[user.id] is defined %}
+		{% spaceless %}						
+			{% for achive in achives[user.id] %}
+				<img title="{{ achive.1 }}" class='book-achive' src="/public/images/custom/achive/{{ achive.0 }}">
+			{% endfor %}
+		{% endspaceless %}
+	{% endif %}
+	<br> #}
+	</div>
+	{% endfor %}
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Админка: Создать турнир {% endblock %}
+
+{% block lowheader %} Создать турнир {% endblock %}
+
+{% block lowbody %}
+
+<a class='back-link' href='{{ path("app_admin_tournaments") }}'>К СПИСКУ ТУРНИРОВ</a>
+<br><br>
+
+{{ form_start(form) }}
+НАЗВАНИЕ ТУРНИРА<br>
+{{ form_widget(form.name, {'attr': {'class': 'form-control form-short', 'placeholder': 'Название турнира'}} ) }}
+{% if app.session.flashBag.has('error') %}
+	<span class="display-error">
+	    {% for msg in app.session.flashBag.get('error') %}
+	        {{ msg }}
+	    {% endfor %}
+	</span>
+	<br><br>
+{% endif %}
+{{ form_errors(form.name) }}
+<br>
+<strong>{{ form_label(form.types) }}</strong><br>
+{% for types in form.types %}
+{{ form_widget(types) }} {{ types.vars['label'] }} <br>
+{% endfor %}
+{{ form_errors(form.types) }}
+<br>
+<br>
+<div>
+    <input class='btn btn-default' type="submit" value="Создать" />
+</div>
+
+{{ form_end(form) }}
+
+{% endblock %}

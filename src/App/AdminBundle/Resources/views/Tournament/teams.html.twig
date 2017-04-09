@@ -1,0 +1,38 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Админка: Добавить команды {% endblock %}
+
+{% block lowheader %} {{ tournament.name }} {% endblock %}
+
+{% block lowbody %}
+<a class='back-link' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'>НАЗАД</a>
+<br>
+
+{{ form_start(form) }}
+<h3>ДОБАВИТЬ КОМАНДУ</h3>
+{{ form_widget(form.name, {'attr': {'class': 'form-control form-short'}}) }}<br>
+{{ form_errors(form.name) }}
+{{ form_rest(form) }}
+{% if app.session.flashBag.has('error') %}
+	<span class="display-error">
+	    {% for msg in app.session.flashBag.get('error') %}
+	        {{ msg }}
+	    {% endfor %}
+	</span>
+	<br><br>
+{% endif %}
+
+<input class='btn btn-default' type="submit" value="Добавить" />
+{{ form_end(form) }}
+<br>
+<div class='numbers-area'>
+{% for team in teams %}
+	<div>{{ team.name }}
+			<button type="button" title='Удалить' class="close" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/delete/{{ tournament.id }}/team/{{ team.id }}'">
+				&times;
+			</button>
+	</div>
+{% endfor %}
+</div>
+
+{% endblock %}

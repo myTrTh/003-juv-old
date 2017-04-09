@@ -1,0 +1,42 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Админка: {{ tournament.name }} {% endblock %}
+
+{% block lowheader %} {{ tournament.name }} {% endblock %}
+
+{% block lowbody %}
+<a class='back-link' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'>НАЗАД</a>
+<br><br>
+
+<H4>ТЕКУЩИЙ ЛОГОТИП</H4>
+{% if tournament.image is not null %}
+	<img class='tournament-img' src='/public/images/custom/logo/{{ tournament.image }}'>
+{% else %}
+	<img class='tournament-img' src='/public/images/interface/default_logo.png'>
+{% endif %}
+
+{{ form_start(form) }}
+
+<br><br>
+ВЫБЕРИТЕ ЛОГОТИП<br><br>
+<div>
+	{% for img in form.image %}
+	<span class='block-inline'>{{ form_widget(img) }} <img class='adm-img' src="/public/images/custom/logo/{{ img.vars['label'] }}"></span>
+	{% endfor %}
+	{% if app.session.flashBag.has('error') %}
+		<span class="display-error">
+	        {% for msg in app.session.flashBag.get('error') %}
+	            {{ msg }}
+	        {% endfor %}
+	    </span>
+        <br><br>
+    {% endif %}	
+</div>
+	{{ form_rest(form) }}
+	<br>
+	<div>
+	    <input class='btn btn-default' type="submit" value="Установить" />
+	</div>	
+{{ form_end(form) }}
+
+{% endblock %}

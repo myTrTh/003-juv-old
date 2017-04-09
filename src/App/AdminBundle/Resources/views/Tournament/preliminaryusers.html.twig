@@ -1,0 +1,52 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Админка: Участники турнира {% endblock %}
+
+{% block lowheader %} {{ tournament.name }} {% endblock %}
+
+{% block lowbody %}
+<a class='back-link' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'>НАЗАД</a>
+<br>
+
+{% if app.session.flashBag.has('error') %}
+    <p class="alert my-alert">
+	    {% for msg in app.session.flashBag.get('error') %}
+            {{ msg }}
+        {% endfor %}
+    </p>
+{% endif %}
+
+<h4>ПОДАЛИ ЗАЯВКИ</h4>
+{% if preusers is empty %}
+Заявок пока нет...<br>
+{% endif %}
+{% if tournament.info.schema is defined %}
+<span class='info'>(Нажмите на пользователя, чтобы выбрать его)</span>
+{% endif %}
+<div class='area preusers'>
+{% for user in preusers %}
+	<div id='u{{ user.user }}' class='preteam'>{{ user.username }}</div>
+{% endfor %}
+</div>
+
+{% if tournament.info.schema is defined %}
+<div id='schema' class='hidden'>{{ tournament.info.schema }}</div>
+{% if tournament.info.schema == 3 %}
+<div id='groups' class='hidden'>{{ tournament.info.usergroups }}</div>	
+{% endif %}
+<h4>ВЫБРАНЫ</h4>
+
+<div class='area tournament-user'></div>
+
+<br>
+Выбрано: <span class='allow'></span><br>
+Требуется: <span class='all'>{{ tournament.info.users }}</span>
+<br><br>
+{{ form_start(form) }}
+<div class='form-hidden'>{{ form_widget(form.user) }}</div>
+<div class='button'>{{ form_widget(form.save, {"attr": {"class": "btn btn-default"}}) }}</div>
+{{ form_rest(form) }}
+{{ form_end(form) }}
+{% endif %}
+
+{% endblock %}

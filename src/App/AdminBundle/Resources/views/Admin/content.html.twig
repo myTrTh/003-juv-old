@@ -1,0 +1,44 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Админка: Контент {% endblock %}
+
+{% block lowheader %}
+		{% if type == 'attention' %}
+			Оповещения
+		{% else %}
+			<a href='{{ path('app_admin_content', {'type': 'attention'}) }}'>
+				<span class='gray'>Оповещения</span>
+			</a>
+		{% endif %}
+	 |
+		{% if type == 'rules' %}
+			Правила
+		{% else %}
+			<a href='{{ path('app_admin_content', {'type': 'rules'}) }}'>
+				<span class='gray'>Правила</span>
+			</a>
+		{% endif %}
+{% endblock %}
+
+{% block lowbody %}
+
+	{% if description is empty %}
+		{% set content = "" %}
+	{% else %}
+		{% set content = description.0.description %}
+	{% endif %}
+
+	{{ form_start(form, {'method': 'post', 'attr': {'class': 'file_display_none'} }) }}
+	{# bb code #}
+	{% set adminbb = 1 %}	
+	{% include 'bbcode.html.twig' %}
+	{{ form_widget(form.description, {'value': content, 'attr': {'class': 'form-control'}} ) }}
+	{{ form_errors(form.description) }}	
+	{{ form_rest(form) }}
+	<br>
+	<div>
+	    <input class='btn btn-default' type="submit" value="Изменить" />
+	</div>	
+	{{ form_end(form) }}
+
+{% endblock %}

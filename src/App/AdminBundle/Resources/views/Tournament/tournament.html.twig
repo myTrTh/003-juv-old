@@ -1,0 +1,84 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Админка: {{ tournament.name }} {% endblock %}
+
+{% block lowheader %} {{ tournament.name }} {% endblock %}
+
+{% block lowbody %}
+<a class='back-link' href='{{ path("app_admin_tournaments") }}'>К СПИСКУ ТУРНИРОВ</a>
+<br><br>
+
+{% if access == 1 %}
+
+	{% if tournament.status == 1 %}
+	<a href="{{ path("app_admin_tours", {"tournament": tournament.id}) }}"><h3><span class='btn-info pad'>ДОБАВИТЬ / РЕДАКТИРОВАТЬ ТУР</span></h3></a>
+	<br>
+	{% endif %}
+
+	<h4>НАЗВАНИЕ ТУРНИРА</h4>
+	{{ form_start(form_name) }}
+
+	{{ form_widget(form_name.name, {'attr': {'value': tournament.name, 'class': 'form-control form-short'}}) }}<br>
+	{{ form_errors(form_name.name) }}
+	{{ form_rest(form_name) }}
+		<input class='btn btn-default' type="submit" value="Изменить" />
+	{{ form_end(form_name) }}
+	<br>
+	<h4>ПОДСВЕТКА ПОЗИЦИЙ</h4>
+	{% if tournament.info.start is defined %}
+		{% set value0 = tournament.info.start %}
+	{% else %}
+		{% set value0 = 0 %}
+	{% endif %}
+	{% if tournament.info.end is defined %}
+		{% set value1 = tournament.info.end %}
+	{% else %}
+		{% set value1 = 30 %}
+	{% endif %}
+
+	{{ form_start(form_pos, {"attr": {"name": "form_pos"}}) }}
+	Зеленая до: 
+	{{ form_widget(form_pos.start, {"attr": {"value": value0, "class": "form-control form-extra-short start"}}) }}
+	Красная от: {{ form_widget(form_pos.end, {"attr": {"value": value1, "class": "form-control form-extra-short end"}}) }}
+	<br><br>
+	<div class='form-short' id='slider'></div>
+	<br>
+	{{ form_widget(form_pos.save_position, {"attr": {"class": "btn btn-default"}}) }}
+	{{ form_rest(form_name) }}
+	{{ form_end(form_pos) }}
+	<br>
+	<a href="{{ path("app_admin_logo", {"tournament": tournament.id}) }}"><h4><span class='glyphicon glyphicon-share-alt'></span> ДОБАВИТЬ ЛОГОТИП</h4></a>
+
+	<a href="{{ path("app_admin_addteam", {"tournament": tournament.id}) }}"><h4><span class='glyphicon glyphicon-share-alt'></span> ДОБАВИТЬ КОМАНДЫ</h4></a>
+
+	{% if tournament.status == 4 %}
+	<a href="{{ path("app_admin_completed", {"tournament": tournament.id}) }}"><h4><span class='glyphicon glyphicon-share-alt'></span> ЗАВЕРШИТЬ СОЗДАНИЕ ТУРНИРА</h4></a>
+	{% endif %}
+
+	{% if tournament.status == 3 or tournament.status == 4 %}
+	<a href="{{ path("app_admin_replaceuser", {"tournament": tournament.id}) }}"><h4><span class='glyphicon glyphicon-share-alt'></span> ПРОСМОТРЕТЬ ЗАЯВКИ</h4></a>
+	{% else %}
+	<a href="{{ path("app_admin_replaceuser") }}"><h4><span class='glyphicon glyphicon-share-alt'></span> ЗАМЕНИТЬ ПОЛЬЗОВАТЕЛЯ В ТУРНИРЕ</h4></a>
+	{% endif %}
+	{% if tournament.info.schema is defined and tournament.info.schema == 3 %}
+	<a href="{{ path("app_admin_playoff", {"tournament": tournament.id}) }}"><h4><span class='glyphicon glyphicon-share-alt'></span> ПЛЕЙ-ОФФ</h4></a>
+	{% endif %}
+
+	<hr>
+
+	{{ form_start(form_archive) }}
+	{{ form_widget(form_archive.save_archive, {"attr": {"class": "btn btn-warning"}}) }}
+	{{ form_rest(form_archive) }}
+	{{ form_end(form_archive) }}
+	<br>
+	{{ form_start(form_delete) }}
+	{{ form_widget(form_delete.save_delete, {"attr": {"class": "btn btn-danger"}}) }}
+	{{ form_rest(form_delete) }}
+	{{ form_end(form_delete) }}
+
+{% else %}
+
+Вам закрыт доступ к этому турниру
+{% endif %}
+
+{% endblock %}

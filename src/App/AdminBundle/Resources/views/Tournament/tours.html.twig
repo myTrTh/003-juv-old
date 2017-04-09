@@ -1,0 +1,43 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Админка: Туры {% endblock %}
+
+{% block lowheader %} {{ tournament.name }} {% endblock %}
+
+{% block lowbody %}
+<a class='back-link' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'>НАЗАД</a>
+<br><br>
+<div class='tourlist'>
+{# tours list #}
+{% for i in range(1, calendar) %}
+	{% if tour == i %}
+		<div class='tourlist-active'>{{ i }}</div>
+	{% else %}
+		<div><a href="{{ path("app_admin_tours", {"tournament": tournament.id, "tour": i}) }}">{{ i }}</a></div>
+	{% endif %}
+{% endfor %}
+</div>
+<br>
+{% if forecast == 0 %}
+
+
+{# {{ form_start(form) }}
+<div class='team-line'>
+	<div class='form-line'>
+		{{ form_widget(form.timer, {"attr": {"class": "form-control form-short", "placeholder": "2017-03-20 20:00"}}) }}
+		{{ form_widget(form.team1, {"attr": {"class": "form-control form-short", "placeholder": "Первая команда"}}) }}
+		{{ form_widget(form.team2, {"attr": {"class": "form-control form-short", "placeholder": "Вторая команда"}}) }}
+	</div>
+</div>
+<br />
+<div class='tap'>
+	<span class='tap_options' id='add_team'>+Добавить</span>
+	<span class='tap_options' id='delete_team'>-Удалить</span>
+</div>
+<br>
+{{ form_widget(form.save, {"attr": {"class": "btn btn-default"}}) }}
+{{ form_end(form) }} #}
+
+{% endif %}
+
+{% endblock %}

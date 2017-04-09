@@ -1,0 +1,151 @@
+app_admin_tours:
+    path:     /adminpanel/tournament/{tournament}/tour/{tour}
+    defaults: { _controller: AppAdminBundle:Admin:tours, tournament: 0, tour: 0 }
+    methods: [GET|POST]
+    requirements:
+        tournament: '\d+'
+        tour: '\d+'
+
+app_admin_completed:
+    path:     /adminpanel/tournament/{tournament}/completed
+    defaults: { _controller: AppAdminBundle:Admin:completed, tournament: 0 }
+    methods: [GET|POST]
+    requirements:
+        tournament: '\d+'
+
+app_admin_replaceuser:
+    path:     /adminpanel/tournament/{tournament}/users
+    defaults: { _controller: AppAdminBundle:Admin:replaceusers, tournament: 0 }
+    methods: [GET|POST]
+    requirements:
+        tournament: '\d+'
+
+app_admin_teamdelete:
+    path:     /adminpanel/delete/{tournament}/team/{numb}
+    defaults: { _controller: AppAdminBundle:Admin:deleteteam, tournament: 1, numb: 0 }
+    methods: [GET|POST]
+    requirements:
+        tournament: '\d+'
+        numb: '\d+'
+
+app_admin_addteam:
+    path:     /adminpanel/tournament/{tournament}/teams
+    defaults: { _controller: AppAdminBundle:Admin:teams, tournament: 0 }
+    methods: [GET|POST]
+    requirements:
+        tournament: '\d+'
+
+app_admin_replaceuser:
+    path:     /adminpanel/tournament/{tournament}/users
+    defaults: { _controller: AppAdminBundle:Admin:replaceusers, tournament: 0 }
+    methods: [GET|POST]
+    requirements:
+        tournament: '\d+'
+
+app_admin_completed:
+    path:     /adminpanel/tournament/{tournament}/completed
+    defaults: { _controller: AppAdminBundle:Admin:completed, tournament: 0 }
+    methods: [GET|POST]
+    requirements:
+        tournament: '\d+'
+
+app_admin_addteam:
+    path:     /adminpanel/tournament/{tournament}/teams
+    defaults: { _controller: AppAdminBundle:Admin:teams, tournament: 0 }
+    methods: [GET|POST]
+    requirements:
+        tournament: '\d+'
+
+app_admin_logo:
+    path:     /adminpanel/tournament/{tournament}/logo
+    defaults: { _controller: AppAdminBundle:Admin:logotype, tournament: 0 }
+    methods: [GET|POST]
+    requirements:
+        tournament: '\d+'
+
+app_admin_create:
+    path:     adminpanel/tournaments/create
+    defaults: { _controller: AppAdminBundle:Admin:create }
+
+app_admin_tournament:
+    path:     adminpanel/tournament/{tournament}
+    defaults: { _controller: AppAdminBundle:Admin:tournament, tournament: 0 }
+    requirements:
+        tournament: '\d+'
+
+app_admin_tournaments:
+    path:     adminpanel/tournaments/{page}
+    defaults: { _controller: AppAdminBundle:Admin:tournaments, page: 0 }
+    requirements:
+        page: '\d+'
+
+app_admin_champions:
+    path:     /adminpanel/champions
+    defaults: { _controller:AppAdminBundle:Admin:champions }
+    methods: [GET|POST]
+
+app_admin_achives:
+    path:     /adminpanel/achives
+    defaults: { _controller:AppAdminBundle:Admin:achives }
+    methods: [GET|POST]
+
+app_admin_delete:
+    path:     /adminpanel/delete/{content}/{numb}
+    defaults: { _controller: AppAdminBundle:Admin:delete, content: 'Number', numb: 0 }
+    methods: [GET|POST]
+    requirements:
+        content: Number|Nach|Achive|Champion
+        numb: '\d+'
+
+app_admin_numbers:
+    path:     /adminpanel/numbers
+    defaults: { _controller: AppAdminBundle:Admin:numbers }
+    methods: [GET|POST]    
+
+app_admin_nach:
+    path:     /adminpanel/topnach
+    defaults: { _controller: AppAdminBundle:Admin:nach }
+    methods: [GET|POST]
+
+app_admin_upload_delete:
+    path:     /adminpanel/upload/delete/{id}
+    defaults: { _controller:AppAdminBundle:Admin:deleteupload, id: 0 }
+    methods: [GET|POST]
+    requirements:
+        id: '\d+'
+
+app_admin_upload:
+    path:     /adminpanel/upload
+    defaults: { _controller:AppAdminBundle:Admin:upload }
+    methods: [GET|POST]
+
+app_admin_users:
+    path:     /adminpanel/users/{page}
+    defaults: { _controller: AppAdminBundle:Admin:users, page: 1 }
+    requirements:
+        page: '\d+'
+
+app_admin_deleteguestbook:
+    path:     /guestbook/delete/{id_message}
+    defaults: { _controller: AppAdminBundle:Admin:deleteguestbook, id_message: 0 }
+    methods: [GET|POST]
+    requirements:
+        id_message: '\d+'
+
+app_admin_setrole:
+    path:     /ajax/adminpanel/setrole
+    defaults: { _controller: AppAdminBundle:Admin:setrole }
+
+app_admin_guestbook:
+    path:     /adminpanel/adminbook/{page}
+    defaults: { _controller: AppAdminBundle:Adminbook:show, page: 1 }
+    methods: [GET|POST]
+    requirements:
+        page: '\d+'
+
+app_admin_content:
+    path:     /adminpanel/content/{type}
+    defaults: { _controller: AppAdminBundle:Admin:content, type: rules }
+    methods: [GET|POST]
+    requirements:
+        content: rules|attention

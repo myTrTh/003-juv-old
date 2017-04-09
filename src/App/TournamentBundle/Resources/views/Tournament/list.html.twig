@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel='stylesheet' type='text/css' href="{{ asset('/public/css/core.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('/public/js/core.js') }}"></script>
+{% endblock %}
+
+{% block title %} Турниры {% endblock %}
+
+{% block header %} Турниры {% endblock %}
+
+{% block content %}
+
+	{% if tournaments is empty %}
+		<div class='h4'>АКТИВНЫХ ТУРНИРОВ НЕТ..</div>
+	{% endif %}
+
+	{% for tournament in tournaments %}
+
+		<h2>
+			{% if tournament.image is not null %}
+		 	<img class='tournament-img' src='/public/images/custom/logo/{{ tournament.image }}'>
+		 	{% else %}
+		 	<img class='tournament-img' src='/public/images/interface/default_logo.png'>
+		 	{% endif %}
+			<a href="{{ path('app_tournament_show', {"id": tournament.id}) }}">{{ tournament.name }}</a>
+			{% if tournament.status == 3 or tournament.status == 4 %}
+				<span class='texttop'>(ПРИЕМ ЗАЯВОК)</span>
+			{% endif %}
+		</h2>
+
+	{% endfor %}
+
+{% endblock %}

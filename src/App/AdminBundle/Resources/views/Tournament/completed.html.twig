@@ -1,0 +1,49 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Админка: Завершить создание турнира {% endblock %}
+
+{% block lowheader %} {{ tournament.name }} {% endblock %}
+
+{% block lowbody %}
+<a class='back-link' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'>НАЗАД</a>
+<br><br>
+
+{{ form_start(form) }}
+
+<h4>СХЕМА ПРОВЕДЕНИЯ ТУРНИРА</h4>
+{% for schema in form.schema %}
+	{{ form_widget(schema, {"attr": {"class": "radios"}}) }} {{ form_label(schema) }}<br>
+{% endfor %}
+
+<div class='schema1'>
+	<h4>КОЛИЧЕСТВО УЧАСТНИКОВ</h4>
+	{{ form_widget(form.users, {"attr": {"class": "form-control form-short"}}) }}
+</div>
+
+<div class='schema2'>
+	<h4>КОЛИЧЕСТВО КРУГОВ</h4>
+	{{ form_widget(form.circle, {"attr": {"class": "form-control form-short"}}) }}
+</div>
+<div class='schema3'>
+	<h4>КОЛИЧЕСТВО ГРУПП</h4>
+	{{ form_widget(form.groups, {"attr": {"class": "form-control form-short"}}) }}
+
+	<h4>КОЛИЧЕСТВО КОМАНД В ГРУППЕ</h4>
+	{{ form_widget(form.usergroups, {"attr": {"class": "form-control form-short"}}) }}
+</div>
+<br>
+{% if app.session.flashBag.has('error') %}
+	<span class="display-error">
+	    {% for msg in app.session.flashBag.get('error') %}
+	        {{ msg }}
+	    {% endfor %}
+	</span>
+	<br>
+{% endif %}
+<br>
+{{ form_widget(form.create_tournament, {"attr": {"class": "btn btn-default"}}) }}
+
+{{ form_rest(form) }}
+{{ form_end(form) }}
+
+{% endblock %}

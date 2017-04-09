@@ -1,0 +1,16 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Админка: Турнир не найден {% endblock %}
+
+{% block lowheader %}
+	{% if tournament.status == 0 %}
+		Турнир не найден  
+	{% elseif tournament.status == 2 %}
+		Турнир находится в архиве
+	{% endif %}
+{% endblock %}
+
+{% block low_body %}
+<a class='back-link' href='{{ path("app_admin_tournaments") }}'>К СПИСКУ ТУРНИРОВ</a>
+<br><br>
+{% endblock %}

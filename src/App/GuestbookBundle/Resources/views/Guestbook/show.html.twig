@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Гостевая книга {% endblock %}
+
+{% block header %} Гостевая книга {% endblock %}
+
+{% block content %}
+
+{# attention start #}
+{% if attention.0.description != "" %}
+<div class='alert alert-warning'>
+	{{ replace_text(adminreplace_text(attention.0.description))|raw|nl2br }}
+</div>
+{% endif %}
+	{# attention end #}
+
+{% if is_granted('ROLE_VERIFIED_USER') %}
+	{% set adminbb = 0 %}	
+	{% include 'bbcode.html.twig' %}
+	{{ form_start(form) }}
+	{{ form_widget(form.message) }}
+
+	{# show flash info #}
+	{% include 'flashbug.html.twig' %}
+
+	{{ form_widget(form.save, {'attr': {'class': 'button button-main'}}) }}
+	{{ form_end(form) }}
+{% endif %}
+
+<br>
+
+
+{# orders #}
+{% set order_rate = 1 %}
+{% set order_quote = 1 %}
+{% set order_delete = 1 %}
+
+{# page navigation #}
+{% set page_navigation = '/guestbook' %}
+{% include 'pagenavigation.html.twig' %}
+
+{# base guestbook body for all realize guestbook #}
+{% include 'AppGuestbookBundle:Guestbook:_guestbook.html.twig' %}
+
+{# page navigation #}
+{% include 'pagenavigation.html.twig' %}
+
+{% endblock %}

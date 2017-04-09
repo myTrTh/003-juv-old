@@ -1,0 +1,16 @@
+app_tournament_show:
+    path:     /tournament/{id}/{tour}
+    defaults: { _controller: AppTournamentBundle:Tournament:show, id: 0, tour: 0 }
+    requirements:
+        id: '\d+'
+        tour: '\d+'
+
+app_tournament_list:
+    path:     /tournaments/{page}
+    defaults: { _controller: AppTournamentBundle:Tournament:list, page: 0 }
+    requirements:
+        pages: '\d+'
+
+app_tournament_rules:
+    path:     /rules
+    defaults: { _controller: AppTournamentBundle:Pages:rules }

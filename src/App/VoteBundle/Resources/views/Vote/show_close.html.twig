@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ vote.title }} {% endblock %}
+{% block header %} {{ vote.title }} {% endblock %}
+{% block content %}
+
+<a class='link-back' href='{{ path('app_vote_list') }}'><i class='fa fa-arrow-left'></i> К списку опросов</a>
+<br>
+
+{% if vote.checked != 1 %}
+	{% if vote.checked != 0 %}
+		<span class='text-small bold gray'>Доступно количество ответов до: {{ vote.checked }}</span>
+	{% else %}
+		<span class='text-small bold gray'>Вы можете выбрать любое количество ответов.</span>
+	{% endif %}
+<br>
+{% endif %}
+<br>
+{# show flash info #}
+{% include 'flashbug.html.twig' %}
+
+<form method='post'>
+	{% for option in options %}
+
+		{# if 1 value #}
+		{% if vote.checked == 1 %}
+			<div><input required='required' type='radio' name='radio[]' value='{{ option.id }}'> {{ option.description }}</div>
+		{% else %}
+			<div><input type='checkbox' name='radio[]' value='{{ option.id }}'> {{ option.description }}</div>
+		{% endif %}
+	{% endfor %}
+	<hr>
+	<input type='checkbox' name='anon' value='1'> Голосовать анонимно<br><br>
+<input class='button button-main' type='submit' name='submit' value='Голосовать'>
+</form>
+<br>
+<a href="{{ path('app_vote_show', {'vote': vote.id, 'access': 'open'}) }}">Просмотреть результаты</a>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+app_user_settings:
+    path:     /profile/settings
+    defaults: {_controller: AppUserBundle:User:settings }
+    methods: [GET|POST]
+
+app_user_delete_image:
+    path:     /profile/delete_image
+    defaults: { _controller: AppUserBundle:User:delete_image }
+
+
+fos_user_user_show:
+    path:     /profile/
+    defaults: { _controller: AppUserBundle:Profile:show }
+
+app_user_show:
+    path:     /user/{id}
+    defaults: { _controller: AppUserBundle:User:show, id: 0 }
+    requirements:
+        id: '\d+'
+
+app_user_list:
+    path:     /users/{page}/{sort}
+    defaults: { _controller: AppUserBundle:User:list, page: 1, sort: alpha_asc }
+    requirements:
+        page: '\d+'
+        sort: 'alpha_asc|alpha_desc|since_asc|since_desc'

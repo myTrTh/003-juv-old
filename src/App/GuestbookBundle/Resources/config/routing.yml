@@ -1,0 +1,28 @@
+app_guestbook_show:
+    path:     /guestbook/{page}
+    defaults: { _controller: AppGuestbookBundle:Guestbook:show, page: 1 }
+    methods: [GET|POST]
+    requirements:
+        page: '\d+'
+
+app_guestbook_post:
+    path:     /post/{post}
+    defaults: { _controller:AppGuestbookBundle:Guestbook:post, post: 1 }
+    methods: [GET|POST]
+    requirements:
+        post: '\d+'
+
+app_guestbook_delete:
+    path:     /guestbook/delete/{post}
+    defaults: { _controller: AppGuestbookBundle:Guestbook:delete }
+    methods: [GET|POST]
+
+ajax_guestbook_edit:
+    path:     /guestbook/edit
+    defaults: {_controller: AppGuestbookBundle:Guestbook:edit }
+    methods: [GET|POST]
+
+ajax_guestbook_ranking:
+    path:     /guestbook/ranking
+    defaults: {_controller: AppGuestbookBundle:Guestbook:ranking }
+    methods: [GET|POST]    

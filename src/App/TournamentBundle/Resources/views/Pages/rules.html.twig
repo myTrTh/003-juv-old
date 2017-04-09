@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} rules {% endblock %}
+{% block header %} rules {% endblock %}
+
+
+{% block content %} 
+<br><br>
+{% if rules.0.description is defined %}
+	{{ replace_text(adminreplace_text(rules.0.description))|raw|nl2br }}
+{% endif %}
+
+{% endblock %}

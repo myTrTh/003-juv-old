@@ -1,0 +1,40 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Админка: Номера {% endblock %}
+
+{% block lowheader %} НОМЕРА {% endblock %}
+
+{% block lowbody %}
+
+{{ form_start(form) }}
+{# {{ form_label(form.number) }} #}
+{{ form_widget(form.number, 	{ 'attr': {'class': 'form-control form-short', 'placeholder': 'Номер' } } ) }}
+{{ form_errors(form.number, { 'attr': {'class': 'error_string' } }) }}
+<br>
+{# {{ form_label(form.user) }} #}
+{{ form_widget(form.user, 	{ 'attr': {'class': 'form-control form-short', 'placeholder': 'Пользователь' } } ) }}
+{{ form_errors(form.user, { 'attr': {'class': 'error_string' } }) }}
+<br>
+{% if app.session.flashBag.has('error') %}
+	<p class="display-error">
+	    {% for msg in app.session.flashBag.get('error') %}
+	        {{ msg }}
+        {% endfor %}
+    </p>
+{% endif %}
+
+{{ form_rest(form) }}
+<input class='btn btn-default' type="submit" value="Установить" />
+{{ form_end(form) }}
+
+<div class='numbers-area'>
+{% for number in number_users %}
+	<div><span>{{ number.number }}</span> {{ number.username }}
+		{# {{ path('app_admin_deletenumber', {'numb': number.number} ) }} #}
+			<button type="button" title='Удалить' class="close" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/delete/Number/{{ number.id }}'">
+				&times;
+			</button>
+	</div>
+{% endfor %}
+</div>
+{% endblock %}

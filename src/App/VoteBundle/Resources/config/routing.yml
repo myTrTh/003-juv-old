@@ -1,0 +1,22 @@
+app_vote_list:
+    path:     /votes/{page}
+    defaults: { _controller: AppVoteBundle:Vote:list, page: 1 }
+    requirements:
+        page: '\d+'
+
+app_vote_show:
+    path:     /vote/{vote}/{access}
+    defaults: { _controller: AppVoteBundle:Vote:show, vote: 0, access: 'close' }
+    requirements:
+        vote: '\d+'
+        access: close|open
+
+app_vote_create:
+    path:     /votes/create
+    defaults: { _controller: AppVoteBundle:Vote:create }
+    methods: [GET|POST]
+
+app_votes_completed:
+    path:     /ajax/completedvote
+    defaults: { _controller: AppVotesBundle:Votes:completedvote }
+    methods: [GET|POST]    

@@ -1,0 +1,29 @@
+app_tournament:
+    resource: "@AppTournamentBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app_admin:
+    resource: "@AppAdminBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app_guestbook:
+    resource: "@AppGuestbookBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app_vote:
+    resource: "@AppVoteBundle/Resources/config/routing.yml"
+    prefix:   /
+
+# app/config/routing.yml
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+app_user:
+    resource: "@AppUserBundle/Resources/config/routing.yml"
+    prefix:   /
+
+app_tournaments:
+    path:     /{page}
+    defaults: { _controller: AppTournamentBundle:Tournament:list, page: 0 }
+    requirements:
+        pages: '\d+'

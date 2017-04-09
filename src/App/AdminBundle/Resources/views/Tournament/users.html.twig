@@ -1,0 +1,47 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Админка: Пользователи {% endblock %}
+
+{% block lowheader %} Пользователи {% endblock %}
+
+{% block lowbody %}
+
+	{% for user in users %}
+
+	{% set val0 = 'ROLE_BANNED_0' %}
+	{% set val1 = 'ROLE_BANNED_1' %}
+	{% set val2 = 'ROLE_BANNED_2' %}
+
+	{% if roles[user.user] != val0 %}
+		{% set class = 'background-danger' %}
+	{% else %}
+		{% set class = '' %}
+	{% endif %}
+
+	<div class='users-panel'>
+		<div id='panel{{ user.user }}' class='users-panel-info  {{ class }}'>
+			<span>{{ user.username }}</span><span>{{ replace_date(user.lastActivity) }}</span>
+		</div>
+		<div class='users-panel-body'>
+			<strong><a href='{{ path('app_user_show', {'id_user': user.user}) }}'>Перейти в профиль</a></strong><br><br>
+			<strong>Бан-статус</strong>
+			<form name="form" id="form{{ user.user }}" method="post">
+				<input type='hidden' name='old_role' value='{{ roles[user.user] }}'>
+				<input type='radio' name='status' id='form-status{{ user.user }}' value='{{ val0 }}' {% if val0 == roles[user.user] %} checked='checked' {% endif %}> Без ограничений<br>
+				<input type='radio' name='status' id='form-status{{ user.user }}' value='{{ val1 }}' {% if val1 == roles[user.user] %} checked='checked' {% endif %}> Запрещено ставить +/-<br>
+				<input type='radio' name='status' id='form-status{{ user.user }}' value='{{ val2 }}' {% if val2 == roles[user.user] %} checked='checked' {% endif %}> Запрещено писать сообщения<br>
+			    <div id='send{{ user.user }}' class='send_group btn btn-default'>Установить</div>
+			</form>
+
+			{% if is_granted('ROLE_SUPER_ADMIN') %}
+				<br><br>
+				<strong>IP:</strong> {{ user.ip }}<br>
+				<strong>UA:</strong> {{ user.userAgent }}<br>
+				<strong>Last Page:</strong> {{ user.lastPage }}<br>
+			{% endif %}
+		</div>
+	</div>
+
+	{% endfor %}
+
+{% endblock %}

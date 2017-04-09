@@ -1,0 +1,195 @@
+{% for post in guestbook %}
+
+	{% if count_message[post.user] < 49 %}
+		{% set stars = 0 %}
+	{% elseif count_message[post.user] >= 50 and count_message[post.user] < 100 %}
+		{% set stars = 1 %}
+	{% elseif count_message[post.user] >= 100 and count_message[post.user] < 250 %}
+		{% set stars = 2 %}
+	{% elseif count_message[post.user] >= 250 and count_message[post.user] < 500 %}
+		{% set stars = 3 %}
+	{% elseif count_message[post.user] >= 500 and count_message[post.user] < 1000 %}
+		{% set stars = 4 %}
+	{% elseif count_message[post.user] >= 1000 %}
+		{% set stars = 5 %}
+	{% endif %}
+
+	{% set post_date = post.created|date_modify("+15 minute")|date("d.m.Y H:i:s") %}
+	{# order for edit message #}
+	{% set now_date = "now"|date("d.m.Y H:i:s") %}
+
+	{% if date(now_date) > date(post_date) %}
+		{% set order_edit = 0 %}
+	{% else %}
+		{% set order_edit = 1 %}
+	{% endif %}
+
+	{# order for set up and down #}
+	{% set date_order = "now"|date_modify("-3 days")|date("d.m.Y H:i:s") %}
+
+	{% if date(date_order) > date(post_date) %}
+		{% set order_rate = 0 %}
+	{% else %}
+		{% set order_rate = 1 %}
+	{% endif %}	
+
+<div id='hd{{ post.id }}' class="hidden">{{ post.created|date('d.m.Y H:i') }}</div>
+<div id='hm{{ post.id }}' class="hidden">{{ post.message }}</div>
+
+<div class="post" id="post{{ post.id }}">
+	<div class="post-header">
+		<div class="post-header-username">
+			<div>
+			{% if achives[post.user] is defined %}
+				{% spaceless %}						
+					{% for achive in achives[post.user] %}
+						<img title="{{ achive.1 }}" class='book-achive' src="/public/images/custom/achive/{{ achive.0 }}">
+					{% endfor %}
+				{% endspaceless %}
+			{% endif %}
+			</div>
+			<div>
+				<a class='nostyle' href='{{ path('app_user_show', {'id': post.user}) }}'><span class='post-author'>{{ post.username }}</span></a>
+			</div>
+		</div>
+		<div class="post-header-id">
+			<div>
+			{% if is_granted('ROLE_VERIFIED_USER') and order_quote == 1 %}
+				{# <i class='quote fa fa-commenting-o'></i> #}
+				<span class='quote'>reply</span>
+			{% endif %}
+			</div>
+			<div>
+			{% if is_granted('ROLE_ADMIN') and order_delete == 1 %}
+				#<a class='nostyle' href='{{ path('app_guestbook_delete', {'post': post.id }) }}'>{{ post.id }}</a>
+			{% else %}
+				#{{ post.id }}
+			{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="post-body">
+		<div class="post-info">
+			{% if post.image is not null %}
+				<img src="/public/images/users/{{ post.image }}">
+			{% else %}
+				<img src="/public/images/interface/no_photo.png"><br>	
+			{% endif %}
+		  	<div class='count'>Постов: {{ count_message[post.user] }}</div>
+			<div>
+				{% if stars > 0 %}
+					{% for y in 1..stars %}
+						<i class='star fa fa-star'></i>
+					{% endfor %}
+				{% endif %}
+							<div class='rate'>
+								<span>RATE</span>
+								<span class='rank-show us{{ post.user }}'>
+								{% if rate_user[post.user] == 0 %}
+									<span class='gray'>0</span>
+								{% elseif rate_user[post.user] > 0 %}
+									<span class='green'>+{{ rate_user[post.user] }}</span>
+								{% elseif rate_user[post.user] < 0 %}
+									<span class='red'>{{ rate_user[post.user] }}</span>
+								{% endif %}
+								</span>
+							</div>				
+		  	{# <div class='rate'>RATE: <span class='us{{ post.user }}'>+{{ rate_user[post.user] }}</span></div>	 #}
+			</div>
+		</div>
+		<div class="post-content">
+			<div class="post-content-date">
+				{{ replace_date(post.created) }}
+				{% if app.user.id is defined and app.user.id == post.user and order_edit == 1 %}
+					<i id='edit{{ post.id }}' class='edit-post fa fa-pencil' title='Редактировать'></i>
+				{% endif %}
+			</div class='post-content-old-quote'>
+			{# old quote #}
+			<div>
+			{% if quote[post.id]['message'] is defined %}
+				<div class='quote-author'>{{ quote[post.id]['user'] }},
+				{{ replace_date(quote[post.id]['created']) }}</div>
+				<div class='bookquote'>{{ replace_text(quote[post.id]['message'])|raw|nl2br }}</div>
+			{% endif %}
+			</div>
+			<div class='post-content-message' id='message{{ post.id }}'>
+				{{ replace_text(post.message)|raw|nl2br }}
+			</div>
+			<div class='post-content-numbers'>
+				{% if numbers[post.user] is defined %}
+					numero {{ set_number(numbers[post.user])|raw }}
+				{% endif %}
+			</div>			
+		</div>		
+	</div>
+	<div class="rate-panel">
+		<div class='rate-panel'>
+		{% if order_rate == 1 %}
+			<div id='u{{ post.id }}' class='tumbler like post-up'>
+			{% if is_granted('ROLE_BANNED_0') and app.user.id is defined and app.user.id != post.user and order_rate == 1 and rate_message[post.id]['allow'] == 0 %}
+				<i class='fa fa-thumbs-o-up'></i>
+			{% endif %}
+			</div>
+			<div id='r{{ post.id }}' class='like post-ranking'>
+				{% if rate_message[post.id]['sum'] == 0 %}
+					<span class='gray'>{{ rate_message[post.id]['sum'] }}</span>
+				{% elseif rate_message[post.id]['sum'] > 0 %}
+					<span class='green'>+{{ rate_message[post.id]['sum'] }}</span>
+				{% elseif rate_message[post.id]['sum'] < 0 %}
+					<span class='red'>{{ rate_message[post.id]['sum'] }}</span>
+				{% endif %}
+			</div>
+			<div id='d{{ post.id }}' class='tumbler like post-down'>
+			{% if is_granted('ROLE_BANNED_0') and app.user.id is defined and app.user.id != post.user and order_rate == 1 and rate_message[post.id]['allow'] == 0 %}
+				<i class='fa fa-thumbs-o-down'></i>
+			{% endif %}
+			</div>
+			<div class='rank-users'>
+				<div id='ru{{ post.id }}' class='rank-up green'>
+					{% if rate_message[post.id]['plus'] != "" %}
+						{{ rate_message[post.id]['plus'] }}
+					{% else %}
+						{% if rate_message[post.id]['minus'] != "" %}
+						{% else %}
+							<span class='gray'>Голосов нет</span>
+						{% endif %}
+					{% endif %}
+				</div>
+				<div id='rd{{ post.id }}' class='rank-down red'>
+					{% if rate_message[post.id]['minus'] != "" %}
+						{{ rate_message[post.id]['minus'] }}
+					{% endif %}
+				</div>
+				</div>
+			{% endif %}
+		</div> 
+	</div>	
+</div>
+
+<br>
+
+
+
+
+
+
+
+
+{# 	<div style='background: #ccc'>
+		{% if nach[post.user] is defined %}
+			{% for nh in nach[post.user] %}
+				{{ nh }}<br>
+			{% endfor %}
+		{% endif %}
+
+		{% if topnach[post.user] is defined %}
+			{% for topnh in topnach[post.user] %}
+				{{ topnh.0 }} {{ topnh.1 }} - {{ replace_text(topnh.2)|raw|nl2br }}<br>
+			{% endfor %}
+		{% endif %}		
+	</div>
+
+		{# rate panel #}
+
+
+{% endfor %}

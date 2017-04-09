@@ -1,0 +1,47 @@
+.add {
+	padding-right: 15px;
+	cursor: pointer;
+}
+
+.progress {
+	background-color: #eceeef;
+	border-radius: .25rem;
+	height: .8rem;
+}
+
+.progress-bar {
+	background-color: #e7827f;
+	border-radius: .25rem 0 0 .25rem;
+	height: .8rem;	
+}	
+
+.votes {
+	width: 100%;
+	margin-bottom: 15px;
+	& td:nth-child(2) {
+		width: 70px;
+		text-align: right;
+	}
+	& td:last-child {
+			width: 70px;
+			text-align: right;			
+			color: #666;
+	}
+}
+
+.votes tr:nth-child(2) > td {
+	padding-top: 15px;
+}
+
+.vote-users {
+	text-align: left !important;
+	padding-bottom: 5px;
+}
+
+.votes tr:first-child > td {
+	border-bottom: solid 1px #ccc;
+}
+
+.vote-list {
+	margin-bottom: 7px;
+}

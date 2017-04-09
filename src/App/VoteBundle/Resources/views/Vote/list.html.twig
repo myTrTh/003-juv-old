@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Опросы {% endblock %}
+
+{% block header %} Опросы {% endblock %}
+
+{% block content %}
+
+{% if is_granted('ROLE_VERIFIED_USER') %}
+<a class='nostyle' href="{{ path('app_vote_create') }}"><i class='fa fa-plus'> СОЗДАТЬ ОПРОС</i></a>
+{% endif %}
+<br><br>
+
+{# page navigation #}
+{% set page_navigation = '/votes' %}
+{% include 'pagenavigation.html.twig' %}
+
+{% for vote in votes %}
+	<div class='vote-list'>	
+	{% if notification_vote is defined and vote.id in notification_vote %}
+		<a class='nostyle' href='{{ path('app_vote_show', {'vote': vote.id}) }}'><span class='h3 bold'>
+			<i class='fa fa-question-circle-o gray'></i>
+			{{ vote.title }}
+		</span></a>
+	{% else %}
+		<a class='nostyle' href='{{ path('app_vote_show', {'vote': vote.id}) }}'><span class='h3'>
+			<i class='fa fa-question-circle-o gray'></i>
+			{{ vote.title }}
+		</span></a>
+	{% endif %}
+	</div>
+{% endfor %}
+
+{# page navigation #}
+{% include 'pagenavigation.html.twig' %}
+
+{% endblock %}

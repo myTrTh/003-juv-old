@@ -1,0 +1,43 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block stylesheets %}
+    <link rel='stylesheet' type='text/css' href="{{ asset('/public/css/guestbook.css?ver=1.00') }}"> 
+{% endblock %}
+
+{% block javascripts %}
+	<script src="{{ asset('/public/js/guestbook.js?ver=1.00') }}"></script>
+{% endblock %}
+
+{% block title %} adminbook {% endblock %}
+{% block header %} adminbook {% endblock %}
+{% block content %}
+
+{% if is_granted('ROLE_VERIFIED_USER') %}
+	{% include 'bbcode.html.twig' %}
+	{{ form_start(form) }}
+	{{ form_widget(form.message, {'attr': {'style': 'width: 400px; height: 170px'}}) }}
+	<br>
+	{{ form_widget(form.save) }}
+	{{ form_end(form) }}
+{% endif %}
+
+{# show flash info #}
+{% include 'flashbug.html.twig' %}
+<br>
+
+
+{# orders #}
+{% set order_rate = 0 %}
+{% set order_quote = 1 %}
+{% set order_delete = 0 %}
+
+{# page navigation #}
+{% set page_navigation = '/adminpanel/adminbook' %}
+{% include 'pagenavigation.html.twig' %}
+
+{# base guestbook body for all realize guestbook #}
+{% include 'AppGuestbookBundle:Guestbook:_guestbook.html.twig' %}
+
+{% include 'pagenavigation.html.twig' %}
+
+{% endblock %}

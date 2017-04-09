@@ -1,0 +1,88 @@
+{% if countpage > 1 %}
+	<div class='pagenation'>
+		{# Стрелки < << #}
+		{% if (page > 1) %}
+			{% set prevpage = page - 1 %}
+		{% else %} 
+			{% set prevpage = 1 %}
+		{% endif %}
+
+		{% if page > 3 %}
+		<div>
+			<a class='nostyle' href="{{ page_navigation }}/1">
+				<<
+			</a>
+		</div>
+		<div>
+			<a class='nostyle' href="{{ page_navigation }}/{{ prevpage }}">
+				<
+			</a>
+		</div>
+		{% else %}
+			<div class='navigation-empty'></div>
+			<div class='navigation-empty'></div>
+		{% endif %}
+		
+		{# NAVIGATION #}
+		{% if countpage <= 5 %}
+			{% for i in range(1, countpage) %}
+				{% if page == i %}
+					<div class='active-page'><a>{{ i }}</a></div>
+				{% else %}
+					<div><a class='nostyle' href="{{ page_navigation }}/{{ i }}">{{ i }}</a></div>
+				{% endif %}
+			{% endfor %}
+		{% else %}
+			{% if countpage > (page + 2) and page > 3 %}
+				{% set modstart = page - 2 %}
+				{% set modend = page + 2 %}
+				{% for i in range(modstart, modend) %}
+					{% if page == i %}
+						<div class='active-page'><a>{{ i }}</a></div>					
+					{% else %}
+						<div><a class='nostyle' href="{{ page_navigation }}/{{ i }}">{{ i }}</a></div>
+					{% endif %}
+				{% endfor %}					
+			{% elseif countpage <= ( page + 2) and page > 3 %}
+				{% set modstart = (countpage - 4) %}
+				{% for i in range(modstart, countpage) %}
+					{% if page == i %}
+						<div class='active-page'><a>{{ i }}</a></div>					
+					{% else %}
+						<div><a class='nostyle' href="{{ page_navigation }}/{{ i }}">{{ i }}</a></div>
+					{% endif %}
+				{% endfor %}
+			{% elseif page <= 3 %}
+				{% for i in range(1, 5) %}
+					{% if page == i %}
+						<div class='active-page'><a>{{ i }}</a></div>					
+					{% else %}
+						<div><a class='nostyle' href="{{ page_navigation }}/{{ i }}">{{ i }}</a></div>
+					{% endif %}
+				{% endfor %}				
+			{% endif %}
+
+		{% endif %}	
+
+		{# Стрелки > >> #}
+		{% if (page < countpage) %}
+			{% set nextpage = page + 1 %}
+		{% else %} 
+			{% set nextpage = countpage %}
+		{% endif %}
+
+		{% if countpage > 5 and page <= countpage - 3 %}
+		<div><a class='nostyle' href="{{ page_navigation }}/{{ nextpage }}">
+				>
+			</a>
+		</div>
+		<div><a class='nostyle' href="{{ page_navigation }}/{{ countpage}}">
+				>>
+			</a>
+		</div>
+		{% else %}
+			<div class='navigation-empty'></div>
+			<div class='navigation-empty'></div>
+		{% endif %}
+	</div>
+{% endif %}

@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel='stylesheet' type='text/css' href="{{ asset('/bundles/appcore/css/core.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('/bundles/appcore/js/core.js') }}"></script>
+{% endblock %}
+
+{% block title %} {{ tournament.name }} {% endblock %}
+
+{% block header %} 
+	{% if tournament.image is not null %}
+	 	<img class='tournament-img-header' src='/public/images/custom/logo/{{ tournament.image }}'>
+ 	{% else %}
+	 	<img class='tournament-img-header' src='/public/images/interface/default_logo.png'>
+	{% endif %}
+	{{ tournament.name }} 
+{% endblock %}
+
+{% block content %}
+<a class='back-link' href='{{ path("app_tournament_list") }}'>К СПИСКУ ТУРНИРОВ</a>
+<br><br>
+
+<p>В данный момент идет набор всех желающих принять участие в турнире.</p>
+<p>При желании вы можете подать заявку на участие.</p>
+<span class='red'>Внимание! Заявка не гарантирует участие в турнире. Вы лишь заявляете о готовности принять в нем участие</span>
+<p>Конечное решение принимает руководитель турнира.</p>
+
+{% if app.user.id is defined and access == 0 %}
+	{{ form_start(form) }}
+		{{ form_widget(form.tournament, {'attr': {'value': tournament.id}}) }}
+		{# <input type='hidden' name='tournament' value="{{ tournament.id }}"> #}
+		<input type='submit' name='adduser' class='btn btn-default' value='Подать заявку'>
+	{{ form_rest(form) }}
+	{{ form_end(form) }}
+{% endif %}
+
+{% if access == 1 %}
+	<br>
+	<span class='alert alert-info'>Ваша заявка принята</span>
+	<br><br>
+{% endif %}
+
+{% if app.session.flashBag.has('error') %}
+	<span class="display-error">
+	    {% for msg in app.session.flashBag.get('error') %}
+	   	    {{ msg }}
+	    {% endfor %}
+	</span>
+<br><br>
+{% endif %}
+
+<h3>Поданные заявки</h3>
+{% if tournamentusers is empty %}
+	Заявок пока нет.
+{% else %}
+	{% for user in tournamentusers %}
+		{% if loop.last %}
+			<a href="{{ path("app_user_show", {"id": user.user}) }}">{{ user.username }}</a>
+		{% else %}
+			<a href="{{ path("app_user_show", {"id": user.user}) }}">{{ user.username }}</a>, 
+		{% endif %}
+	{% endfor %}
+{% endif %}
+{% endblock %}

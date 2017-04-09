@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Настройки {% endblock %}
+
+{% block header %} Настройки {% endblock %}
+
+{% block content %}
+
+	<a class='link-back' href='{{ path('fos_user_user_show') }}'><i class='fa fa-arrow-left'></i> Вернуться в профиль</a>
+	<br>
+
+	<h3>изображение</h3>
+	{% if user.image is not null %}
+		<div>
+			<img class='img-profile' src="/public/images/users/{{ user.image }}">
+			<i type="button" title='Удалить изображение' class="fa fa-close cursor" data-dismiss="alert" aria-hidden="true" onclick="location.href='/profile/delete_image'"></i>
+		</div>
+	{% else %}
+		<img class='img-profile' src="/public/images/interface/no_photo.png"><br>	
+	{% endif %}
+
+	{{ form_start(form_image) }}
+	<i class="fa fa-folder-open-o in-file"></i><span class="in-file-text">Выберите изображение...</span>
+	<div class="file-style middle">
+		{{ form_widget(form_image.image, {'attr': {'class': 'middle opacity'}}) }}
+	</div>
+	{{ form_errors(form_image.image) }}
+	<input class='button button-main' type='submit' name='upload_image' value='Загрузить'>
+	{{ form_end(form_image) }}
+
+	<br><br>
+	<h3>Часовой пояс</h3>
+	{{ form_start(form_date) }}
+	{{ form_widget(form_date.timezone, {'attr': {'class': 'middle'}}) }}
+	{{ form_errors(form_date.timezone) }}
+	<input class='button button-main' type='submit' name='upload_image' value='Установить'>
+	{{ form_end(form_date) }}	
+	<br><br>
+{% endblock %}

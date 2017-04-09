@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Информация о пользователе {% endblock %}
+
+{% block header %} Информация о пользователе {% endblock %}
+
+{% block content %}
+
+<a class='link-back' href='{{ path('app_user_list') }}'><i class='fa fa-arrow-left'></i> К списку пользователей</a>
+<br>
+
+{% if user.id is defined %}
+
+	{% include 'AppUserBundle:User:_userinfo.html.twig'	%}
+
+{% else %}
+
+	Такого пользователя у нас нет...
+
+{% endif %}
+
+{% endblock %}

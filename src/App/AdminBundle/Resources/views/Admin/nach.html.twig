@@ -1,0 +1,45 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Админка: Нахи {% endblock %}
+
+{% block lowheader %} Нахи {% endblock %}
+
+{% block lowbody %}
+
+	{{ form_start(form, {'method': 'post', 'attr': {'class': 'file_display_none'} }) }}
+	<br>
+	{{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Заголовок'}} ) }}
+	{{ form_errors(form.title) }}
+	<br>
+	{% set adminbb = true %}
+	{% include 'bbcode.html.twig' %}
+	{{ form_widget(form.description, {'attr': {'class': 'form-control', 'placeholder': 'Описание'}} ) }}
+	{{ form_errors(form.description) }}		
+	<br>
+	{{ form_widget(form.number, {'attr': {'class': 'form-control', 'placeholder': 'Номер сообщения'}} ) }}
+	{{ form_errors(form.number) }}			
+	{{ form_rest(form) }}
+	<br>
+	<div>
+	    <input class='btn btn-default' type="submit" value="Отправить" />
+	</div>	
+	{{ form_end(form) }}
+
+	{% if app.session.flashBag.has('error') %}
+	    <p class="alert my-alert">
+	        {% for msg in app.session.flashBag.get('error') %}
+	        {{ msg }}
+	    {% endfor %}
+	    </p>
+	{% endif %}
+	<br>
+	{% for nach in nachs %}
+		<div class="panel panel-default">
+		  <div class="panel-heading">{{ nach.number }} <span class='glyphicon glyphicon-list-alt'></span> {{ nach.title }}<button title='Удалить' type="button" class="close" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/delete/Nach/{{ nach.id }}'">&times;</button></div>
+		  <div class="panel-body">
+			{{ replace_text(nach.description)|raw|nl2br }}
+		  </div>
+		</div>
+	{% endfor %}
+
+{% endblock %}

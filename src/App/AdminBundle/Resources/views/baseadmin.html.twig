@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel='stylesheet' type='text/css' href="{{ asset('/public/css/admin.css?ver=1.00') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('/public/js/admin.js?ver=1.00') }}"></script>
+    <script src="{{ asset('/public/js/guestbook.js?ver=1.00') }}"></script>
+{% endblock %}
+
+{% block title %} admin users {% endblock %}
+
+{% block header %} admin users {% endblock %}
+
+{% block content %}
+admin panel
+
+<ul>
+	<li><a href='{{ path('app_admin_users') }}'>Пользователи</a></li>
+	<li><a href='{{ path('app_admin_guestbook') }}'>Штаб</a></li>
+	<li><a href='{{ path('app_admin_content') }}'>Контент</a></li>
+	<li><a href='{{ path('app_admin_upload') }}'>Загрузка</a></li>
+	<li><a href='{{ path('app_admin_numbers') }}'>Номера</a></li>
+	<li><a href='{{ path('app_admin_nach') }}'>Нахи</a></li>
+	<li><a href='{{ path('app_admin_achives') }}'>Нашивки</a></li>
+	<li><a href='{{ path('app_admin_champions') }}'>Чемпионы</a></li>
+	<li><a href='{{ path('app_admin_tournaments') }}'>Турниры</a></li>
+</ul>
+
+	{% block lowheader %}
+
+	{% endblock %}
+
+	{% block lowbody %}
+
+	{% endblock %}
+
+{% endblock %}

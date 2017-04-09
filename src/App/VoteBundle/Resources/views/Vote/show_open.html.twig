@@ -1,0 +1,86 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ vote.title }} {% endblock %}
+{% block header %} {{ vote.title }} {% endblock %}
+{% block content %}
+
+<a class='link-back' href='{{ path('app_vote_list') }}'><i class='fa fa-arrow-left'></i> К списку опросов</a>
+<br>
+
+Автор: <a class='nostyle bold' href='{{ path('app_user_show', {'id': vote.user }) }}'>{{ vote.username }}</a><br>
+Создан: {% if vote.created is defined %} {{ replace_date(vote.created) }} {% endif %} <br>
+{% if vote.status == 1 %} Статус: Активно {% else %} Завершено: {% if vote.completed is defined %} {{ replace_date(vote.completed) }} {% endif %} {% endif %}
+
+{% if options[0]['cnt'] != 0 %}
+	{% set coef = sum / options[0]['cnt'] %}
+{% else %}
+	{% set coef = 0 %}
+{% endif %}
+
+<table class='votes'>
+	<tr>
+		<td>Всего голосов</td>
+		<td>{{ sum }}</td>
+		<td></td>
+	</tr>
+
+{% for option in options %}
+
+	{% if option_sum[option.id] is defined %} 
+		{% set cnt = option_sum[option.id] %}  
+	{% else %} 
+		{% set cnt = 0 %}
+	{% endif %}	
+	<br>
+	{% if sum != 0 %}
+		{% set procent = (cnt / sum) * 100 %}
+	{% else %}
+		{% set procent = 0 %}
+	{% endif %}
+
+	<tr>
+		<td>
+			{{ option.description }}
+		</td>
+		<td>
+			{{ cnt }}  
+		</td>
+		<td>
+	{% if procent == 100 %}
+		{{ procent|number_format(0, '.', ',') }}%
+	{% else %}
+		{{ procent|number_format(1, '.', ',') }}%
+	{% endif %}	
+		</td>
+	</tr>
+	<tr>
+		<td colspan="3" class='vote-users'>
+	<div class="progress">
+	  <div class="progress-bar" style="width: {{ procent * coef }}%"></div>
+	</div>
+	{# if type == 1, show users #}
+	{% if type == 1 %}
+		{% if results[option.id] is defined %}
+			{% for user in results[option.id] %}
+				{% if user.anon == 1 %}
+					<span class='text-small'>Anonimous{% if loop.last == 0 %}, {% endif %}</span>
+				{% else %}
+					<span class='text-small'><a class='nostyle' href='{{ path('app_user_show', {'id': user.id }) }}'>{{ user.user }}</a>{% if loop.last == 0 %}, {% endif %}</span>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+	{% endif %}
+	{# end show user #}
+		</td>
+	</tr>
+{% endfor %}
+</table>
+
+
+{% if app.user.id is defined and vote.status == 1 and (app.user.id == vote.user or is_granted('ROLE_ADMIN')) %}
+	{{ form_start(completed) }}
+	{{ form_widget(completed.completed, {'attr': {'formnovalidate': 'novalidate', 'class': 'button button-main'}}) }}
+	{{ form_end(completed) }}
+{% endif %}
+
+{% endblock %}

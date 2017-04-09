@@ -1,0 +1,13 @@
+{% trans_default_domain 'FOSUserBundle' %}
+
+<a class='link-back' href='{{ path('fos_user_security_login') }}'><i class='fa fa-arrow-left'></i> Вернуться</a>
+
+<form action="{{ path('fos_user_resetting_send_email') }}" method="POST" class="fos_user_resetting_request">
+    <div>
+		Имя пользователя или email
+        <input class="middle" type="text" id="username" name="username" required="required" />
+    </div>
+    <div>
+        <input class="button button-main" type="submit" value="{{ 'resetting.request.submit'|trans }}" />
+    </div>
+</form>

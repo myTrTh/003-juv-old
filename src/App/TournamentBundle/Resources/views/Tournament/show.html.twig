@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel='stylesheet' type='text/css' href="{{ asset('/bundles/appcore/css/core.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('/bundles/appcore/js/core.js') }}"></script>
+{% endblock %}
+
+{% block title %} {{ tournament.name }} {% endblock %}
+
+{% block header %} 
+	{% if tournament.image is not null %}
+	 	<img class='tournament-img-header' src='/bundles/appcore/images/custom/logo/{{ tournament.image }}'>
+ 	{% else %}
+	 	<img class='tournament-img-header' src='/public/images/interface/default_logo.png'>
+	{% endif %}
+	{{ tournament.name }}
+{% endblock %}
+
+{% block content %}
+<a class='back-link' href='{{ path("app_tournament_list") }}'>К СПИСКУ ТУРНИРОВ</a>
+<br><br>
+
+<div class='tourlist'>
+{# tours list #}
+{% for i in range(1, calendar) %}
+	{% if tour == i %}
+		<div class='tourlist-active'>{{ i }}</div>
+	{% else %}
+		<div><a href="{{ path("app_tournament_show", {"id": tournament.id, "tour": i}) }}">{{ i }}</a></div>	
+	{% endif %}
+{% endfor %}
+</div>
+
+<div id='tournumber'>{{ tour }} ТУР</div>
+
+<table class='schedule'>
+{% for game in showtour %}
+	<tr>
+		<td>{{ game.user1 }}</td>
+		<td class='result result-first'>-</td>
+		<td class='result'>-</td>
+		<td>{{ game.user2 }}</td>
+	</tr>
+{% endfor %}
+</table>
+
+{% endblock %}

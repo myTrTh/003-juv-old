@@ -1,0 +1,46 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Админка: Создать плей-офф {% endblock %}
+
+{% block lowheader %} {{ tournament.name }} {% endblock %}
+
+{% block lowbody %}
+<a class='back-link' href='{{ path("app_admin_tournaments") }}'>К СПИСКУ ТУРНИРОВ</a>
+<br><br>
+
+{% if tournament.info.schema is defined and tournament.info.schema != 3 %}
+<p>Для этого турнира не доступно добавление плей-офф</p>
+{% else %}
+
+{% if tournament.status != 1 %}
+<p>Добавление плей-офф будет доступно после завершения создания турнира</p>
+{% endif %}
+
+<h4>УЧАСТНИКИ ТУРНИРА</h4>
+{% if tournament.info.schema is defined and tournament.status == 1 %}
+<span class='info'>(Нажмите на пользователя, чтобы выбрать его)</span>
+{% endif %}
+<div class='area preusers'>
+{% for user in preusers %}
+	<div id='u{{ user.user }}' class='preteam'>{{ user.username }}</div>
+{% endfor %}
+</div>
+
+{% if tournament.info.schema is defined %}
+<div id='schema' class='hidden'>2</div>
+<div id='groupoff' class='hidden'>1</div>
+<h4>СФОРМИРОВАТЬ ПАРЫ</h4>
+
+<div class='area tournament-user'></div>
+
+<br><br>
+{{ form_start(form) }}
+<div class='form-hidden'>{{ form_widget(form.user) }}</div>
+<div class='button'>{{ form_widget(form.save, {"attr": {"class": "btn btn-default"}}) }}</div>
+{{ form_rest(form) }}
+{{ form_end(form) }}
+{% endif %}
+
+{% endif %}
+
+{% endblock %}
