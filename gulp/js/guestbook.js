@@ -233,12 +233,12 @@ $(function() {
 // quote
 $(function(){
 	$('.quote').on('click', function(){
-		var quoteid = $(this).next().text().trim();
-		var id = quoteid.substr(1);
-		console.log(id);
-		var user = $(this).parent().prev().text().trim();
-		var date = $('#date' + id).text().trim();
-		var message = $('#message' + id).text().trim();
+		var quoteid = $(this).parent().parent().parent().parent().attr('id');
+		var id = quoteid.substr(4);
+		var user = $(this).parent().parent().prev().children().next().children().children().html().trim();
+		var date = $('#hd' + id).text().trim();
+		var message = $('#hm' + id).text().trim();
+		console.log(message);
 		var quote_text = '[quote author=' + user + ' date=' + date +']\n' + message + '\n[/quote]\n\n';
 		var textarea = $('textarea');
 		var start = textarea[0].selectionStart;
