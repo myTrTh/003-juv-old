@@ -1,0 +1,44 @@
+.admin-menu > li {
+	display: inline-block;
+	background-color: #999;
+	color: #fff;
+	font-weight: bold;
+	font-family: $font_header;
+	text-transform: uppercase;
+	padding: .1rem .3rem;
+	margin: 0 .1rem .1rem 0;
+	font-size: .9rem;
+}
+
+.users-panel-info {
+	margin-top: .5rem;
+	background-color: #f5f5f5;
+	border: solid 1px #ccc;
+	cursor: pointer;
+	font-family: $font_arial;
+	font-size: .8rem;
+	padding: .1rem .5rem;
+	font-weight: bold;
+	color: #777;
+	& .panel-with-user {
+		width: 150px;
+		display: inline-block;
+	}
+}
+
+.users-panel-body {
+	display: none;
+	font-size: .8rem;	
+	border: solid 1px #ccc;
+	border-top: none;
+	padding: .2rem;
+	padding-bottom: 1rem;
+}
+
+.background-warning {
+	background-color: #fcf8e3
+}
+
+.background-danger {
+	background-color: #f2dede;
+}

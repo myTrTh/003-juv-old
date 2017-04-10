@@ -15,6 +15,24 @@ textarea {
 	cursor: pointer;
 }
 
+.left {
+	text-align: left;
+	display: inline-block;
+	width: 100%;
+}
+
+.right {
+	display: inline-block;
+	text-align: right;
+	width: 100%;
+}
+
+.center {
+	display: inline-block;
+	text-align: center;
+	width: 100%;
+}
+
 .smilepanel {
 	display: none;
 }
@@ -116,7 +134,8 @@ img.smile {
 }
 
 .post-content-message {
-	padding: 0 3px;
+	padding: 0 10px;
+	line-height: 1.4;
 	word-break: break-all;
 	margin-bottom: 25px;
 	width: 100%;
@@ -137,7 +156,7 @@ img.smile {
 
 .post-content-date {
 	color: #b1b1b1;
-	margin: 10px 2px;
+	margin: 10px 10px;
 	font-size: .8rem;
 }
 

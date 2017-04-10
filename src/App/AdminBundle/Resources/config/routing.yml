@@ -145,7 +145,7 @@ app_admin_guestbook:
 
 app_admin_content:
     path:     /adminpanel/content/{type}
-    defaults: { _controller: AppAdminBundle:Admin:content, type: rules }
+    defaults: { _controller: AppAdminBundle:Admin:content, type: attention }
     methods: [GET|POST]
     requirements:
         content: rules|attention

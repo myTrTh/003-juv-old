@@ -42,11 +42,11 @@ class ModeTextExtension extends \Twig_Extension
 		$patternB = "/\[s\](.*?)\[\/s\]/s";
 		$message = preg_replace($patternB, "<del>$1</del>", $message);
 		$patternB = "/\[left\](.*?)\[\/left\]/s";
-		$message = preg_replace($patternB, "<div class='bb' style='text-align: left'>$1</div>", $message);
+		$message = preg_replace($patternB, "<span class='left'>$1</span>", $message);
 		$patternB = "/\[right\](.*?)\[\/right\]/s";
-		$message = preg_replace($patternB, "<div class='bb' style='text-align: right'>$1</div>", $message);
+		$message = preg_replace($patternB, "<span class='right'>$1</span>", $message);
 		$patternB = "/\[center\](.*?)\[\/center\]/s";
-		$message = preg_replace($patternB, "<div class='bb' style='text-align: center'>$1</div>", $message);
+		$message = preg_replace($patternB, "<span class='center'>$1</span>", $message);
 		$patternB = "/post\:([0-9]+)/s";
 		$message = preg_replace($patternB, "<a href='/post/$1'>post/$1</a>", $message);		
 

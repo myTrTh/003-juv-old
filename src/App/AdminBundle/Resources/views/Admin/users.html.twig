@@ -1,5 +1,9 @@
 {% extends 'AppAdminBundle::baseadmin.html.twig' %}
 
+{% block lowheader %}
+	Пользователи
+{% endblock %}
+
 {% block lowbody %}
 
 {% for user in users %}
@@ -19,17 +23,17 @@
 
 	<div class='users-panel'>
 		<div id='panel{{ user.user }}' class='users-panel-info  {{ class }}'>
-			<span>{{ user.username }}</span> <span>{{ replace_date(user.lastActivity) }}</span>
+			<span  class='panel-with-user'>{{ user.username }}</span> <span>{{ replace_date(user.lastActivity) }}</span>
 		</div>
 		<div class='users-panel-body'>
 			<strong><a href='{{ path('app_user_show', {'id': user.user}) }}'>Перейти в профиль</a></strong><br><br>
 			<strong>Бан-статус</strong>
 			<form name="form" id="form{{ user.user }}" method="post">
 				<input type='hidden' name='old_role' value='{{ roles[user.user] }}'>
-				<input type='radio' name='status' id='form-status{{ user.user }}' value='{{ val0 }}' {% if val0 == roles[user.user] %} checked='checked' {% endif %}> Без ограничений<br>
-				<input type='radio' name='status' id='form-status{{ user.user }}' value='{{ val1 }}' {% if val1 == roles[user.user] %} checked='checked' {% endif %}> Запрещено ставить +/-<br>
-				<input type='radio' name='status' id='form-status{{ user.user }}' value='{{ val2 }}' {% if val2 == roles[user.user] %} checked='checked' {% endif %}> Запрещено писать сообщения<br>
-			    <div id='send{{ user.user }}' class='send_group btn btn-default'>Установить</div>
+				<input type='radio' class='nomargin' name='status' id='form-status{{ user.user }}' value='{{ val0 }}' {% if val0 == roles[user.user] %} checked='checked' {% endif %}> Без ограничений<br>
+				<input type='radio' name='status' class='nomargin' id='form-status{{ user.user }}' value='{{ val1 }}' {% if val1 == roles[user.user] %} checked='checked' {% endif %}> Запрещено ставить +/-<br>
+				<input type='radio' class='nomargin' name='status' id='form-status{{ user.user }}' value='{{ val2 }}' {% if val2 == roles[user.user] %} checked='checked' {% endif %}> Запрещено писать сообщения<br>
+			    <span id='send{{ user.user }}' class='send_group button button-main'>Установить</span>
 			</form>
 
 			{% if is_granted('ROLE_SUPER_ADMIN') %}

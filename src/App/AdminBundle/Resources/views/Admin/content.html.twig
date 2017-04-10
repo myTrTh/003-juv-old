@@ -1,6 +1,6 @@
 {% extends 'AppAdminBundle::baseadmin.html.twig' %}
 
-{% block title %} Админка: Контент {% endblock %}
+{% block title %} Контент {% endblock %}
 
 {% block lowheader %}
 		{% if type == 'attention' %}
@@ -37,7 +37,7 @@
 	{{ form_rest(form) }}
 	<br>
 	<div>
-	    <input class='btn btn-default' type="submit" value="Изменить" />
+	    <input class='button button-main' type="submit" value="Изменить" />
 	</div>	
 	{{ form_end(form) }}
 
