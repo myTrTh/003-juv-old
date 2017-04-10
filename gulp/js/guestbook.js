@@ -187,7 +187,7 @@ $(function() {
 		if(height < 150)
 			height = 150;
 
-		textarea.html("<textarea style='width: 100%; height: " + height + "px'>" + rowmessage + "</textarea><button id='update" + id + "' class='update button button-main'>Обновить</button><button id='cancel" + id + "' class='cancel button button-main'>Отмена</button>");
+		textarea.html("<textarea style='height: " + height + "px'>" + rowmessage + "</textarea><button id='update" + id + "' class='update button button-main'>Обновить</button><button id='cancel" + id + "' class='cancel button button-main'>Отмена</button>");
 	})
 })
 
@@ -239,7 +239,7 @@ $(function(){
 		var date = $('#hd' + id).text().trim();
 		var message = $('#hm' + id).text().trim();
 		console.log(message);
-		var quote_text = '[quote author=' + user + ' date=' + date +']\n' + message + '\n[/quote]\n\n';
+		var quote_text = '[quote author=' + user + ' date=' + date +' post=' + id + ']\n' + message + '\n[/quote]\n\n';
 		var textarea = $('textarea');
 		var start = textarea[0].selectionStart;
 		var end = textarea[0].selectionEnd;

@@ -112,6 +112,7 @@ img.smile {
 .post-content {
 	flex: 1 0 10px;
 	position: relative;
+	overflow: hidden;
 }
 
 .post-content-message {

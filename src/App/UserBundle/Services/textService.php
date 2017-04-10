@@ -36,16 +36,11 @@ class textService {
 		for($i=0;$i<$how_spoiler;$i++)
 			$message = preg_replace($patternB, "<div class='spoiler'><span class='sign'>+</span><span class='spoiler-name'> спойлер</span><div class='spoiler-body'>$1</div></div>", $message);
 	
-		$pattern_quote = "/(\[quote)(?: author=([a-zA-Z]+)?)?(?: date=([0-9.\ :]+[0-9]+)?)?(?: post=([0-9]+)?)?\]([\s\S]+)(\[\/quote\])/sUu";
+		$pattern_quote = "/(\[quote)(?:\ ?author=([a-zA-Z0-9а-яёА-ЯЁ\_\@]+))?(?:\ ?date=([a-zA-Zа-яёА-ЯЁ0-9\ \.\,\:]+))?(?:\ ?post=([0-9]+))?\]([\s\S]+)?(\[\/quote\])/sUu";
 		$how_quote = substr_count($message, "[quote");
 		for($i=0;$i<$how_quote;$i++) {
 			$message = preg_replace_callback($pattern_quote, function($matches) {
-				# matches 1 open quote
-				# matches 2 author
-				# matches 3 date
-				# matches 4 post id
-				# matches 5 message
-				# matches 6 close quote
+				# 1 open quote 2 author 3 date 4 post id 5 message 6 close quote
 
 				$start_quote = $matches[1];
 				$content_quote = trim($matches[5]);
@@ -72,7 +67,7 @@ class textService {
 
 					if($matches[4]) {
 						$post = $matches[4];
-						$post = "<a href='/post/".$post."'>".$author.$date."</a>";
+						$post = "<a class='nostyle' href='/post/".$post."'>".$author.$date."</a>";
 					} else {
 						$post = $author.$date;
 					}

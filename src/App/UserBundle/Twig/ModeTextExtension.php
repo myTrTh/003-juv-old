@@ -55,7 +55,7 @@ class ModeTextExtension extends \Twig_Extension
 		for($i=0;$i<$how_spoiler;$i++)
 			$message = preg_replace($patternB, "<div class='spoiler'><span class='sign'>+</span><span class='spoiler-name'> спойлер</span><div class='spoiler-body'>$1</div></div>", $message);
 	
-		$pattern_quote = "/(\[quote)(?: author=([a-zA-Z]+)?)?(?: date=([0-9.\ :]+[0-9]+)?)?(?: post=([0-9]+)?)?\]([\s\S]+)(\[\/quote\])/sUu";
+		$pattern_quote = "/(\[quote)(?:\ ?author=([a-zA-Z0-9а-яёА-ЯЁ\_\@]+))?(?:\ ?date=([a-zA-Zа-яёА-ЯЁ0-9\ \.\,\:]+))?(?:\ ?post=([0-9]+))?\]([\s\S]+)?(\[\/quote\])/sUu";
 		$how_quote = substr_count($message, "[quote");
 		for($i=0;$i<$how_quote;$i++) {
 			$message = preg_replace_callback($pattern_quote, function($matches) {
@@ -86,7 +86,7 @@ class ModeTextExtension extends \Twig_Extension
 
 					if($matches[4]) {
 						$post = $matches[4];
-						$post = "<a href='/post/".$post."'>".$author.$date."</a>";
+						$post = "<a class='nostyle' href='/post/".$post."'>".$author.$date."</a>";
 					} else {
 						$post = $author.$date;
 					}
