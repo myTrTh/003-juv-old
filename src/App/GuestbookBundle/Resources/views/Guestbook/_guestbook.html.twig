@@ -143,6 +143,11 @@
 			<div class='post-content-message' id='message{{ post.id }}'>
 				{{ replace_text(post.message)|raw|nl2br }}
 			</div>
+			<span class='info-post-edit' id='post-edit{{ post.id }}'>
+			{% if post.updated != null %}
+				...<i class='fa fa-edit'></i> {{ replace_date(post.updated) }}
+			{% endif %}
+			</span>
 			<div class='post-content-numbers'>
 				{% if numbers[post.user] is defined %}
 					numero {{ set_number(numbers[post.user])|raw }}

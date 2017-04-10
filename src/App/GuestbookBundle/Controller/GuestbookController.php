@@ -170,8 +170,6 @@ class GuestbookController extends Controller
 
         $repository = $this->getDoctrine()->getRepository($bundle);
 
-        // return new Response(json_encode(array("error" => 1, "text" => $request->request->get('id'))));
-
         if(!$request->request->get('id'))
             return new Response(json_encode(array("error" => 1, "text" => "Редактирование невозможно.")));
 
@@ -205,17 +203,42 @@ class GuestbookController extends Controller
 
         $post = $this->getDoctrine()->getRepository($bundle)->find($id);
 
+        $created_date = $post->getCreated();
+        $updated_date = $post->getUpdated();
+
+        // CHECK MEETING
+        $repository = $this->getDoctrine()->getRepository('AppUserBundle:Notification');
+        $guestbook_last_date = $repository->last_visit_all($userId, 'guestbook');
+
+        // UPDATE MESSAGE
         $post->setMessage($message);
+
+
+        // UPDATE DATE
+        if($updated_date != null) {
+            $edit_date = new \DateTime();
+            $post->setUpdated($edit_date);
+        } else {
+            $edit_date = 0;
+        }
+
+        if(strtotime($guestbook_last_date->format('d.m.Y H:i:s')) > strtotime($created_date->format('d.m.Y H:i:s'))) {
+            $edit_date = new \DateTime();
+            $post->setUpdated($edit_date);
+        } else {
+            $edit_date = 0;
+        }
 
         $em = $this->getDoctrine()->getManager();
         $em->persist($post);
         $em->flush();
 
         $replacedmessage = $this->get('app.text_mode')->replace_text($message);
+        $replacedtime = $this->get('app.date_mode')->replace_date($edit_date);
 
         $renderer_message = nl2br($replacedmessage);
 
-        return new Response(json_encode(array("error" => 0, "text" => $renderer_message, "hide" => $message)));
+        return new Response(json_encode(array("error" => 0, "text" => $renderer_message, 'edit' => $replacedtime,  "hide" => $message)));
 
     }
 

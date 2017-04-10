@@ -143,12 +143,18 @@ class Guestbook
         return $this->created;
     }
 
-     /**
-     * @ORM\PreUpdate
+    /**
+     * Set updated
+     *
+     * @param datetime $updated
+     *
+     * @return Votes
      */
-    public function setUpdated()
+    public function setUpdated($updated)
     {
-        $this->updated = new \DateTime();
+        $this->updated = $updated;
+
+        return $this;
     }
 
     /**

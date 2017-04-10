@@ -68,6 +68,25 @@ class NotificationRepository extends \Doctrine\ORM\EntityRepository {
 			return 0;
 	}
 
+	public function last_visit_all($userId, $route) {
+
+		$dql = "SELECT n.created FROM AppUserBundle:Notification n
+				WHERE n.route = :route AND n.user != :user
+				ORDER BY n.created DESC";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("route", $route)
+					  ->SetParameter("user", $userId)
+					  ->SetMaxResults(1);
+
+		$result = $query->execute();
+
+		if(count($result))
+			return $result[0]['created'];
+		else
+			return date('1999-12-12 12:12:12');
+	}	
+
 	public function delete_visit($userId, $route) {
 		// if isset
 		$dql = "DELETE FROM AppUserBundle:Notification n

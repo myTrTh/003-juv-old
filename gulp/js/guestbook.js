@@ -224,6 +224,8 @@ $(function() {
 				} else {
 					$('#message' + id).html(data['text']);
 					$('#hm' + id).html(data['hide']);
+					if(data['edit'] != 0)
+						$('#post-edit' + id).html("...<i class='fa fa-edit'></i>" + data['edit']);
 				}
 			}
 		})
