@@ -43,12 +43,6 @@ class NotificationListener
 
             $new_guestbook = $this->em->getRepository('AppUserBundle:Notification')->get_single_new('AppGuestbookBundle:Guestbook', $guestbook_last_date);
 
-            // $show_guestbook = "(new ".$result_guestbook.")";
-            // $this->twig->addGlobal('notification_guestbook', $show_guestbook);
-
-            // $new_guestbook = $repository->get_new('AppGuestbookBundle:Guestbook', $userId);
-
-            // $show_guestbook = "(new ".count($new_guestbook).")";
             $this->twig->addGlobal('notification_guestbook', $new_guestbook);
 
             // send info in guestbook notification
@@ -65,6 +59,32 @@ class NotificationListener
                 $this->em->persist($notification);
                 $this->em->flush();
             }
+
+            $roles = $user->getRoles();
+            if(in_array('ROLE_ADMIN', $roles)) {
+                // ADMBOOK NOTIFICATION
+                $adminbook_last_date = $repository->last_visit($userId, 'adminbook');
+
+                $new_adminbook = $this->em->getRepository('AppUserBundle:Notification')->get_single_new('AppAdminBundle:Adminbook', $adminbook_last_date);
+
+                $this->twig->addGlobal('notification_adminbook', $new_adminbook);
+
+                // send info in guestbook notification
+                $adminbook_pattern = "/adminbook/";
+                preg_match($adminbook_pattern, $route, $adminbook_result);
+                if(count($adminbook_result)) {
+                    $repository->delete_visit($userId, $adminbook_result);
+
+                    $notification = new Notification();
+
+                    $notification->setUser($userId);
+                    $notification->setRoute($adminbook_result[0]);
+
+                    $this->em->persist($notification);
+                    $this->em->flush();
+                }
+            }
+
 
             // VOTES NOTIFICATION
             $new_votes = $repository->get_more_new("AppVoteBundle:Vote", $userId);

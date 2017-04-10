@@ -41,13 +41,20 @@ class NotificationRepository extends \Doctrine\ORM\EntityRepository {
 
 	public function get_single_new($entity, $date) {
 
+		if(!$date) {
+			$now = new \DateTime();
+			$date = $now->modify('-2 days');
+		}
+
 		$dql = "SELECT n.id FROM ".$entity." n 
 		 		WHERE n.created > :last";
 
 		$query = $this->getEntityManager()->createQuery($dql)
 					  ->SetParameter("last", $date);
 
-		return $query->execute();
+		$result = $query->execute();
+
+		return $result;
 
 	}	
 

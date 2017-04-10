@@ -45,11 +45,19 @@
                     </a></li>
             <li>
                 {% if is_granted('ROLE_VERIFIED_USER') %}
-                    <a>INFO</a>
+                    <a>INFO
+                    {% if is_granted('ROLE_ADMIN') and notification_adminbook is defined and notification_adminbook|length > 0 %} 
+                        *
+                    {% endif %}
+                    </a>
                         <ul>
                             <li><a href='{{ path("fos_user_profile_show") }}'>ПРОФИЛЬ</a></li>
                                {% if is_granted('ROLE_ADMIN') %}
-                               <li><a href='{{ path("app_admin_users") }}'>АДМИНКА</a></li>
+                               <li><a href='{{ path("app_admin_users") }}'>АДМИНКА
+                                    {% if notification_adminbook is defined and notification_adminbook|length > 0 %} 
+                                        <span class='normal little'><i class='fa fa-bell-o'></i> {{ notification_adminbook|length }}
+                                    {% endif %}
+                               </a></li>
                             {% endif %}
                         <li><a href='{{ path("fos_user_security_logout") }}'>ВЫЙТИ</a></li>
                     </ul>               
