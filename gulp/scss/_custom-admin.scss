@@ -42,3 +42,14 @@
 .background-danger {
 	background-color: #f2dede;
 }
+
+/* upload */
+
+.img-panel > div {
+	display: inline-block;
+	margin-right: 25px;
+	& > img {
+	max-width: 50px;
+	max-height: 50px;
+	}
+}

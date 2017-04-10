@@ -284,7 +284,8 @@ input[type='checkbox'], input[type='radio'] {
 .cursor {
 	cursor: pointer;
 	position: absolute;
-	padding-left: 10px; 
+	padding-left: 3px; 
+	color: #999;
 }
 .strong-600 {
 	font-weight: 600;
@@ -301,6 +302,7 @@ input[type='checkbox'], input[type='radio'] {
 	padding: 4px 10px;
 	font-size: 2rem;
 	background-color: #ccc;
+	cursor: pointer;
 	position: relative;
 	top: 41px;
 }
