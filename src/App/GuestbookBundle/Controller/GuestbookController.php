@@ -208,7 +208,7 @@ class GuestbookController extends Controller
 
         // CHECK MEETING
         $repository = $this->getDoctrine()->getRepository('AppUserBundle:Notification');
-        $guestbook_last_date = $repository->last_visit_all($userId, 'guestbook');
+        $guestbook_last_date = $repository->last_visit_all($userId, $guestbook);
 
         // UPDATE MESSAGE
         $post->setMessage($message);

@@ -148,7 +148,7 @@ class Guestbook
      *
      * @param datetime $updated
      *
-     * @return Votes
+     * @return Guestbook
      */
     public function setUpdated($updated)
     {
