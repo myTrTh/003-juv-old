@@ -33,6 +33,8 @@
 		{% set rate_access = 1 %}
 	{% endif %}	
 
+{% if post.status == 1 %}
+
 <div id='hd{{ post.id }}' class="hidden">{{ post.created|date('d.m.Y H:i') }}</div>
 <div id='hm{{ post.id }}' class="hidden">{{ post.message }}</div>
 
@@ -166,14 +168,30 @@
 	</div>	
 </div>
 
+{% else %}
+
+<div class="post" id="post{{ post.id }}">
+	<div class="post-header">
+		<div class="post-header-username">
+			<div>
+			</div>
+			<div>
+				<span class='post-delete-text'>Сообщение пользователя <a class='nostyle' href='{{ path('app_user_show', {'id': post.user}) }}'><span class='post-author'>{{ post.username }}</span></a> удалено.</span>
+			</div>
+		</div>
+		<div class="post-header-id">
+			<div>
+			</div>
+			<div>
+				#{{ post.id }}
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endif %}
+
 <br>
-
-
-
-
-
-
-
 
 {# 	<div style='background: #ccc'>
 		{% if nach[post.user] is defined %}
