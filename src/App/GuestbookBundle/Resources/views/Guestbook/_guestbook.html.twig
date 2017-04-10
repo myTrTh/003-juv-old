@@ -96,7 +96,20 @@
 								{% endif %}
 								</span>
 							</div>				
-		  	{# <div class='rate'>RATE: <span class='us{{ post.user }}'>+{{ rate_user[post.user] }}</span></div>	 #}
+						{% if nach[post.user] is defined %}
+							<div class='nach'>
+								{% for n in nach[post.user] %}
+									<div class='nach-achive fa fa-asterisk' id='nach{{ n }}'>
+										<div class='toolkit'>
+											<div>
+												<span class='toolkit-info'>НАХ</span><span class='toolkit-body'>{{ n }}</span>
+											</div>
+											<div class='triangle'></div>
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						{% endif %}			
 			</div>
 		</div>
 		<div class="post-content">
