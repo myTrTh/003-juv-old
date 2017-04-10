@@ -7,7 +7,12 @@
 {% block content %}
 <ul class='admin-menu'>
 	<li><a class='nostyle' href='{{ path('app_admin_users') }}'>Пользователи</a></li>
-	<li><a class='nostyle' href='{{ path('app_admin_guestbook') }}'>Штаб</a></li>
+	<li><a class='nostyle' href='{{ path('app_admin_guestbook') }}'>
+		Штаб
+        {% if notification_adminbook is defined and notification_adminbook|length > 0 %} 
+			<span class='normal little'><i class='fa fa-bell-o'></i> {{ notification_adminbook|length }}
+        {% endif %}
+	</a></li>
 	<li><a class='nostyle' href='{{ path('app_admin_content') }}'>Контент</a></li>
 	<li><a class='nostyle' href='{{ path('app_admin_upload') }}'>Загрузка</a></li>
 	<li><a class='nostyle' href='{{ path('app_admin_numbers') }}'>Номера</a></li>
