@@ -296,7 +296,7 @@ class AdminController extends Controller
             return $this->redirect($this->generateUrl('app_admin_numbers'));
         }
 
-        $number_users = $repository->show_numbers();
+        $number_users = $repository->show_users_numbers();
 
         return $this->render('AppAdminBundle:Admin:numbers.html.twig',
             array('form' => $form->createView(), 'number_users' => $number_users));

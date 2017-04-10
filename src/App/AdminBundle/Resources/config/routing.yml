@@ -149,3 +149,11 @@ app_admin_content:
     methods: [GET|POST]
     requirements:
         content: rules|attention
+
+app_admin_delete:
+    path:     /adminpanel/delete/{content}/{numb}
+    defaults: { _controller: AppAdminBundle:Admin:delete, content: 'Number', numb: 0 }
+    methods: [GET|POST]
+    requirements:
+        content: Number|Nach|Achive|Champion
+        numb: '\d+'        

@@ -1,8 +1,8 @@
 {% extends 'AppAdminBundle::baseadmin.html.twig' %}
 
-{% block title %} Админка: Номера {% endblock %}
+{% block title %} Номера {% endblock %}
 
-{% block lowheader %} НОМЕРА {% endblock %}
+{% block lowheader %} Номера {% endblock %}
 
 {% block lowbody %}
 
@@ -24,16 +24,14 @@
 {% endif %}
 
 {{ form_rest(form) }}
-<input class='btn btn-default' type="submit" value="Установить" />
+<input class='button button-main' type="submit" value="Установить" />
 {{ form_end(form) }}
 
 <div class='numbers-area'>
 {% for number in number_users %}
 	<div><span>{{ number.number }}</span> {{ number.username }}
 		{# {{ path('app_admin_deletenumber', {'numb': number.number} ) }} #}
-			<button type="button" title='Удалить' class="close" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/delete/Number/{{ number.id }}'">
-				&times;
-			</button>
+			<i type="button" title='Удалить' class="fa fa-close delete-center" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/delete/Number/{{ number.id }}'"></i>
 	</div>
 {% endfor %}
 </div>

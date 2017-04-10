@@ -54,6 +54,30 @@ class NumberRepository extends \Doctrine\ORM\EntityRepository
 		return $numbers;
 	}
 
+	public function show_users_numbers(){
+		$dql = "SELECT n.id, n.number, n.user, u.username
+		FROM AppGuestbookBundle:Number n
+		INNER JOIN AppUserBundle:User u
+		WHERE u.id = n.user
+		ORDER BY n.number ASC
+		";
+
+		$query = $this->getEntityManager()->createQuery($dql);
+
+		$result = $query->execute();
+
+		$numbers = [];
+		for($i=0;$i<count($result);$i++){
+			$id = $result[$i]['id'];
+			$user = $result[$i]['user'];
+			$username = $result[$i]['username'];
+			$number = $result[$i]['number'];
+			$numbers[] = ['id' => $id, 'number' => $number, 'user' => $user, 'username' => $username];
+		}
+
+		return $numbers;
+	}	
+
 	public function number_for_user($id){
 		$dql = "SELECT n.number
 		FROM AppGuestbookBundle:Number n

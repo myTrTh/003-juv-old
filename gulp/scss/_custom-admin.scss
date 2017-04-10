@@ -53,3 +53,31 @@
 	max-height: 50px;
 	}
 }
+
+/* numbers */
+/* numbers */
+.numbers-area {
+	margin-top: 10px;
+}
+.numbers-area div {
+	display: inline-block;
+	width: 200px;
+	padding: 5px 10px;
+	background: #f1f1f1;
+	margin: 0 15px 15px 0;
+	border-radius: 5px;
+	border: solid 1px #c2c0c0;
+}
+
+.numbers-area div > span:first-child {
+	display: inline-block;
+	color: #ae9235;
+	font-weight: bold;
+	font-size: 16px;
+}
+
+.delete-center {
+	float: right;
+	cursor: pointer;
+	color: #999;
+}
