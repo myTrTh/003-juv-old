@@ -1,6 +1,6 @@
 {% extends 'AppAdminBundle::baseadmin.html.twig' %}
 
-{% block title %} Админка: Нашивки {% endblock %}
+{% block title %} Нашивки {% endblock %}
 
 {% block lowheader %} Нашивки {% endblock %}
 
@@ -32,7 +32,7 @@
 	{{ form_rest(form) }}
 	<br>
 	<div>
-	    <input class='btn btn-default' type="submit" value="Отправить" />
+	    <input class='button button-main' type="submit" value="Отправить" />
 	</div>	
 	{{ form_end(form) }}
 	<br>
@@ -41,9 +41,8 @@
 		<tr>
 			<td><img class='adm-img' src="/public/images/custom/achive/{{ achive.image }}"> </td>
 			<td><strong>{{ achive.username }}</strong></td>
-			<td>{{ achive.description }} <button title='Удалить' type="button" class="close" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/delete/Achive/{{ achive.id }}'">
-				&times;
-			</button></td>
+			<td>{{ achive.description }} 
+				<i title='Удалить' type="button" class="fa fa-close delete-center" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/delete/Achive/{{ achive.id }}'"></i></td>
 		</tr>
 	{% endfor %}
 	</table>

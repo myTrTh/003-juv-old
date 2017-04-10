@@ -81,3 +81,13 @@
 	cursor: pointer;
 	color: #999;
 }
+
+.table-condensed {
+	width: 100%;
+	& td:first-child {
+		width: 70px;
+	}
+	& td:nth-child(2) {
+		width: 130px;
+	}
+}
