@@ -317,7 +317,7 @@ img.smile {
 /* topnach */
 .topnach {
 	text-align: left;
-	margin: 10px 0 0 8px;
+	margin: 10px 0 0 4px;
 }
 
 .topnach-achive {
@@ -338,16 +338,20 @@ img.smile {
 	box-shadow: 0 5px 10px rgba(0,0,0,.2);	
 }
 
+/* media toptoolkit */
+@media all and (max-width: 400px) { .toptoolkit { width: 250px; } }
+@media all and (min-width: 401px) and (max-width: 599px) { .toptoolkit { width: 340px; } }
+@media all and (min-width: 600px) { .toptoolkit { width: 450px; } }
+
 .toptoolkit-info {
 	padding: 8px 14px;
-	font-size: 14px;
+	font-size: 1.2rem;
 	font-weight: 400;
 	line-height: 18px;
 	background-color: #f7f7f7;
 	border-bottom: 1px solid #ebebeb;
 	border-radius: 5px 5px 0 0;
-	font-size: 15px;
-	font-family: 'Open Sans Condensed', sans-serif;		
+	font-family: $font_header;
 	line-height: 1.3;
 }
 
@@ -355,8 +359,8 @@ img.smile {
 	text-align: center;
 	background: #fff;
 	padding: 9px 14px;	
-	font-size: 15px;
-	font-family: 'Open Sans Condensed', sans-serif;
+	font-size: .9rem;
+	font-family: $font_main;
 	line-height: 1.3;
 }
 
