@@ -95,7 +95,20 @@
 									<span class='red'>{{ rate_user[post.user] }}</span>
 								{% endif %}
 								</span>
-							</div>				
+							</div>
+						{% if topnach[post.user] is defined %}
+							<div class='topnach'>
+								{% for tn in topnach[post.user] %}
+								<div  class='topnach-achive fa fa-flash' id='topnach{{ tn.0 }}'>
+									<div class='toptoolkit'>
+										<div class='toptoolkit-info'><strong>ТОПНАХ #{{ tn.0 }}</strong>  {{ tn.1 }}</div>
+										<div class='toptoolkit-body'>{{ replace_text(adminreplace_text(tn.2))|raw|nl2br }}</div>
+									</div>
+								</div>
+								{% endfor %}
+							</div>
+						{% endif %}
+
 						{% if nach[post.user] is defined %}
 							<div class='nach'>
 								{% for n in nach[post.user] %}
@@ -205,22 +218,5 @@
 {% endif %}
 
 <br>
-
-{# 	<div style='background: #ccc'>
-		{% if nach[post.user] is defined %}
-			{% for nh in nach[post.user] %}
-				{{ nh }}<br>
-			{% endfor %}
-		{% endif %}
-
-		{% if topnach[post.user] is defined %}
-			{% for topnh in topnach[post.user] %}
-				{{ topnh.0 }} {{ topnh.1 }} - {{ replace_text(topnh.2)|raw|nl2br }}<br>
-			{% endfor %}
-		{% endif %}		
-	</div>
-
-		{# rate panel #}
-
 
 {% endfor %}
