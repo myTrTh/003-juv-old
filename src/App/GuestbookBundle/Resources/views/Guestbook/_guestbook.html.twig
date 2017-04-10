@@ -1,6 +1,6 @@
 {% for post in guestbook %}
 
-	{% if count_message[post.user] < 49 %}
+	{% if count_message[post.user] < 50 %}
 		{% set stars = 0 %}
 	{% elseif count_message[post.user] >= 50 and count_message[post.user] < 100 %}
 		{% set stars = 1 %}
@@ -28,9 +28,9 @@
 	{% set date_order = "now"|date_modify("-3 days")|date("d.m.Y H:i:s") %}
 
 	{% if date(date_order) > date(post_date) %}
-		{% set order_rate = 0 %}
+		{% set rate_access = 0 %}
 	{% else %}
-		{% set order_rate = 1 %}
+		{% set rate_access = 1 %}
 	{% endif %}	
 
 <div id='hd{{ post.id }}' class="hidden">{{ post.created|date('d.m.Y H:i') }}</div>
@@ -126,7 +126,7 @@
 		<div class='rate-panel'>
 		{% if order_rate == 1 %}
 			<div id='u{{ post.id }}' class='tumbler like post-up'>
-			{% if is_granted('ROLE_BANNED_0') and app.user.id is defined and app.user.id != post.user and order_rate == 1 and rate_message[post.id]['allow'] == 0 %}
+			{% if is_granted('ROLE_BANNED_0') and app.user.id is defined and app.user.id != post.user and rate_access == 1 and rate_message[post.id]['allow'] == 0 %}
 				<i class='fa fa-thumbs-o-up'></i>
 			{% endif %}
 			</div>
@@ -140,7 +140,7 @@
 				{% endif %}
 			</div>
 			<div id='d{{ post.id }}' class='tumbler like post-down'>
-			{% if is_granted('ROLE_BANNED_0') and app.user.id is defined and app.user.id != post.user and order_rate == 1 and rate_message[post.id]['allow'] == 0 %}
+			{% if is_granted('ROLE_BANNED_0') and app.user.id is defined and app.user.id != post.user and rate_access == 1 and rate_message[post.id]['allow'] == 0 %}
 				<i class='fa fa-thumbs-o-down'></i>
 			{% endif %}
 			</div>
@@ -160,7 +160,7 @@
 						{{ rate_message[post.id]['minus'] }}
 					{% endif %}
 				</div>
-				</div>
+			</div>
 			{% endif %}
 		</div> 
 	</div>	

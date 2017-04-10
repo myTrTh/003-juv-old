@@ -125,11 +125,11 @@ img.smile {
 	position: absolute;
 	right: 5px;
 	font-family: $font_arial;
-	font-size: 1.1rem;
+	font-size: 1rem;
 	bottom: 0;
 	opacity: .3;
 	& > img {
-		height: 25px;
+		height: 23px;
 	}
 }
 
@@ -145,14 +145,6 @@ img.smile {
 	font-size: .8rem;
 }
 
-.rate-panel {
-	flex-basis: 100%;
-	background-color: #FAFAFA;
-	text-align: right;
-	border-radius: 0 0 5px 5px;
-}
-
-
 .quote {
 	color: white;
 	background: #b5b5b5;
@@ -167,8 +159,18 @@ img.smile {
 }
 
 /*rate */
+.rate-panel {
+	flex-basis: 100%;
+	background-color: #FAFAFA;
+	min-height: 23px;
+	text-align: right;
+	border-radius: 0 0 5px 5px;
+}
+
 .rank-users {
 	display: none;
+	margin: 0 10px 3px 0;
+	background-color: #FAFAFA;	
 }
 
 .like {
@@ -181,13 +183,10 @@ img.smile {
 	font-size: .9rem;
 }
 
-.rank-users {
-	margin: 0 10px 3px 0;
-}
-
 .rank-up, .rank-down {
 	font-weight: bold;
 	font-size: .8rem;
+	font-family: $font_arial;
 }
 
 .edit-post {
@@ -217,7 +216,7 @@ img.smile {
 
 /* quote */
 .bookquote {
-	padding: 5px 10px;
+	padding: 10px 10px;
 	background: #f5f5f5;
 	border-radius: 0 7px 7px 0;
 	border: solid 1px #dcdcdc;

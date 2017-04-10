@@ -9,7 +9,6 @@ var gulp         = require('gulp'), // Подключаем Gulp
     rename       = require('gulp-rename'), // Подключаем пакет для переименования
     concat       = require('gulp-concat'), // Объединение js файлов
     cssnano      = require('gulp-cssnano'), // Подключаем пакет для минификации CSS
-    twig		 = require('gulp-twig'), // twig
     browserSync  = require('browser-sync'), // Отслеживание изменений online
     autoprefixer = require('gulp-autoprefixer');// Библиотека для автоматического добавления префиксов
 

@@ -15,6 +15,7 @@ $typography_font: Arial, Helvetica;
 $color_input: #555;
 $color_red: #d9534f;
 $color_gray: #a9a9a9;
+$color_black: #444;
 
 /* media */
 @media all and (max-width: 399px) {
@@ -34,7 +35,7 @@ html, body {
 	padding: 0;
 	height: 100%;
 	min-height: 100%;
-	color: $primary_black;
+	color: $color_black;
 }
 
 body {
