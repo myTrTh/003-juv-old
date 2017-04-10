@@ -35,7 +35,7 @@
 	{{ form_rest(form) }}
 	<br>
 	<div>
-	    <input class='btn btn-default' type="submit" value="Отправить" />
+	    <input class='button button-main' type="submit" value="Отправить" />
 	</div>	
 	{{ form_end(form) }}
 	<br>
@@ -45,9 +45,8 @@
 			<td><img class='adm-img' src="/public/images/custom/cup/{{ champion.image }}"> </td>
 			<td>{{ champion.year }}</td>
 			<td><strong>{{ champion.username }}</strong></td>
-			<td>{{ champion.description }} <button title='Удалить' type="button" class="close" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/delete/Champion/{{ champion.id }}'">
-				&times;
-			</button></td>
+			<td>{{ champion.description }} <i title='Удалить' type="button" class="fa fa-close delete-center" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/delete/Champion/{{ champion.id }}'">
+			</i></td>
 		</tr>
 	{% endfor %}
 	</table>
