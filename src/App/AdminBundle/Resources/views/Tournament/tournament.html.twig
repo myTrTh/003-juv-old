@@ -8,12 +8,16 @@
 <a class='back-link' href='{{ path("app_admin_tournaments") }}'>К СПИСКУ ТУРНИРОВ</a>
 <br><br>
 
-{% if access == 1 %}
+{% if access == 2 %}
 
+{% if access >= 1 %}
 	{% if tournament.status == 1 %}
 	<a href="{{ path("app_admin_tours", {"tournament": tournament.id}) }}"><h3><span class='btn-info pad'>ДОБАВИТЬ / РЕДАКТИРОВАТЬ ТУР</span></h3></a>
 	<br>
+	{% else %}
+		<h4>Расписание матчей еще не создано</h4><br>
 	{% endif %}
+{% endif %}
 
 	<h4>НАЗВАНИЕ ТУРНИРА</h4>
 	{{ form_start(form_name) }}

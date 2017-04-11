@@ -615,7 +615,12 @@ class AdminController extends Controller
 
         $tr = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tournament);
 
-        if(in_array($userId, $tr['access']))
+        if(empty($tr))
+            return $this->redirect($this->generateUrl("app_admin_tournaments"));
+
+        if($userId == $tr['access']['creator'])
+            $access = 2;
+        else if(in_array($userId, $tr['access']['assistant']))
             $access = 1;
         else
             $access = 0;
@@ -672,7 +677,7 @@ class AdminController extends Controller
             $tournament = new Tournament();
             $tournament->setName($name);
             $tournament->setTypes($types);
-            $tournament->setAccess(array($userId));
+            $tournament->setAccess(array('creator' => $userId));
             $tournament->setStatus(4);
 
             $em = $this->getDoctrine()->getManager();
