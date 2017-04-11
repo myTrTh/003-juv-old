@@ -17,19 +17,19 @@
 
 <div class='schema1'>
 	<h4>КОЛИЧЕСТВО УЧАСТНИКОВ</h4>
-	{{ form_widget(form.users, {"attr": {"class": "form-control form-short"}}) }}
+	{{ form_widget(form.users, {"attr": {"class": "small"}}) }}
 </div>
 
 <div class='schema2'>
 	<h4>КОЛИЧЕСТВО КРУГОВ</h4>
-	{{ form_widget(form.circle, {"attr": {"class": "form-control form-short"}}) }}
+	{{ form_widget(form.circle, {"attr": {"class": "small"}}) }}
 </div>
 <div class='schema3'>
 	<h4>КОЛИЧЕСТВО ГРУПП</h4>
-	{{ form_widget(form.groups, {"attr": {"class": "form-control form-short"}}) }}
+	{{ form_widget(form.groups, {"attr": {"class": "small"}}) }}
 
 	<h4>КОЛИЧЕСТВО КОМАНД В ГРУППЕ</h4>
-	{{ form_widget(form.usergroups, {"attr": {"class": "form-control form-short"}}) }}
+	{{ form_widget(form.usergroups, {"attr": {"class": "small"}}) }}
 </div>
 <br>
 {% if app.session.flashBag.has('error') %}
@@ -41,7 +41,7 @@
 	<br>
 {% endif %}
 <br>
-{{ form_widget(form.create_tournament, {"attr": {"class": "btn btn-default"}}) }}
+{{ form_widget(form.create_tournament, {"attr": {"class": "button button-main"}}) }}
 
 {{ form_rest(form) }}
 {{ form_end(form) }}

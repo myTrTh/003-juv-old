@@ -1,6 +1,6 @@
 {% extends 'AppAdminBundle::baseadmin.html.twig' %}
 
-{% block title %} Админка: {{ tournament.name }} {% endblock %}
+{% block title %} {{ tournament.name }} {% endblock %}
 
 {% block lowheader %} {{ tournament.name }} {% endblock %}
 
@@ -18,10 +18,10 @@
 	<h4>НАЗВАНИЕ ТУРНИРА</h4>
 	{{ form_start(form_name) }}
 
-	{{ form_widget(form_name.name, {'attr': {'value': tournament.name, 'class': 'form-control form-short'}}) }}<br>
+	{{ form_widget(form_name.name, {'attr': {'value': tournament.name, 'class': 'middle'}}) }}<br>
 	{{ form_errors(form_name.name) }}
 	{{ form_rest(form_name) }}
-		<input class='btn btn-default' type="submit" value="Изменить" />
+		<input class='button button-main' type="submit" value="Изменить" />
 	{{ form_end(form_name) }}
 	<br>
 	<h4>ПОДСВЕТКА ПОЗИЦИЙ</h4>
@@ -38,12 +38,10 @@
 
 	{{ form_start(form_pos, {"attr": {"name": "form_pos"}}) }}
 	Зеленая до: 
-	{{ form_widget(form_pos.start, {"attr": {"value": value0, "class": "form-control form-extra-short start"}}) }}
-	Красная от: {{ form_widget(form_pos.end, {"attr": {"value": value1, "class": "form-control form-extra-short end"}}) }}
-	<br><br>
-	<div class='form-short' id='slider'></div>
+	{{ form_widget(form_pos.start, {"attr": {"value": value0, "class": "extra-small"}}) }}
+	Красная от: {{ form_widget(form_pos.end, {"attr": {"value": value1, "class": "extra-small"}}) }}
 	<br>
-	{{ form_widget(form_pos.save_position, {"attr": {"class": "btn btn-default"}}) }}
+	{{ form_widget(form_pos.save_position, {"attr": {"class": "button button-main"}}) }}
 	{{ form_rest(form_name) }}
 	{{ form_end(form_pos) }}
 	<br>
@@ -67,12 +65,12 @@
 	<hr>
 
 	{{ form_start(form_archive) }}
-	{{ form_widget(form_archive.save_archive, {"attr": {"class": "btn btn-warning"}}) }}
+	{{ form_widget(form_archive.save_archive, {"attr": {"class": "button button-main"}}) }}
 	{{ form_rest(form_archive) }}
 	{{ form_end(form_archive) }}
 	<br>
 	{{ form_start(form_delete) }}
-	{{ form_widget(form_delete.save_delete, {"attr": {"class": "btn btn-danger"}}) }}
+	{{ form_widget(form_delete.save_delete, {"attr": {"class": "button button-main"}}) }}
 	{{ form_rest(form_delete) }}
 	{{ form_end(form_delete) }}
 

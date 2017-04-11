@@ -1,6 +1,6 @@
 {% extends 'AppAdminBundle::baseadmin.html.twig' %}
 
-{% block title %} Админка: Участники турнира {% endblock %}
+{% block title %} Участники турнира {% endblock %}
 
 {% block lowheader %} {{ tournament.name }} {% endblock %}
 
@@ -15,7 +15,6 @@
         {% endfor %}
     </p>
 {% endif %}
-
 <h4>ПОДАЛИ ЗАЯВКИ</h4>
 {% if preusers is empty %}
 Заявок пока нет...<br>
@@ -31,9 +30,11 @@
 
 {% if tournament.info.schema is defined %}
 <div id='schema' class='hidden'>{{ tournament.info.schema }}</div>
-{% if tournament.info.schema == 3 %}
-<div id='groups' class='hidden'>{{ tournament.info.usergroups }}</div>	
-{% endif %}
+	{% if tournament.info.schema == 3 %}
+		<div id='groups' class='hidden'>{{ tournament.info.usergroups }}</div>	
+	{% else %}
+		<div id='groups' class='hidden'>0</div>	
+	{% endif %}
 <h4>ВЫБРАНЫ</h4>
 
 <div class='area tournament-user'></div>
@@ -44,7 +45,7 @@
 <br><br>
 {{ form_start(form) }}
 <div class='form-hidden'>{{ form_widget(form.user) }}</div>
-<div class='button'>{{ form_widget(form.save, {"attr": {"class": "btn btn-default"}}) }}</div>
+<div class='but'>{{ form_widget(form.save, {"attr": {"class": "button button-main"}}) }}</div>
 {{ form_rest(form) }}
 {{ form_end(form) }}
 {% endif %}

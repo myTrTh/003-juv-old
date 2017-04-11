@@ -19,7 +19,9 @@
 	<li><a class='nostyle' href='{{ path('app_admin_nach') }}'>Нахи</a></li>
 	<li><a class='nostyle' href='{{ path('app_admin_achives') }}'>Нашивки</a></li>
 	<li><a class='nostyle' href='{{ path('app_admin_champions') }}'>Чемпионы</a></li>
-	<li><a class='nostyle' href='{{ path('app_admin_tournaments') }}'>Турниры</a></li>
+	{% if is_granted('ROLE_ADMIN') %}
+		<li><a class='nostyle' href='{{ path('app_admin_tournaments') }}'>Турниры</a></li>
+	{% endif %}
 </ul>
 
 	<h3>{% block lowheader %}

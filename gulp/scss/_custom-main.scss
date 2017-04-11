@@ -227,6 +227,10 @@ h6, .h6 { font-size: 1rem; }
 	max-width: 200px;
 }
 
+.extra-small {
+	max-width: 50px;
+}
+
 /* icons */
 .fa-fix {
 	color: #676767;
@@ -383,6 +387,12 @@ input[type='checkbox'], input[type='radio'] {
     background-color: #fcf8e3;
     border-color: #faf2cc;
     color: #8a6d3b;
+}
+
+.alert-info {
+	background-color: #d9edf7;
+	border-color: #bcdff1;
+	color: #31708f;
 }
 
 /* page navigation */

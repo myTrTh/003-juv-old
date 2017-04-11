@@ -42,7 +42,7 @@
 <br><br>
 {{ form_start(form) }}
 <div class='form-hidden'>{{ form_widget(form.user) }}</div>
-<div class='button'>{{ form_widget(form.save, {"attr": {"class": "btn btn-default"}}) }}</div>
+{{ form_widget(form.save, {"attr": {"class": "button button-main"}}) }}
 {{ form_rest(form) }}
 {{ form_end(form) }}
 {% endif %}

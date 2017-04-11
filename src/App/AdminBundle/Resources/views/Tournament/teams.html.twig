@@ -9,8 +9,8 @@
 <br>
 
 {{ form_start(form) }}
-<h3>ДОБАВИТЬ КОМАНДУ</h3>
-{{ form_widget(form.name, {'attr': {'class': 'form-control form-short'}}) }}<br>
+<h4>ДОБАВИТЬ КОМАНДУ</h4>
+{{ form_widget(form.name, {'attr': {'class': 'middle'}}) }}<br>
 {{ form_errors(form.name) }}
 {{ form_rest(form) }}
 {% if app.session.flashBag.has('error') %}
@@ -22,15 +22,13 @@
 	<br><br>
 {% endif %}
 
-<input class='btn btn-default' type="submit" value="Добавить" />
+<input class='button button-main' type="submit" value="Добавить" />
 {{ form_end(form) }}
 <br>
 <div class='numbers-area'>
 {% for team in teams %}
 	<div>{{ team.name }}
-			<button type="button" title='Удалить' class="close" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/delete/{{ tournament.id }}/team/{{ team.id }}'">
-				&times;
-			</button>
+			<i type="button" title='Удалить' class="fa fa-close delete-center" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/delete/{{ tournament.id }}/team/{{ team.id }}'"></i>
 	</div>
 {% endfor %}
 </div>

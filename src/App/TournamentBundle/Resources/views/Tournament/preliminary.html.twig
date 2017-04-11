@@ -32,7 +32,7 @@
 	{{ form_start(form) }}
 		{{ form_widget(form.tournament, {'attr': {'value': tournament.id}}) }}
 		{# <input type='hidden' name='tournament' value="{{ tournament.id }}"> #}
-		<input type='submit' name='adduser' class='btn btn-default' value='Подать заявку'>
+		<input type='submit' name='adduser' class='button button-main' value='Подать заявку'>
 	{{ form_rest(form) }}
 	{{ form_end(form) }}
 {% endif %}
@@ -58,9 +58,9 @@
 {% else %}
 	{% for user in tournamentusers %}
 		{% if loop.last %}
-			<a href="{{ path("app_user_show", {"id": user.user}) }}">{{ user.username }}</a>
+			<a class='nostyle' href="{{ path("app_user_show", {"id": user.user}) }}">{{ user.username }}</a>
 		{% else %}
-			<a href="{{ path("app_user_show", {"id": user.user}) }}">{{ user.username }}</a>, 
+			<a class='nostyle' href="{{ path("app_user_show", {"id": user.user}) }}">{{ user.username }}</a>, 
 		{% endif %}
 	{% endfor %}
 {% endif %}

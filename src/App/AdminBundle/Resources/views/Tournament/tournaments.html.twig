@@ -1,15 +1,15 @@
 {% extends 'AppAdminBundle::baseadmin.html.twig' %}
 
-{% block title %} Админка: Турниры {% endblock %}
+{% block title %} Турниры {% endblock %}
 
 {% block lowheader %} Турниры {% endblock %}
 
 {% block lowbody %}
 
-	<h4><a href='{{ path('app_admin_create') }}'>+ СОЗДАТЬ ТУРНИР</a></h4>
+	<a class='nostyle' href='{{ path('app_admin_create') }}'>+ СОЗДАТЬ ТУРНИР</a>
 
 	{% if tournaments is empty %}
-		<br>
+		<br><br>
 		<div class='h4'>АКТИВНЫХ ТУРНИРОВ НЕТ..</div>
 	{% endif %}
 
@@ -18,7 +18,7 @@
 
 		<h3>
 			{% if tournament.image is not null %}
-		 		<img class='tournament-img' src='/bundles/appcore/images/custom/logo/{{ tournament.image }}'>
+		 		<img class='tournament-img' src='/public/images/custom/logo/{{ tournament.image }}'>
 		 	{% else %}
 			 	<img class='tournament-img' src='/public/images/interface/default_logo.png'>
 		 	{% endif %}
