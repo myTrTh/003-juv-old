@@ -33,10 +33,12 @@ class dateService {
         $token = $this->token_storage->getToken();
         $user = $token ? $token->getUser() : null;
         
-        if($user && $user != 'anon.')
-        	$tz = $user->getTimezone();
-        else
+        if($user && $user != 'anon.') {
+        	$options = $user->getOptions();
+        	$tz = $options['timezone'];
+        } else {
         	$tz = 100;
+        }
 
 		# extract timezone
 		if($tz == 100) {

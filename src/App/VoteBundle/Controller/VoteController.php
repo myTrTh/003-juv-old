@@ -37,10 +37,8 @@ class VoteController extends Controller {
         $user = $this->getUser();
         # get timezone and id user
         if($user) {
-        	$timezone = $user->getTimezone();
         	$userId = $user->getId();
         } else {
-        	$timezone = 100;
         	$userId = 0;
         }
 
@@ -131,7 +129,7 @@ class VoteController extends Controller {
         	return $this->render('AppVoteBundle:Vote:show_open.html.twig', array(
         		'vote' => $vote, 'options' => $options,
                 'results' => $result_users, 'option_sum' => $result_sum, 'sum' => $sum,
-                'type' => $this->type, 'tz' => $timezone,
+                'type' => $this->type,
                 'completed' => $form_completed->createView()));
 
         # close vote

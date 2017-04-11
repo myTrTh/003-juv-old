@@ -36,6 +36,8 @@ class NotificationListener
             $route = $this->request->getMasterRequest()->getRequestUri();
             $userId = $user->getId();
 
+            $options = $user->getOptions();
+
             $repository = $this->em->getRepository('AppUserBundle:Notification');
 
             // GUESTBOOK NOTIFICATION
@@ -43,7 +45,8 @@ class NotificationListener
 
             $new_guestbook = $this->em->getRepository('AppUserBundle:Notification')->get_single_new('AppGuestbookBundle:Guestbook', $guestbook_last_date);
 
-            $this->twig->addGlobal('notification_guestbook', $new_guestbook);
+            if($options['notification']['notification_guestbook'] == 'true')
+                $this->twig->addGlobal('notification_guestbook', $new_guestbook);
 
             // send info in guestbook notification
             $guestbook_pattern = "/guestbook/";
@@ -89,7 +92,8 @@ class NotificationListener
             // VOTES NOTIFICATION
             $new_votes = $repository->get_more_new("AppVoteBundle:Vote", $userId);
 
-            $this->twig->addGlobal('notification_vote', $new_votes);
+            if($options['notification']['notification_vote'] == 'true')
+                $this->twig->addGlobal('notification_vote', $new_votes);
 
             // send info in vote notification
             $vote_pattern = "/vote\/[0-9]+/";

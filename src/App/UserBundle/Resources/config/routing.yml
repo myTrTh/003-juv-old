@@ -24,3 +24,7 @@ app_user_list:
     requirements:
         page: '\d+'
         sort: 'alpha_asc|alpha_desc|since_asc|since_desc'
+
+app_user_notification:
+    path:     /notification/set
+    defaults: {_controller: AppUserBundle:User:notification }

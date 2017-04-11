@@ -40,11 +40,9 @@ class GuestbookController extends Controller
         if($user) {
             $userId = $user->getId();
             $username = $user->getUsername();
-            $timezone = $user->getTimezone();
         } else {
             $userId = 0;
             $username = 0;
-            $timezone = 100;
         }
 
         if($form->isSubmitted()) {
@@ -129,7 +127,7 @@ class GuestbookController extends Controller
         $old_style_quote = $repository->get_old_quote($guestbook_content);
 
         return $this->render($this->bundle.':show.html.twig',
-            array('form' => $form->createView(), 'tz' => $timezone, 'guestbook' => $guestbook_content,
+            array('form' => $form->createView(), 'guestbook' => $guestbook_content,
                   'countpage' => $countpage, 'page' => $page,
                   'rate_message' => $rate[0], 'rate_user' => $rate[1],
                   'count_message' => $count_message, 'attention' => $attention,
@@ -145,7 +143,6 @@ class GuestbookController extends Controller
             return new Response(json_encode(array("error" => 1, "text" => "Вы не авторизированы.")));
 
         $userId = $user->getId();
-        $tz = $user->getTimezone();        
 
         $referer = $request->headers->get('referer');
 

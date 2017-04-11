@@ -22,3 +22,22 @@ $(function(){
 		// }
 	})
 })
+
+/* switch */
+$(function() {
+	$('.notification').on('click', function() {
+		var notification = $(this).attr('id');
+		var status = $(this).prop('checked');
+		var senddata = 'notification='+escape(notification)+'&status='+escape(status);
+		$.ajaxSetup({cache: false}); 
+		$.ajax({
+			url: "/notification/set",
+			data: senddata,
+			type: "POST",
+			dataType: "json",
+			success: function(data){
+
+			}
+		})
+	})
+})

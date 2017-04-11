@@ -29,9 +29,26 @@
 	{{ form_end(form_image) }}
 
 	<br><br>
+
+	<h3>Уведомления</h3>
+	{% if user.options.notification.notification_guestbook == 'true' %}
+		<input checked='checked' type="checkbox" class="checkbox notification" id="notification_guestbook" />
+	{% else %}
+		<input type="checkbox" class="checkbox notification" id="notification_guestbook" />
+	{% endif %}
+		<label for="notification_guestbook">Гостевая книга</label>
+		<br><br>
+	{% if user.options.notification.notification_vote == 'true' %}	
+		<input checked='checked' type="checkbox" class="checkbox notification" id="notification_vote" />
+	{% else %}
+		<input type="checkbox" class="checkbox notification" id="notification_vote" />
+	{% endif %}
+		<label for="notification_vote">Опросы</label>
+
+	<br><br>
 	<h3>Часовой пояс</h3>
 	{{ form_start(form_date) }}
-	{{ form_widget(form_date.timezone, {'attr': {'class': 'middle'}}) }}
+	{{ form_widget(form_date.timezone, {'attr': {'class': 'small'}}) }}
 	{{ form_errors(form_date.timezone) }}
 	<input class='button button-main' type='submit' name='upload_image' value='Установить'>
 	{{ form_end(form_date) }}	

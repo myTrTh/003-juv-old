@@ -13,9 +13,11 @@ $font_main: 'Open Sans', sans-serif;
 $font_arial: Arial;
 $typography_font: Arial, Helvetica;
 $color_input: #555;
-$color_red: #d9534f;
-$color_gray: #a9a9a9;
+$color_red: #E03D3D !important;
+$color_gray: #aaa3a3 !important;
+$color_green: #29B029 !important;
 $color_black: #474747;
+
 
 /* media */
 @media all and (max-width: 399px) {
@@ -221,6 +223,10 @@ h6, .h6 { font-size: 1rem; }
 	max-width: 400px;
 }
 
+.small {
+	max-width: 200px;
+}
+
 /* icons */
 .fa-fix {
 	color: #676767;
@@ -329,15 +335,15 @@ input[type='checkbox'], input[type='radio'] {
 }
 
 .gray {
-	color: #aaa3a3;
+	color: $color_gray;
 }
 
 .green {
-	color: #29B029;
+	color: $color_green;
 }
 
 .red {
-	color: #E03D3D !important;
+	color: $color_red;
 }
 
 .bold {
@@ -424,3 +430,5 @@ input[type='checkbox'], input[type='radio'] {
 	padding: 10px;
 	margin-bottom: 10px; 
 }
+
+/* switch */

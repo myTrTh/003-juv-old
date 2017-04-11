@@ -5,6 +5,7 @@ namespace App\UserBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use App\UserBundle\Entity\User;
 use App\UserBundle\Form\ImageType;
 use App\UserBundle\Form\TimezoneType;
@@ -109,7 +110,8 @@ class UserController extends Controller
 
         # set timezone user
         $timezone = new User();
-        $oldtimezone = $user->getTimezone();
+        $options = $user->getOptions();
+        $oldtimezone = $options['timezone'];
         $form_date = $this->createForm(TimezoneType::class, $timezone, array('data' => array($oldtimezone)));
         $form_date->handleRequest($request);
 
@@ -120,8 +122,9 @@ class UserController extends Controller
 
             $new_tz = $new['timezone'];
 
-            $em = $this->getDoctrine()->getManager();                
-            $user->setTimezone($new_tz);
+            $em = $this->getDoctrine()->getManager();
+            $options['timezone'] = $new_tz;
+            $user->setOptions($options);
             $em->persist($user);
             $em->flush();
 
@@ -137,5 +140,38 @@ class UserController extends Controller
                   "form_date" => $form_date->createView(),
                   "date" => $date
                 ));
+    }
+
+    public function notificationAction(Request $request) {
+        $user = $this->getUser();
+        if(!$user)
+            return new Response(json_encode(array("error" => 1, "text" => "Вы не авторизированы.")));
+
+        $userId = $user->getId();
+
+        if(!$request->request->get('notification'))
+            return new Response(json_encode(array("error" => 1, "text" => "Редактирование невозможно.")));
+
+        if(!$request->request->get('status'))
+            return new Response(json_encode(array("error" => 1, "text" => "Редактирование невозможно.")));        
+
+        $notification = $request->request->get('notification');
+        $status = $request->request->get('status');
+
+        $order_not = array('notification_guestbook', 'notification_vote');
+        if(!in_array($notification, $order_not))
+            return new Response(json_encode(array("error" => 1, "text" => "Редактирование невозможно.")));             
+
+        $options = $user->getOptions();
+        $options['notification'][$notification] = $status;
+
+
+
+        $user->setOptions($options);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+
+        return new Response(json_encode(array("error" => 0, "text" => "GOOD")));
     }
 }

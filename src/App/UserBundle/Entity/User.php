@@ -43,10 +43,10 @@ class User extends BaseUser
     /**
      * @var int
      *
-     * @ORM\Column(name="timezone", type="integer", nullable=true)
+     * @ORM\Column(name="options", type="string", nullable=true)
      * @Assert\NotBlank()
      */
-    protected $timezone;
+    protected $options;
 
 
     public function __construct() {
@@ -54,7 +54,7 @@ class User extends BaseUser
 
         # set default role and default ban status
         $this->roles = array('ROLE_VERIFIED_USER', 'ROLE_BANNED_0');
-        $this->timezone = 100;
+        $this->options = serialize(array('timezone' => 100, 'notification' => array('notification_guestbook' => true, 'notification_vote' => true)));
     }
 
     /**
@@ -110,26 +110,26 @@ class User extends BaseUser
     }
 
     /**
-     * Set timezone
+     * Set options
      *
-     * @param string $timezone
+     * @param string $options
      *
      * @return User
      */
-    public function setTimezone($timezone)
+    public function setOptions($options)
     {
-        $this->timezone = $timezone;
+        $this->options = serialize($options);
 
         return $this;
     }
 
     /**
-     * Get timezone
+     * Get options
      *
      * @return string
      */
-    public function getTimezone()
+    public function getOptions()
     {
-        return $this->timezone;
-    }    
+        return unserialize($this->options);
+    } 
 }

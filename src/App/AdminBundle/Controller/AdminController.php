@@ -47,7 +47,6 @@ class AdminController extends Controller
         $user = $this->getUser();
         if($user) {
             $userId = $user->getId();
-            $timezone = $user->getTimezone();            
         } 
 
         # users activity
@@ -58,7 +57,7 @@ class AdminController extends Controller
         $rep_users = $this->getDoctrine()->getRepository('AppUserBundle:User');
         $roles = $rep_users->show_roles();
 
-        return $this->render('AppAdminBundle:Admin:users.html.twig', array('users' => $users, 'roles' => $roles, 'tz' => $timezone));
+        return $this->render('AppAdminBundle:Admin:users.html.twig', array('users' => $users, 'roles' => $roles));
     }
 
     public function deleteguestbookAction($id_message, Request $request) {
