@@ -91,7 +91,7 @@ class NotificationRepository extends \Doctrine\ORM\EntityRepository {
 		if(count($result))
 			return $result[0]['created'];
 		else
-			return date('1999-12-12 12:12:12');
+			return new \DateTime('1999-12-12 12:12:12');
 	}	
 
 	public function delete_visit($userId, $route) {
