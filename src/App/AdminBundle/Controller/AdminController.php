@@ -992,7 +992,7 @@ class AdminController extends Controller
 
             $newaccess = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($tr);
 
-            $newaccess->setAccess($tournamentshow['access']['assistant']);
+            $newaccess->setAccess($tournamentshow['access']);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($newaccess);
