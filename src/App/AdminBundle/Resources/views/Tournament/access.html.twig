@@ -9,9 +9,10 @@
 <br><br>
 <h4>Доступ к добавлению / редактированию туров</h4>
 <br>
+<div class='hidden' id='trid'>{{ tournament.id }}</div>
 {% for admin in admins %}
 
-		<input {% if admin.access == 1 %} checked='checked' {% endif %} type="checkbox" class="checkbox" id="user{{ admin.id }}"/>
+		<input {% if admin.access == 1 %} checked='checked' {% endif %} type="checkbox" class="checkbox tournament-access" id="user{{ admin.id }}"/>
 		<label for="user{{ admin.id }}">{{ admin.username }}</label><br><br>
 {% endfor %}
 
