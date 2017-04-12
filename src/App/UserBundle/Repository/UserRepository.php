@@ -69,5 +69,31 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
             $results[$username] = $id;
         }
         return $results;
-    }    
+    }
+
+    public function get_admins($assistant) {
+
+        $dql = "SELECT u.id, u.username, u.roles FROM AppUserBundle:User u ORDER BY u.username ASC";
+
+        $query = $this->getEntityManager()->createQuery($dql);
+        $result = $query->execute();
+
+        $results = [];
+        $admins_role = ['ROLE_MODERATE', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN'];
+        for($i=0;$i<count($result);$i++) {
+            $id = $result[$i]['id'];
+            $username = $result[$i]['username'];
+            $roles = $result[$i]['roles'];
+
+            if(!in_array('ROLE_VERIFIED_USER', $roles)) {
+                if(in_array($id, $assistant))
+                    $access = 1;
+                else
+                    $access = 0;
+
+                $results[] = ['id' => $id, 'username' => $username, 'access' => $access];
+            }
+        }
+        return $results;
+    }
 }

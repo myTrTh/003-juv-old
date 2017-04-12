@@ -13,6 +13,13 @@ app_admin_completed:
     requirements:
         tournament: '\d+'
 
+app_admin_access:
+    path:     /adminpanel/tournament/{tournament}/access
+    defaults: { _controller: AppAdminBundle:Admin:access, tournament: 0 }
+    methods: [GET|POST]
+    requirements:
+        tournament: '\d+'
+
 app_admin_replaceuser:
     path:     /adminpanel/tournament/{tournament}/users
     defaults: { _controller: AppAdminBundle:Admin:replaceusers, tournament: 0 }
@@ -27,27 +34,6 @@ app_admin_teamdelete:
     requirements:
         tournament: '\d+'
         numb: '\d+'
-
-app_admin_addteam:
-    path:     /adminpanel/tournament/{tournament}/teams
-    defaults: { _controller: AppAdminBundle:Admin:teams, tournament: 0 }
-    methods: [GET|POST]
-    requirements:
-        tournament: '\d+'
-
-app_admin_replaceuser:
-    path:     /adminpanel/tournament/{tournament}/users
-    defaults: { _controller: AppAdminBundle:Admin:replaceusers, tournament: 0 }
-    methods: [GET|POST]
-    requirements:
-        tournament: '\d+'
-
-app_admin_completed:
-    path:     /adminpanel/tournament/{tournament}/completed
-    defaults: { _controller: AppAdminBundle:Admin:completed, tournament: 0 }
-    methods: [GET|POST]
-    requirements:
-        tournament: '\d+'
 
 app_admin_addteam:
     path:     /adminpanel/tournament/{tournament}/teams

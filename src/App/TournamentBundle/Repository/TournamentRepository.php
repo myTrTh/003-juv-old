@@ -55,4 +55,5 @@ class TournamentRepository extends \Doctrine\ORM\EntityRepository
 
 		return $result;
 	}
+
 }
