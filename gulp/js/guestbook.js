@@ -240,7 +240,6 @@ $(function(){
 		var user = $(this).parent().parent().prev().children().next().children().children().html().trim();
 		var date = $('#hd' + id).text().trim();
 		var message = $('#hm' + id).text().trim();
-		console.log(message);
 		var quote_text = '[quote author=' + user + ' date=' + date +' post=' + id + ']\n' + message + '\n[/quote]\n\n';
 		var textarea = $('textarea');
 		var start = textarea[0].selectionStart;
@@ -253,7 +252,12 @@ $(function(){
 		textarea.focus();
 		textarea[0].setSelectionRange(start+quote_text.length, start+quote_text.length);
 
-		$("html, body").animate({ scrollTop: 220 }, 500);
+		// var height_elem = $('.bbpanel').offset();
+		// var height_this = $(this).offset();
+
+		$("html, body").animate({ scrollTop: 400 }, 500);
+
+		return false;
 	});
 })
 

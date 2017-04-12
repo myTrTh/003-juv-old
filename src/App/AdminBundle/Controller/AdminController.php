@@ -63,7 +63,7 @@ class AdminController extends Controller
     public function deleteguestbookAction($id_message, Request $request) {
         
         /* if no admin */
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_MODERATE')) {
 	        throw $this->createAccessDeniedException();
         }
 
@@ -93,9 +93,9 @@ class AdminController extends Controller
 
     }
 
-    public function setroleAction(Request $request) {
+    public function setbanAction(Request $request) {
     	/* if no admin */
-	    if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+	    if (!$this->get('security.authorization_checker')->isGranted('ROLE_MODERATE')) {
 	        throw $this->createAccessDeniedException();
 	    }
 
@@ -131,7 +131,7 @@ class AdminController extends Controller
 
     public function contentAction($type)
     {
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_MODERATE')) {
             throw $this->createAccessDeniedException();
         }
 
@@ -677,7 +677,7 @@ class AdminController extends Controller
             $tournament = new Tournament();
             $tournament->setName($name);
             $tournament->setTypes($types);
-            $tournament->setAccess(array('creator' => $userId));
+            $tournament->setAccess(array('creator' => $userId, 'assistant' => array(0)));
             $tournament->setStatus(4);
 
             $em = $this->getDoctrine()->getManager();
@@ -745,6 +745,9 @@ class AdminController extends Controller
 
         $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tournament);
 
+        if($tournamentshow['access']['creator'] != $userId)
+            throw $this->createAccessDeniedException();
+
         return $this->render('AppAdminBundle:Tournament:logo.html.twig',
             array('form' => $form->createView(), 'tournament' => $tournamentshow));
     }    
@@ -799,7 +802,10 @@ class AdminController extends Controller
             return $this->redirect($this->generateUrl("app_admin_addteam", array("tournament" => $tournament)));
         }
 
-        $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($tournament);
+        $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tournament);
+
+        if($tournamentshow['access']['creator'] != $userId)
+            throw $this->createAccessDeniedException();
 
         $teams = $this->getDoctrine()->getRepository("AppTournamentBundle:Team")->getTeams($tournament);
 
@@ -829,9 +835,19 @@ class AdminController extends Controller
 
     public function replaceusersAction($tournament) {
 
-        $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($tournament);
+        /* if no user */
+        $user = $this->getUser();
+        if($user)
+            $userId = $user->getId();
+        else
+            return false;
 
-        if($tournamentshow->getStatus() == 3 or $tournamentshow->getStatus() == 4) {
+        $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tournament);
+
+        if($tournamentshow['access']['creator'] != $userId)
+            throw $this->createAccessDeniedException();
+
+        if($tournamentshow['status'] == 3 or $tournamentshow['status'] == 4) {
 
             /* if no user */
             $user = $this->getUser();
@@ -914,7 +930,18 @@ class AdminController extends Controller
 
     public function completedAction($tournament) {
 
-        $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($tournament);
+        /* if no user */
+        $user = $this->getUser();
+        if($user)
+            $userId = $user->getId();
+        else
+            return false;
+
+        $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tournament);
+
+        if($tournamentshow['access']['creator'] != $userId)
+            throw $this->createAccessDeniedException();
+
 
         $form = $this->createFormBuilder()
                     ->add("schema", ChoiceType::class, array("attr" => array('NotBlank'),

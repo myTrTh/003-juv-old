@@ -18,7 +18,7 @@ $(function(){
 		var data = "id=" + escape(id) + "&role=" + escape(role) + "&old=" + escape(old);
 		$.ajaxSetup({cache: false});
 		$.ajax({
-			url: '/ajax/adminpanel/setrole',
+			url: '/ajax/adminpanel/setban',
 			type: 'POST',
 			data: data,
 			// dataType: 'json',

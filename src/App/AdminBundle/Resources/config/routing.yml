@@ -133,8 +133,8 @@ app_admin_deleteguestbook:
         id_message: '\d+'
 
 app_admin_setrole:
-    path:     /ajax/adminpanel/setrole
-    defaults: { _controller: AppAdminBundle:Admin:setrole }
+    path:     /ajax/adminpanel/setban
+    defaults: { _controller: AppAdminBundle:Admin:setban }
 
 app_admin_guestbook:
     path:     /adminpanel/adminbook/{page}

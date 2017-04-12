@@ -5,8 +5,9 @@
 {% block lowheader %} Турниры {% endblock %}
 
 {% block lowbody %}
-
-	<a class='nostyle' href='{{ path('app_admin_create') }}'>+ СОЗДАТЬ ТУРНИР</a>
+	{% if is_granted('ROLE_ADMIN') %}
+		<a class='nostyle' href='{{ path('app_admin_create') }}'>+ СОЗДАТЬ ТУРНИР</a>
+	{% endif %}
 
 	{% if tournaments is empty %}
 		<br><br>

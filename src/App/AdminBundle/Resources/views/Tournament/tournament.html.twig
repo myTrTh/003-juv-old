@@ -49,21 +49,21 @@
 	{{ form_rest(form_name) }}
 	{{ form_end(form_pos) }}
 	<br>
-	<a href="{{ path("app_admin_logo", {"tournament": tournament.id}) }}"><h4><span class='glyphicon glyphicon-share-alt'></span> ДОБАВИТЬ ЛОГОТИП</h4></a>
+	<a class='nostyle' href="{{ path("app_admin_logo", {"tournament": tournament.id}) }}"><h6><i class='fa fa-mail-forward'></i> ДОБАВИТЬ ЛОГОТИП</h6></a>
 
-	<a href="{{ path("app_admin_addteam", {"tournament": tournament.id}) }}"><h4><span class='glyphicon glyphicon-share-alt'></span> ДОБАВИТЬ КОМАНДЫ</h4></a>
+	<a class='nostyle' href="{{ path("app_admin_addteam", {"tournament": tournament.id}) }}"><h6><i class='fa fa-mail-forward'></i> ДОБАВИТЬ КОМАНДЫ</h6></a>
 
 	{% if tournament.status == 4 %}
-	<a href="{{ path("app_admin_completed", {"tournament": tournament.id}) }}"><h4><span class='glyphicon glyphicon-share-alt'></span> ЗАВЕРШИТЬ СОЗДАНИЕ ТУРНИРА</h4></a>
+	<a class='nostyle' href="{{ path("app_admin_completed", {"tournament": tournament.id}) }}"><h6><i class='fa fa-mail-forward'></i> ЗАВЕРШИТЬ СОЗДАНИЕ ТУРНИРА</h6></a>
 	{% endif %}
 
 	{% if tournament.status == 3 or tournament.status == 4 %}
-	<a href="{{ path("app_admin_replaceuser", {"tournament": tournament.id}) }}"><h4><span class='glyphicon glyphicon-share-alt'></span> ПРОСМОТРЕТЬ ЗАЯВКИ</h4></a>
+	<a class='nostyle' href="{{ path("app_admin_replaceuser", {"tournament": tournament.id}) }}"><h6><i class='fa fa-mail-forward'></i> ПРОСМОТРЕТЬ ЗАЯВКИ</h6></a>
 	{% else %}
-	<a href="{{ path("app_admin_replaceuser") }}"><h4><span class='glyphicon glyphicon-share-alt'></span> ЗАМЕНИТЬ ПОЛЬЗОВАТЕЛЯ В ТУРНИРЕ</h4></a>
+	<a class='nostyle' href="{{ path("app_admin_replaceuser", {"tournament": tournament.id}) }}"><h6><i class='fa fa-mail-forward'></i> ЗАМЕНИТЬ ПОЛЬЗОВАТЕЛЯ В ТУРНИРЕ</h6></a>
 	{% endif %}
 	{% if tournament.info.schema is defined and tournament.info.schema == 3 %}
-	<a href="{{ path("app_admin_playoff", {"tournament": tournament.id}) }}"><h4><span class='glyphicon glyphicon-share-alt'></span> ПЛЕЙ-ОФФ</h4></a>
+	<a class='nostyle' href="{{ path("app_admin_playoff", {"tournament": tournament.id}) }}"><h6><i class='fa fa-mail-forward'></i> ДОБАВИТЬ ПЛЕЙ-ОФФ</h6></a>
 	{% endif %}
 
 	<hr>

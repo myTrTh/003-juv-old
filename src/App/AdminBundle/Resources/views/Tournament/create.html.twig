@@ -6,6 +6,8 @@
 
 {% block lowbody %}
 
+{% if is_granted('ROLE_ADMIN') %}
+
 <a class='back-link' href='{{ path("app_admin_tournaments") }}'>К СПИСКУ ТУРНИРОВ</a>
 <br><br>
 
@@ -34,5 +36,7 @@
 </div>
 
 {{ form_end(form) }}
+
+{% endif %}
 
 {% endblock %}

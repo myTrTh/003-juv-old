@@ -13,15 +13,15 @@
 			<span class='normal little'><i class='fa fa-bell-o'></i> {{ notification_adminbook|length }}
         {% endif %}
 	</a></li>
-	<li><a class='nostyle' href='{{ path('app_admin_content') }}'>Контент</a></li>
-	<li><a class='nostyle' href='{{ path('app_admin_upload') }}'>Загрузка</a></li>
+	{% if is_granted('ROLE_ADMIN') %}
+		<li><a class='nostyle' href='{{ path('app_admin_content') }}'>Контент</a></li>
+		<li><a class='nostyle' href='{{ path('app_admin_upload') }}'>Загрузка</a></li>
+	{% endif %}
 	<li><a class='nostyle' href='{{ path('app_admin_numbers') }}'>Номера</a></li>
 	<li><a class='nostyle' href='{{ path('app_admin_nach') }}'>Нахи</a></li>
 	<li><a class='nostyle' href='{{ path('app_admin_achives') }}'>Нашивки</a></li>
 	<li><a class='nostyle' href='{{ path('app_admin_champions') }}'>Чемпионы</a></li>
-	{% if is_granted('ROLE_ADMIN') %}
 		<li><a class='nostyle' href='{{ path('app_admin_tournaments') }}'>Турниры</a></li>
-	{% endif %}
 </ul>
 
 	<h3>{% block lowheader %}
