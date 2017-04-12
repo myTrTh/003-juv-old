@@ -71,11 +71,13 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         return $results;
     }
 
-    public function get_admins($assistant) {
+    public function get_admins($assistant, $userId ) {
 
-        $dql = "SELECT u.id, u.username, u.roles FROM AppUserBundle:User u ORDER BY u.username ASC";
+        $dql = "SELECT u.id, u.username, u.roles FROM AppUserBundle:User u 
+        WHERE u.id != :author ORDER BY u.username ASC";
 
-        $query = $this->getEntityManager()->createQuery($dql);
+        $query = $this->getEntityManager()->createQuery($dql)
+            ->SetParameter('author', $userId);
         $result = $query->execute();
 
         $results = [];

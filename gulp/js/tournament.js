@@ -5,7 +5,7 @@ $(function() {
 		var user = rowuser.substr(4);
 		var status = $(this).prop('checked');
 		var tr = $('#trid').html();
-		console.log(tr);
+		console.log(status);
 		var senddata = 'user='+escape(user)+'&status='+escape(status)+'&tr='+escape(tr);
 		$.ajaxSetup({cache: false}); 
 		$.ajax({
