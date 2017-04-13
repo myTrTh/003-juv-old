@@ -23,7 +23,7 @@
 		 	{% else %}
 			 	<img class='tournament-img' src='/public/images/interface/default_logo.png'>
 		 	{% endif %}
-			<a href="{{ path('app_admin_tournament', {"tournament": tournament.id}) }}">{{ tournament.name }}</a>
+			<a class='nostyle' href="{{ path('app_admin_tournament', {"tournament": tournament.id}) }}">{{ tournament.name }}</a>
 		</h3>
 
 	{% endfor %}

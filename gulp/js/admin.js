@@ -160,3 +160,26 @@ $(function() {
 		}
 	});
 })
+
+/* add score */
+$(function(){
+	$('#add_score').on('click', function(){
+		var block = $('.scoregroup');
+		var inputblock = $('.score').last();
+		inputblock.clone().appendTo(block);
+	})
+})
+
+// delete vote options
+$(function(){
+	$('#remove_score').on('click', function(){
+		var count = $('.scoregroup > .score').length;
+
+		if(count > 1) {
+			var last_input = $('.score:last');
+			last_input.remove();
+		} else {
+			alert("Должен быть минимум один матч");
+		}
+	})
+})

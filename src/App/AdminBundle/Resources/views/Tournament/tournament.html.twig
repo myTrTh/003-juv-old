@@ -5,13 +5,13 @@
 {% block lowheader %} {{ tournament.name }} {% endblock %}
 
 {% block lowbody %}
-<a class='back-link' href='{{ path("app_admin_tournaments") }}'>К СПИСКУ ТУРНИРОВ</a>
+<a class='link-back' href='{{ path("app_admin_tournaments") }}'><i class='fa fa-arrow-left'></i> К СПИСКУ ТУРНИРОВ</a>
 <br><br>
 
 
 {% if access >= 1 %}
 	{% if tournament.status == 1 %}
-	<a href="{{ path("app_admin_tours", {"tournament": tournament.id}) }}"><h3><span class='btn-info pad'>ДОБАВИТЬ / РЕДАКТИРОВАТЬ ТУР</span></h3></a>
+	<a class='nostyle' href="{{ path("app_admin_tours", {"tournament": tournament.id}) }}"><h3><span class='alert alert-warning'> ДОБАВИТЬ / РЕДАКТИРОВАТЬ ТУР</span></h3></a>
 	<br>
 	{% else %}
 		<h4>Расписание матчей еще не создано</h4><br>

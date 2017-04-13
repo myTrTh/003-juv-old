@@ -26,9 +26,9 @@
 		 	{% else %}
 		 	<img class='tournament-img' src='/public/images/interface/default_logo.png'>
 		 	{% endif %}
-			<a href="{{ path('app_tournament_show', {"id": tournament.id}) }}">{{ tournament.name }}</a>
+			<a class='nostyle' href="{{ path('app_tournament_show', {"id": tournament.id}) }}">{{ tournament.name }}</a>
 			{% if tournament.status == 3 or tournament.status == 4 %}
-				<span class='texttop'>(ПРИЕМ ЗАЯВОК)</span>
+				<sup><span class='texttop'>(ПРИЕМ ЗАЯВОК)</span></sup>
 			{% endif %}
 		</h2>
 

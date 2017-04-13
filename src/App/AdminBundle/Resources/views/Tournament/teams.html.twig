@@ -5,7 +5,7 @@
 {% block lowheader %} {{ tournament.name }} {% endblock %}
 
 {% block lowbody %}
-<a class='back-link' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'>НАЗАД</a>
+<a class='link-back' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
 <br>
 
 {{ form_start(form) }}

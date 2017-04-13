@@ -48,6 +48,12 @@ class TournamentController extends Controller
 
         $tournament = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($id);
 
+        if(empty($tournament)) {
+            return $this->render('AppTournamentBundle:Tournament:noshow.html.twig',
+                   array("tournament" => $tournament));
+        }
+
+
         if($tournament->getStatus() == 3 or $tournament->getStatus() == 4) {
 
             $tournamentusers = new Tournamentusers();

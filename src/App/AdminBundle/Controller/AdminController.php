@@ -882,8 +882,8 @@ class AdminController extends Controller
                 if($form->get('save')->isClicked()) {
                     $data = $form->getData();
 
-                    $info = $tournamentshow->getInfo();
-                    $tr_id = $tournamentshow->getId();
+                    $info = $tournamentshow['info'];
+                    $tr_id = $tournamentshow['id'];
 
 
                     if($info['users'] == count($data['user'])) {
@@ -902,9 +902,11 @@ class AdminController extends Controller
                         // set active users //
                         $repo->set_new_status($tournament, $users);
 
-                        $tournamentshow->setStatus(1);
+                        $tr = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($tournament);
+
+                        $tr->setStatus(1);
                         $em = $this->getDoctrine()->getManager();
-                        $em->persist($tournamentshow);
+                        $em->persist($tr);
                         $em->flush();
 
                         return $this->redirect($this->generateUrl("app_admin_tournament", array("tournament" => $tournament)));
@@ -1138,17 +1140,19 @@ class AdminController extends Controller
 
             if(!$error) {
 
-                $info = $tournamentshow->getInfo();
+                $info = $tournamentshow['info'];
 
                 if(!empty($info))
                     $result = array_merge($info, $data);
                 else
                     $result = $data;
-                $tournamentshow->setInfo($result);
-                $tournamentshow->setStatus(3);
+
+                $tr = $this->getDoctrine()->getRepository('AppTournamentBundle:Tournament')->find($tournament);
+                $tr->setInfo($result);
+                $tr->setStatus(3);
 
                 $em = $this->getDoctrine()->getManager();
-                $em->persist($tournamentshow);
+                $em->persist($tr);
                 $em->flush();
 
                 return $this->redirect($this->generateUrl('app_admin_replaceuser', array('tournament'=> $tournament)));
@@ -1160,7 +1164,7 @@ class AdminController extends Controller
                           "form" => $form->createView()));
     }    
 
-    public function toursAction($tournament, $tour) {
+    public function toursAction($tournament, $tour, Request $request) {
 
         if($tour == 0)
             $tour = 1;
@@ -1171,30 +1175,44 @@ class AdminController extends Controller
         $calendar = $rep_calendar->get_calendar($tournament);
 
         $rep_forecas = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast");
-        $page = $rep_forecas->get_forecast($tournament, $tour);
+        $fore = $rep_forecas->get_forecast($tournament, $tour);
 
-                $field = $this->getDoctrine()->getRepository("AppTournamentBundle:Team");
+        $teams = $this->getDoctrine()->getRepository("AppTournamentBundle:Team")->getTeams($tournament);
 
-                // $forecast = new Forecast();
-                // $form = $this->createForm(ForecastType::class, $forecast, array('data' => $field->getTeams($tournament)));
-                //
-                // $request = Request::createFromGlobals();
-                // $form->handleRequest($request);
-                //
-        // if($form->isSubmitted()) {
-                //
-        //     $data = $form->getData();
-                //
-                //      print "<pre>";
-                //      print_r($data);
-                //      print "</pre>";
-                //
-        // }
+        if($request->isMethod("POST")) {
+            if($request->request->has('create_score')) {
+                # check head
+                $date = $request->request->get('date');
+                $team1 = $request->request->get('team1');
+                $team2 = $request->request->get('team2');
+
+
+                $scores = [];
+                $em = $this->getDoctrine()->getEntityManager();
+                for($i=0;$i<count($date);$i++) {
+                    $date[$i] = new \DateTime($date[$i]);
+                    $team1[$i] = trim(strip_tags($team1[$i]));
+                    $team2[$i] = trim(strip_tags($team2[$i]));
+
+                    $forecast = new Forecast();
+                    $forecast->setTr($tournament);
+                    $forecast->setTour($tour);
+                    $forecast->setTeam1($team1[$i]);
+                    $forecast->setTeam2($team2[$i]);
+                    $forecast->setTimer($date[$i]);
+                    $em->persist($forecast);
+                }
+
+                $em->persist($forecast);
+                $em->flush();                
+
+            }
+        }        
 
         return $this->render("AppAdminBundle:Tournament:tours.html.twig",
                 array("calendar" => $calendar,
                       "tournament" => $tr, "tour" => $tour,
-                      "forecast" => $page));
+                      "forecast" => $fore, 'teams' => $teams));
     }    
 
 }

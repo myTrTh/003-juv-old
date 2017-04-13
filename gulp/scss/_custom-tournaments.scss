@@ -1,11 +1,73 @@
 .tournament-img {
-	max-width: 60px;
+	width: 60px;
 	max-height: 60px;
-	vertical-align: bottom;	
+	vertical-align: middle;	
 }
 
 .tournament-img-header {
 	max-width: 50px;
 	max-height: 50px;
 	vertical-align: bottom;
+}
+
+.texttop {
+	font-size: 1rem;
+	verticatal-align: top !important;
+}
+
+.tourlist {
+	margin-bottom: 20px;
+}
+
+.tourlist > div {
+	display: inline-block;
+	padding: .2rem;
+	min-width: 27px;
+	text-align: center;
+	margin: 1px -1px;
+	font-family: $font_header;
+	font-weight: bold;
+	background-color: #919ea7;
+	color: #fff;
+	transition: all .2s ease-out;		
+	& a {
+		color: #fff;
+		display: block;
+	}
+	&:hover {
+		background-color: #657a88;
+	}
+}
+
+.tourlist-active {
+	background-color: #657a88 !important;
+}
+
+#tournumber {
+	font-weight: bold;
+	color: #657a88;
+}
+
+.schedule {
+	font-family: $font_header;
+	color: #657a88;
+	font-weight: bold;
+	font-size: 1.2rem;
+	border-spacing: 0 3px;
+	border-collapse: separate;
+	& tr {
+		border: solid 1px red;
+	}
+	& td {
+		width: 120px;
+		background-color: #F1F2F3;
+		padding: 0 3px;
+	}
+	& td:first-child {
+		text-align: right;
+	}
+	& td:nth-child(2) {
+		width: 50px;
+		text-align: center;
+	}
 }

@@ -1,13 +1,5 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    <link rel='stylesheet' type='text/css' href="{{ asset('/bundles/appcore/css/core.css') }}">
-{% endblock %}
-
-{% block javascripts %}
-    <script src="{{ asset('/bundles/appcore/js/core.js') }}"></script>
-{% endblock %}
-
 {% block title %} {{ tournament.name }} {% endblock %}
 
 {% block header %} 
@@ -20,8 +12,8 @@
 {% endblock %}
 
 {% block content %}
-<a class='back-link' href='{{ path("app_tournament_list") }}'>К СПИСКУ ТУРНИРОВ</a>
-<br><br>
+<a class='link-back' href='{{ path("app_tournament_list") }}'><i class='fa fa-arrow-left'></i> К СПИСКУ ТУРНИРОВ</a>
+<br>
 
 <p>В данный момент идет набор всех желающих принять участие в турнире.</p>
 <p>При желании вы можете подать заявку на участие.</p>

@@ -5,7 +5,7 @@
 {% block lowheader %} {{ tournament.name }} {% endblock %}
 
 {% block lowbody %}
-<a class='back-link' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'>НАЗАД</a>
+<a class='link-back' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
 <br><br>
 <div class='tourlist'>
 {# tours list #}
@@ -19,6 +19,30 @@
 </div>
 <br>
 {% if forecast == 0 %}
+
+<form method='post'>
+	<h5>Матчи</h5>
+<div class='scoregroup'>
+	<div class='score'>
+		<input class='small' type='text' name='date[]' placeholder="Дата">
+		<select class='small' name='team1[]'>
+			{% for team in teams %}
+				<option>{{ team.name }}</option>
+			{% endfor %}
+		</select>
+		<select class='small' name='team2[]'>
+			{% for team in teams %}
+				<option>{{ team.name }}</option>
+			{% endfor %}
+		</select>
+	</div>
+	</div>
+	<br>
+	<span class='add' id='add_score'><i class='fa fa-plus'></i> Добавить</span>
+	<span class='add' id='remove_score'><i class='fa fa-minus'></i> Удалить</span><br><br>
+	<input class='button button-main' type='submit' name='create_score' value='Создать'>
+</form>
+</form>
 
 
 {# {{ form_start(form) }}
