@@ -1181,16 +1181,16 @@ class AdminController extends Controller
 
         if($request->isMethod("POST")) {
             if($request->request->has('create_score')) {
-                # check head
+
                 $date = $request->request->get('date');
                 $team1 = $request->request->get('team1');
                 $team2 = $request->request->get('team2');
 
-
                 $scores = [];
                 $em = $this->getDoctrine()->getEntityManager();
                 for($i=0;$i<count($date);$i++) {
-                    $date[$i] = new \DateTime($date[$i]);
+
+                    $date[$i] = $this->get('app.date_mode')->to_utc_date($date[$i]);
                     $team1[$i] = trim(strip_tags($team1[$i]));
                     $team2[$i] = trim(strip_tags($team2[$i]));
 
@@ -1204,9 +1204,10 @@ class AdminController extends Controller
                 }
 
                 $em->persist($forecast);
-                $em->flush();                
+                $em->flush();
 
             }
+            return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
         }        
 
         return $this->render("AppAdminBundle:Tournament:tours.html.twig",

@@ -17,11 +17,26 @@
 	{% endif %}
 {% endfor %}
 </div>
-<br>
-{% if forecast == 0 %}
+<div class='h3' id='tournumber'>{{ tour }} ТУР</div>
+
+{% if forecast != 0 %}
+
+		<h5>Матчи</h5>
+	{% for fore in forecast %}
+
+	<form method='post'>
+			<input class='small' type='text' name='date[]' value='{{ utc_to_locale(fore.timer) }}'>
+			<input class='small' type='text' name='team1[]' value='{{ fore.team1 }}'>
+			<input class='small' type='text' name='team2[]' value='{{ fore.team2 }}'>
+	</form>
+
+	{% endfor %}
+	<input class='button button-main' type='submit' name='create_score' value='Обновить'>
+	<br><br><hr><br>
+{% endif %}
 
 <form method='post'>
-	<h5>Матчи</h5>
+	<h5>Добавить матчи</h5>
 <div class='scoregroup'>
 	<div class='score'>
 		<input class='small' type='text' name='date[]' placeholder="Дата">
@@ -38,12 +53,14 @@
 	</div>
 	</div>
 	<br>
-	<span class='add' id='add_score'><i class='fa fa-plus'></i> Добавить</span>
-	<span class='add' id='remove_score'><i class='fa fa-minus'></i> Удалить</span><br><br>
-	<input class='button button-main' type='submit' name='create_score' value='Создать'>
+	{% if forecast == 0 %}
+		<span class='add' id='add_score'><i class='fa fa-plus'></i> Добавить</span>
+		<span class='add' id='remove_score'><i class='fa fa-minus'></i> Удалить</span><br><br>		
+		<input class='button button-main' type='submit' name='create_score' value='Создать'>
+	{% else %}
+		<input class='button button-main' type='submit' name='create_score' value='Добавить'>
+	{% endif %}
 </form>
-</form>
-
 
 {# {{ form_start(form) }}
 <div class='team-line'>
@@ -62,6 +79,5 @@
 {{ form_widget(form.save, {"attr": {"class": "btn btn-default"}}) }}
 {{ form_end(form) }} #}
 
-{% endif %}
 
 {% endblock %}

@@ -22,13 +22,99 @@ class ModeDateExtension extends \Twig_Extension
   public function getFunctions()
   {
       $function = function($message) {
-          $result = $this->replace_date($message);
+          $result = array($this->replace_date($message),$this->to_utc_date($message),
+          	$this->utc_to_locale($message));
           return $result;
       };
       return array(
           new \Twig_SimpleFunction('replace_date', $function),
+          new \Twig_SimpleFunction('to_utc_date', $function),
+          new \Twig_SimpleFunction('utc_to_locale', $function),
       );
   }
+
+	public function to_utc_date($date) {
+
+		# if no date format, return row value
+		if(!strtotime($date))
+				return "";
+
+		# get datetime object
+		$date = new \DateTime($date);
+
+        $token = $this->token_storage->getToken();
+        $user = $token ? $token->getUser() : null;
+
+        if($user && $user != 'anon.') {
+        	$options = $user->getOptions();
+        	$tz = $options['timezone'];
+        } else {
+        	$tz = 100;
+        }
+
+		# extract timezone
+		if($tz == 100) {
+			if(isset($_COOKIE['timezone']))
+				$timezone = (int) $_COOKIE['timezone'];
+			else
+				$timezone = 0;
+		} else {
+			$timezone = $tz;
+		}
+
+		if($timezone <= 0)
+			$point = "-".abs($timezone)." hours";
+		else
+			$point = "+".$timezone." hours";
+
+		$date->modify($point);
+
+		return $date;
+
+	}
+
+	public function utc_to_locale($date) {
+
+		if(!is_object($date)) {
+
+			# if no date format, return row value
+			if(!strtotime($date))
+				return $date;
+
+			# get datetime object
+			$date = new \DateTime($date);
+		}
+
+        $token = $this->token_storage->getToken();
+        $user = $token ? $token->getUser() : null;
+
+        if($user && $user != 'anon.') {
+        	$options = $user->getOptions();
+        	$tz = $options['timezone'];
+        } else {
+        	$tz = 100;
+        }
+
+		# extract timezone
+		if($tz == 100) {
+			if(isset($_COOKIE['timezone']))
+				$timezone = (int) $_COOKIE['timezone'];
+			else
+				$timezone = 0;
+		} else {
+			$timezone = $tz;
+		}
+
+		if($timezone <= 0)
+			$point = "+".abs($timezone)." hours";
+		else
+			$point = "-".$timezone." hours";
+
+		$date->modify($point);
+
+		return $date;
+
+	}	
 
 
 	public function replace_date($date){
