@@ -10,13 +10,12 @@ namespace App\TournamentBundle\Repository;
  */
 class ForecastRepository extends \Doctrine\ORM\EntityRepository
 {
-	public function get_forecast($tournament, $tour) {
-		$dql = "SELECT f FROM AppTournamentBundle:Forecast f
-				WHERE f.tr = :tr AND f.tour = :tour";
+	public function get_forecast($forebridge) {
+
+		$dql = "SELECT f FROM AppTournamentBundle:Forecast f WHERE f.hash = :hash";
 
 		$query = $this->getEntityManager()->createQuery($dql)
-					  ->SetParameter("tr", $tournament)
-					  ->SetParameter("tour", $tour);
+			 ->SetParameter('hash', $forebridge);
 
 		$result = $query->execute();
 

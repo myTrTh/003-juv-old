@@ -22,10 +22,12 @@ use App\TournamentBundle\Form\LogoType;
 use App\TournamentBundle\Form\StarttournamentType;
 use App\TournamentBundle\Form\NameType;
 use App\TournamentBundle\Form\ForecastType;
+use App\TournamentBundle\Form\ForebridgeType;
 use App\TournamentBundle\Form\TeamType;
 use App\TournamentBundle\Entity\Tournament;
 use App\TournamentBundle\Entity\Team;
 use App\TournamentBundle\Entity\Forecast;
+use App\TournamentBundle\Entity\Forebridge;
 
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
@@ -1166,6 +1168,16 @@ class AdminController extends Controller
 
     public function toursAction($tournament, $tour, Request $request) {
 
+        $user = $this->getUser();
+        if($user)
+            $userId = $user->getId();
+
+        $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tournament);
+
+        if($tournamentshow['access']['creator'] != $userId)
+            if(!in_array($userId, $tournamentshow['access']['assistant']))
+                throw $this->createAccessDeniedException();
+
         if($tour == 0)
             $tour = 1;
 
@@ -1174,8 +1186,11 @@ class AdminController extends Controller
         $rep_calendar = $this->getDoctrine()->getRepository("AppTournamentBundle:Calendar");
         $calendar = $rep_calendar->get_calendar($tournament);
 
-        $rep_forecas = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast");
-        $fore = $rep_forecas->get_forecast($tournament, $tour);
+        $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($tournament, $tour);
+        if($forebridge)
+            $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);
+        else
+            $fore = 0;
 
         $teams = $this->getDoctrine()->getRepository("AppTournamentBundle:Team")->getTeams($tournament);
 
@@ -1187,6 +1202,14 @@ class AdminController extends Controller
                 $team1 = $request->request->get('team1');
                 $team2 = $request->request->get('team2');
 
+                if($forebridge) {
+                    $hash = $forebridge;
+                    $br = 1;
+                } else {
+                    $hash = substr(sha1(uniqid()), 0, 7);
+                    $br = 0;
+                }
+
                 $em = $this->getDoctrine()->getEntityManager();
                 for($i=0;$i<count($date);$i++) {
 
@@ -1195,14 +1218,20 @@ class AdminController extends Controller
                     $team2[$i] = trim(strip_tags($team2[$i]));
 
                     $forecast = new Forecast();
-                    $forecast->setTr($tournament);
-                    $forecast->setTour($tour);
+                    $forecast->setHash($hash);
                     $forecast->setTeam1($team1[$i]);
                     $forecast->setTeam2($team2[$i]);
                     $forecast->setTimer($date[$i]);
                     $em->persist($forecast);
                 }
 
+                if(!$br) {
+                    $forebridge = new Forebridge();
+                    $forebridge->setHash($hash);
+                    $forebridge->setTr($tournament);
+                    $forebridge->setTour($tour);
+                    $em->persist($forebridge);
+                }
                 $em->flush();
 
                 return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
@@ -1235,7 +1264,7 @@ class AdminController extends Controller
 
                 $em->flush();
 
-                // return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
+                return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
             }
         }           
 
