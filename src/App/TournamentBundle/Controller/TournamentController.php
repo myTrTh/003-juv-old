@@ -122,11 +122,23 @@ class TournamentController extends Controller
             $showtour = $rep_calendar->get_tour($id, $tour, $schema, $playoff);
             $calendar = $rep_calendar->get_calendar($id);
 
+            $members = [];            
+            for($i=0;$i<count($showtour);$i++) {
+                $members[] = $showtour[$i]['uid1'];
+                $members[] = $showtour[$i]['uid2'];
+            }
+
+            if(in_array($userId, $members))
+                $member = 1;
+            else
+                $member = 0;
+
             return $this->render('AppTournamentBundle:Tournament:show.html.twig',
                    array("tournament" => $tournament,
                          "tour" => $tour,
                          "calendar" => $calendar,
-                         "showtour" => $showtour));
+                         "showtour" => $showtour,
+                         "member" => $member));
         } else {
 
             return $this->render('AppTournamentBundle:Tournament:noshow.html.twig',

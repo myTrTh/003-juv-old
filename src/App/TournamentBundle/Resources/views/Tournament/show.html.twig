@@ -31,11 +31,15 @@
 <table class='schedule'>
 {% for game in showtour %}
 	<tr>
-		<td>{{ game.user1 }}</td>
+		<td><a class='nostyle hoverlinkteam' href='{{ path('app_user_show', {'id': game.uid1 }) }}'>{{ game.user1 }}</a></td>
 		<td>-</td>
-		<td>{{ game.user2 }}</td>
+		<td><a class='nostyle hoverlinkteam' href='{{ path('app_user_show', {'id': game.uid2 }) }}'>{{ game.user2 }}</a></td>
 	</tr>
 {% endfor %}
 </table>
+<br>
+{% if member == 1 %}
+<button class='button button-access'>Сделать прогноз</button>
+{% endif %}
 
 {% endblock %}

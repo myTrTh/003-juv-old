@@ -293,7 +293,6 @@ input[type='checkbox'], input[type='radio'] {
 	font-size: 1rem;
 	transition: all .2s ease-in-out;
 	border: solid 1px #ccc;
-	background-color: #292b2c;
 	font-family: $font_main;
 	border-radius: .2rem;
 	margin: 0 10px 2px 0;
@@ -306,12 +305,21 @@ input[type='checkbox'], input[type='radio'] {
 .button-main {
 	color: #292b2c;
 	background-color: #fff;
+	&:hover {
+		background-color: #E6E6E6;
+		border: solid 1px #ADADAD;
+	}
 }
 
-.button-main:hover {
-	background-color: #E6E6E6;
-	border: solid 1px #ADADAD;
+.button-access {
+	color: #fff;
+	background-color: $color_green;
+	&:hover {
+		background-color: #35bc35 !important;
+		border: solid 1px #ADADAD;
+	}
 }
+
 
 .cursor {
 	cursor: pointer;
