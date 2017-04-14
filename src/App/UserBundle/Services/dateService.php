@@ -15,14 +15,17 @@ class dateService {
 
 	}
 
-	public function to_utc_date($date) {
+	public function locale_to_utc($date) {
 
-		# if no date format, return row value
-		if(!strtotime($date))
-				return "";
+		if(!is_object($date)) {
 
-		# get datetime object
-		$date = new \DateTime($date);
+			# if no date format, return row value
+			if(!strtotime($date))
+				return $date;
+
+			# get datetime object
+			$date = new \DateTime($date);
+		}
 
         $token = $this->token_storage->getToken();
         $user = $token ? $token->getUser() : null;
@@ -66,9 +69,6 @@ class dateService {
 			# get datetime object
 			$date = new \DateTime($date);
 		}
-
-		# get datetime object
-		$date = new \DateTime($date);
 
         $token = $this->token_storage->getToken();
         $user = $token ? $token->getUser() : null;

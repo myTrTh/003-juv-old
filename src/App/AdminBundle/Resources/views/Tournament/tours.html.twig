@@ -22,16 +22,17 @@
 {% if forecast != 0 %}
 
 		<h5>Матчи</h5>
+	<form method='post'>
 	{% for fore in forecast %}
 
-	<form method='post'>
-			<input class='small' type='text' name='date[]' value='{{ utc_to_locale(fore.timer) }}'>
-			<input class='small' type='text' name='team1[]' value='{{ fore.team1 }}'>
-			<input class='small' type='text' name='team2[]' value='{{ fore.team2 }}'>
-	</form>
-
+			<input type='hidden' name='fore[]' value='{{ fore.id }}'>
+			<input class='small inline' type='text' name='upd_date[]' value='{{ utc_to_locale(fore.timer)|date('d.m.Y H:i') }}'>
+			<input class='small inline' type='text' name='upd_team1[]' value='{{ fore.team1 }}'>
+			<input class='small inline' type='text' name='upd_team2[]' value='{{ fore.team2 }}'>
+			<br>
 	{% endfor %}
-	<input class='button button-main' type='submit' name='create_score' value='Обновить'>
+	<input class='button button-main' type='submit' name='update_score' value='Обновить'>
+	</form>
 	<br><br><hr><br>
 {% endif %}
 
@@ -53,9 +54,9 @@
 	</div>
 	</div>
 	<br>
-	{% if forecast == 0 %}
 		<span class='add' id='add_score'><i class='fa fa-plus'></i> Добавить</span>
 		<span class='add' id='remove_score'><i class='fa fa-minus'></i> Удалить</span><br><br>		
+	{% if forecast == 0 %}
 		<input class='button button-main' type='submit' name='create_score' value='Создать'>
 	{% else %}
 		<input class='button button-main' type='submit' name='create_score' value='Добавить'>

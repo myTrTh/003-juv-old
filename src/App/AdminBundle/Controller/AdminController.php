@@ -1179,6 +1179,7 @@ class AdminController extends Controller
 
         $teams = $this->getDoctrine()->getRepository("AppTournamentBundle:Team")->getTeams($tournament);
 
+        // add tours
         if($request->isMethod("POST")) {
             if($request->request->has('create_score')) {
 
@@ -1186,11 +1187,10 @@ class AdminController extends Controller
                 $team1 = $request->request->get('team1');
                 $team2 = $request->request->get('team2');
 
-                $scores = [];
                 $em = $this->getDoctrine()->getEntityManager();
                 for($i=0;$i<count($date);$i++) {
 
-                    $date[$i] = $this->get('app.date_mode')->to_utc_date($date[$i]);
+                    $date[$i] = $this->get('app.date_mode')->locale_to_utc($date[$i]);
                     $team1[$i] = trim(strip_tags($team1[$i]));
                     $team2[$i] = trim(strip_tags($team2[$i]));
 
@@ -1203,12 +1203,41 @@ class AdminController extends Controller
                     $em->persist($forecast);
                 }
 
-                $em->persist($forecast);
                 $em->flush();
 
+                return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
             }
-            return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
-        }        
+
+        // update tours
+            if($request->request->has('update_score')) {
+
+                $id_fore = $request->request->get('fore');
+                $date = $request->request->get('upd_date');
+                $team1 = $request->request->get('upd_team1');
+                $team2 = $request->request->get('upd_team2');
+
+                $em = $this->getDoctrine()->getEntityManager();
+                for($i=0;$i<count($date);$i++) {
+
+                    $id_fore[$i] = $id_fore[$i];
+                    $date[$i] = $this->get('app.date_mode')->locale_to_utc($date[$i]);
+                    $team1[$i] = trim(strip_tags($team1[$i]));
+                    $team2[$i] = trim(strip_tags($team2[$i]));
+
+                    $upd_fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->find($id_fore[$i]);
+
+                    $upd_fore->setTeam1($team1[$i]);
+                    $upd_fore->setTeam2($team2[$i]);
+                    $upd_fore->setTimer($date[$i]);
+
+                    $em->persist($upd_fore);
+                }
+
+                $em->flush();
+
+                // return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
+            }
+        }           
 
         return $this->render("AppAdminBundle:Tournament:tours.html.twig",
                 array("calendar" => $calendar,

@@ -3,181 +3,35 @@
 namespace App\UserBundle\Twig;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Config\Definition\Exception\Exception;
+use App\UserBundle\Services\dateService;
 
 class ModeDateExtension extends \Twig_Extension
 {
-    private $token_storage;
+	protected $service;
 
-	public function __construct(TokenStorageInterface $token_storage) {
-
-        $this->token_storage = $token_storage;
-
+	public function __construct(TokenStorageInterface $token_storage, dateService $service){
+		$this->service = $service;
+        $this->token_storage = $token_storage;		
 	}
 
-	public function getName()
-	{
-		return 'mode_date';
+	public function getFunctions() {
+		return array(
+			'replace_date' => new \Twig_Function_Method($this, 'replace_date'),
+			'utc_to_locale' => new \Twig_Function_Method($this, 'utc_to_locale'),
+			'locale_to_utc' => new \Twig_Function_Method($this, 'locale_to_utc'),
+		);
 	}
 
-  public function getFunctions()
-  {
-      $function = function($message) {
-          $result = array($this->replace_date($message),$this->to_utc_date($message),
-          	$this->utc_to_locale($message));
-          return $result;
-      };
-      return array(
-          new \Twig_SimpleFunction('replace_date', $function),
-          new \Twig_SimpleFunction('to_utc_date', $function),
-          new \Twig_SimpleFunction('utc_to_locale', $function),
-      );
-  }
-
-	public function to_utc_date($date) {
-
-		# if no date format, return row value
-		if(!strtotime($date))
-				return "";
-
-		# get datetime object
-		$date = new \DateTime($date);
-
-        $token = $this->token_storage->getToken();
-        $user = $token ? $token->getUser() : null;
-
-        if($user && $user != 'anon.') {
-        	$options = $user->getOptions();
-        	$tz = $options['timezone'];
-        } else {
-        	$tz = 100;
-        }
-
-		# extract timezone
-		if($tz == 100) {
-			if(isset($_COOKIE['timezone']))
-				$timezone = (int) $_COOKIE['timezone'];
-			else
-				$timezone = 0;
-		} else {
-			$timezone = $tz;
-		}
-
-		if($timezone <= 0)
-			$point = "-".abs($timezone)." hours";
-		else
-			$point = "+".$timezone." hours";
-
-		$date->modify($point);
-
-		return $date;
-
+	public function replace_date($date) {
+		return $this->service->replace_date($date);
 	}
 
 	public function utc_to_locale($date) {
-
-		if(!is_object($date)) {
-
-			# if no date format, return row value
-			if(!strtotime($date))
-				return $date;
-
-			# get datetime object
-			$date = new \DateTime($date);
-		}
-
-        $token = $this->token_storage->getToken();
-        $user = $token ? $token->getUser() : null;
-
-        if($user && $user != 'anon.') {
-        	$options = $user->getOptions();
-        	$tz = $options['timezone'];
-        } else {
-        	$tz = 100;
-        }
-
-		# extract timezone
-		if($tz == 100) {
-			if(isset($_COOKIE['timezone']))
-				$timezone = (int) $_COOKIE['timezone'];
-			else
-				$timezone = 0;
-		} else {
-			$timezone = $tz;
-		}
-
-		if($timezone <= 0)
-			$point = "+".abs($timezone)." hours";
-		else
-			$point = "-".$timezone." hours";
-
-		$date->modify($point);
-
-		return $date;
-
-	}	
-
-
-	public function replace_date($date){
-
-		if(!is_object($date)) {
-
-			# if no date format, return row value
-			if(!strtotime($date))
-				return $date;
-
-			# get datetime object
-			$date = new \DateTime($date);
-		}
-
-		# russians month name
-		$month = ['','января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
-
-
-        $token = $this->token_storage->getToken();
-        $user = $token ? $token->getUser() : null;
-        
-        if($user && $user != 'anon.') {
-        	$options = $user->getOptions();
-        	$tz = $options['timezone'];
-        } else {
-        	$tz = 100;
-        }
-
-		# extract timezone
-		if($tz == 100) {
-			if(isset($_COOKIE['timezone']))
-				$timezone = (int) $_COOKIE['timezone'];
-			else
-				$timezone = 0;
-		} else {
-			$timezone = $tz;
-		}
-
-		$now = new \DateTime();
-
-		if($timezone <= 0)
-			$point = "+".abs($timezone)." hours";
-		else
-			$point = "-".$timezone." hours";
-
-		$date->modify($point);
-		$now->modify($point);
-
-			if(strtotime($now->format("d.m.Y")) == strtotime($date->format("d.m.Y")))
-				return "Сегодня, в ".$date->format("H:i");
-			if(strtotime($now->modify("-1 day")->format("d.m.Y")) == strtotime($date->format("d.m.Y")))
-				return "Вчера, в ".$date->format("H:i");
-			else {
-				$d = $date->format("d");
-				$m = $date->format("n");
-				$y = $date->format("Y");
-
-				$ny = $now->format("Y");
-				if($y == $ny)
-					$date = $d." ".$month[$m].", в ".$date->format("H:i");
-				else
-					$date = $d." ".$month[$m]." ".$y.", в ".$date->format("H:i");
-				return $date;
-			}
+		return $this->service->utc_to_locale($date);
 	}
+
+	public function locale_to_utc($date) {
+		return $this->service->locale_to_utc($date);
+	}		
 }

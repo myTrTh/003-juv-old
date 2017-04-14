@@ -21,7 +21,7 @@ services:
         class: App\UserBundle\Services\admintextService
     twig.extension.mode_date:
         class: App\UserBundle\Twig\ModeDateExtension
-        arguments: ['@security.token_storage']
+        arguments: ['@security.token_storage', '@app.date_mode']
         public: true
         tags:
           - { name: twig.extension }
