@@ -1274,4 +1274,55 @@ class AdminController extends Controller
                       "forecast" => $fore, 'teams' => $teams));
     }    
 
+    public function addtoursAction($tournament, $tour, Request $request) {
+        $user = $this->getUser();
+        if($user)
+            $userId = $user->getId();
+
+        $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tournament);
+
+        if($tournamentshow['access']['creator'] != $userId)
+            if(!in_array($userId, $tournamentshow['access']['assistant']))
+                throw $this->createAccessDeniedException();
+
+        if($tour == 0)
+            $tour = 1;
+
+        // add tours
+        if($request->isMethod("POST")) {
+            if($request->request->has('addtours')) {
+
+                $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($tournament, $tour);
+
+                if($forebridge) {
+                   $session = $this->get('session');
+                    $session
+                        ->getFlashBag()
+                        ->add('error', 'Невозможно добавить тур.');
+
+                    return $this->redirect($this->generateUrl('app_admin_addtours', array('tournament'=> $tournament, 'tour' => $tour)));                        
+                }
+
+                $hash = $request->request->get('hash');
+
+                $em = $this->getDoctrine()->getEntityManager();
+
+                $forebridge = new Forebridge();
+                $forebridge->setHash($hash);
+                $forebridge->setTr($tournament);
+                $forebridge->setTour($tour);
+                $em->persist($forebridge);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
+            }
+        }        
+
+        $forecast = $this->getDoctrine()->getRepository('AppTournamentBundle:Forecast')->getActiveTours();
+
+        return $this->render("AppAdminBundle:Tournament:addtours.html.twig", array(
+                "tournament" => $tournamentshow, "forecast" => $forecast
+            ));        
+    }
+
 }

@@ -24,4 +24,27 @@ class ForecastRepository extends \Doctrine\ORM\EntityRepository
 
 		return $result;
 	}
+
+	public function getActiveTours() {
+		$dql = "SELECT f.hash, f.team1, f.team2 FROM AppTournamentBundle:Forecast f WHERE f.timer > CURRENT_DATE()";
+
+		$query = $this->getEntityManager()->createQuery($dql);
+
+		$result = $query->execute();
+
+		if(empty($result)) {
+			$results = 0;
+		} else {
+			$results = [];
+			for($i=0;$i<count($result);$i++) {
+				$hash = $result[$i]['hash'];
+				$team1 = $result[$i]['team1'];
+				$team2 = $result[$i]['team2'];
+
+				$results[$hash][] = ["team1" => $team1, "team2" => $team2, "hash" => $hash];
+			}
+		}
+
+		return $results;
+	}
 }

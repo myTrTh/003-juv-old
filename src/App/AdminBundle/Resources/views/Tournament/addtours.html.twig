@@ -1,0 +1,29 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Туры {% endblock %}
+
+{% block lowheader %} {{ tournament.name }} {% endblock %}
+
+{% block lowbody %}
+<a class='link-back' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
+<br><br>
+
+<h4>СПИСОК ДОСТУПНЫХ ТУРОВ</h4>
+
+	{# show flash info #}
+	{% include 'flashbug.html.twig' %}
+
+	{% for fore in forecast %}
+		<div class="show-tours-teams">
+		{% for f in fore %}
+			{{ f.team1 }} - {{ f.team2 }}<br>
+		{% endfor %}
+		<br>
+		<form method='post'>
+			<input type='hidden' name='hash' value='{{ fore.0.hash }}'>
+			<input type='submit' name='addtours' class='button' value="Добавить">
+		</form>		
+		</div>
+	{% endfor %}
+
+{% endblock %}

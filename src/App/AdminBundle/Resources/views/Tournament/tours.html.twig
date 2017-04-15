@@ -1,6 +1,6 @@
 {% extends 'AppAdminBundle::baseadmin.html.twig' %}
 
-{% block title %} Админка: Туры {% endblock %}
+{% block title %} Туры {% endblock %}
 
 {% block lowheader %} {{ tournament.name }} {% endblock %}
 
@@ -63,22 +63,9 @@
 	{% endif %}
 </form>
 
-{# {{ form_start(form) }}
-<div class='team-line'>
-	<div class='form-line'>
-		{{ form_widget(form.timer, {"attr": {"class": "form-control form-short", "placeholder": "2017-03-20 20:00"}}) }}
-		{{ form_widget(form.team1, {"attr": {"class": "form-control form-short", "placeholder": "Первая команда"}}) }}
-		{{ form_widget(form.team2, {"attr": {"class": "form-control form-short", "placeholder": "Вторая команда"}}) }}
-	</div>
-</div>
-<br />
-<div class='tap'>
-	<span class='tap_options' id='add_team'>+Добавить</span>
-	<span class='tap_options' id='delete_team'>-Удалить</span>
-</div>
-<br>
-{{ form_widget(form.save, {"attr": {"class": "btn btn-default"}}) }}
-{{ form_end(form) }} #}
-
+{% if forecast == 0 %}
+	<br>
+	<a class='nostyle' href="{{ path('app_admin_addtours', {"tournament": tournament.id, 'tour': tour}) }}"><i class='fa fa-mail-forward'></i> Добавить тур из другого турнира</a>
+{% endif %}
 
 {% endblock %}

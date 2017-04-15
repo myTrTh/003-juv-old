@@ -1,3 +1,11 @@
+app_admin_addtours:
+    path:     /adminpanel/tournament/{tournament}/addtours/{tour}
+    defaults: { _controller: AppAdminBundle:Admin:addtours, tournament: 0, tour: 0 }
+    methods: [GET|POST]
+    requirements:
+        tournament: '\d+'
+        tour: '\d+'
+
 app_admin_tours:
     path:     /adminpanel/tournament/{tournament}/tour/{tour}
     defaults: { _controller: AppAdminBundle:Admin:tours, tournament: 0, tour: 0 }
