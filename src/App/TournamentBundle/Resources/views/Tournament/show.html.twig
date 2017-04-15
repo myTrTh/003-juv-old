@@ -27,7 +27,15 @@
 </div>
 
 <div class='h3' id='tournumber'>{{ tour }} ТУР</div>
-
+<div class="tourstatus">
+	{% if tourstatus == 0 %}
+		<div class='statustour orange'><i class='fa fa-circle'></i> ТУР НЕ НАЧАЛСЯ</div>
+	{% elseif tourstatus == 1 %}
+		<div class='statustour green'><i class='fa fa-circle'></i> АКТИВНЫЙ ТУР</div>
+	{% elseif tourstatus == 2 %}
+		<div class='statustour'><i class='fa fa-circle'></i> ТУР ЗАВЕРШЕН</div>
+	{% endif %}
+</div>
 <table class='schedule'>
 {% for game in showtour %}
 	<tr>
@@ -38,7 +46,7 @@
 {% endfor %}
 </table>
 <br>
-{% if member == 1 %}
+{% if member == 1 and tourstatus == 1 %}
 <button class='button button-access'>Сделать прогноз</button>
 {% endif %}
 

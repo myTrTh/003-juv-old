@@ -133,12 +133,15 @@ class TournamentController extends Controller
             else
                 $member = 0;
 
+            $tourstatus = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->get_tour_status($tournament, $tour);
+
             return $this->render('AppTournamentBundle:Tournament:show.html.twig',
                    array("tournament" => $tournament,
                          "tour" => $tour,
                          "calendar" => $calendar,
                          "showtour" => $showtour,
-                         "member" => $member));
+                         "member" => $member,
+                         "tourstatus" => $tourstatus));
         } else {
 
             return $this->render('AppTournamentBundle:Tournament:noshow.html.twig',
