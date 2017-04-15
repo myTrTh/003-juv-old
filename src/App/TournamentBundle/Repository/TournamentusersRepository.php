@@ -29,11 +29,12 @@ class TournamentusersRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	public function show_users_for_tournament($id, $user)	{
+
 		$dql = "SELECT p.user, u.username 
 		FROM AppTournamentBundle:Tournamentusers p
 		INNER JOIN AppUserBundle:User u
 		WHERE u.id = p.user
-		WHERE p.tournament = :tournament AND p.status = 2";
+		WHERE p.tournament = :tournament AND p.status > 0";
 
 		$query = $this->getEntityManager()->createQuery($dql)
 					->SetParameter("tournament", $id);

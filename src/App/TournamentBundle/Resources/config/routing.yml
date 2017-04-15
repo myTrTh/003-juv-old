@@ -1,3 +1,7 @@
+app_tournament_tourset:
+    path:     /forecast
+    defaults: { _controller: AppTournamentBundle:Tournament:forecast }
+
 app_tournament_show:
     path:     /tournament/{id}/{tour}
     defaults: { _controller: AppTournamentBundle:Tournament:show, id: 0, tour: 0 }

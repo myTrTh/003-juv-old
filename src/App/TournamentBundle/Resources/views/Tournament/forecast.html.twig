@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {% if tr is defined %} {{ tournament.name }} {% else %} Что-то пошло не так... {% endif %} {% endblock %}
+
+{% block header %} 
+
+		{% if tournament.image is not null %}
+		 	<img class='tournament-img-header' src='/public/images/custom/logo/{{ tournament.image }}'>
+	 	{% else %}
+		 	<img class='tournament-img-header' src='/public/images/interface/default_logo.png'>
+		{% endif %}
+		{{ tournament.name }}
+
+{% endblock %}
+
+{% block content %}
+
+	<a class='link-back' href='{{ path("app_tournament_show", {'id': tournament.id, 'tour': tour}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
+		<br>
+
+	{% for fore in forecast %}
+		{{ utc_to_locale(fore.timer)|date('d.m H:i') }} {{ fore.team1 }} - {{ fore.team2 }}<br>
+	{% endfor %}
+
+{% endblock %}

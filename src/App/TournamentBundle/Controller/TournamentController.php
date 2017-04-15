@@ -147,5 +147,40 @@ class TournamentController extends Controller
             return $this->render('AppTournamentBundle:Tournament:noshow.html.twig',
                    array("tournament" => $tournament));
         }
-    }       
+    }
+
+    public function forecastAction(Request $request) {
+
+        $tr = $request->request->get('tr');
+        $tour = $request->request->get('tour');
+
+        if(empty($tr))
+            throw $this->createAccessDeniedException();
+
+        $user = $this->getUser();
+        if($user)
+            $userId = $user->getId();        
+        else
+            throw $this->createAccessDeniedException();
+
+        $tournament = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($tr);
+
+        $result = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournamentusers")->show_users_for_tournament($tr, $userId);
+
+        $access = $result[1];
+
+        $tourstatus = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->get_tour_status($tr, $tour);
+
+        if($access != 1 and $tourstatus != 1)
+            throw $this->createAccessDeniedException();
+
+        $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($tr, $tour);
+        if($forebridge)
+            $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);
+        else
+            $fore = 0;
+
+        return $this->render('AppTournamentBundle:Tournament:forecast.html.twig',
+            array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $fore));
+    }
 }
