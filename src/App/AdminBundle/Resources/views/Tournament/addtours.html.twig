@@ -5,7 +5,7 @@
 {% block lowheader %} {{ tournament.name }} {% endblock %}
 
 {% block lowbody %}
-<a class='link-back' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
+<a class='link-back' href='{{ path("app_admin_tours", {"tournament": tournament.id, 'tour': tour}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
 <br><br>
 
 <h4>СПИСОК ДОСТУПНЫХ ТУРОВ</h4>

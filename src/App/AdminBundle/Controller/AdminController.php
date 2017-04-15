@@ -1321,7 +1321,7 @@ class AdminController extends Controller
         $forecast = $this->getDoctrine()->getRepository('AppTournamentBundle:Forecast')->getActiveTours();
 
         return $this->render("AppAdminBundle:Tournament:addtours.html.twig", array(
-                "tournament" => $tournamentshow, "forecast" => $forecast
+                "tournament" => $tournamentshow, "forecast" => $forecast, "tour" => $tour
             ));        
     }
 
