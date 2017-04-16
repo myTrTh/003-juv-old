@@ -161,6 +161,7 @@ class TournamentController extends Controller
         else
             throw $this->createAccessDeniedException();
 
+        $how = 0;
         // add tours
         if($request->isMethod("POST")) {
             if($request->request->has('set_score')) {
@@ -173,7 +174,6 @@ class TournamentController extends Controller
                 $r2 = $request->request->get('r2');
 
                 $em = $this->getDoctrine()->getManager();
-                $how = 0;
 
                 for($i=0;$i<count($idfore);$i++) {
                     $idfore[$i] = (int) $idfore[$i];
@@ -184,7 +184,17 @@ class TournamentController extends Controller
 
                     if($cast) {
 
-                        $this->getDoctrine()->getRepository('AppTournamentBundle:Usercast')->set_score($idfore[$i], $tr, $tour, $r1, $r2, $userId);
+                        $usercast = $this->getDoctrine()->getRepository('AppTournamentBundle:Usercast')->findOneBy(array('idfore' => $idfore[$i], 'user' => $userId, 'tr' => $tr, 'tour' => $tour));
+
+                        $usercast->setIdfore($idfore[$i]);
+                        $usercast->setUser($userId);
+                        $usercast->setTr($tr);
+                        $usercast->setTour($tour);
+                        $usercast->setResult1($r1[$i]);
+                        $usercast->setResult2($r2[$i]);
+
+                        $em->persist($usercast);
+                        $how += 1;
 
                     } else {
                         
@@ -232,6 +242,6 @@ class TournamentController extends Controller
         }
 
         return $this->render('AppTournamentBundle:Tournament:forecast.html.twig',
-            array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $fore, 'preset' => $preset));
+            array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $fore, 'preset' => $preset, 'how' => $how));
     }
 }

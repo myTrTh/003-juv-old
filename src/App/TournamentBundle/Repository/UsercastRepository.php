@@ -54,7 +54,4 @@ class UsercastRepository extends \Doctrine\ORM\EntityRepository
 		return $results;
 	}
 
-	public function set_score($idfore[$i], $tr, $tour, $r1, $r2, $userId) {
-		
-	}
 }
