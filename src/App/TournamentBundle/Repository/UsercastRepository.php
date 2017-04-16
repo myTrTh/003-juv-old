@@ -54,19 +54,4 @@ class UsercastRepository extends \Doctrine\ORM\EntityRepository
 		return $results;
 	}
 
-	public function get_cast_info($idfore, $userId, $tr, $tour) {
-		$dql = "SELECT u.result1, u.result2, u.timer FROM AppTournamentBundle:Usercast u
-				WHERE u.user = :user AND u.idfore = :idfore AND u.tr = :tr AND u.tour = :tour";
-
-		$query = $this->getEntityManager()->createQuery($dql)
-					  ->SetParameter("user", $userId)
-					  ->SetParameter("idfore", $idfore)
-					  ->SetParameter("tr", $tr)
-					  ->SetParameter("tour", $tour);
-
-		$result = $query->execute();
-
-		return $result;
-	}	
-
 }

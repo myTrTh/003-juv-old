@@ -47,4 +47,16 @@ class ForecastRepository extends \Doctrine\ORM\EntityRepository
 
 		return $results;
 	}
+
+	public function get_cast_info($idfore) {
+		$dql = "SELECT f.timer FROM AppTournamentBundle:Forecast f
+				WHERE f.id = :id";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("id", $idfore);
+
+		$result = $query->execute();
+
+		return $result;
+	}
 }
