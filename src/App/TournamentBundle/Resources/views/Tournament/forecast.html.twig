@@ -36,10 +36,10 @@
 			</td>
 			<td class='show-table-result'>
 				<input type='hidden' name='id[]' value='{{ fore.id }}'>
-				<input type='text' {% if acc == 0 %} style="background-color: #ffd700; border-color: #ffd700" disabled="disabled" {% endif %} pattern='[0-9]' maxlength="1" class='extra-small inline' name='r1[]' value="{% if preset[fore.id].result1 is defined %}{{ preset[fore.id].result1 }}{% endif %}">
+				<input type='text' {% if acc == 0 %} style="background-color: #ffd700; border-color: #ffd700" {% endif %} pattern='[0-9]' maxlength="1" class='extra-small inline' name='r1[]' value="{% if preset[fore.id].result1 is defined %}{{ preset[fore.id].result1 }}{% endif %}">
 			</td>
 			<td class='show-table-result'>
-				<input type='text' {% if acc == 0 %} style="background-color: #ffd700; border-color: #ffd700" disabled="disabled" {% endif %} pattern='[0-9]' maxlength="1" class='extra-small inline' name='r2[]' value="{% if preset[fore.id].result2 is defined %}{{ preset[fore.id].result2 }}{% endif %}">
+				<input type='text' {% if acc == 0 %} style="background-color: #ffd700; border-color: #ffd700" {% endif %} pattern='[0-9]' maxlength="1" class='extra-small inline' name='r2[]' value="{% if preset[fore.id].result2 is defined %}{{ preset[fore.id].result2 }}{% endif %}">
 			</td>
 			<td class='show-team'>
 				{{ fore.team2 }}

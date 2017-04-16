@@ -190,19 +190,24 @@ class TournamentController extends Controller
 
                         $now = new \DateTime();
                         $timer = $forecastinfo[0]['timer'];
-                        print "<br>".$now->format('d.m.Y H:i')."<br>";
-                        print "<br>".$timer->format('d.m.Y H:i')."<br>";
                         if(strtotime($now->format('d.m.Y H:i')) < strtotime($timer->format('d.m.Y H:i'))) {
 
-                            $usercast->setIdfore($idfore[$i]);
-                            $usercast->setUser($userId);
-                            $usercast->setTr($tr);
-                            $usercast->setTour($tour);
-                            $usercast->setResult1($r1[$i]);
-                            $usercast->setResult2($r2[$i]);
+                            $res1 = $usercast->getResult1();
+                            $res2 = $usercast->getResult2();
 
-                            $em->persist($usercast);
-                            $how += 1;
+                            if($r1[$i] != $res1 or $r2[$i] != $res2) {
+
+                                $usercast->setIdfore($idfore[$i]);
+                                $usercast->setUser($userId);
+                                $usercast->setTr($tr);
+                                $usercast->setTour($tour);
+                                $usercast->setResult1($r1[$i]);
+                                $usercast->setResult2($r2[$i]);
+
+                                $em->persist($usercast);
+                                $how += 1;
+
+                            }
                         }
 
                     } else {
