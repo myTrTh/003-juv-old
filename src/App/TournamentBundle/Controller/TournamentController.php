@@ -186,15 +186,22 @@ class TournamentController extends Controller
 
                         $usercast = $this->getDoctrine()->getRepository('AppTournamentBundle:Usercast')->findOneBy(array('idfore' => $idfore[$i], 'user' => $userId, 'tr' => $tr, 'tour' => $tour));
 
-                        $usercast->setIdfore($idfore[$i]);
-                        $usercast->setUser($userId);
-                        $usercast->setTr($tr);
-                        $usercast->setTour($tour);
-                        $usercast->setResult1($r1[$i]);
-                        $usercast->setResult2($r2[$i]);
+                        $usercastinfo = $this->getDoctrine()->getRepository('AppTournamentBundle:Usercast')->get_cast_info($idfore[$i], $userId, $tr, $tour);
 
-                        $em->persist($usercast);
-                        $how += 1;
+                        $now = new \DateTime();
+                        $casttime = $usercastinfo['timer'];
+                        if(strtotime($now) > strtotime($casttime)) {
+
+                            $usercast->setIdfore($idfore[$i]);
+                            $usercast->setUser($userId);
+                            $usercast->setTr($tr);
+                            $usercast->setTour($tour);
+                            $usercast->setResult1($r1[$i]);
+                            $usercast->setResult2($r2[$i]);
+
+                            $em->persist($usercast);
+                            $how += 1;
+                        }
 
                     } else {
                         

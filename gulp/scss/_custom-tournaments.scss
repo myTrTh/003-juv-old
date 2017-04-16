@@ -116,7 +116,7 @@
 
 .show-table-result {
 	padding: .2rem .2rem 0 .2rem !important;
-	background-color: #ffd700;
+	background-color: #ffd700;	
 	& > input {
 		font-weight: bold;
 		padding: .1rem;
@@ -129,4 +129,8 @@
 	height: 20px;
 	color: $color_red;
 	font-weight: bold;
+}
+
+.disabled-input {
+	background-color: #ffd700;
 }
