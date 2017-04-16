@@ -18,8 +18,31 @@
 	<a class='link-back' href='{{ path("app_tournament_show", {'id': tournament.id, 'tour': tour}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
 		<br>
 
+	<form method='post'>
+	<table class='show-score'>
+
 	{% for fore in forecast %}
-		{{ utc_to_locale(fore.timer)|date('d.m H:i') }} {{ fore.team1 }} - {{ fore.team2 }}<br>
+		<tr>
+			<td>
+				{{ utc_to_locale(fore.timer)|date('d.m H:i') }}
+			</td>
+			<td class='show-team'>
+				{{ fore.team1 }}
+			</td>
+			<td class='show-table-result'>
+				<input type='hidden' name='id[]' value='{{ fore.id }}'>
+				<input type='text' class='extra-small inline' name='r1[]' value='{{ preset[fore.id].result1 }}'>
+				<input type='text' class='extra-small inline' name='r2[]' value='{{ preset[fore.id].result2 }}'>
+			</td>
+			<td class='show-team'>
+				{{ fore.team2 }}
+			</td>			
 	{% endfor %}
+	</table>
+	<br>
+	<input type='hidden' name='htr' value='{{ tournament.id }}'>
+	<input type='hidden' name='htour' value='{{ tour }}'>
+	<input type='submit' class='button button-main' name='set_score' value='Отправить'>
+	</form>
 
 {% endblock %}

@@ -4,6 +4,7 @@ namespace App\TournamentBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use App\TournamentBundle\Entity\Tournamentusers;
+use App\TournamentBundle\Entity\Usercast;
 use App\TournamentBundle\Form\PreliminaryType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -154,13 +155,59 @@ class TournamentController extends Controller
         $tr = $request->request->get('tr');
         $tour = $request->request->get('tour');
 
-        if(empty($tr))
-            throw $this->createAccessDeniedException();
-
         $user = $this->getUser();
         if($user)
             $userId = $user->getId();        
         else
+            throw $this->createAccessDeniedException();
+
+        // add tours
+        if($request->isMethod("POST")) {
+            if($request->request->has('set_score')) {
+
+                $tr = $request->request->get('htr');
+                $tour = $request->request->get('htour');
+
+                $idfore = $request->request->get('id');
+                $r1 = $request->request->get('r1');
+                $r2 = $request->request->get('r2');
+
+                $em = $this->getDoctrine()->getManager();
+                $how = 0;
+
+                for($i=0;$i<count($idfore);$i++) {
+                    $idfore[$i] = (int) $idfore[$i];
+                    $r1[$i] = (int) $r1[$i];
+                    $r2[$i] = (int) $r2[$i];
+
+                    $cast = $this->getDoctrine()->getRepository('AppTournamentBundle:Usercast')->check_score($idfore[$i], $tr, $tour, $userId);
+
+                    if($cast) {
+
+                        $this->getDoctrine()->getRepository('AppTournamentBundle:Usercast')->set_score($idfore[$i], $tr, $tour, $r1, $r2, $userId);
+
+                    } else {
+                        
+                        $usercast = new Usercast();
+                        $usercast->setIdfore($idfore[$i]);
+                        $usercast->setUser($userId);
+                        $usercast->setTr($tr);
+                        $usercast->setTour($tour);
+                        $usercast->setResult1($r1[$i]);
+                        $usercast->setResult2($r2[$i]);
+
+                        $em->persist($usercast);
+                        $how += 1;
+
+                    }   
+                }
+                if($how > 0)
+                    $em->flush();
+            }
+        }        
+
+
+        if(empty($tr))
             throw $this->createAccessDeniedException();
 
         $tournament = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($tr);
@@ -175,12 +222,16 @@ class TournamentController extends Controller
             throw $this->createAccessDeniedException();
 
         $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($tr, $tour);
-        if($forebridge)
+        if($forebridge) {
             $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);
-        else
+
+            $preset = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($userId, $fore);
+        } else {
             $fore = 0;
+            $preset = 0;
+        }
 
         return $this->render('AppTournamentBundle:Tournament:forecast.html.twig',
-            array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $fore));
+            array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $fore, 'preset' => $preset));
     }
 }

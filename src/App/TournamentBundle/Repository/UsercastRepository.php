@@ -10,4 +10,51 @@ namespace App\TournamentBundle\Repository;
  */
 class UsercastRepository extends \Doctrine\ORM\EntityRepository
 {
+
+	public function check_score($idfore, $tr, $tour, $userId) {
+
+		$dql = "SELECT u.idfore FROM AppTournamentBundle:Usercast u
+				WHERE u.tr = :tr AND u.tour = :tour AND u.user = :user";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr)
+					  ->SetParameter("tour", $tour)
+					  ->SetParameter("user", $userId);
+
+		$result = $query->execute();
+
+		return $result;
+	}
+
+	public function get_prescore($userId, $fore) {
+
+		$ids = [];
+		for($i=0;$i<count($fore);$i++) {
+			$ids[] = $fore[$i]->getId();
+		}
+
+		$dql = "SELECT u.idfore, u.result1, u.result2 FROM AppTournamentBundle:Usercast u
+				WHERE u.user = :user AND u.idfore IN (".implode(', ', $ids).")";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("user", $userId);
+
+		$result = $query->execute();
+
+		$results = [];
+		for($i=0;$i<count($result);$i++) {
+
+			$idfore = $result[$i]['idfore'];
+			$r1 = $result[$i]['result1'];
+			$r2 = $result[$i]['result2'];
+
+			$results[$idfore] = ['result1' => $r1, 'result2' => $r2];
+		}
+
+		return $results;
+	}
+
+	public function set_score($idfore[$i], $tr, $tour, $r1, $r2, $userId) {
+		
+	}
 }
