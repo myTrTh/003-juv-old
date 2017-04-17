@@ -8,7 +8,7 @@
 
 {% if is_granted('ROLE_ADMIN') %}
 
-<a class='back-link' href='{{ path("app_admin_tournaments") }}'>К СПИСКУ ТУРНИРОВ</a>
+<a class='link-back' href='{{ path("app_admin_tournaments") }}'><i class='fa fa-arrow-left'></i> К СПИСКУ ТУРНИРОВ</a>
 <br><br>
 
 {{ form_start(form) }}

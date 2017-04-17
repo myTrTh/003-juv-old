@@ -192,10 +192,15 @@ class TournamentController extends Controller
                         $timer = $forecastinfo[0]['timer'];
                         if(strtotime($now->format('d.m.Y H:i')) < strtotime($timer->format('d.m.Y H:i'))) {
 
-                            $res1 = $usercast->getResult1();
-                            $res2 = $usercast->getResult2();
+                            if($usercast) {
+                                $res1 = $usercast->getResult1();
+                                $res2 = $usercast->getResult2();
+                            } else {
+                                $res1 = "";
+                                $res2 = "";
+                            }
 
-                            if($r1[$i] != $res1 or $r2[$i] != $res2) {
+                            if(($r1[$i] != $res1 or $r2[$i] != $res2) and ($r1[$i] != "" and $r2[$i] != "")) {
 
                                 $usercast->setIdfore($idfore[$i]);
                                 $usercast->setUser($userId);
@@ -211,17 +216,20 @@ class TournamentController extends Controller
                         }
 
                     } else {
-                        
-                        $usercast = new Usercast();
-                        $usercast->setIdfore($idfore[$i]);
-                        $usercast->setUser($userId);
-                        $usercast->setTr($tr);
-                        $usercast->setTour($tour);
-                        $usercast->setResult1($r1[$i]);
-                        $usercast->setResult2($r2[$i]);
 
-                        $em->persist($usercast);
-                        $how += 1;
+                        if($r1[$i] != "" and $r2[$i] != "") {
+                        
+                            $usercast = new Usercast();
+                            $usercast->setIdfore($idfore[$i]);
+                            $usercast->setUser($userId);
+                            $usercast->setTr($tr);
+                            $usercast->setTour($tour);
+                            $usercast->setResult1($r1[$i]);
+                            $usercast->setResult2($r2[$i]);
+
+                            $em->persist($usercast);
+                            $how += 1;
+                        }
 
                     }   
                 }
