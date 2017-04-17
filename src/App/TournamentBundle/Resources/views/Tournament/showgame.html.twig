@@ -1,1 +1,59 @@
-showgame
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ tournament.name }} {% endblock %}
+
+{% block header %} 
+	{% if tournament.image is not null %}
+	 	<img class='tournament-img-header' src='/public/images/custom/logo/{{ tournament.image }}'>
+ 	{% else %}
+	 	<img class='tournament-img-header' src='/public/images/interface/default_logo.png'>
+	{% endif %}
+	{{ tournament.name }}
+{% endblock %}
+
+{% block content %}
+<a class='link-back' href='{{ path("app_tournament_show", {'id': tournament.id }) }}'><i class='fa fa-arrow-left'></i> К СПИСКУ ТУРНИРОВ</a>
+<br>
+
+<div id='tournumber'>{{ calendar.0.tour }} ТУР</div><br>
+<table class='showgame'>
+	<tr>
+		<td><a class='nostyle' href='{{ path('app_user_show', {'id': calendar.0.user1 }) }}'>{{ calendar.0.login1 }}</a></td>
+		<td></td>
+		<td></td>
+		<td><a class='nostyle' href='{{ path('app_user_show', {'id': calendar.0.user2 }) }}'>{{ calendar.0.login2 }}</a></td>
+		<td></td>
+		<td></td>
+		<td></td>
+	</tr>
+{% for fore in forecast %}
+	<tr>
+		<td>
+			{% if date(fore.timer) < date() %}
+				{% if preset1[fore.id].result1 is defined and preset1[fore.id].result2 is defined %}
+				{{ preset1[fore.id].result1 }}-{{ preset1[fore.id].result2 }}
+			{% endif %}
+		{% endif %}</td>
+		<td>
+			{% if date(fore.timer) < date() %}
+			{% if preset1[fore.id].ball is defined %} {{ preset1[fore.id].ball }} {% endif %}
+			{% endif %}
+			</td>
+		<td>
+			{% if date(fore.timer) < date() %}
+			{% if preset2[fore.id].ball is defined %} {{ preset2[fore.id].ball }} {% endif %}
+			{% endif %}
+			</td>
+		<td>
+			{% if date(fore.timer) < date() %}
+			{% if preset2[fore.id].result1 is defined and preset2[fore.id].result2 is defined %}
+			{{ preset2[fore.id].result1 }} - {{ preset2[fore.id].result2 }}
+			{% endif %}
+		{% endif %}</td>		
+		<td>{{ fore.team1 }}</td>
+		<td>{% if fore.result1 is defined and fore.result2 is defined %} {{ fore.result1 }}-{{ fore.result2 }} {% else %} - {% endif %}</td>
+		<td>{{ fore.team2 }}</td>
+	</tr>
+{% endfor %}
+</table>
+{% endblock %}

@@ -138,3 +138,37 @@
 .showtour {
 	display: block;
 }
+
+
+/* showgame */
+
+.showgame tr:first-child td {
+	font-weight: bold;
+}
+
+.showgame {
+	border-spacing: 0;
+	border: solid 1px #ccc;
+	font-size: .9rem;
+	& td:first-child, td:nth-child(2), td:nth-child(3), td:nth-child(4), td:nth-child(6) {
+		text-align: center;
+	}
+	& td:first-child, td:nth-child(2), td:nth-child(3) {
+		border-right: 1px solid #ccc;
+		width: 25px;
+	}
+	& td:nth-child(5) {
+		text-align: right;
+	}
+	& td:first-child, td:nth-child(4) {
+		width: 100px;
+	}
+}
+
+.showgame td {
+	padding: 0 .3rem;
+}
+
+.showgame tr:nth-child(2n+1) {
+	background-color: #E8E8E8;
+}

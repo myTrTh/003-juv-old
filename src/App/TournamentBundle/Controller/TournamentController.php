@@ -274,10 +274,25 @@ class TournamentController extends Controller
         if(!$calendar_info)
             throw $this->createAccessDeniedException();
 
+        $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($calendar_info[0]['tr'], $calendar_info[0]['tour']);
+
+        if($forebridge) {
+            $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);
+
+        $presetuser1 = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($calendar_info[0]['user1'], $fore);
+        $presetuser2 = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($calendar_info[0]['user2'], $fore);
+
+        } else {
+            $fore = 0;
+            $preset = 0;
+        }
+
         $tournament = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($calendar_info[0]['tr']);        
 
         return $this->render('AppTournamentBundle:Tournament:showgame.html.twig',
-            array('tournament' => $tournament, 'tour' => $calendar_info[0]['tour']));        
+            array('tournament' => $tournament, 'tour' => $calendar_info[0]['tour'],
+                'forecast' => $fore, 'calendar' => $calendar_info, 'preset1' => $presetuser1,
+                'preset2' => $presetuser2));
     }
 
 }
