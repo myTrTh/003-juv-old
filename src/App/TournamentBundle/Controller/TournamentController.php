@@ -266,4 +266,5 @@ class TournamentController extends Controller
         return $this->render('AppTournamentBundle:Tournament:forecast.html.twig',
             array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $fore, 'preset' => $preset, 'how' => $how));
     }
+
 }

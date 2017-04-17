@@ -6,6 +6,14 @@ app_admin_addtours:
         tournament: '\d+'
         tour: '\d+'
 
+app_admin_tour_completed:
+    path:     /adminpanel/tournament/{tournament}/tour/{tour}/completed
+    defaults: { _controller: AppAdminBundle:Admin:tourcompleted, tournament: 0, tour: 0 }
+    methods: [GET|POST]
+    requirements:
+        tournament: '\d+'
+        tour: '\d+'
+
 app_admin_tours:
     path:     /adminpanel/tournament/{tournament}/tour/{tour}
     defaults: { _controller: AppAdminBundle:Admin:tours, tournament: 0, tour: 0 }

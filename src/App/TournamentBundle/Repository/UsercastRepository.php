@@ -55,4 +55,17 @@ class UsercastRepository extends \Doctrine\ORM\EntityRepository
 		return $results;
 	}
 
+	public function get_scores($idfore) {
+
+		$dql = "SELECT u.id, u.result1, u.result2 FROM AppTournamentBundle:Usercast u
+				WHERE u.idfore = :idfore";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter('idfore', $idfore);
+
+		$result = $query->execute();
+
+		return $result;
+	}
+
 }

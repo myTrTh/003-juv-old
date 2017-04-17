@@ -1206,7 +1206,7 @@ class AdminController extends Controller
                     $hash = $forebridge;
                     $br = 1;
                 } else {
-                    $hash = substr(sha1(uniqid()), 0, 7);
+                    $hash = substr(sha1(uniqid()), 0, 9);
                     $br = 0;
                 }
 
@@ -1324,5 +1324,60 @@ class AdminController extends Controller
                 "tournament" => $tournamentshow, "forecast" => $forecast, "tour" => $tour
             ));        
     }
+
+    public function tourcompletedAction($tournament, $tour, Request $request) {
+
+        $user = $this->getUser();
+        if($user)
+            $userId = $user->getId();
+
+        $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tournament);
+
+        if($tournamentshow['access']['creator'] != $userId)
+            if(!in_array($userId, $tournamentshow['access']['assistant']))
+                throw $this->createAccessDeniedException();
+
+        if($tour == 0)
+            $tour = 1;
+
+        // add fore
+        if($request->isMethod("POST")) {
+            if($request->request->has('set_fore')) {
+
+                $idfore = $request->request->get('id');
+                $r1 = $request->request->get('r1');
+                $r2 = $request->request->get('r2');
+                $fore_end = $request->request->get('fore_end');
+
+                $em = $this->getDoctrine()->getManager();
+
+                for($i=0;$i<count($idfore);$i++) {
+                    $idfore[$i] = (int) $idfore[$i];
+                    $r1[$i] = (int) $r1[$i];
+                    $r2[$i] = (int) $r2[$i];
+
+                    $forecast = $this->getDoctrine()->getRepository('AppTournamentBundle:Forecast')->find($idfore[$i]);
+
+                    if($r1[$i] != "" or $r2[$i] != "") {
+                        $forecast->setResult1($r1[$i]);
+                        $forecast->setResult2($r2[$i]);
+                        $em->persist($forecast);
+
+                        $this->get('app.results_tournament')->mathem($idfore[$i], $r1[$i], $r2[$i], $fore_end);
+                    }
+                } 
+                $em->flush();
+            }
+        }
+
+        $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($tournament, $tour);
+        if($forebridge)
+            $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);
+        else
+            $fore = 0;
+
+        return $this->render('AppAdminBundle:Tournament:tourcompleted.html.twig',
+            array('tour' => $tour, 'tournament' => $tournamentshow, "forecast" => $fore));
+    }    
 
 }

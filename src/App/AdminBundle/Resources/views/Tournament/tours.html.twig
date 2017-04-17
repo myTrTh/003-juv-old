@@ -33,7 +33,10 @@
 	{% endfor %}
 	<input class='button button-main' type='submit' name='update_score' value='Обновить'>
 	</form>
-	<br><br><hr><br>
+
+	<br>
+	<a class='nostyle bold' href='{{ path('app_admin_tour_completed', {'tournament': tournament.id, 'tour': tour}) }}'>ПРОСТАВИТЬ РЕЗУЛЬТАТЫ ТУРА</a>
+	<br><hr><br>
 {% endif %}
 
 <form method='post'>

@@ -1,0 +1,43 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Проставить результаты {% endblock %}
+
+{% block lowheader %} {{ tournament.name }} {% endblock %}
+
+{% block lowbody %}
+<a class='link-back' href='{{ path("app_admin_tours", {"tournament": tournament.id, "tour": tour}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
+<br><br>
+
+	<form method='post'>
+	<table class='show-score'>
+	{% for fore in forecast %}
+		{% if date(fore.timer) > date() %}
+			{% set acc = 1 %}
+		{% else %}
+			{% set acc = 0 %}
+		{% endif %}
+		<tr>
+			<td>
+				{{ utc_to_locale(fore.timer)|date('d.m H:i') }}
+			</td>
+			<td class='show-team'>
+				{{ fore.team1 }}
+			</td>
+			<td class='show-table-result'>
+				<input type='hidden' name='id[]' value='{{ fore.id }}'>
+				<input type='text' pattern='[0-9]+' class='extra-small inline' name='r1[]' value="{% if fore.result1 is defined %}{{ fore.result1 }}{% endif %}">
+			</td>
+			<td class='show-table-result'>
+				<input type='text' pattern='[0-9]' maxlength="1" class='extra-small inline' name='r2[]' value="{% if fore.result2 is defined %}{{ fore.result2 }}{% endif %}">
+			</td>
+			<td class='show-team'>
+				{{ fore.team2 }}
+			</td>			
+	{% endfor %}
+	</table>
+	<br>
+	<input type='checkbox' name='fore_end' value='1'> Окончательно рассчитать тур<br><br>
+	<input type='submit' class='button button-main' name='set_fore' value='Отправить'>
+	</form>
+
+{% endblock %}
