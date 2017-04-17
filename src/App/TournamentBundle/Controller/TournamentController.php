@@ -279,12 +279,27 @@ class TournamentController extends Controller
         if($forebridge) {
             $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);
 
-        $presetuser1 = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($calendar_info[0]['user1'], $fore);
-        $presetuser2 = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($calendar_info[0]['user2'], $fore);
+            $presetuser1 = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($calendar_info[0]['user1'], $fore);
+
+            $sum1 = 0;
+            foreach ($presetuser1 as $key) {
+                $sum1 += (int) $key['ball'];
+            }
+
+            $presetuser2 = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($calendar_info[0]['user2'], $fore);
+
+            $sum2 = 0;
+            foreach ($presetuser2 as $key) {
+                $sum2 += (int) $key['ball'];
+            }
+
+            $summ = [$sum1, $sum2];
 
         } else {
             $fore = 0;
             $preset = 0;
+
+            $summ = [0, 0];
         }
 
         $tournament = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($calendar_info[0]['tr']);        
@@ -292,7 +307,7 @@ class TournamentController extends Controller
         return $this->render('AppTournamentBundle:Tournament:showgame.html.twig',
             array('tournament' => $tournament, 'tour' => $calendar_info[0]['tour'],
                 'forecast' => $fore, 'calendar' => $calendar_info, 'preset1' => $presetuser1,
-                'preset2' => $presetuser2));
+                'preset2' => $presetuser2, "summ" => $summ));
     }
 
 }
