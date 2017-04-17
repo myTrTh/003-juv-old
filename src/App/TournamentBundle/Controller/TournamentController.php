@@ -267,4 +267,17 @@ class TournamentController extends Controller
             array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $fore, 'preset' => $preset, 'how' => $how));
     }
 
+    public function showgameAction($id) {
+
+        $calendar_info = $this->getDoctrine()->getRepository('AppTournamentBundle:Calendar')->get_info($id);
+
+        if(!$calendar_info)
+            throw $this->createAccessDeniedException();
+
+        $tournament = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($calendar_info[0]['tr']);        
+
+        return $this->render('AppTournamentBundle:Tournament:showgame.html.twig',
+            array('tournament' => $tournament, 'tour' => $calendar_info[0]['tour']));        
+    }
+
 }

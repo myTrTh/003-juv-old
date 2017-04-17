@@ -40,7 +40,7 @@
 {% for game in showtour %}
 	<tr>
 		<td><a class='nostyle hoverlinkteam' href='{{ path('app_user_show', {'id': game.uid1 }) }}'>{{ game.user1 }}</a></td>
-		<td>-</td>
+		<td><a class='showtour' href='{{ path('app_tournament_showgame', {'id': game.id }) }}'>-</a></td>
 		<td><a class='nostyle hoverlinkteam' href='{{ path('app_user_show', {'id': game.uid2 }) }}'>{{ game.user2 }}</a></td>
 	</tr>
 {% endfor %}
