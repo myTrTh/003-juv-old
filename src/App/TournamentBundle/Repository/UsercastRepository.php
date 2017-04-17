@@ -34,7 +34,7 @@ class UsercastRepository extends \Doctrine\ORM\EntityRepository
 			$ids[] = $fore[$i]->getId();
 		}
 
-		$dql = "SELECT u.idfore, u.result1, u.result2 FROM AppTournamentBundle:Usercast u
+		$dql = "SELECT u.idfore, u.result1, u.result2, u.ball FROM AppTournamentBundle:Usercast u
 				WHERE u.user = :user AND u.idfore IN (".implode(', ', $ids).")";
 
 		$query = $this->getEntityManager()->createQuery($dql)
@@ -48,8 +48,9 @@ class UsercastRepository extends \Doctrine\ORM\EntityRepository
 			$idfore = $result[$i]['idfore'];
 			$r1 = $result[$i]['result1'];
 			$r2 = $result[$i]['result2'];
+			$ball = $result[$i]['ball'];
 
-			$results[$idfore] = ['result1' => $r1, 'result2' => $r2];
+			$results[$idfore] = ['result1' => $r1, 'result2' => $r2, 'ball' => $ball];
 		}
 
 		return $results;
