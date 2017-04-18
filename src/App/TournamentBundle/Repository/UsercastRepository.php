@@ -120,7 +120,7 @@ class UsercastRepository extends \Doctrine\ORM\EntityRepository
 			$user = $result[$i]['user'];
 			$sum = $result[$i]['summ'];
 
-			$results[] = ["user" => $user, "sum" => $sum];
+			$results[$user] = $sum;
 		}
 
 		return $results;

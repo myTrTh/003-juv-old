@@ -61,7 +61,7 @@ class ForebridgeRepository extends \Doctrine\ORM\EntityRepository
 		$dql = "SELECT f.tr, f.tour FROM AppTournamentBundle:Forebridge f
 				WHERE f.hash = :hash";
 
-		$query = $this->getEntityManager->createQuery($dql)
+		$query = $this->getEntityManager()->createQuery($dql)
 					  ->SetParameter("hash", $hash);
 
 		$result = $query->execute();
