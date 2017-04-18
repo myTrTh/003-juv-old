@@ -10,4 +10,17 @@ namespace App\TournamentBundle\Repository;
  */
 class TablelistRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function show_table($tr, $tour) {
+		$dql = "SELECT t FROM AppTournamentBundle:Tablelist t
+		WHERE t.tr = :tr AND t.tour <= :tour";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr)
+					  ->SetParameter("tour", $tour);
+
+		$result = $query->execute();
+
+		return $result;
+	}
+
 }

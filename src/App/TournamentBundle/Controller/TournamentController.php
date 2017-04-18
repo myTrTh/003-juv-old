@@ -150,7 +150,9 @@ class TournamentController extends Controller
             // $sum1 = 0;
             // foreach ($presetuser1 as $key) {
             //     $sum1 += (int) $key['ball'];
-            // }            
+            // }
+
+            $table = $this->getDoctrine()->getRepository('AppTournamentBundle:Tablelist')->show_table($id, $tour);
 
             return $this->render('AppTournamentBundle:Tournament:show.html.twig',
                    array("tournament" => $tournament,

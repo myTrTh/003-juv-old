@@ -37,10 +37,6 @@ class resultsService
 		for($i=0;$i<count($trs);$i++) {
         	$balls = $this->em->getRepository('AppTournamentBundle:Usercast')->table_ball($trs[$i]['tr'], $trs[$i]['tour']);
         	
-
-        	print "<pre>";
-        	print_r($balls);
-        	print "</pre>";
         	$calendar = $this->em->getRepository('AppTournamentBundle:Calendar')->get_pair($trs[$i]['tr'], $trs[$i]['tour']);
 
         	for($i=0;$i<count($calendar);$i++) {
