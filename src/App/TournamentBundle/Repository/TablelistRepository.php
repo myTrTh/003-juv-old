@@ -11,8 +11,10 @@ namespace App\TournamentBundle\Repository;
 class TablelistRepository extends \Doctrine\ORM\EntityRepository
 {
 	public function show_table($tr, $tour) {
-		$dql = "SELECT t FROM AppTournamentBundle:Tablelist t
-		WHERE t.tr = :tr AND t.tour <= :tour";
+		$dql = "SELECT sum(t.game), sum(t.w), sum(t.n), sum(t.l), sum(t.bw), sum(t.bl), sum(t.score) FROM AppTournamentBundle:Tablelist t
+			INNER JOIN AppUserBundle:User u
+			WHERE u.id = t.user
+			WHERE t.tr = :tr AND t.tour <= :tour";
 
 		$query = $this->getEntityManager()->createQuery($dql)
 					  ->SetParameter("tr", $tr)

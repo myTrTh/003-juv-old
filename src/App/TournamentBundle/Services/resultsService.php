@@ -45,33 +45,31 @@ class resultsService
 
         		// Сравнение
         		if($balls[$user1] == $balls[$user2]) {
-        			$tablelist[] = array("user" => $user1, "tr" => $trs[$i]['tr'],
+        			$tablelist[] = array("game" => 1, "user" => $user1, "tr" => $trs[$i]['tr'],
         							"tour" => $trs[$i]['tour'], "w" => 0, "n" => 1, "l" => 0,
         							"bw" => $balls[$user1], "bl" => $balls[$user2], "score" => 1);
 
-        			$tablelist[] = array("user" => $user2, "tr" => $trs[$i]['tr'],
+        			$tablelist[] = array("game" => 1, "user" => $user2, "tr" => $trs[$i]['tr'],
         							"tour" => $trs[$i]['tour'], "w" => 0, "n" => 1, "l" => 0,
         							"bw" => $balls[$user2], "bl" => $balls[$user1], "score" => 1);
         		} else if ($balls[$user1] > $balls[$user2]) {
-        			$tablelist[] = array("user" => $user1, "tr" => $trs[$i]['tr'],
+        			$tablelist[] = array("game" => 1, "user" => $user1, "tr" => $trs[$i]['tr'],
         							"tour" => $trs[$i]['tour'], "w" => 1, "n" => 0, "l" => 0,
         							"bw" => $balls[$user1], "bl" => $balls[$user2], "score" => 3);
 
-        			$tablelist[] = array("user" => $user2, "tr" => $trs[$i]['tr'],
+        			$tablelist[] = array("game" => 1, "user" => $user2, "tr" => $trs[$i]['tr'],
         							"tour" => $trs[$i]['tour'], "w" => 0, "n" => 0, "l" => 1,
         							"bw" => $balls[$user2], "bl" => $balls[$user1], "score" => 0);
         		} else if ($balls[$user1] < $balls[$user2]) {
-        			$tablelist[] = array("user" => $user1, "tr" => $trs[$i]['tr'],
+        			$tablelist[] = array("game" => 1, "user" => $user1, "tr" => $trs[$i]['tr'],
         							"tour" => $trs[$i]['tour'], "w" => 0, "n" => 0, "l" => 1,
         							"bw" => $balls[$user1], "bl" => $balls[$user2], "score" => 0);
 
-        			$tablelist[] = array("user" => $user2, "tr" => $trs[$i]['tr'],
+        			$tablelist[] = array("game" => 1, "user" => $user2, "tr" => $trs[$i]['tr'],
         							"tour" => $trs[$i]['tour'], "w" => 1, "n" => 0, "l" => 0,
         							"bw" => $balls[$user2], "bl" => $balls[$user1], "score" => 3);
         		}
         	}
-
-
 
 		}
 
@@ -79,6 +77,7 @@ class resultsService
 
 			$tlist = $this->em->getRepository('AppTournamentBundle:Tablelist')->findOneBy(array("user" => $tablelist[$i]['user'],
 												"tr" => $tablelist[$i]['tr'], "tour" => $tablelist[$i]['tour']));
+        	$tlist->setGame($tablelist[$i]['game']);
         	$tlist->setW($tablelist[$i]['w']);
         	$tlist->setN($tablelist[$i]['n']);
         	$tlist->setL($tablelist[$i]['l']);

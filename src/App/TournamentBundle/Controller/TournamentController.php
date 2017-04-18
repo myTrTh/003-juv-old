@@ -154,6 +154,10 @@ class TournamentController extends Controller
 
             $table = $this->getDoctrine()->getRepository('AppTournamentBundle:Tablelist')->show_table($id, $tour);
 
+            print "<pre>";
+            print_r($table);
+            print "</pre>";
+
             return $this->render('AppTournamentBundle:Tournament:show.html.twig',
                    array("tournament" => $tournament,
                          "tour" => $tour,
