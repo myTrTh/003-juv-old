@@ -50,6 +50,22 @@ class TournamentusersRepository extends \Doctrine\ORM\EntityRepository
 		return array($result, $access);
 	}
 
+	public function users_for_tournament($tr)	{
+
+		$dql = "SELECT p.user, u.username 
+		FROM AppTournamentBundle:Tournamentusers p
+		INNER JOIN AppUserBundle:User u
+		WHERE u.id = p.user
+		WHERE p.tournament = :tournament AND p.status = 1";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					->SetParameter("tournament", $tr);
+
+		$result = $query->execute();
+
+		return $result;
+	}	
+
 	public function show_playoff_users($id, $user)	{
 		$dql = "SELECT p.user, u.username 
 		FROM AppTournamentBundle:Tournamentusers p

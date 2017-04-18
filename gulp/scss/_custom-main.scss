@@ -15,7 +15,7 @@ $typography_font: Arial, Helvetica;
 $color_input: #555;
 $color_red: #E03D3D !important;
 $color_gray: #aaa3a3 !important;
-$color_green: #29B029 !important;
+$color_green: #14b459 !important;
 $color_black: #474747;
 
 
@@ -363,6 +363,10 @@ input[type='checkbox'], input[type='radio'] {
 }
 
 /* text format */
+
+.s08 {
+	font-size: .8rem !important;
+}
 
 .justify {
 	text-align: justify;

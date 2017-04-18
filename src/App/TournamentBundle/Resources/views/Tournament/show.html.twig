@@ -40,7 +40,44 @@
 {% for game in showtour %}
 	<tr>
 		<td><a class='nostyle hoverlinkteam' href='{{ path('app_user_show', {'id': game.uid1 }) }}'>{{ game.user1 }}</a></td>
-		<td><a class='showtour' href='{{ path('app_tournament_showgame', {'id': game.id }) }}'>-</a></td>
+		<td>
+			<a class='ashowtour' href='{{ path('app_tournament_showgame', {'id': game.id }) }}'>
+				{% if fore.started == 1 %}
+					{% if fore.members[game.uid1] is defined %}
+						{{ fore.members[game.uid1] }}
+					{% else %}
+						0
+					{% endif %}
+				{% else %}
+					{% if tourstatus != 0 %}
+						{% if fore.members[game.uid1] is defined %}
+							<i class='fa fa-check s08'></i>
+						{% else %}
+							<i class='fa fa-times fa-color s08'></i>
+						{% endif %}
+					{% endif %}
+				{% endif %}
+			</a>
+		</td>
+		<td>
+			<a class='ashowtour' href='{{ path('app_tournament_showgame', {'id': game.id }) }}'>
+				{% if fore.started == 1 %}
+					{% if fore.members[game.uid2] is defined %}
+						{{ fore.members[game.uid2] }}
+					{% else %}
+						0
+					{% endif %}
+				{% else %}
+					{% if tourstatus != 0 %}
+						{% if fore.members[game.uid2] is defined %}
+							<i class='fa fa-check s08'></i>
+						{% else %}
+							<i class='fa fa-times fa-color s08'></i>						
+						{% endif %}
+					{% endif %}
+				{% endif %}
+			</a>
+		</td>		
 		<td><a class='nostyle hoverlinkteam' href='{{ path('app_user_show', {'id': game.uid2 }) }}'>{{ game.user2 }}</a></td>
 	</tr>
 {% endfor %}

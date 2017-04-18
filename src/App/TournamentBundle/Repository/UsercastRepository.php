@@ -69,4 +69,60 @@ class UsercastRepository extends \Doctrine\ORM\EntityRepository
 		return $result;
 	}
 
+	public function get_balls($tr, $tour, $forebridge) {
+		$dql = "SELECT f.id FROM AppTournamentBundle:Forecast f WHERE f.hash = :hash AND (f.result1 IS NOT NULL OR f.result2 IS NOT NULL)";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("hash", $forebridge);
+
+		$result = $query->execute();
+
+		if(empty($result))
+			$res['started']	= 0;
+		else
+			$res['started'] = 1;
+
+		$dql = "SELECT u.user, sum(u.ball) as summ FROM AppTournamentBundle:Usercast u WHERE u.tr = :tr AND u.tour = :tour
+		        GROUP BY u.user";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr)
+					  ->SetParameter("tour", $tour);
+
+		$result = $query->execute();
+
+		$results = [];
+		for($i=0;$i<count($result);$i++) {
+			$user = $result[$i]['user'];
+			$sum = $result[$i]['summ'];
+
+			$results[$user] = $sum;
+		}
+
+		$res['members'] = $results;
+
+		return $res;
+
+	}
+
+	public function table_ball($tr, $tour) {
+		$dql = "SELECT u.user, sum(u.ball) as summ FROM AppTournamentBundle:Usercast u WHERE u.tr = :tr AND u.tour = :tour
+		        GROUP BY u.user";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr)
+					  ->SetParameter("tour", $tour);
+
+		$result = $query->execute();
+
+		$results = [];
+		for($i=0;$i<count($result);$i++) {
+			$user = $result[$i]['user'];
+			$sum = $result[$i]['summ'];
+
+			$results[] = ["user" => $user, "sum" => $sum];
+		}
+
+		return $results;
+	}
 }

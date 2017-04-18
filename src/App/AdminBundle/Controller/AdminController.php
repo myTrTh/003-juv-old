@@ -1231,8 +1231,14 @@ class AdminController extends Controller
                     $forebridge->setTr($tournament);
                     $forebridge->setTour($tour);
                     $em->persist($forebridge);
+
+                    $this->get('app.results_tournament')->add_tablelist($tournament, $tour);
+
                 }
                 $em->flush();
+
+                // create tablelist
+                // $this->getDoctrine
 
                 return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
             }
@@ -1314,6 +1320,8 @@ class AdminController extends Controller
                 $em->persist($forebridge);
                 $em->flush();
 
+                $this->get('app.results_tournament')->add_tablelist($tournament, $tour);
+
                 return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
             }
         }        
@@ -1353,17 +1361,18 @@ class AdminController extends Controller
 
                 for($i=0;$i<count($idfore);$i++) {
                     $idfore[$i] = (int) $idfore[$i];
-                    $r1[$i] = (int) $r1[$i];
-                    $r2[$i] = (int) $r2[$i];
 
                     $forecast = $this->getDoctrine()->getRepository('AppTournamentBundle:Forecast')->find($idfore[$i]);
 
-                    if($r1[$i] != "" or $r2[$i] != "") {
+                    if($r1[$i] !== "" or $r2[$i] !== "") {
+                        $r1[$i] = (int) $r1[$i];
+                        $r2[$i] = (int) $r2[$i];
+
                         $forecast->setResult1($r1[$i]);
                         $forecast->setResult2($r2[$i]);
                         $em->persist($forecast);
 
-                        $this->get('app.results_tournament')->mathem($idfore[$i], $r1[$i], $r2[$i], $fore_end);
+                        $this->get('app.results_tournament')->mathem($idfore[$i], $r1[$i], $r2[$i], $fore_end, $tournament, $tour);
                     }
                 } 
                 $em->flush();

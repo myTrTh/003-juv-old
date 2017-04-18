@@ -136,13 +136,30 @@ class TournamentController extends Controller
 
             $tourstatus = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->get_tour_status($tournament, $tour);
 
+            $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($id, $tour);
+        if($forebridge) {
+            $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_balls($id, $tour, $forebridge);
+
+            // $preset = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($userId, $fore);
+        } else {
+            $fore['started'] = 0;
+        }
+
+            // $setusers = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_balls($members, $id, $tour);
+
+            // $sum1 = 0;
+            // foreach ($presetuser1 as $key) {
+            //     $sum1 += (int) $key['ball'];
+            // }            
+
             return $this->render('AppTournamentBundle:Tournament:show.html.twig',
                    array("tournament" => $tournament,
                          "tour" => $tour,
                          "calendar" => $calendar,
                          "showtour" => $showtour,
                          "member" => $member,
-                         "tourstatus" => $tourstatus));
+                         "tourstatus" => $tourstatus,
+                         "fore" => $fore));
         } else {
 
             return $this->render('AppTournamentBundle:Tournament:noshow.html.twig',
@@ -177,8 +194,6 @@ class TournamentController extends Controller
 
                 for($i=0;$i<count($idfore);$i++) {
                     $idfore[$i] = (int) $idfore[$i];
-                    $r1[$i] = (int) $r1[$i];
-                    $r2[$i] = (int) $r2[$i];
 
                     $cast = $this->getDoctrine()->getRepository('AppTournamentBundle:Usercast')->check_score($idfore[$i], $tr, $tour, $userId);
 
@@ -200,7 +215,10 @@ class TournamentController extends Controller
                                 $res2 = "";
                             }
 
-                            if(($r1[$i] != $res1 or $r2[$i] != $res2) and ($r1[$i] != "" and $r2[$i] != "")) {
+                            if(($r1[$i] != $res1 or $r2[$i] != $res2) and ($r1[$i] !== "" and $r2[$i] !== "")) {
+
+                                $r1[$i] = (int) $r1[$i];
+                                $r2[$i] = (int) $r2[$i];
 
                                 $usercast->setIdfore($idfore[$i]);
                                 $usercast->setUser($userId);
@@ -297,7 +315,8 @@ class TournamentController extends Controller
 
         } else {
             $fore = 0;
-            $preset = 0;
+            $presetuser1 = 0;
+            $presetuser2 = 0;
 
             $summ = [0, 0];
         }

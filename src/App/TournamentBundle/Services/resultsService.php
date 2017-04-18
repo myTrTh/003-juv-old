@@ -3,6 +3,7 @@
 namespace App\TournamentBundle\Services;
 use Doctrine\ORM\EntityManager;
 use App\TournamentBundle\Entity\Usercast;
+use App\TournamentBundle\Entity\Tablelist;
 
 class resultsService
 {
@@ -10,6 +11,38 @@ class resultsService
 
 	public function __construct(EntityManager $em) {
 		$this->em = $em;
+	}
+
+	public function add_tablelist($tr, $tour) {
+        $users = $this->em->getRepository('AppTournamentBundle:Tournamentusers')->users_for_tournament($tr);
+
+        for($i=0;$i<count($users);$i++) {
+        	$tablelist = new Tablelist();
+
+        	$tablelist->setTr($tr);
+        	$tablelist->setTour($tour);
+        	$tablelist->setUser($users[$i]['user']);
+
+			$this->em->persist($tablelist);
+			$this->em->flush();        	
+        }
+	}
+
+	public function completed_tablelist($tournament, $tour) {
+        $balls = $this->em->getRepository('AppTournamentBundle:Usercast')->table_ball($tournament, $tour);
+
+        for($i=0;$i<count($balls);$i++) {
+        	$tablelist = $this->em->getRepository('AppTournamentBundle:Tablelist')->findOneBy(array('tr' => $tournament, 'tour' => $tour, 'user' => $balls['user']));
+
+        	
+
+        	$tablelist->setW();
+        	$tablelist->setN();
+        	$tablelist->setL();
+        	$tablelist->setBW();
+        	$tablelist->setBL();
+        	$tablelist->setScore();
+        }
 	}
 
 	// Расчет результатов по ПРОГРЕССИВНОЙ схеме
@@ -38,7 +71,7 @@ class resultsService
 	}
 
 	// Расчет результатов по ПРОГРЕССИВНОЙ схеме
-	public function mathem($idfore, $r1, $r2, $fore_end) {
+	public function mathem($idfore, $r1, $r2, $fore_end, $tournament, $tour) {
 
 		// получаем все нужные idfore в таблице usercast
 		// просчитываем и записываем результаты
@@ -76,7 +109,8 @@ class resultsService
 		$this->em->flush();
 
 
-		// return $result; 
+		if($fore_end)
+			$this->completed_tablelist($tournament, $tour);
 	}
 
 	// Расчет результатов по классической схеме
