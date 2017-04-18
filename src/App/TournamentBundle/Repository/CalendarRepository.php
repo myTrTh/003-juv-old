@@ -78,4 +78,8 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 
 		return $result;
 	}
+
+	public function get_pair($tournament, $tour) {
+		
+	}
 }

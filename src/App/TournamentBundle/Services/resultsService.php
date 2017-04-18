@@ -31,10 +31,10 @@ class resultsService
 	public function completed_tablelist($tournament, $tour) {
         $balls = $this->em->getRepository('AppTournamentBundle:Usercast')->table_ball($tournament, $tour);
 
-        for($i=0;$i<count($balls);$i++) {
-        	$tablelist = $this->em->getRepository('AppTournamentBundle:Tablelist')->findOneBy(array('tr' => $tournament, 'tour' => $tour, 'user' => $balls['user']));
+        // for($i=0;$i<count($balls);$i++) {
+        $calendar = $this->em->getRepository('AppTournamentBundle:Calendar')->get_pair($tournament, $tour);
 
-        	
+        	$tablelist = $this->em->getRepository('AppTournamentBundle:Tablelist')->findOneBy(array('tr' => $tournament, 'tour' => $tour, 'user' => $balls['user']));
 
         	$tablelist->setW();
         	$tablelist->setN();
@@ -42,7 +42,7 @@ class resultsService
         	$tablelist->setBW();
         	$tablelist->setBL();
         	$tablelist->setScore();
-        }
+        // }
 	}
 
 	// Расчет результатов по ПРОГРЕССИВНОЙ схеме
