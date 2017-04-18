@@ -28,21 +28,66 @@ class resultsService
         }
 	}
 
-	public function completed_tablelist($tournament, $tour) {
-        $balls = $this->em->getRepository('AppTournamentBundle:Usercast')->table_ball($tournament, $tour);
+	public function completed_tour($hash) {
 
-        // for($i=0;$i<count($balls);$i++) {
-        $calendar = $this->em->getRepository('AppTournamentBundle:Calendar')->get_pair($tournament, $tour);
+		$trs = $this->em->getRepository('AppTournamentBundle:Forebridge')->get_all_trs($hash);
+        $balls = $this->em->getRepository('AppTournamentBundle:Usercast')->table_ball($trs[$i]['tr'], $trs[$i]['tour']);
 
-        	$tablelist = $this->em->getRepository('AppTournamentBundle:Tablelist')->findOneBy(array('tr' => $tournament, 'tour' => $tour, 'user' => $balls['user']));
+        $tablelist = [];
 
-        	$tablelist->setW();
-        	$tablelist->setN();
-        	$tablelist->setL();
-        	$tablelist->setBW();
-        	$tablelist->setBL();
-        	$tablelist->setScore();
-        // }
+		for($i=0;$i<count($trs);$i++) {
+        	$calendar = $this->em->getRepository('AppTournamentBundle:Calendar')->get_pair($trs[$i]['tr'], $trs[$i]['tour']);
+
+        	for($i=0;$i<count($calendar);$i++) {
+        		$user1 = $calendar[$i]['user1'];
+        		$user2 = $calendar[$i]['user2'];
+
+        		// Сравнение
+        		if($balls[$user1] == $balls[$user2]) {
+        			$tablelist[] = array("user" => $user1, "tr" => $trs[$i]['tr'],
+        							"tour" => $trs[$i]['tour'], "w" => 0, "n" => 1, "l" => 0,
+        							"bw" => $balls[$user1], "bl" => $balls[$user2], "score" => 1);
+
+        			$tablelist[] = array("user" => $user2, "tr" => $trs[$i]['tr'],
+        							"tour" => $trs[$i]['tour'], "w" => 0, "n" => 1, "l" => 0,
+        							"bw" => $balls[$user2], "bl" => $balls[$user1], "score" => 1);
+        		} else if ($balls[$user1] > $balls[$user2]) {
+        			$tablelist[] = array("user" => $user1, "tr" => $trs[$i]['tr'],
+        							"tour" => $trs[$i]['tour'], "w" => 1, "n" => 0, "l" => 0,
+        							"bw" => $balls[$user1], "bl" => $balls[$user2], "score" => 3);
+
+        			$tablelist[] = array("user" => $user2, "tr" => $trs[$i]['tr'],
+        							"tour" => $trs[$i]['tour'], "w" => 0, "n" => 0, "l" => 1,
+        							"bw" => $balls[$user2], "bl" => $balls[$user1], "score" => 0);
+        		} else if ($balls[$user1] < $balls[$user2]) {
+        			$tablelist[] = array("user" => $user1, "tr" => $trs[$i]['tr'],
+        							"tour" => $trs[$i]['tour'], "w" => 0, "n" => 0, "l" => 1,
+        							"bw" => $balls[$user1], "bl" => $balls[$user2], "score" => 0);
+
+        			$tablelist[] = array("user" => $user2, "tr" => $trs[$i]['tr'],
+        							"tour" => $trs[$i]['tour'], "w" => 1, "n" => 0, "l" => 0,
+        							"bw" => $balls[$user2], "bl" => $balls[$user1], "score" => 3);
+        		}
+        	}
+
+
+
+		}
+
+		for($i=0;$i<count($tablelist);$i++) {
+
+			$tlist = $this->em->getRepository('AppTournamentBundle:Tablelist')->findOneBy(array("user" => $tablelist[$i]['user'],
+												"tr" => $tablelist[$i]['tr'], "tour" => $tablelist[$i]['tour']));
+        	$tlist->setW($tablelist[$i]['w']);
+        	$tlist->setN($tablelist[$i]['n']);
+        	$tlist->setL($tablelist[$i]['l']);
+        	$tlist->setBw($tablelist[$i]['bw']);
+        	$tlist->setBl($tablelist[$i]['bl']);
+        	$tlist->setScore($tablelist[$i]['score']);
+        	$this->em->persist($tlist);
+        }
+
+        $this->em->flush();
 	}
 
 	// Расчет результатов по ПРОГРЕССИВНОЙ схеме
@@ -71,7 +116,7 @@ class resultsService
 	}
 
 	// Расчет результатов по ПРОГРЕССИВНОЙ схеме
-	public function mathem($idfore, $r1, $r2, $fore_end, $tournament, $tour) {
+	public function mathem($idfore, $r1, $r2) {
 
 		// получаем все нужные idfore в таблице usercast
 		// просчитываем и записываем результаты
@@ -107,10 +152,6 @@ class resultsService
 		}
 
 		$this->em->flush();
-
-
-		if($fore_end)
-			$this->completed_tablelist($tournament, $tour);
 	}
 
 	// Расчет результатов по классической схеме

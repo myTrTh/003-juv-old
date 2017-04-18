@@ -1363,7 +1363,7 @@ class AdminController extends Controller
                     $idfore[$i] = (int) $idfore[$i];
 
                     $forecast = $this->getDoctrine()->getRepository('AppTournamentBundle:Forecast')->find($idfore[$i]);
-
+                    $hash = $forecast->getHash();
                     if($r1[$i] !== "" or $r2[$i] !== "") {
                         $r1[$i] = (int) $r1[$i];
                         $r2[$i] = (int) $r2[$i];
@@ -1372,10 +1372,15 @@ class AdminController extends Controller
                         $forecast->setResult2($r2[$i]);
                         $em->persist($forecast);
 
-                        $this->get('app.results_tournament')->mathem($idfore[$i], $r1[$i], $r2[$i], $fore_end, $tournament, $tour);
+                        $this->get('app.results_tournament')->mathem($idfore[$i], $r1[$i], $r2[$i]);
+
                     }
-                } 
+                }
                 $em->flush();
+
+                                        // Если рассчитать турнир
+                if($fore_end)
+                    $this->get('app.results_tournament')->completed_tour($hash);
             }
         }
 

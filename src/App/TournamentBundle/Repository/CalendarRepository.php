@@ -79,7 +79,16 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 		return $result;
 	}
 
-	public function get_pair($tournament, $tour) {
-		
+	public function get_pair($tr, $tour) {
+		$dql = "SELECT c.user1, c.user2 FROM AppTournamentBundle:Calendar c
+				WHERE c.tr = :tr AND c.tour = :tour";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr)
+					  ->SetParameter("tour", $tour);
+
+		$result = $query->execute();
+
+		return $result;
 	}
 }
