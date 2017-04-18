@@ -11,10 +11,12 @@ namespace App\TournamentBundle\Repository;
 class TablelistRepository extends \Doctrine\ORM\EntityRepository
 {
 	public function show_table($tr, $tour) {
-		$dql = "SELECT sum(t.game), sum(t.w), sum(t.n), sum(t.l), sum(t.bw), sum(t.bl), sum(t.score) FROM AppTournamentBundle:Tablelist t
+		$dql = "SELECT t.user, u.username, u.image, sum(t.game) as game, sum(t.w) as w, sum(t.n) as n, sum(t.l) as l, sum(t.bw) as bw, sum(t.bl) as bl, sum(t.score) as score FROM 	  	AppTournamentBundle:Tablelist t
 			INNER JOIN AppUserBundle:User u
 			WHERE u.id = t.user
-			WHERE t.tr = :tr AND t.tour <= :tour";
+			WHERE t.tr = :tr AND t.tour <= :tour
+			GROUP BY t.user
+			ORDER BY score DESC, bw DESC, bl DESC, u.username ASC";
 
 		$query = $this->getEntityManager()->createQuery($dql)
 					  ->SetParameter("tr", $tr)

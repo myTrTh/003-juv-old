@@ -91,4 +91,22 @@
 	</form>
 {% endif %}
 
+{% set i = 1 %}
+<table>
+{% for team in table %}
+	<tr>
+		<td>{{ i }}</td>
+		<td>{{ team.username }}</td>
+		<td>{{ team.game }}</td>
+		<td>{{ team.w }}</td>
+		<td>{{ team.n }}</td>
+		<td>{{ team.l }}</td>
+		<td>{{ team.bw }}</td>
+		<td>{{ team.bl }}</td>
+		<td>{{ team.score }}</td>
+	</tr>
+	{% set i = i + 1 %}
+{% endfor %}
+</table>
+
 {% endblock %}
