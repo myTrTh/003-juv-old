@@ -33,7 +33,7 @@
 	{% elseif tourstatus == 1 %}
 		<div class='statustour green'><i class='fa fa-circle'></i> АКТИВНЫЙ ТУР</div>
 	{% elseif tourstatus == 2 %}
-		<div class='statustour'><i class='fa fa-circle'></i> ТУР ЗАВЕРШЕН</div>
+		<div class='statustour gray'><i class='fa fa-circle'></i> ТУР ЗАВЕРШЕН</div>
 	{% endif %}
 </div>
 <table class='schedule'>
@@ -91,37 +91,78 @@
 	</form>
 {% endif %}
 
-{% set i = 1 %}
-Турнирная таблица
-<table>
-{% for team in table %}
-	<tr>
-		<td>{{ i }}</td>
-		<td>{{ team.username }}</td>
-		<td>{{ team.game }}</td>
-		<td>{{ team.w }}</td>
-		<td>{{ team.n }}</td>
-		<td>{{ team.l }}</td>
-		<td>{{ team.bw }}</td>
-		<td>{{ team.bl }}</td>
-		<td>{{ team.score }}</td>
-	</tr>
-	{% set i = i + 1 %}
-{% endfor %}
-</table>
+{% if table is not empty %}
+	{% set i = 1 %}
+<div class='classifica-body'>
+	<div class='table-info'>Турнирная таблица</div>
+	<table class='classifica'>
+		<tr>
+			<td>#</td>
+			<td></td>
+			<td>КОМАНДА</td>
+			<td>И</td>
+			<td>В</td>
+			<td>Н</td>
+			<td>П</td>
+			<td></td>
+			<td>М</td>
+			<td></td>
+			<td>О</td>
+		</tr>
+	{% for team in table %}
+		<tr>
+			<td>{{ i }}</td>
+			<td>
+				{% if team.image is not null %}
+					<img class='classifica-img' src="/public/images/users/{{ team.image }}">
+				{% else %}
+					<img class='classifica-img' src="/public/images/interface/no_photo.png"><br>	
+				{% endif %}				
+			</td>
+			<td><a class='nostyle' href='{{ path('app_user_show', {'id': team.user}) }}'>{{ team.username }}</a></td>
+			<td>{{ team.game }}</td>
+			<td>{{ team.w }}</td>
+			<td>{{ team.n }}</td>
+			<td>{{ team.l }}</td>
+			<td class='classifica-balls'>{{ team.bw }}</td>
+			<td>-</td>
+			<td class='classifica-balls'>{{ team.bl }}</td>
+			<td>{{ team.score }}</td>
+		</tr>
+		{% set i = i + 1 %}
+	{% endfor %}
+	</table>
+</div>
+{% endif %}
 
-<br><br>
-{% set i = 1 %}
-Список бомбардиров
-<table>
-{% for team in table %}
-	<tr>
-		<td>{{ i }}</td>
-		<td>{{ team.username }}</td>
-		<td>{{ team.bw }}</td>
-	</tr>
-	{% set i = i + 1 %}
-{% endfor %}
-</table>
+{% if strickers is not empty %}
+<div class='classifica-body'>
+	{% set i = 1 %}
+	<div class='table-info'>Список бомбардиров</div>
+	<table class='classifica classifica-striker'>
+		<tr>
+			<td>#</td>
+			<td></td>
+			<td>КОМАНДА</td>
+			<td>БАЛЛЫ</td>
+		</tr>
+	{% for stricker in strickers %}
+		<tr>
+			<td>{{ i }}</td>
+			<td>
+				{% if stricker.image is not null %}
+					<img class='classifica-img' src="/public/images/users/{{ stricker.image }}">
+				{% else %}
+					<img class='classifica-img' src="/public/images/interface/no_photo.png"><br>	
+				{% endif %}	
+			</td>
+			<td>{{ stricker.username }}</td>
+			<td class='classifica-striker'>{{ stricker.bw }}</td>
+		</tr>
+		{% set i = i + 1 %}
+	{% endfor %}
+	</table>
+</div>
+{% endif %}
 
 {% endblock %}

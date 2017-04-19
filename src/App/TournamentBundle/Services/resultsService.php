@@ -22,6 +22,13 @@ class resultsService
         	$tablelist->setTr($tr);
         	$tablelist->setTour($tour);
         	$tablelist->setUser($users[$i]['user']);
+        	$tablelist->setGame(0);
+        	$tablelist->setW(0);
+        	$tablelist->setN(0);
+        	$tablelist->setL(0);
+        	$tablelist->setBw(0);
+        	$tablelist->setBl(0);
+        	$tablelist->setScore(0);
 
 			$this->em->persist($tablelist);
 			$this->em->flush();        	

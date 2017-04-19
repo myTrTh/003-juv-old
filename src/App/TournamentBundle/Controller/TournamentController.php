@@ -110,7 +110,12 @@ class TournamentController extends Controller
         } else if ($tournament->getStatus() == 1) {
 
             if($tour == 0)
-                $tour = 1;
+                $tour = $this->getDoctrine()->getRepository("AppTournamentBundle:Tablelist")->get_actual_tour($id);
+
+            if($tour == 0)
+                $tour = 1;            
+
+            $tourstatus = $this->getDoctrine()->getRepository("AppTournamentBundle:Tablelist")->get_tour_status($id, $tour);
 
             $info = $tournament->getInfo();
             $schema = $info['schema'];
@@ -134,25 +139,15 @@ class TournamentController extends Controller
             else
                 $member = 0;
 
-            $tourstatus = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->get_tour_status($tournament, $tour);
-
             $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($id, $tour);
         if($forebridge) {
             $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_balls($id, $tour, $forebridge);
-
-            // $preset = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($userId, $fore);
         } else {
             $fore['started'] = 0;
         }
 
-            // $setusers = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_balls($members, $id, $tour);
-
-            // $sum1 = 0;
-            // foreach ($presetuser1 as $key) {
-            //     $sum1 += (int) $key['ball'];
-            // }
-
             $table = $this->getDoctrine()->getRepository('AppTournamentBundle:Tablelist')->show_table($id, $tour);
+            $strickers = $this->getDoctrine()->getRepository('AppTournamentBundle:Tablelist')->show_strickers($id, $tour);
 
             return $this->render('AppTournamentBundle:Tournament:show.html.twig',
                    array("tournament" => $tournament,
@@ -161,7 +156,7 @@ class TournamentController extends Controller
                          "showtour" => $showtour,
                          "member" => $member,
                          "tourstatus" => $tourstatus,
-                         "fore" => $fore, "table" => $table));
+                         "fore" => $fore, "table" => $table, "strickers" => $strickers));
         } else {
 
             return $this->render('AppTournamentBundle:Tournament:noshow.html.twig',
@@ -268,7 +263,7 @@ class TournamentController extends Controller
 
         $access = $result[1];
 
-        $tourstatus = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->get_tour_status($tr, $tour);
+        // $tourstatus = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->get_tour_status($tr, $tour);
 
         if($access != 1 and $tourstatus != 1)
             throw $this->createAccessDeniedException();

@@ -27,4 +27,65 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
 		return $result;
 	}
 
+	public function show_strickers($tr, $tour) {
+		$dql = "SELECT t.user, u.username, u.image, sum(t.bw) as bw 
+				FROM AppTournamentBundle:Tablelist t
+				INNER JOIN AppUserBundle:User u
+				WHERE u.id = t.user
+				WHERE t.tr = :tr AND t.tour <= :tour
+				GROUP BY t.user
+				ORDER BY bw DESC, u.username ASC";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr)
+					  ->SetParameter("tour", $tour);
+
+		$result = $query->execute();
+
+		return $result;
+	}
+
+	public function get_tour_status($tr, $tour) {
+		$dql = "SELECT t.game FROM AppTournamentBundle:Tablelist t
+				WHERE t.tr = :tr AND t.tour = :tour";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr)
+					  ->SetParameter("tour", $tour)
+					  ->SetMaxResults(1);
+
+		$result = $query->execute();
+
+		if(empty($result)) {
+			$status = 0;
+		} else {
+			if($result[0]['game'] == 0)
+				$status = 1;
+			else
+				$status = 2;
+		}
+
+		return $status;
+
+	}
+
+	public function geT_actual_tour($tr) {
+
+		$dql = "SELECT max(t.tour) as maxtour FROM AppTournamentBundle:Tablelist t
+				WHERE t.tr = :tr";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr);
+
+		$result = $query->execute();
+
+		if(empty($result))
+			$maxtour = 1;
+		else
+			$maxtour = $result[0]['maxtour'];
+
+		return $maxtour;
+
+	}
+
 }

@@ -1179,7 +1179,10 @@ class AdminController extends Controller
                 throw $this->createAccessDeniedException();
 
         if($tour == 0)
-            $tour = 1;
+            $tour = $this->getDoctrine()->getRepository("AppTournamentBundle:Tablelist")->get_actual_tour($tournament);
+
+        if($tour == 0)
+            $tour = 1;            
 
         $tr = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($tournament);
 
