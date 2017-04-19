@@ -69,7 +69,7 @@
 	& td:nth-child(2), td:nth-child(3) {
 		width: 30px;
 		text-align: center;
-		background-color: #d8dcde;
+		background-color: #d5dee2;
 		border-right: solid 3px #F1F2F3;
 	}
 }
@@ -206,6 +206,9 @@
 		text-align: center;
 		height: 35px;
 	}
+	tr:hover td {
+		background-color: #ccc;
+	}
 	td.classifica-balls {
 		width: 35px;
 	}
@@ -222,6 +225,8 @@
 		width: 35px;
 		height: 35px;
 		padding: .1rem;
+		display: block;
+		overflow: hidden;
 	}		
 	& td:nth-child(4) {
 		border-right: solid 1px #ccc;
@@ -248,7 +253,7 @@
 		}
 	}
 	& tr:nth-child(2n+1) {
-		background-color: #D8DCDE;
+		background-color: #d5dee2;
 	}	
 	& tr:nth-child(2n) {
 		background-color: #F1F2F3;
@@ -256,9 +261,9 @@
 }
 
 .classifica-img {
-	max-width: 32px;
-	max-height: 32px;
-	border-radius: 20px;
+	width: 32px;
+	height: 32px;
+	border-radius: 16px;
 	vertical-align: middle;
 	
 }

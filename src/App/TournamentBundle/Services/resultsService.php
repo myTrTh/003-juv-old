@@ -41,40 +41,93 @@ class resultsService
 
         $tablelist = [];
 
-		for($i=0;$i<count($trs);$i++) {
-        	$balls = $this->em->getRepository('AppTournamentBundle:Usercast')->table_ball($trs[$i]['tr'], $trs[$i]['tour']);
+		for($y=0;$y<count($trs);$y++) {
+        	$balls = $this->em->getRepository('AppTournamentBundle:Usercast')->table_ball($trs[$y]['tr'], $trs[$y]['tour']);
         	
-        	$calendar = $this->em->getRepository('AppTournamentBundle:Calendar')->get_pair($trs[$i]['tr'], $trs[$i]['tour']);
+        	$calendar = $this->em->getRepository('AppTournamentBundle:Calendar')->get_pair($trs[$y]['tr'], $trs[$y]['tour']);
 
         	for($i=0;$i<count($calendar);$i++) {
         		$user1 = $calendar[$i]['user1'];
         		$user2 = $calendar[$i]['user2'];
+        		if(isset($balls[$user1]))
+        			$one = $balls[$user1];
+        		else
+        			$one = 0;
+
+        		if(isset($balls[$user2]))
+        			$two = $balls[$user2];
+        		else
+        			$two = 0;        		
 
         		// Сравнение
-        		if($balls[$user1] == $balls[$user2]) {
-        			$tablelist[] = array("game" => 1, "user" => $user1, "tr" => $trs[$i]['tr'],
-        							"tour" => $trs[$i]['tour'], "w" => 0, "n" => 1, "l" => 0,
-        							"bw" => $balls[$user1], "bl" => $balls[$user2], "score" => 1);
+        		if($one == $two) {
 
-        			$tablelist[] = array("game" => 1, "user" => $user2, "tr" => $trs[$i]['tr'],
-        							"tour" => $trs[$i]['tour'], "w" => 0, "n" => 1, "l" => 0,
-        							"bw" => $balls[$user2], "bl" => $balls[$user1], "score" => 1);
-        		} else if ($balls[$user1] > $balls[$user2]) {
-        			$tablelist[] = array("game" => 1, "user" => $user1, "tr" => $trs[$i]['tr'],
-        							"tour" => $trs[$i]['tour'], "w" => 1, "n" => 0, "l" => 0,
-        							"bw" => $balls[$user1], "bl" => $balls[$user2], "score" => 3);
+        			$tablelist[] = array("game" => 1, 
+        								 "user" => $user1, 
+        								 "tr" => $trs[$y]['tr'],
+        								 "tour" => $trs[$y]['tour'], 
+        								 "w" => 0, 
+        								 "n" => 1, 
+        								 "l" => 0,
+        								 "bw" => $one, 
+        								 "bl" => $two, 
+        								 "score" => 1);
 
-        			$tablelist[] = array("game" => 1, "user" => $user2, "tr" => $trs[$i]['tr'],
-        							"tour" => $trs[$i]['tour'], "w" => 0, "n" => 0, "l" => 1,
-        							"bw" => $balls[$user2], "bl" => $balls[$user1], "score" => 0);
-        		} else if ($balls[$user1] < $balls[$user2]) {
-        			$tablelist[] = array("game" => 1, "user" => $user1, "tr" => $trs[$i]['tr'],
-        							"tour" => $trs[$i]['tour'], "w" => 0, "n" => 0, "l" => 1,
-        							"bw" => $balls[$user1], "bl" => $balls[$user2], "score" => 0);
+        			$tablelist[] = array("game" => 1, 
+        								 "user" => $user2, 
+        								 "tr" => $trs[$y]['tr'],
+        								 "tour" => $trs[$y]['tour'], 
+        								 "w" => 0, 
+        								 "n" => 1, 
+        								 "l" => 0,
+        								 "bw" => $two, 
+        								 "bl" => $one, 
+        								 "score" => 1);
+        		} else if ($one > $two) {
 
-        			$tablelist[] = array("game" => 1, "user" => $user2, "tr" => $trs[$i]['tr'],
-        							"tour" => $trs[$i]['tour'], "w" => 1, "n" => 0, "l" => 0,
-        							"bw" => $balls[$user2], "bl" => $balls[$user1], "score" => 3);
+        			$tablelist[] = array("game" => 1, 
+        								 "user" => $user1, 
+        								 "tr" => $trs[$y]['tr'],
+        								 "tour" => $trs[$y]['tour'], 
+        								 "w" => 1, 
+        								 "n" => 0, 
+        								 "l" => 0,
+        								 "bw" => $one, 
+        								 "bl" => $two, 
+        								 "score" => 3);
+
+        			$tablelist[] = array("game" => 1, 
+        								 "user" => $user2, 
+        								 "tr" => $trs[$y]['tr'],
+        								 "tour" => $trs[$y]['tour'], 
+        								 "w" => 0, 
+        								 "n" => 0, 
+        								 "l" => 1,
+        								 "bw" => $two, 
+        								 "bl" => $one, 
+        								 "score" => 0);
+        		} else if ($one < $two) {
+        			$tablelist[] = array("game" => 1, 
+        								 "user" => $user1, 
+        								 "tr" => $trs[$y]['tr'],
+        								 "tour" => $trs[$y]['tour'], 
+        								 "w" => 0, 
+        								 "n" => 0, 
+        								 "l" => 1,
+        								 "bw" => $one, 
+        								 "bl" => $two, 
+        								 "score" => 0);
+
+        			$tablelist[] = array("game" => 1, 
+        								 "user" => $user2, 
+        								 "tr" => $trs[$y]['tr'],
+        								 "tour" => $trs[$y]['tour'], 
+        								 "w" => 1, 
+        								 "n" => 0, 
+        								 "l" => 0,
+        								 "bw" => $two, 
+        								 "bl" => $one, 
+        								 "score" => 3);
         		}
         	}
 
