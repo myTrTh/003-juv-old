@@ -44,6 +44,12 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 
 		$result = $query->execute();
 
+		// for($i=0;$i<count($result);$i++) {
+		// 	print "<pre>";
+		// 	print_r($result[$i]);
+		// 	print "</pre>";
+		// }
+
 		return $result;
 	}	
 
