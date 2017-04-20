@@ -130,17 +130,6 @@ class TournamentController extends Controller
 
             $member = 1;
 
-            // $members = [];            
-            // for($i=0;$i<count($showtour);$i++) {
-            //     $members[] = $showtour[$i]['uid1'];
-            //     $members[] = $showtour[$i]['uid2'];
-            // }
-
-            // if(in_array($userId, $members))
-            //     $member = 1;
-            // else
-            //     $member = 0;
-
             $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($id, $tour);
         if($forebridge) {
             $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_balls($id, $tour, $forebridge);
@@ -148,10 +137,17 @@ class TournamentController extends Controller
             $fore['started'] = 0;
         }
 
-            $table = $this->getDoctrine()->getRepository('AppTournamentBundle:Tablelist')->show_table($id, $tour);
+            $table = [];
+            if(count($showtour) > 1) {
+                for($i=1;$i<=count($showtour);$i++)
+                    $table[$i] = $this->getDoctrine()->getRepository('AppTournamentBundle:Tablelist')->show_table($id, $tour, $i);
+            } else {
+                $table[] = $this->getDoctrine()->getRepository('AppTournamentBundle:Tablelist')->show_table($id, $tour, 0);
+            }
+
             $strickers = $this->getDoctrine()->getRepository('AppTournamentBundle:Tablelist')->show_strickers($id, $tour);
 
-            $groups_name = ['', 'ГРУППА A', 'ГРУППА B', 'ГРУППА C', 'ГРУППА D', 'ГРУППА E', 'ГРУППА F', 'ГРУППА G', 'ГРУППА H', 'ГРУППА I', 'ГРУППА K', 'ГРУППА L', 'ГРУППА M', 'ГРУППА N', 'ГРУППА O', 'ГРУППА P', 'ГРУППА Q', 'ГРУППА R', 'ГРУППА S', 'ГРУППА T', 'ГРУППА U'];
+            $groups_name = ['', 'ГРУППА A', 'ГРУППА B', 'ГРУППА C', 'ГРУППА D', 'ГРУППА E', 'ГРУППА F', 'ГРУППА G', 'ГРУППА H', 'ГРУППА I', 'ГРУППА J', 'ГРУППА K', 'ГРУППА L', 'ГРУППА M', 'ГРУППА N', 'ГРУППА O', 'ГРУППА P', 'ГРУППА Q', 'ГРУППА R', 'ГРУППА S', 'ГРУППА T', 'ГРУППА U', 'ГРУППА V', 'ГРУППА W', 'ГРУППА X', 'ГРУППА Y', 'ГРУППА Z'];
 
             return $this->render('AppTournamentBundle:Tournament:show.html.twig',
                    array("tournament" => $tournament,

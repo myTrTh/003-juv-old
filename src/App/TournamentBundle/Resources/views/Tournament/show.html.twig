@@ -15,8 +15,8 @@
 <a class='link-back' href='{{ path("app_tournament_list") }}'><i class='fa fa-arrow-left'></i> К СПИСКУ ТУРНИРОВ</a>
 <br>
 
-<div class='tourlist'>
 {# tours list #}
+<div class='tourlist'>
 {% for i in range(1, calendar) %}
 	{% if tour == i %}
 		<div class='tourlist-active'>{{ i }}</div>
@@ -37,68 +37,74 @@
 	{% endif %}
 </div>
 
-{% for tour in showtour %}
-	{% if showtour|length > 1 %}
-		<div class='groups_name'>{{ groups[tour.0.groups] }}</div>
-	{% endif %}
-<table class='schedule'>
-	{% for game in tour %}
-	<tr>
-		<td><a class='nostyle hoverlinkteam' href='{{ path('app_user_show', {'id': game.uid1 }) }}'>{{ game.user1 }}</a></td>
-		<td>
-			<a class='ashowtour' href='{{ path('app_tournament_showgame', {'id': game.id }) }}'>
-				{% if fore.started == 1 %}
-					{% if fore.members[game.uid1] is defined %}
-						{{ fore.members[game.uid1] }}
-					{% else %}
-						0
-					{% endif %}
-				{% else %}
-					{% if tourstatus != 0 %}
-						{% if fore.members[game.uid1] is defined %}
-							<i class='fa fa-check s08'></i>
-						{% else %}
-							<i class='fa fa-times fa-color s08'></i>
-						{% endif %}
-					{% endif %}
-				{% endif %}
-			</a>
-		</td>
-		<td>
-			<a class='ashowtour' href='{{ path('app_tournament_showgame', {'id': game.id }) }}'>
-				{% if fore.started == 1 %}
-					{% if fore.members[game.uid2] is defined %}
-						{{ fore.members[game.uid2] }}
-					{% else %}
-						0
-					{% endif %}
-				{% else %}
-					{% if tourstatus != 0 %}
-						{% if fore.members[game.uid2] is defined %}
-							<i class='fa fa-check s08'></i>
-						{% else %}
-							<i class='fa fa-times fa-color s08'></i>						
-						{% endif %}
-					{% endif %}
-				{% endif %}
-			</a>
-		</td>		
-		<td><a class='nostyle hoverlinkteam' href='{{ path('app_user_show', {'id': game.uid2 }) }}'>{{ game.user2 }}</a></td>
-	</tr>
-	{% endfor %}
-</table>
-{% endfor %}
-<br>
-{% if member == 1 and tourstatus == 1 %}
-	<form method='post' action='{{ path('app_tournament_tourset') }}'>
-		<input type='hidden' name='tr' value='{{ tournament.id }}'>
-		<input type='hidden' name='tour' value='{{ tour }}'>
-		<input type='submit' class='button button-access' value='Сделать прогноз'>
-	</form>
+{% if showtour|length > 1 %}
+	{% set x = 1 %}
+{% else %}
+	{% set x = 0 %}
 {% endif %}
 
+{% for show in showtour %}
+	{% if showtour|length > 1 %}
+		<div class='groups_name'>{{ groups[show.0.groups] }}</div>
+	{% endif %}
+	<table class='schedule'>
+	{% for game in show %}
+		<tr>
+			<td><a class='nostyle hoverlinkteam' href='{{ path('app_user_show', {'id': game.uid1 }) }}'>{{ game.user1 }}</a></td>
+			<td>
+				<a class='ashowtour' href='{{ path('app_tournament_showgame', {'id': game.id }) }}'>
+					{% if fore.started == 1 %}
+						{% if fore.members[game.uid1] is defined %}
+							{{ fore.members[game.uid1] }}
+						{% else %}
+							0
+						{% endif %}
+					{% else %}
+						{% if tourstatus != 0 %}
+							{% if fore.members[game.uid1] is defined %}
+								<i class='fa fa-check s08'></i>
+							{% else %}
+								<i class='fa fa-times fa-color s08'></i>
+							{% endif %}
+						{% endif %}
+					{% endif %}
+				</a>
+			</td>
+			<td>
+				<a class='ashowtour' href='{{ path('app_tournament_showgame', {'id': game.id }) }}'>
+					{% if fore.started == 1 %}
+						{% if fore.members[game.uid2] is defined %}
+							{{ fore.members[game.uid2] }}
+						{% else %}
+							0
+						{% endif %}
+					{% else %}
+						{% if tourstatus != 0 %}
+							{% if fore.members[game.uid2] is defined %}
+								<i class='fa fa-check s08'></i>
+							{% else %}
+								<i class='fa fa-times fa-color s08'></i>						
+							{% endif %}
+						{% endif %}
+					{% endif %}
+				</a>
+			</td>		
+			<td><a class='nostyle hoverlinkteam' href='{{ path('app_user_show', {'id': game.uid2 }) }}'>{{ game.user2 }}</a></td>
+		</tr>
+		{% endfor %}
+	</table>
+
+	<br>
+	{% if member == 1 and tourstatus == 1 %}
+		<form method='post' action='{{ path('app_tournament_tourset') }}'>
+			<input type='hidden' name='tr' value='{{ tournament.id }}'>
+			<input type='hidden' name='tour' value='{{ tour }}'>
+			<input type='submit' class='button button-access' value='Сделать прогноз'>
+		</form>
+	{% endif %}
+
 {% if table is not empty %}
-	{% set i = 1 %}
+
 <div class='classifica-body'>
 	<div class='table-info'>Турнирная таблица</div>
 	<table class='classifica'>
@@ -110,12 +116,11 @@
 			<td>В</td>
 			<td>Н</td>
 			<td>П</td>
-			<td></td>
-			<td>М</td>
-			<td></td>
+			<td class='border-balls' colspan="3">МЯЧИ</td>
 			<td>О</td>
 		</tr>
-	{% for team in table %}
+	{% set i = 1 %}
+	{% for team in table[x] %}
 		<tr>
 			<td>{{ i }}</td>
 			<td>
@@ -140,8 +145,17 @@
 	</table>
 </div>
 {% endif %}
+		{% set x = x + 1 %}
+
+
+{% endfor %}
+
 
 {% if strickers is not empty %}
+
+{% if x > 0 %}
+<br><br>
+{% endif %}
 <div class='classifica-body'>
 	{% set i = 1 %}
 	<div class='table-info'>Список бомбардиров</div>
