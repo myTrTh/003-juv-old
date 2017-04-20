@@ -109,4 +109,22 @@ class TournamentusersRepository extends \Doctrine\ORM\EntityRepository
 
 		$q->execute();
 	}
+
+	public function get_member($tr, $userId) {
+		$dql = "SELECT t.user FROM AppTournamentBundle:Tournamentusers t
+				WHERE t.tournament = :tr and t.user = :user AND t.status = 1";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr)
+					  ->SetParameter("user", $userId);
+
+		$result = $query->execute();
+
+		if(empty($result))
+			$res = 0;
+		else
+			$res = 1;
+
+		return $res;
+	}
 }

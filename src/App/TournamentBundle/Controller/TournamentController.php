@@ -128,7 +128,7 @@ class TournamentController extends Controller
             $showtour = $rep_calendar->get_tour($id, $tour, $schema, $playoff);
             $calendar = $rep_calendar->get_calendar($id);
 
-            $member = 1;
+            $member = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournamentusers")->get_member($id, $userId);
 
             $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($id, $tour);
         if($forebridge) {
