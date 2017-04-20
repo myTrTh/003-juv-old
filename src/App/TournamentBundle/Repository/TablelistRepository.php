@@ -11,7 +11,7 @@ namespace App\TournamentBundle\Repository;
 class TablelistRepository extends \Doctrine\ORM\EntityRepository
 {
 	public function show_table($tr, $tour) {
-		$dql = "SELECT t.user, u.username, u.image, sum(t.game) as game, sum(t.w) as w, sum(t.n) as n, sum(t.l) as l, sum(t.bw) as bw, sum(t.bl) as bl, sum(t.score) as score FROM 	  	AppTournamentBundle:Tablelist t
+		$dql = "SELECT t.user, u.username, u.image, sum(t.game) as game, sum(t.w) as w, sum(t.n) as n, sum(t.l) as l, sum(t.bw) as bw, sum(t.bl) as bl, sum(t.score) as score FROM AppTournamentBundle:Tablelist t
 			INNER JOIN AppUserBundle:User u
 			WHERE u.id = t.user
 			WHERE t.tr = :tr AND t.tour <= :tour
@@ -23,6 +23,10 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
 					  ->SetParameter("tour", $tour);
 
 		$result = $query->execute();
+
+		print "<pre>";
+		print_r($result);
+		print "</pre>";
 
 		return $result;
 	}
@@ -69,7 +73,7 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
 
 	}
 
-	public function geT_actual_tour($tr) {
+	public function get_actual_tour($tr) {
 
 		$dql = "SELECT max(t.tour) as maxtour FROM AppTournamentBundle:Tablelist t
 				WHERE t.tr = :tr";

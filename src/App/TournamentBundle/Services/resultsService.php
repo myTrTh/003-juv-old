@@ -14,14 +14,15 @@ class resultsService
 	}
 
 	public function add_tablelist($tr, $tour) {
-        $users = $this->em->getRepository('AppTournamentBundle:Tournamentusers')->users_for_tournament($tr);
+        $users = $this->em->getRepository('AppTournamentBundle:Calendar')->users_for_tournament($tr, $tour);
 
         for($i=0;$i<count($users);$i++) {
         	$tablelist = new Tablelist();
 
         	$tablelist->setTr($tr);
         	$tablelist->setTour($tour);
-        	$tablelist->setUser($users[$i]['user']);
+                $tablelist->setUser($users[$i]['user']);
+        	$tablelist->setGroups($users[$i]['group']);
         	$tablelist->setGame(0);
         	$tablelist->setW(0);
         	$tablelist->setN(0);
@@ -49,6 +50,7 @@ class resultsService
         	for($i=0;$i<count($calendar);$i++) {
         		$user1 = $calendar[$i]['user1'];
         		$user2 = $calendar[$i]['user2'];
+
         		if(isset($balls[$user1]))
         			$one = $balls[$user1];
         		else
@@ -65,7 +67,7 @@ class resultsService
         			$tablelist[] = array("game" => 1, 
         								 "user" => $user1, 
         								 "tr" => $trs[$y]['tr'],
-        								 "tour" => $trs[$y]['tour'], 
+        								 "tour" => $trs[$y]['tour'],
         								 "w" => 0, 
         								 "n" => 1, 
         								 "l" => 0,
@@ -76,7 +78,7 @@ class resultsService
         			$tablelist[] = array("game" => 1, 
         								 "user" => $user2, 
         								 "tr" => $trs[$y]['tr'],
-        								 "tour" => $trs[$y]['tour'], 
+        								 "tour" => $trs[$y]['tour'],
         								 "w" => 0, 
         								 "n" => 1, 
         								 "l" => 0,
@@ -88,7 +90,7 @@ class resultsService
         			$tablelist[] = array("game" => 1, 
         								 "user" => $user1, 
         								 "tr" => $trs[$y]['tr'],
-        								 "tour" => $trs[$y]['tour'], 
+        								 "tour" => $trs[$y]['tour'],
         								 "w" => 1, 
         								 "n" => 0, 
         								 "l" => 0,

@@ -36,8 +36,13 @@
 		<div class='statustour gray'><i class='fa fa-circle'></i> ТУР ЗАВЕРШЕН</div>
 	{% endif %}
 </div>
+
+{% for tour in showtour %}
+	{% if showtour|length > 1 %}
+		<div class='groups_name'>{{ groups[tour.0.groups] }}</div>
+	{% endif %}
 <table class='schedule'>
-{% for game in showtour %}
+	{% for game in tour %}
 	<tr>
 		<td><a class='nostyle hoverlinkteam' href='{{ path('app_user_show', {'id': game.uid1 }) }}'>{{ game.user1 }}</a></td>
 		<td>
@@ -80,8 +85,9 @@
 		</td>		
 		<td><a class='nostyle hoverlinkteam' href='{{ path('app_user_show', {'id': game.uid2 }) }}'>{{ game.user2 }}</a></td>
 	</tr>
-{% endfor %}
+	{% endfor %}
 </table>
+{% endfor %}
 <br>
 {% if member == 1 and tourstatus == 1 %}
 	<form method='post' action='{{ path('app_tournament_tourset') }}'>

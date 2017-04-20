@@ -128,16 +128,18 @@ class TournamentController extends Controller
             $showtour = $rep_calendar->get_tour($id, $tour, $schema, $playoff);
             $calendar = $rep_calendar->get_calendar($id);
 
-            $members = [];            
-            for($i=0;$i<count($showtour);$i++) {
-                $members[] = $showtour[$i]['uid1'];
-                $members[] = $showtour[$i]['uid2'];
-            }
+            $member = 1;
 
-            if(in_array($userId, $members))
-                $member = 1;
-            else
-                $member = 0;
+            // $members = [];            
+            // for($i=0;$i<count($showtour);$i++) {
+            //     $members[] = $showtour[$i]['uid1'];
+            //     $members[] = $showtour[$i]['uid2'];
+            // }
+
+            // if(in_array($userId, $members))
+            //     $member = 1;
+            // else
+            //     $member = 0;
 
             $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($id, $tour);
         if($forebridge) {
@@ -149,9 +151,7 @@ class TournamentController extends Controller
             $table = $this->getDoctrine()->getRepository('AppTournamentBundle:Tablelist')->show_table($id, $tour);
             $strickers = $this->getDoctrine()->getRepository('AppTournamentBundle:Tablelist')->show_strickers($id, $tour);
 
-            print "<pre>";
-            print_r($showtour);
-            print "</pre>";
+            $groups_name = ['', 'ГРУППА A', 'ГРУППА B', 'ГРУППА C', 'ГРУППА D', 'ГРУППА E', 'ГРУППА F', 'ГРУППА G', 'ГРУППА H', 'ГРУППА I', 'ГРУППА K', 'ГРУППА L', 'ГРУППА M', 'ГРУППА N', 'ГРУППА O', 'ГРУППА P', 'ГРУППА Q', 'ГРУППА R', 'ГРУППА S', 'ГРУППА T', 'ГРУППА U'];
 
             return $this->render('AppTournamentBundle:Tournament:show.html.twig',
                    array("tournament" => $tournament,
@@ -159,6 +159,7 @@ class TournamentController extends Controller
                          "calendar" => $calendar,
                          "showtour" => $showtour,
                          "member" => $member,
+                         "groups" => $groups_name,
                          "tourstatus" => $tourstatus,
                          "fore" => $fore, "table" => $table, "strickers" => $strickers));
         } else {
