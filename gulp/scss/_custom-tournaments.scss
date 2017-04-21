@@ -278,6 +278,9 @@
 	.classifica td:nth-child(5), .classifica td:nth-child(6), .classifica td:nth-child(7), .classifica td:nth-child(8), .classifica td:nth-child(9), .classifica td:nth-child(10) {
 		display: none;
 	}
+	.classifica tr:first-child td:nth-child(9) {
+		display: table-cell;
+	}
 }
 
 .table-info {
