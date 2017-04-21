@@ -149,6 +149,10 @@ class TournamentController extends Controller
 
             $groups_name = ['', 'ГРУППА A', 'ГРУППА B', 'ГРУППА C', 'ГРУППА D', 'ГРУППА E', 'ГРУППА F', 'ГРУППА G', 'ГРУППА H', 'ГРУППА I', 'ГРУППА J', 'ГРУППА K', 'ГРУППА L', 'ГРУППА M', 'ГРУППА N', 'ГРУППА O', 'ГРУППА P', 'ГРУППА Q', 'ГРУППА R', 'ГРУППА S', 'ГРУППА T', 'ГРУППА U', 'ГРУППА V', 'ГРУППА W', 'ГРУППА X', 'ГРУППА Y', 'ГРУППА Z'];
 
+            print "<pre>";
+            print_r($calendar);
+            print "</pre>";
+
             return $this->render('AppTournamentBundle:Tournament:show.html.twig',
                    array("tournament" => $tournament,
                          "user" => $userId,
