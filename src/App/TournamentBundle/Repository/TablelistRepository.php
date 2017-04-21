@@ -57,13 +57,15 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
 
 		$result = $query->execute();
 
+
 		if(empty($result)) {
 			$status = 0;
 		} else {
-			if($result[0]['game'] == 0)
+			if($result[0]['game'] == 0) {
 				$status = 1;
-			else
+			} else {
 				$status = 2;
+			}
 		}
 
 		return $status;
