@@ -17,16 +17,25 @@
 
 {# tours list #}
 <div class='tourlist'>
-{% for i in range(1, calendar) %}
-	{% if tour == i %}
-		<div class='tourlist-active'>{{ i }}</div>
+{% for i in calendar %}
+	{% if i.off == 0 %}
+		{% if tour == i.tour %}
+			<div class='tourlist-active'>{{ i.tour }}</div>
+		{% else %}
+			<div><a href="{{ path("app_tournament_show", {"id": tournament.id, "tour": i.tour}) }}">{{ i.tour }}</a></div>	
+		{% endif %}
 	{% else %}
-		<div><a href="{{ path("app_tournament_show", {"id": tournament.id, "tour": i}) }}">{{ i }}</a></div>	
+		{% if tour == i.tour %}
+			<div class='tourlist-active'>{{ playoff[i.off] }}</div>
+		{% else %}
+			<div><a href="{{ path("app_tournament_show", {"id": tournament.id, "tour": i.tour}) }}">{{ playoff[i.off] }}</a></div>	
+		{% endif %}
+
 	{% endif %}
 {% endfor %}
 </div>
 
-<div class='h3' id='tournumber'>{{ tour }} ТУР</div>
+<div class='h3' id='tournumber'>{{ printtour.name }}</div>
 <div class="tourstatus">
 	{% if tourstatus == 0 %}
 		<div class='statustour orange'><i class='fa fa-circle'></i> ТУР НЕ НАЧАЛСЯ</div>
@@ -50,7 +59,13 @@
 	<table class='schedule'>
 	{% for game in show %}
 		<tr>
-			<td><a class='nostyle hoverlinkteam' href='{{ path('app_user_show', {'id': game.uid1 }) }}'>{{ game.user1 }}</a></td>
+			<td>
+				{% if game.uid1 != 0 %}
+				<a class='nostyle hoverlinkteam' href='{{ path('app_user_show', {'id': game.uid1 }) }}'>{{ game.user1 }}</a>
+				{% else %}
+					unknown
+				{% endif %}
+			</td>
 			<td>
 				<a class='ashowtour' href='{{ path('app_tournament_showgame', {'id': game.id }) }}'>
 					{% if fore.started == 1 %}
@@ -89,13 +104,19 @@
 					{% endif %}
 				</a>
 			</td>		
-			<td><a class='nostyle hoverlinkteam' href='{{ path('app_user_show', {'id': game.uid2 }) }}'>{{ game.user2 }}</a></td>
+			<td>
+				{% if game.uid2 != 0 %}
+				<a class='nostyle hoverlinkteam' href='{{ path('app_user_show', {'id': game.uid2 }) }}'>{{ game.user2 }}</a>
+				{% else %}
+					unknown
+				{% endif %}
+			</td>
 		</tr>
 		{% endfor %}
 	</table>
 
 
-{% if table[x] is not empty %}
+{% if table[x] is not empty and offstatus == 0 %}
 
 <div class='classifica-body'>
 	<div class='table-info'>Турнирная таблица</div>
@@ -143,7 +164,7 @@
 {% endfor %}
 
 
-{% if strickers is not empty %}
+{% if strickers is not empty and offstatus == 0 %}
 
 {% if x > 1 %}
 <br><br>
@@ -178,6 +199,7 @@
 {% endif %}
 
 	{% if member == 1 and tourstatus == 1 %}
+		<br>
 		<form method='post' action='{{ path('app_tournament_tourset') }}'>
 			<input type='hidden' name='tr' value='{{ tournament.id }}'>
 			<input type='hidden' name='tour' value='{{ tour }}'>

@@ -1275,11 +1275,27 @@ class AdminController extends Controller
 
                 return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
             }
-        }           
+        }        
+
+        $playoff_name = ['1' => 'ФИНАЛ', '2' => '1/2 ФИНАЛА', '4' => '1/4 ФИНАЛА', '8' => '1/8 ФИНАЛА',
+                             '16' => '1/16 ФИНАЛА', '32' => '1/32 ФИНАЛА', '64' => '1/64 ФИНАЛA',
+                             '128' => '1/128 ФИНАЛA', '256' => '1/256 ФИНАЛA'];
+
+        // tour name
+        $get_tour = $calendar[$tour];
+        $off = $get_tour['off'];
+
+        if($off != 0)
+            $printtour = array("tour" => $tour, "name" => $playoff_name[$off]);
+        else
+            $printtour = array("tour" => $tour, "name" => $tour." ТУР");
 
         return $this->render("AppAdminBundle:Tournament:tours.html.twig",
                 array("calendar" => $calendar,
                       "tournament" => $tr, "tour" => $tour,
+                      "printtour" => $printtour,
+                      "calendar" => $calendar,
+                      "playoff" => $playoff_name,                      
                       "forecast" => $fore, 'teams' => $teams));
     }    
 

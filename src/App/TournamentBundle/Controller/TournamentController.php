@@ -119,13 +119,9 @@ class TournamentController extends Controller
 
             $info = $tournament->getInfo();
             $schema = $info['schema'];
-            if(isset($info['playoff']))
-                $playoff = $info['playoff'];
-            else
-                $playoff = 0;
 
             $rep_calendar = $this->getDoctrine()->getRepository("AppTournamentBundle:Calendar");
-            $showtour = $rep_calendar->get_tour($id, $tour, $schema, $playoff);
+            $showtour = $rep_calendar->get_tour($id, $tour, $schema);
             $calendar = $rep_calendar->get_calendar($id);
 
             $member = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournamentusers")->get_member($id, $userId);
@@ -149,18 +145,34 @@ class TournamentController extends Controller
 
             $groups_name = ['', 'ГРУППА A', 'ГРУППА B', 'ГРУППА C', 'ГРУППА D', 'ГРУППА E', 'ГРУППА F', 'ГРУППА G', 'ГРУППА H', 'ГРУППА I', 'ГРУППА J', 'ГРУППА K', 'ГРУППА L', 'ГРУППА M', 'ГРУППА N', 'ГРУППА O', 'ГРУППА P', 'ГРУППА Q', 'ГРУППА R', 'ГРУППА S', 'ГРУППА T', 'ГРУППА U', 'ГРУППА V', 'ГРУППА W', 'ГРУППА X', 'ГРУППА Y', 'ГРУППА Z'];
 
-            print "<pre>";
-            print_r($calendar);
-            print "</pre>";
+
+            $playoff_name = ['1' => 'ФИНАЛ', '2' => '1/2 ФИНАЛА', '4' => '1/4 ФИНАЛА', '8' => '1/8 ФИНАЛА',
+                             '16' => '1/16 ФИНАЛА', '32' => '1/32 ФИНАЛА', '64' => '1/64 ФИНАЛA',
+                             '128' => '1/128 ФИНАЛA', '256' => '1/256 ФИНАЛA'];
+
+            // tour name
+            $get_tour = $calendar[$tour];
+            $off = $get_tour['off'];
+
+            if($off != 0) {
+                $printtour = array("tour" => $tour, "name" => $playoff_name[$off]);
+                $offstatus = 1;
+            } else {
+                $printtour = array("tour" => $tour, "name" => $tour." ТУР");
+                $offstatus = 0;
+            }
 
             return $this->render('AppTournamentBundle:Tournament:show.html.twig',
                    array("tournament" => $tournament,
                          "user" => $userId,
                          "tour" => $tour,
+                         "printtour" => $printtour,
+                         "offstatus" => $offstatus,
                          "calendar" => $calendar,
                          "showtour" => $showtour,
                          "member" => $member,
                          "groups" => $groups_name,
+                         "playoff" => $playoff_name,
                          "tourstatus" => $tourstatus,
                          "fore" => $fore, "table" => $table, "strickers" => $strickers));
         } else {

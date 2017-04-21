@@ -12,29 +12,33 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 {
 
 	public function get_calendar($id) {
-		$dql = "SELECT max(c.tour)
+		$dql = "SELECT c.tour, c.off
 				FROM AppTournamentBundle:Calendar c
-				WHERE c.tr = :tr AND c.off IS NULL";
+				WHERE c.tr = :tr";
 
 		$query = $this->getEntityManager()->createQuery($dql)
 					  ->SetParameter("tr", $id);
 
 		$result = $query->execute();
 
-		if(!empty($result))
-			$result = $result[0][1];
-		else
-			$result = 0;
+		$tours = [];
+		for($i=0;$i<count($result);$i++) {
+			$tour = $result[$i]['tour'];
+			$off = $result[$i]['off'];
 
-		return $result;
+			$tours[$tour] = ["tour" => $tour, "off" => $off];
+		}
+
+		return $tours;
 	}
 
-	public function get_tour($id, $tour, $schema, $playoff) {
+	public function get_tour($id, $tour, $schema) {
+
 		$dql = "SELECT c.id, c.user1 as uid1, c.user2 as uid2, u1.username AS user1, u2.username AS user2, c.result1, c.result2, c.groups
 				FROM AppTournamentBundle:Calendar c
-				INNER JOIN AppUserBundle:User u1
+				LEFT JOIN AppUserBundle:User u1
 				WHERE u1.id = c.user1
-				INNER JOIN AppUserBundle:User u2
+				LEFT JOIN AppUserBundle:User u2
 				WHERE u2.id = c.user2
 				WHERE c.tr = :tr AND c.tour = :tour";
 

@@ -7,17 +7,29 @@
 {% block lowbody %}
 <a class='link-back' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
 <br><br>
-<div class='tourlist'>
+
 {# tours list #}
-{% for i in range(1, calendar) %}
-	{% if tour == i %}
-		<div class='tourlist-active'>{{ i }}</div>
+<div class='tourlist'>
+{% for i in calendar %}
+	{% if i.off == 0 %}
+		{% if tour == i.tour %}
+			<div class='tourlist-active'>{{ i.tour }}</div>
+		{% else %}
+			<div><a href="{{ path("app_admin_tours", {"tournament": tournament.id, "tour": i.tour}) }}">{{ i.tour }}</a></div>	
+		{% endif %}
 	{% else %}
-		<div><a href="{{ path("app_admin_tours", {"tournament": tournament.id, "tour": i}) }}">{{ i }}</a></div>
+		{% if tour == i.tour %}
+			<div class='tourlist-active'>{{ playoff[i.off] }}</div>
+		{% else %}
+			<div><a href="{{ path("app_admin_tours", {"tournament": tournament.id, "tour": i.tour}) }}">{{ playoff[i.off] }}</a></div>	
+		{% endif %}
+
 	{% endif %}
 {% endfor %}
 </div>
-<div class='h3' id='tournumber'>{{ tour }} ТУР</div>
+
+<div class='h3' id='tournumber'>{{ printtour.name }}</div>
+
 
 {% if forecast != 0 %}
 
