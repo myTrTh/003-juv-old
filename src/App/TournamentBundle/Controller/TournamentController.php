@@ -151,6 +151,7 @@ class TournamentController extends Controller
 
             return $this->render('AppTournamentBundle:Tournament:show.html.twig',
                    array("tournament" => $tournament,
+                         "user" => $userId,
                          "tour" => $tour,
                          "calendar" => $calendar,
                          "showtour" => $showtour,
