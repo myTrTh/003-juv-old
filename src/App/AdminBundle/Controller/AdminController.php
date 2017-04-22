@@ -1319,8 +1319,6 @@ class AdminController extends Controller
 
         $offstatus = $this->getDoctrine()->getRepository('AppTournamentBundle:Calendar')->get_off_status($tr, $tour);
 
-        print $offstatus;
-
         return $this->render("AppAdminBundle:Tournament:tours.html.twig",
                 array("calendar" => $calendar,
                       "tournament" => $tr, "tour" => $tour,
