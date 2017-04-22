@@ -1,6 +1,6 @@
 {% extends 'AppAdminBundle::baseadmin.html.twig' %}
 
-{% block title %} Админка: Участники турнира {% endblock %}
+{% block title %} Участники турнира {% endblock %}
 
 {% block lowheader %} {{ tournament.name }} {% endblock %}
 
@@ -8,16 +8,25 @@
 <a class='link-back' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
 <br>
 
-{% if app.session.flashBag.has('error') %}
-    <p class="alert my-alert">
-	    {% for msg in app.session.flashBag.get('error') %}
-            {{ msg }}
-        {% endfor %}
-    </p>
-{% endif %}
-
 <h4>УЧАСТНИКИ ТУРНИРА</h4>
-{% if tournament.info.schema is defined %}
+<form method='post'>
+<div class='users-area'>
+{% for user in users %}
+	<div><input type='radio' name='inuser' value='{{ user.user }}'>{{ user.username }}</div>
+{% endfor %}
+</div>
+<h4>ЗАМЕНИТЬ</h4>
+<select name='newuser' class='middle'>
+	<option selected disabled="disabled">Выбрать участника</option>
+	{% for newuser in newusers %}
+		<option value='{{ newuser.id }}'>{{ newuser.username }}</option>
+	{% endfor %}
+</select>
+	{# show flash info #}
+	{% include 'flashbug.html.twig' %}
+<input type='submit' class='button button-main' name='replace_user' value='Заменить'>
+</form>
+{# {% if tournament.info.schema is defined %}
 <span class='info'>(Нажмите на пользователя, чтобы выбрать его)</span>
 {% endif %}
 <div class='area preusers'>
@@ -45,6 +54,6 @@
 {{ form_widget(form.save, {"attr": {"class": "button button-main"}}) }}
 {{ form_rest(form) }}
 {{ form_end(form) }}
-{% endif %}
+{% endif %} #}
 
 {% endblock %}

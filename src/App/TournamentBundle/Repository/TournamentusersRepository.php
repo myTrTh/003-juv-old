@@ -1,6 +1,7 @@
 <?php
 
 namespace App\TournamentBundle\Repository;
+use Doctrine\ORM\EntityManager;
 
 /**
  * TournamentusersRepository
@@ -50,13 +51,14 @@ class TournamentusersRepository extends \Doctrine\ORM\EntityRepository
 		return array($result, $access);
 	}
 
-	public function users_for_tournament($tr)	{
+	public function users_for_tournament($tr) {
 
 		$dql = "SELECT p.user, u.username 
 		FROM AppTournamentBundle:Tournamentusers p
 		INNER JOIN AppUserBundle:User u
 		WHERE u.id = p.user
-		WHERE p.tournament = :tournament AND p.status = 1";
+		WHERE p.tournament = :tournament AND p.status = 1
+		ORDER BY u.username ASC";
 
 		$query = $this->getEntityManager()->createQuery($dql)
 					->SetParameter("tournament", $tr);
@@ -64,7 +66,20 @@ class TournamentusersRepository extends \Doctrine\ORM\EntityRepository
 		$result = $query->execute();
 
 		return $result;
-	}	
+	}
+
+	public function users_without_tournament($tr) {
+		$dql = "SELECT u.id, u.username 
+		FROM AppUserBundle:User u
+		WHERE u.id NOT IN (SELECT tu.user FROM AppTournamentBundle:Tournamentusers tu WHERE tu.tournament = ".$tr." AND tu.status = 1) ORDER BY u.username ASC";
+
+
+		$query = $this->getEntityManager()->createQuery($dql);
+
+		$result = $query->execute();
+
+		return $result;
+	}
 
 	public function show_playoff_users($id, $user)	{
 		$dql = "SELECT p.user, u.username 
@@ -86,6 +101,33 @@ class TournamentusersRepository extends \Doctrine\ORM\EntityRepository
 
 		return array($result, $access);
 	}	
+
+	public function replace($tr, $inuser, $newuser) {
+
+        $em = $this->getEntityManager();
+        $params = array('newuser' => $newuser, 'inuser' => $inuser, 'tr' => $tr);
+
+        $sql = "UPDATE tournamentusers SET user = :newuser WHERE user = :inuser AND tournament = :tr";
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute($params);
+
+        $sql = "UPDATE usercast SET user = :newuser WHERE user = :inuser AND tr = :tr";
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute($params);
+
+        $sql = "UPDATE tablelist SET user = :newuser WHERE user = :inuser AND tr = :tr";
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute($params);
+
+        $sql = "UPDATE calendar SET user1 = :newuser WHERE user1 = :inuser AND tr = :tr";
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute($params);
+
+        $sql = "UPDATE calendar SET user2 = :newuser WHERE user2 = :inuser AND tr = :tr";
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute($params);        
+
+	}
 
 	public function delete_users($tournament) {
 		$dql = "DELETE FROM AppTournamentBundle:Tournamentusers tu

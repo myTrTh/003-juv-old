@@ -313,3 +313,12 @@
 .border-balls {
 	border-right: solid 1px #ccc;
 }
+
+.users-area > div {
+	display: inline-block;
+	border: solid 1px #ccc;
+	padding: .2rem;
+	font-family: $font_header;
+	background-color: #e8e3df;
+	margin: .2rem 0;
+}

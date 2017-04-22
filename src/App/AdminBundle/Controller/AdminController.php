@@ -929,11 +929,38 @@ class AdminController extends Controller
                           "preusers" => $preusers,
                           "form" => $form->createView()));
 
-        } else if($tournamentshow->getStatus() == 1) {
+        } else if($tournamentshow['status'] == 1) {
+
+            $request = Request::createFromGlobals();
+            if($request->isMethod("POST")) {
+                if($request->request->get('replace_user')) {
+
+                    $inuser = (int) $request->request->get('inuser');
+                    $newuser = (int) $request->request->get('newuser');
+
+                    if($inuser && $newuser) {
+
+                        $this->getDoctrine()->getRepository('AppTournamentBundle:Tournamentusers')->replace($tournament, $inuser, $newuser);
+
+                    } else {
+                        $session = $this->get('session');
+                        $session
+                            ->getFlashBag()
+                            ->add('error', 'Нужно выбрать пользователей.');
+                    }
+
+                }
+            }
+
+
+            $users = $this->getDoctrine()->getRepository('AppTournamentBundle:Tournamentusers')->users_for_tournament($tournament);
+            
+            $newusers = $this->getDoctrine()->getRepository('AppTournamentBundle:Tournamentusers')->users_without_tournament($tournament);
             return $this->render('AppAdminBundle:Tournament:replace.html.twig',
                     array("tournament" => $tournamentshow,
-                          "preusers" => $preusers,
-                          "form" => $form->createView()));
+                          "users" => $users,
+                          "newusers" => $newusers
+                          ));
         }
     }
 
