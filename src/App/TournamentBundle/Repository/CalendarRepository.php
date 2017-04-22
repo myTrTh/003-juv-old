@@ -134,4 +134,66 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 
 		return $users;
 	}
+
+	public function is_playoff($tr) {
+		$dql = "SELECT c.tour FROM AppTournamentBundle:Calendar c WHERE c.tr = :tr AND c.off IS NOT NULL";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr);
+
+		$result = $query->execute();
+
+		if(!empty($result))
+			$off = 1;
+		else
+			$off = 0;
+
+		return $off;
+	}
+
+	public function get_off_status($tr, $tour) {
+		$dql = "SELECT c.tr FROM AppTournamentBundle:Calendar c WHERE c.tr = :tr AND c.tour = :tour
+				AND c.user1 = 0 AND c.off IS NOT NULL";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr)
+					  ->SetParameter("tour", $tour);
+
+		$result = $query->execute();
+
+		if(!empty($result))
+			$off = 1;
+		else
+			$off = 0;
+
+		return $off;		
+	}
+
+	public function get_tours_with_playoff($tr) {
+		$dql = "SELECT c.tour, c.user1, c.user2, u1.username as login1, u2.username as login2 FROM AppTournamentBundle:Calendar c
+				LEFT JOIN AppUserBundle:User u1
+				WHERE u1.id = c.user1
+				LEFT JOIN AppUserBundle:User u2
+				WHERE u2.id = c.user2
+				WHERE c.tr = :tr AND c.off IS NOT NULL";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr);
+
+		$result = $query->execute();
+
+	}
+
+	public function get_tour_of_playoff($tr_id, $tour) {
+		$dql = "SELECT c.id FROM AppTournamentBundle:Calendar c
+				WHERE c.tr = :tr AND c.tour = :tour AND c.user1 = 0";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr_id)
+					  ->SetParameter("tour", $tour);
+
+		$result = $query->execute();
+
+		return $result;
+	}
 }

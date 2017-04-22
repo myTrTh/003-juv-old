@@ -1,9 +1,10 @@
 app_admin_playoff:
-    path:     /adminpanel/tournament/{tournament}/playoff
-    defaults: { _controller: AppAdminBundle:Admin:playoff, tournament: 0 }
+    path:     /adminpanel/tournament/{tr}/playoff/{tour}
+    defaults: { _controller: AppAdminBundle:Admin:playoff, tr: 0, tour: 0 }
     methods: [GET|POST]
     requirements:
-        tournament: '\d+'
+        tr: '\d+'
+        tour: '\d+'
 
 app_admin_addtours:
     path:     /adminpanel/tournament/{tournament}/addtours/{tour}

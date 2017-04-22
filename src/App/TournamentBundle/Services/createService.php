@@ -101,6 +101,37 @@ class createService
 		$this->em->flush();
 	}
 
+	# Обновляем плей-офф
+	public function updatePlayOff($tr_id, $users, $tour) {
+
+        $id_calendar = $this->em->getRepository('AppTournamentBundle:Calendar')->get_tour_of_playoff($tr_id, $tour);
+
+        $players = [];
+
+        foreach ($users as $user) {
+        	$players[] = $user;
+        }
+
+        if(count($players) != (count($id_calendar)*2))
+        	return 0;
+
+        $y = 0;
+        for($i=0;$i<count($id_calendar);$i++) {
+        	$calendar = $this->em->getRepository('AppTournamentBundle:Calendar')->find($id_calendar[$i]['id']);
+
+        	$calendar->setUser1($players[$y]);
+        	$y++;
+        	$calendar->setUser2($players[$y]);
+        	$y++;
+
+			$this->em->persist($calendar);        	
+        }
+
+        $this->em->flush();
+
+        return 1;
+	}
+
 	# Создаем расписание для плей-офф
 	public function createPlayOff($tr_id, $users, $add){
 		$members = count($users);

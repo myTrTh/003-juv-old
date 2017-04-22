@@ -64,8 +64,8 @@
 	{% else %}
 	<a class='nostyle' href="{{ path("app_admin_replaceuser", {"tournament": tournament.id}) }}"><h6><i class='fa fa-mail-forward'></i> ЗАМЕНИТЬ ПОЛЬЗОВАТЕЛЯ В ТУРНИРЕ</h6></a>
 	{% endif %}
-	{% if tournament.info.schema is defined and tournament.info.schema == 3 %}
-	<a class='nostyle' href="{{ path("app_admin_playoff", {"tournament": tournament.id}) }}"><h6><i class='fa fa-mail-forward'></i> ДОБАВИТЬ ПЛЕЙ-ОФФ</h6></a>
+	{% if tournament.info.schema is defined and tournament.info.schema == 3 and tournament.info.playoff is not defined %}
+	<a class='nostyle' href="{{ path("app_admin_playoff", {"tournament": tournament.id}) }}"><h6><i class='fa fa-mail-forward'></i>ДОБАВИТЬ ПЛЕЙ-ОФФ</h6></a>
 	{% endif %}
 
 	<hr>

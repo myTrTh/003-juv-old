@@ -14,14 +14,8 @@
 {{ form_start(form) }}
 НАЗВАНИЕ ТУРНИРА<br>
 {{ form_widget(form.name, {'attr': {'class': 'middle', 'placeholder': 'Название турнира'}} ) }}
-{% if app.session.flashBag.has('error') %}
-	<span class="display-error">
-	    {% for msg in app.session.flashBag.get('error') %}
-	        {{ msg }}
-	    {% endfor %}
-	</span>
-	<br><br>
-{% endif %}
+	{# show flash info #}
+	{% include 'flashbug.html.twig' %}
 {{ form_errors(form.name) }}
 <br>
 <div class='bold'>{{ form_label(form.types) }}</div>

@@ -30,6 +30,10 @@
 
 <div class='h3' id='tournumber'>{{ printtour.name }}</div>
 
+{% if off is defined and off > 0 %}
+	<a href="{{ path('app_admin_playoff', {'tr': tournament.id, 'tour': tour}) }}"><h3>ДОБАВИТЬ МАТЧИ ПЛЕЙ-ОФФ</h3></a>
+{% endif %}
+
 
 {% if forecast != 0 %}
 

@@ -1,13 +1,86 @@
 {% extends 'AppAdminBundle::baseadmin.html.twig' %}
 
-{% block title %} Админка: Плей-офф {% endblock %}
+{% block title %} Плей-офф {% endblock %}
 
-{% block lowheader %} {{ tournament.name }}. Плей-офф {% endblock %}
+{% block lowheader %} {{ tournament.name }} {% endblock %}
 
 {% block lowbody %}
-<a class='back-link' href='{{ path("app_admin_tournaments") }}'>К СПИСКУ ТУРНИРОВ</a>
+<a class='link-back' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
 <br><br>
 
+{# tours list #}
+<div class='tourlist'>
+{% for i in calendar %}
+	{% if i.off == 0 %}
+		{% if tour == i.tour %}
+			<div class='tourlist-active'>{{ i.tour }}</div>
+		{% else %}
+			<div><a href="{{ path("app_admin_tours", {"tournament": tournament.id, "tour": i.tour}) }}">{{ i.tour }}</a></div>	
+		{% endif %}
+	{% else %}
+		{% if tour == i.tour %}
+			<div class='tourlist-active'>{{ playoff[i.off] }}</div>
+		{% else %}
+			<div><a href="{{ path("app_admin_tours", {"tournament": tournament.id, "tour": i.tour}) }}">{{ playoff[i.off] }}</a></div>	
+		{% endif %}
 
+	{% endif %}
+{% endfor %}
+</div>
+
+<div class='h3' id='tournumber'>{{ printtour.name }}</div>
+
+
+{% if forecast != 0 %}
+
+		<h5>Матчи</h5>
+	<form method='post'>
+	{% for fore in forecast %}
+
+			<input type='hidden' name='fore[]' value='{{ fore.id }}'>
+			<input class='small inline' type='text' name='upd_date[]' value='{{ utc_to_locale(fore.timer)|date('d.m.Y H:i') }}'>
+			<input class='small inline' type='text' name='upd_team1[]' value='{{ fore.team1 }}'>
+			<input class='small inline' type='text' name='upd_team2[]' value='{{ fore.team2 }}'>
+			<br>
+	{% endfor %}
+	<input class='button button-main' type='submit' name='update_score' value='Обновить'>
+	</form>
+
+	<br>
+	<a class='nostyle bold' href='{{ path('app_admin_tour_completed', {'tournament': tournament.id, 'tour': tour}) }}'>ПРОСТАВИТЬ РЕЗУЛЬТАТЫ ТУРА</a>
+	<br><hr><br>
+{% endif %}
+
+<form method='post'>
+	<h5>Добавить матчи</h5>
+<div class='scoregroup'>
+	<div class='score'>
+		<input class='small' type='text' name='date[]' placeholder="Дата">
+		<select class='small' name='team1[]'>
+			{% for team in teams %}
+				<option>{{ team.name }}</option>
+			{% endfor %}
+		</select>
+		<select class='small' name='team2[]'>
+			{% for team in teams %}
+				<option>{{ team.name }}</option>
+			{% endfor %}
+		</select>
+	</div>
+	</div>
+	<br>
+		<span class='add' id='add_score'><i class='fa fa-plus'></i> Добавить</span>
+		<span class='add' id='remove_score'><i class='fa fa-minus'></i> Удалить</span><br><br>		
+	{% if forecast == 0 %}
+		<input class='button button-main' type='submit' name='create_score' value='Создать'>
+	{% else %}
+		<input class='button button-main' type='submit' name='create_score' value='Добавить'>
+	{% endif %}
+</form>
+
+{% if forecast == 0 %}
+	<br>
+	<a class='nostyle' href="{{ path('app_admin_addtours', {"tournament": tournament.id, 'tour': tour}) }}"><i class='fa fa-mail-forward'></i> Добавить тур из другого турнира</a>
+{% endif %}
 
 {% endblock %}

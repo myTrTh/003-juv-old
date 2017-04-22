@@ -1,14 +1,14 @@
 {% extends 'AppAdminBundle::baseadmin.html.twig' %}
 
-{% block title %} Админка: Создать плей-офф {% endblock %}
+{% block title %} Создать плей-офф {% endblock %}
 
 {% block lowheader %} {{ tournament.name }} {% endblock %}
 
 {% block lowbody %}
-<a class='back-link' href='{{ path("app_admin_tournaments") }}'>К СПИСКУ ТУРНИРОВ</a>
-<br><br>
+<a class='link-back' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
+<br>
 
-{% if tournament.info.schema is defined and tournament.info.schema != 3 %}
+{% if tournament.info.schema is defined and tournament.info.schema != 3 and tournament.info.schema != 2 %}
 <p>Для этого турнира не доступно добавление плей-офф</p>
 {% else %}
 
@@ -33,10 +33,13 @@
 
 <div class='area tournament-user'></div>
 
+{# show flash info #}
+{% include 'flashbug.html.twig' %}
+
 <br><br>
 {{ form_start(form) }}
 <div class='form-hidden'>{{ form_widget(form.user) }}</div>
-<div class='button'>{{ form_widget(form.save, {"attr": {"class": "btn btn-default"}}) }}</div>
+<div class='button'>{{ form_widget(form.save, {"attr": {"class": "button button-main"}}) }}</div>
 {{ form_rest(form) }}
 {{ form_end(form) }}
 {% endif %}

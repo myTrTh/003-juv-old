@@ -8,13 +8,8 @@
 <a class='link-back' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
 <br>
 
-{% if app.session.flashBag.has('error') %}
-    <p class="alert my-alert">
-	    {% for msg in app.session.flashBag.get('error') %}
-            {{ msg }}
-        {% endfor %}
-    </p>
-{% endif %}
+	{# show flash info #}
+	{% include 'flashbug.html.twig' %}
 <h4>ПОДАЛИ ЗАЯВКИ</h4>
 {% if preusers is empty %}
 Заявок пока нет...<br>

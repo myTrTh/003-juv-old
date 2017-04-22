@@ -1317,10 +1317,15 @@ class AdminController extends Controller
         else
             $printtour = array("tour" => $tour, "name" => $tour." ТУР");
 
+        $offstatus = $this->getDoctrine()->getRepository('AppTournamentBundle:Calendar')->get_off_status($tr, $tour);
+
+        print $offstatus;
+
         return $this->render("AppAdminBundle:Tournament:tours.html.twig",
                 array("calendar" => $calendar,
                       "tournament" => $tr, "tour" => $tour,
                       "printtour" => $printtour,
+                      "off" => $offstatus,
                       "calendar" => $calendar,
                       "playoff" => $playoff_name,                      
                       "forecast" => $fore, 'teams' => $teams));
@@ -1439,5 +1444,118 @@ class AdminController extends Controller
         return $this->render('AppAdminBundle:Tournament:tourcompleted.html.twig',
             array('tour' => $tour, 'tournament' => $tournamentshow, "forecast" => $fore));
     }    
+
+   public function playoffAction($tr, $tour) {
+
+        $user = $this->getUser();
+        if($user)
+            $userId = $user->getId();
+
+        $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tr);
+
+        if($tournamentshow['access']['creator'] != $userId)
+            if(!in_array($userId, $tournamentshow['access']['assistant']))
+                throw $this->createAccessDeniedException();
+
+        $tournament = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($tr);
+
+        $repo = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournamentusers");
+        $res = $repo->show_playoff_users($tr, $userId);
+        $preusers = $res[0];
+
+            $form = $this->createFormBuilder()
+              ->add('user', CollectionType::class, array(
+                    'entry_type' => HiddenType::class,
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'constraints' => new NotBlank(),
+                    ))
+              ->add('save', SubmitType::class, array('label' => 'Создать'))
+              ->getForm();
+
+            $info = $tournamentshow['info'];
+
+            if($info['schema'] != 3 and $info['schema'] != 2) {
+                $session = $this->get('session');
+                $session
+                    ->getFlashBag()
+                    ->add('error', 'Плей-офф не доступен для этого турнира.');
+
+                    return $this->redirect($this->generateUrl("app_admin_playoff", array("tr" => $tr)));                    
+            }
+
+
+            $request = Request::createFromGlobals();
+            if($request->isMethod("POST")) {
+                $form->handleRequest($request);
+
+                if($form->get('save')->isClicked()) {
+                    $data = $form->getData();
+
+                    $tr_id = $tournament->getId();
+
+                    $repository_calendar = $this->getDoctrine()->getRepository("AppTournamentBundle:Calendar");
+
+                    $is_playoff = $repository_calendar->is_playoff($tr);
+
+                    if($is_playoff) {
+
+                        if($tour) {
+
+                            $users = $data['user'];
+                            $result_added = $this->get("app.create_tournament")->updatePlayOff($tr_id, $users, $tour);
+
+                            if(!$result_added) {
+                                $session = $this->get('session');
+                                $session
+                                    ->getFlashBag()
+                                    ->add('error', 'Неправильно количество участников.');
+
+                                return $this->redirect($this->generateUrl("app_admin_playoff", array("tr" => $tr, 'tour' => $tour)));
+                            }
+
+
+                        } else {
+
+                            $session = $this->get('session');
+                            $session
+                                ->getFlashBag()
+                                ->add('error', 'Плей-офф уже добавлен для этого турнира.');
+
+                        return $this->redirect($this->generateUrl("app_admin_playoff", array("tr" => $tr)));
+                        }
+
+                    } else {
+
+                        $max_tour = $repository_calendar->get_max_tour($tr);
+
+                        $users = $data['user'];
+                        $this->get("app.create_tournament")->createPlayOff($tr_id, $users, $max_tour);
+
+                        $info['playoff'] = 1;
+
+                        $tournament->setInfo($info);
+                        $em = $this->getDoctrine()->getManager();
+                        $em->persist($tournament);
+                        $em->flush();
+
+                    }
+                    return $this->redirect($this->generateUrl("app_admin_tournament", array("tournament" => $tr)));
+
+                }
+            }
+
+            $playtours = $this->getDoctrine()->getRepository('AppTournamentBundle:Calendar')->get_tours_with_playoff($tr);
+
+            return $this->render('AppAdminBundle:Tournament:playoff.html.twig',
+                array("tournament" => $tournamentshow, "preusers" => $preusers,
+                          "form" => $form->createView()));
+
+    }    
+
+    public function playtours($tournament, $tour) {
+        return $this->render('AppAdminBundle:Tournament:playtours.html.twig');
+            // array("tournament" => $tournamentshow));
+    }
 
 }
