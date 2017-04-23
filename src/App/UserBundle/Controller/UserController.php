@@ -25,10 +25,17 @@ class UserController extends Controller
         $tournament_player = $this->getDoctrine()->getRepository('AppTournamentBundle:Tournamentusers')->get_tournaments($id);        
         $games = $this->getDoctrine()->getRepository('AppTournamentBundle:Calendar')->get_games($id);
 
+        $repository_rate = $this->getDoctrine()->getRepository('AppGuestbookBundle:Rate');
+        $rate = $repository_rate->get_my_rate($id);
+
+        $repository_guestbook = $this->getDoctrine()->getRepository('AppGuestbookBundle:Guestbook');
+        $messages = $repository_guestbook->how_messages($id);        
+
         return $this->render('AppUserBundle:User:show.html.twig',
         	array("user" => $user, 'number' => $number,
                   "tournaments" => $tournament_player,
-                  "games" => $games,
+                  "games" => $games, "messages" => $messages,
+                  "rate" => $rate,
                   "champions" => $champions));
     }
 
@@ -179,4 +186,100 @@ class UserController extends Controller
 
         return new Response(json_encode(array("error" => 0, "text" => "GOOD")));
     }
+
+    public function messagesAction($user, $page) {
+
+        $us = $this->getUser();
+        if($us) {
+            $userId = $us->getId();
+            $username = $us->getUsername();
+        } else {
+            $userId = 0;
+            $username = 0;
+        }
+
+        // $repository = $this->getDoctrine()->getRepository('AppGuestbookBundle:Guestbook');
+        // $result = $repository->show_guestbook("guestbook", $page);
+
+        // /* guestbook content */
+        // $guestbook_content = $result[0];
+        // /* all messages for page navigation */
+        // $countpage = $result[1];        
+
+        // /* count users message */
+        // $count_message = $repository->count_message();
+
+        // /* rate */
+        // $repository_rate = $this->getDoctrine()->getRepository('AppGuestbookBundle:Rate');
+        // $rate = $repository_rate->get_rate($guestbook_content, $username);        
+
+        // /* numbers */
+        // $repository_number = $this->getDoctrine()->getRepository('AppGuestbookBundle:Number');
+        // $numbers = $repository_number->show_numbers();        
+
+        // $repository_nach = $this->getDoctrine()->getRepository('AppGuestbookBundle:Nach');
+        // $nach = $repository_nach->get_nach();
+
+        // $topnach = $repository_nach->get_topnach();
+
+        // $repository_achives = $this->getDoctrine()->getRepository('AppGuestbookBundle:Achive');
+        // $achives = $repository_achives->achives_for_guestbook();        
+
+        // /* attention */
+        // $repository_attention = $this->getDoctrine()->getRepository('AppTournamentBundle:Content');
+        // $attention = $repository_attention->get_content('attention');                
+
+        // /* for old type quote */
+        // $old_style_quote = $repository->get_old_quote($guestbook_content);
+
+        // return $this->render('AppUserBundle:messages.html.twig',
+        //     array('guestbook' => $guestbook_content,
+        //           'countpage' => $countpage, 'page' => $page,
+        //           'rate_message' => $rate[0], 'rate_user' => $rate[1],
+        //           'count_message' => $count_message, 'attention' => $attention,
+        //           'numbers' => $numbers, 'nach' => $nach, 'topnach' => $topnach,
+        //           'achives' => $achives, 'quote' => $old_style_quote));
+
+        $repository = $this->getDoctrine()->getRepository('AppGuestbookBundle:Guestbook');
+        $result = $repository->show_user_message($user, $page, 20);
+
+        /* guestbook content */
+        $guestbook = $result[0];
+        /* all messages for page navigation */
+        $countpage = $result[1];
+
+        /* count users message */
+        $count_message = $repository->count_message();
+
+        /* for old type quote */
+        $old_style_quote = $repository->get_old_quote($guestbook);
+
+        /* rate */
+        $repository_rate = $this->getDoctrine()->getRepository('AppGuestbookBundle:Rate');
+        $rate = $repository_rate->get_rate($guestbook, $username);
+
+        // $repository_number = $this->getDoctrine()->getRepository('AppGuestbookBundle:Number');
+        // $numbers = $repository_number->numbers_for_guestbook();
+
+        /* numbers */
+        $repository_number = $this->getDoctrine()->getRepository('AppGuestbookBundle:Number');
+        $numbers = $repository_number->show_numbers();
+
+        $repository_nach = $this->getDoctrine()->getRepository('AppGuestbookBundle:Nach');
+        $nach = $repository_nach->get_nach();
+
+        $topnach = $repository_nach->get_topnach();
+
+        $repository_achives = $this->getDoctrine()->getRepository('AppGuestbookBundle:Achive');
+        $achives = $repository_achives->achives_for_guestbook();
+
+        return $this->render('AppUserBundle:User:messages.html.twig',
+            array('guestbook' => $guestbook, 'count_message' => $count_message, 
+                  'rate_message' => $rate[0], 'rate_user' => $rate[1], 
+                  'countpage' => $countpage, 'page' => $page, 'numbers' => $numbers,
+                  'nach' => $nach, 'topnach' => $topnach,
+                  'achives' => $achives, 'quote' => $old_style_quote,
+                  'user' => $user));
+
+    }    
 }

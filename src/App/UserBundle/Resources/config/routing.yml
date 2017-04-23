@@ -1,3 +1,10 @@
+app_user_messages:
+    path:     /user/{user}/messages/{page}
+    defaults: { _controller: AppUserBundle:User:messages, user: 0, page: 1 }
+    requirements:
+        user: '\d+'
+        page: '\d+'
+
 app_user_settings:
     path:     /profile/settings
     defaults: {_controller: AppUserBundle:User:settings }

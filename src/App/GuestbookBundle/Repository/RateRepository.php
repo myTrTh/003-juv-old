@@ -209,7 +209,7 @@ class RateRepository extends \Doctrine\ORM\EntityRepository
                 WHERE u.id = r.user
                 WHERE r.author = :id AND r.sign = 1
                 GROUP BY r.user
-                ORDER BY cnt DESC";
+                ORDER BY cnt DESC, u.username ASC";
 
         $query = $this->getEntityManager()->createQuery($dql)
                 ->setParameter("id", $id);
@@ -223,7 +223,7 @@ class RateRepository extends \Doctrine\ORM\EntityRepository
                 WHERE u.id = r.user
                 WHERE r.author = :id AND r.sign = -1
                 GROUP BY r.user
-                ORDER BY cnt DESC";
+                ORDER BY cnt DESC, u.username ASC";
 
         $query = $this->getEntityManager()->createQuery($dql)
                 ->setParameter("id", $id);
@@ -237,7 +237,7 @@ class RateRepository extends \Doctrine\ORM\EntityRepository
                 WHERE u.id = r.author
                 WHERE r.user = :id AND r.sign = 1
                 GROUP BY r.author
-                ORDER BY cnt DESC";
+                ORDER BY cnt DESC, u.username ASC";
 
         $query = $this->getEntityManager()->createQuery($dql)
                 ->setParameter("id", $id);
@@ -251,7 +251,7 @@ class RateRepository extends \Doctrine\ORM\EntityRepository
                 WHERE u.id = r.author
                 WHERE r.user = :id AND r.sign = -1
                 GROUP BY r.author
-                ORDER BY cnt DESC";
+                ORDER BY cnt DESC, u.username ASC";
 
         $query = $this->getEntityManager()->createQuery($dql)
                 ->setParameter("id", $id);

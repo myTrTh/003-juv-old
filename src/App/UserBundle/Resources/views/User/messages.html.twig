@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Сообщения пользователя {% endblock %}
+
+{% block header %} Сообщения пользователя {% endblock %}
+
+{% block content %}
+<a class='link-back' href='{{ path("app_user_show", {"user": user}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
+<br><br>
+
+{# orders #}
+{% set order_rate = 1 %}
+{% set order_quote = 0 %}
+{% set order_delete = 0 %}
+
+{# page navigation #}
+{% set page_navigation = '/user/'~user~'/messages' %}		
+{% include 'pagenavigation.html.twig' %}		
+
+	{% include 'AppGuestbookBundle:Guestbook:_guestbook.html.twig' %}
+
+{# page navigation #}
+{% include 'pagenavigation.html.twig' %}		
+
+{% endblock %}

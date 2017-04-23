@@ -70,3 +70,149 @@
 </div>
 
 <div class='profile-header'>COMUNICAZIONE</div>
+<div class='tr-html'>
+	<div class='tr-body body30'>
+	<div class='tr-header'>РЕЙТИНГ</div>
+		<div class='tr-line'>
+			ОБЩИЙ
+			<span class='float-right'>
+				{% if rate.for_me_all_sum == 0 %}
+					<span class='gray'>{{ rate.for_me_all_sum }}</span>
+				{% elseif rate.for_me_all_sum > 0 %}
+					<span class='green'>+{{ rate.for_me_all_sum }}</span>
+				{% elseif rate.for_me_all_sum < 0 %}
+					<span class='red'>{{ rate.for_me_all_sum }}</span>
+				{% endif %}
+			</span>
+		</div>
+		<div class='tr-line'>
+			Плюсы
+			<span class='float-right'>
+				{% if rate.up_for_me_sum != 0 %}
+					<span class='green'>+{{ rate.up_for_me_sum }}</span>
+				{% else %}
+					-
+				{% endif %}
+			</span>
+		</div>
+		<div class='tr-line'>
+			Минусы
+			<span class='float-right'>
+				{% if rate.down_for_me_sum != 0 %}
+					<span class='red'>-{{ rate.down_for_me_sum }}</span>
+				{% else %}
+					-
+				{% endif %}
+			</span>
+		</div>
+	</div>
+
+	{% if rate.up_for_me|length > 0 %}
+	<div class='tr-body body30'>
+	<div class='tr-header'>МНЕ ПЛЮСУЮТ</div>
+		{% for up_for_me in rate.up_for_me %}
+			{% if loop.index <= 10 %}
+			<div class='tr-line'>
+			<a class='nostyle' href='{{ path("app_user_show", {"id_user": up_for_me.user}) }}'>{{ up_for_me.username }}</a>
+				<span class='float-right'>
+					<span class='green'>+{{ up_for_me.cnt }}</span>
+				</span>
+			</div>
+			{% endif %}
+		{% endfor %}
+	</div>
+	{% endif %}
+
+	{% if rate.down_for_me|length > 0 %}
+	<div class='tr-body body30'>
+	<div class='tr-header'>МНЕ МИНУСУЮТ</div>
+		{% for down_for_me in rate.down_for_me %}
+			{% if loop.index <= 10 %}
+			<div class='tr-line'>
+			<a class='nostyle' href='{{ path("app_user_show", {"id_user": down_for_me.user}) }}'>{{ down_for_me.username }}</a>
+				<span class='float-right'>
+					<span class='red'>-{{ down_for_me.cnt }}</span>
+				</span>
+			</div>
+			{% endif %}
+		{% endfor %}
+	</div>
+	{% endif %}	
+
+	<div class='tr-body body30'>
+	<div class='tr-header'>Я ПОСТАВИЛ</div>
+		<div class='tr-line'>
+			ВСЕГО
+			<span class='float-right'>
+				{{ rate.my_all_sum }}
+			</span>
+		</div>
+		<div class='tr-line'>
+			Плюсов
+			<span class='float-right'>
+				{% if rate.my_up_sum != 0 %}
+					<span class='green'>+{{ rate.my_up_sum }}</span>
+				{% else %}
+					-
+				{% endif %}
+			</span>
+		</div>
+		<div class='tr-line'>
+			Минусов
+			<span class='float-right'>
+				{% if rate.my_down_sum != 0 %}
+					<span class='red'>-{{ rate.my_down_sum }}</span>
+				{% else %}
+					-
+				{% endif %}
+			</span>
+		</div>
+	</div>
+
+	{% if rate.my_up|length > 0 %}
+	<div class='tr-body body30'>
+	<div class='tr-header'>Я ПЛЮСУЮ</div>
+		{% for my_up in rate.my_up %}
+			{% if loop.index <= 10 %}
+			<div class='tr-line'>
+			<a class='nostyle' href='{{ path("app_user_show", {"id_user": my_up.author }) }}'>{{ my_up.username }}</a>
+				<span class='float-right'>
+					<span class='green'>+{{ my_up.cnt }}</span>
+				</span>
+			</div>
+			{% endif %}
+		{% endfor %}
+	</div>
+	{% endif %}
+
+	{% if rate.my_down|length > 0 %}
+	<div class='tr-body body30'>
+	<div class='tr-header'>Я МИНУСУЮ</div>
+		{% for my_down in rate.my_down %}
+			{% if loop.index <= 10 %}
+			<div class='tr-line'>
+			<a class='nostyle' href='{{ path("app_user_show", {"id_user": my_down.author}) }}'>{{ my_down.username }}</a>
+				<span class='float-right'>
+					<span class='red'>-{{ my_down.cnt }}</span>
+				</span>
+			</div>
+			{% endif %}
+		{% endfor %}
+	</div>
+	{% endif %}		
+
+	{% if messages != 0 %}
+	<div class='tr-body body30'>
+	<div class='tr-header'>МОИ СООБЩЕНИЯ</div>
+			<div class='tr-line'>
+				ВСЕГО <a href='{{ path('app_user_messages', {'user': user.id}) }}'>(просмотр)</a>
+				<span class='float-right'>
+					<span>{{ messages }}</span>
+				</span>
+			</div>
+	</div>
+	{% endif %}
+
+</div>
+
+

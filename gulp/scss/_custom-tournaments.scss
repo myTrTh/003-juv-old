@@ -379,7 +379,7 @@
 /* boards in profile */
 .tr-body {
 	width: 48%;
-	border: solid 1px #ccc;
+	border: solid 1px #e0dbdb;
 	border-bottom: none;
 	font-family: $font_header;
 	margin: .4rem .4rem .4rem 0;
@@ -393,16 +393,36 @@
 }
 
 .tr-header {
-	background-color: #ccc;
+	background-color: #e0dbdb;
 	padding: .3rem;
 	font-weight: bold;
 }
 
 .tr-line {
-	border-bottom: solid 1px #ccc;
-	padding: .3rem;
+	border-bottom: solid 1px #e0dbdb;
+	padding: .2rem .3rem;
 }
 
 .tr-html > div {
 	display: inline-block;
+}
+
+.float-right {
+	float: right;
+}
+
+.body30 {
+	width: 32%;
+}
+
+@media all and (max-width: 670px) {
+	.body30 {
+		width: 48%;
+	}
+}
+
+@media all and (max-width: 450px) {
+	.body30 {
+		width: 100%;
+	}
 }
