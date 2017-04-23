@@ -123,8 +123,7 @@ class TournamentController extends Controller
             $rep_calendar = $this->getDoctrine()->getRepository("AppTournamentBundle:Calendar");
             $showtour = $rep_calendar->get_tour($id, $tour, $schema);
             $calendar = $rep_calendar->get_calendar($id);
-
-            $member = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournamentusers")->get_member($id, $userId);
+            $member = $rep_calendar->get_member($id, $tour, $userId);
 
             $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($id, $tour);
         if($forebridge) {

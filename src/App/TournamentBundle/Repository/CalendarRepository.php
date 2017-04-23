@@ -32,6 +32,26 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 		return $tours;
 	}
 
+	public function get_member($tr, $tour, $userId)	{
+		$dql = "SELECT c.id 
+				FROM AppTournamentBundle:Calendar c
+				WHERE c.tr = :tr AND c.tour = :tour AND (c.user1 = :user OR c.user2 = :user)";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr)
+					  ->SetParameter("tour", $tour)
+					  ->SetParameter("user", $userId);
+
+		$result = $query->execute();
+
+		if(empty($result))
+			$res = 0;
+		else
+			$res = 1;
+
+		return $res;
+	}
+
 	public function get_tour($id, $tour, $schema) {
 
 		$dql = "SELECT c.id, c.user1 as uid1, c.user2 as uid2, u1.username AS user1, u2.username AS user2, c.result1, c.result2, c.groups
