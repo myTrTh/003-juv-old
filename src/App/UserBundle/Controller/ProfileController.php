@@ -50,8 +50,13 @@ class ProfileController extends Controller
         $repository_number = $this->getDoctrine()->getRepository('AppGuestbookBundle:Number');
         $number = $repository_number->number_for_user($id);                
 
+        $tournament_player = $this->getDoctrine()->getRepository('AppTournamentBundle:Tournamentusers')->get_tournaments($id);        
+        $games = $this->getDoctrine()->getRepository('AppTournamentBundle:Calendar')->get_games($id);
+
         return $this->render('@FOSUser/Profile/show.html.twig', array(
-            'user' => $user, 'number' => $number, 'champions' => $champions
+            'user' => $user, 'number' => $number, 'champions' => $champions,
+            "tournaments" => $tournament_player,
+            "games" => $games
         ));
     }
 

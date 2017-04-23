@@ -32,10 +32,8 @@
 
 	</div>
 
-
-{# {% if champions != 0 %}
+{% if champions != 0 %}
 <br>
-ПОБЕДЫ
 <br>
 <div>
 	{% for champion in champions %}
@@ -43,7 +41,32 @@
 	{% endfor %}
 	<div class='cup-board'></div>
 	{% for champion in champions %}
-	<p class='text-warning'>- {{ champion.description }}</p>
+		<p class='champion-list'><i class='fa fa-futbol-o'></i> {{ champion.description }}</p>
 	{% endfor %}
 </div>
-{% endif %} #}
+{% endif %}
+
+{% if tournaments is not empty and games is not empty %}
+<div class='profile-header'>SPORTIVO</div>
+{% endif %}
+<div class='tr-html'>
+{% if tournaments is not empty %}
+	<div class='tr-body'>
+	<div class='tr-header'>УЧАСТНИК ТУРНИРОВ</div>
+	{% for tournament in tournaments %}
+		<div class='tr-line'><a class='nostyle' href='{{ path('app_tournament_show', {'id': tournament.id}) }}'>{{ tournament.name }}</a></div>
+	{% endfor %}
+	</div>
+{% endif %}
+
+{% if games is not empty %}
+	<div class='tr-body'>
+	<div class='tr-header'>ПОСЛЕДНИЕ МАТЧИ</div>
+	{% for game in games %}
+		<div class='tr-line'><a class='nostyle' href='{{ path('app_tournament_showgame', {'id': game.id}) }}'><span class='gray'>{{ game.name }}</span> {{ game.username1 }} {{ game.result1 }}-{{ game.result2}} {{ game.username2 }}</a></div>
+	{% endfor %}
+	</div>
+{% endif %}
+</div>
+
+<div class='profile-header'>COMUNICAZIONE</div>

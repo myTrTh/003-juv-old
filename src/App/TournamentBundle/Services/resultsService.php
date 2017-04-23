@@ -38,7 +38,7 @@ class resultsService
 
 	public function completed_tour($hash) {
 
-		$trs = $this->em->getRepository('AppTournamentBundle:Forebridge')->get_all_trs($hash);
+	$trs = $this->em->getRepository('AppTournamentBundle:Forebridge')->get_all_trs($hash);
 
         $tablelist = [];
 
@@ -59,7 +59,13 @@ class resultsService
         		if(isset($balls[$user2]))
         			$two = $balls[$user2];
         		else
-        			$two = 0;        		
+        			$two = 0;
+
+
+                        $cdar = $this->em->getRepository('AppTournamentBundle:Calendar')->find($calendar[$i]['id']);
+                        $cdar->setResult1($one);
+                        $cdar->setResult2($two);
+                        $this->em->persist($cdar);
 
         		// Сравнение
         		if($one == $two) {
@@ -131,7 +137,10 @@ class resultsService
         								 "bl" => $one, 
         								 "score" => 3);
         		}
+
         	}
+
+                $this->em->flush();
 
 		}
 
@@ -139,15 +148,15 @@ class resultsService
 
 			$tlist = $this->em->getRepository('AppTournamentBundle:Tablelist')->findOneBy(array("user" => $tablelist[$i]['user'],
 												"tr" => $tablelist[$i]['tr'], "tour" => $tablelist[$i]['tour']));
-        	$tlist->setGame($tablelist[$i]['game']);
-        	$tlist->setW($tablelist[$i]['w']);
-        	$tlist->setN($tablelist[$i]['n']);
-        	$tlist->setL($tablelist[$i]['l']);
-        	$tlist->setBw($tablelist[$i]['bw']);
-        	$tlist->setBl($tablelist[$i]['bl']);
-        	$tlist->setScore($tablelist[$i]['score']);
-        	$this->em->persist($tlist);
-        }
+                	$tlist->setGame($tablelist[$i]['game']);
+                	$tlist->setW($tablelist[$i]['w']);
+                	$tlist->setN($tablelist[$i]['n']);
+                	$tlist->setL($tablelist[$i]['l']);
+                	$tlist->setBw($tablelist[$i]['bw']);
+                	$tlist->setBl($tablelist[$i]['bl']);
+                	$tlist->setScore($tablelist[$i]['score']);
+                	$this->em->persist($tlist);
+                }
 
         $this->em->flush();
 	}

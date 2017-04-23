@@ -120,7 +120,7 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	public function get_pair($tr, $tour) {
-		$dql = "SELECT c.user1, c.user2, c.groups FROM AppTournamentBundle:Calendar c
+		$dql = "SELECT c.id, c.user1, c.user2, c.groups FROM AppTournamentBundle:Calendar c
 				WHERE c.tr = :tr AND c.tour = :tour";
 
 		$query = $this->getEntityManager()->createQuery($dql)
@@ -211,6 +211,27 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 		$query = $this->getEntityManager()->createQuery($dql)
 					  ->SetParameter("tr", $tr_id)
 					  ->SetParameter("tour", $tour);
+
+		$result = $query->execute();
+
+		return $result;
+	}
+
+	public function get_games($id) {
+		$dql = "SELECT c.id, c.tr, t.name, c.tour, u1.username as username1, u2.username as username2, c.result1, c.result2
+				FROM AppTournamentBundle:Calendar c
+				INNER JOIN AppTournamentBundle:Tournament t
+				WHERE t.id = c.tr
+				INNER JOIN AppUserBundle:User u1
+				WHERE u1.id = c.user1
+				INNER JOIN AppUserBundle:User u2
+				WHERE u2.id = c.user2
+				WHERE c.result1 IS NOT NULL AND (c.user1 = :user OR c.user2 = :user)
+				ORDER BY c.id DESC";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("user", $id)
+					  ->SetMaxResults(5);
 
 		$result = $query->execute();
 

@@ -22,8 +22,13 @@ class UserController extends Controller
         $repository_number = $this->getDoctrine()->getRepository('AppGuestbookBundle:Number');
         $number = $repository_number->number_for_user($id);
 
+        $tournament_player = $this->getDoctrine()->getRepository('AppTournamentBundle:Tournamentusers')->get_tournaments($id);        
+        $games = $this->getDoctrine()->getRepository('AppTournamentBundle:Calendar')->get_games($id);
+
         return $this->render('AppUserBundle:User:show.html.twig',
         	array("user" => $user, 'number' => $number,
+                  "tournaments" => $tournament_player,
+                  "games" => $games,
                   "champions" => $champions));
     }
 
