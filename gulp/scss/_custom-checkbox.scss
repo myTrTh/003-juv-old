@@ -52,7 +52,7 @@
 }
 /* Меняем фон чекбокса, когда он включен. */
 .checkbox:checked + label:before {
-  background: $color_green;
+  background: $green;
 }
 /* Сдвигаем переключатель чекбокса, когда он включен. */
 .checkbox:checked + label:after {

@@ -63,7 +63,29 @@
 	<div class='tr-body'>
 	<div class='tr-header'>ПОСЛЕДНИЕ МАТЧИ</div>
 	{% for game in games %}
-		<div class='tr-line'><a class='nostyle' href='{{ path('app_tournament_showgame', {'id': game.id}) }}'><span class='gray'>{{ game.name }}. {{ game.tour }} ТУР</span> {{ game.username1 }} {{ game.result1 }}-{{ game.result2}} {{ game.username2 }}</a></div>
+		{% set settour = game.tour~' ТУР' %}
+		{% if game.off is not null %}
+			{% if game.off == 1 %}
+				{% set settour = "ФИНАЛ" %}
+			{% elseif game.off == 2 %}
+				{% set settour = "1/2 ФИНАЛA" %}
+			{% elseif game.off == 4 %}
+				{% set settour = "1/4 ФИНАЛA" %}
+			{% elseif game.off == 8 %}
+				{% set settour = "1/8 ФИНАЛA" %}
+			{% elseif game.off == 16 %}
+				{% set settour = "1/16 ФИНАЛA" %}
+			{% elseif game.off == 32 %}
+				{% set settour = "1/32 ФИНАЛA" %}
+			{% elseif game.off == 64 %}
+				{% set settour = "1/64 ФИНАЛA" %}
+			{% elseif game.off == 128 %}
+				{% set settour = "1/128 ФИНАЛA" %}					
+			{% else %}
+				{% set settour = "" %}
+			{% endif %}
+		{% endif %}
+		<div class='tr-line'><a class='nostyle' href='{{ path('app_tournament_showgame', {'id': game.id}) }}'><span class='gray'>{{ game.name }}. {{ settour }}.</span> {{ game.username1 }} {{ game.result1 }}-{{ game.result2}} {{ game.username2 }}</a></div>
 	{% endfor %}
 	</div>
 {% endif %}

@@ -1,23 +1,11 @@
 /* fonts */
 @import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300');
-@import url('https://fonts.googleapis.com/css?family=Open+Sans');
 @import url('https://fonts.googleapis.com/css?family=Annie+Use+Your+Telescope');
 
 /* presets */
-$primary_black: #333333;
+$brand_black: #333;
 $navbar_height: 30px;
-$navbar_color_grey: #ccc;
-$color_white: #fff;
 $font_header: 'Open Sans Condensed', sans-serif;
-$font_main: 'Open Sans', sans-serif;
-$font_arial: Arial;
-$typography_font: Arial, Helvetica;
-$color_input: #555;
-$color_red: #E03D3D !important;
-$color_gray: #aaa3a3 !important;
-$color_green: #14b459 !important;
-$color_black: #474747;
-
 
 /* media */
 @media all and (max-width: 399px) {
@@ -27,21 +15,16 @@ $color_black: #474747;
 }
 
 /* common */
-
-html {
-	font-size: 15px;
-}
-
 html, body {
 	margin: 0;
 	padding: 0;
 	height: 100%;
 	min-height: 100%;
-	color: $color_black;
+	color: $brand_black;
 }
 
 body {
-	font-family: $font_main, Arial;
+	font-family: $font-family-base;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -55,8 +38,8 @@ body {
 .basis {
 	flex: 0 0 auto;
 	width: 100%;
-	border-right: solid 1px #d9d9d9;
-	border-left: solid 1px #d9d9d9;
+	// border-right: solid 1px #d9d9d9;
+	// border-left: solid 1px #d9d9d9;
 	/*box-shadow: 2px 0 1px -1px #ccc, -2px 0 1px -1px #ccc;*/
 }
 
@@ -101,7 +84,7 @@ a:hover {
 }
 
 .link-back {
-	color: $primary_black;
+	color: $brand_black;
 	display: inline-block;
 	margin: 0 0 15px 10px;
 	&:hover {
@@ -131,21 +114,20 @@ h1, h2, h3, h4, h5, h6 {
 	font-family: $font_header;
 	font-weight: normal;
 	margin-bottom: 15px;
-
 }
 
-h1, .h1 { font-size: 2.5rem; }
-h2, .h2 { font-size: 2rem; }
-h3, .h3 { font-size: 1.75rem; }
-h4, .h4 { font-size: 1.5rem; }
-h5, .h5 { font-size: 1.25rem; }
-h6, .h6 { font-size: 1rem; }
+h1, .h1 { font-size: $font-size-h1; }
+h2, .h2 { font-size: $font-size-h2; }
+h3, .h3 { font-size: $font-size-h3; }
+h4, .h4 { font-size: $font-size-h4; }
+h5, .h5 { font-size: $font-size-h5; }
+h6, .h6 { font-size: $font-size-h6; }
 
  /* navigation */
 
 #navigation {
 	height: $navbar_height;
-	background-color: $primary_black;
+	background-color: $brand_black;
 	font-family: $font_header;
 	font-size: 1rem;
 	z-index: 1;
@@ -155,7 +137,7 @@ h6, .h6 { font-size: 1rem; }
 	margin: 0 auto;
 	display: flex;
 	justify-content: space-around;
-	background-color: $primary_black;	
+	background-color: $brand_black;	
 	align-items: stretch;
 	max-width: 1200px;
 	height: $navbar_height;
@@ -164,11 +146,11 @@ h6, .h6 { font-size: 1rem; }
 #navigation li {
 	width: 100%;
 	text-align: center;
-	background-color: $primary_black;	
+	background-color: $brand_black;	
 }
 
 #navigation a {
-	color: $navbar_color_grey;
+	color: $gray_lighter;
 	display: block;
 	font-weight: 600;
 	line-height: 1.6;
@@ -177,7 +159,7 @@ h6, .h6 { font-size: 1rem; }
 	transition: all .2s ease-out;
 	&:hover {
 		background-color: #424242;
-		color: $color_white;
+		color: $white;
 	}
 }
 
@@ -212,32 +194,18 @@ h6, .h6 { font-size: 1rem; }
 #footer {
 	border-top: solid 1px #ccc;
 	background-color: #333;
-	color: $color_white;
+	color: #999;
 	max-width: 1200px;
 	display: flex;
 	flex-wrap: wrap;
-	font-family: $font_arial;
-	font-weight: bold;
-}
-
-.footer-info {
-	flex: 1 0 200px;
-	justify-content: center;
-	align-self: center;
-	text-align: center;
-}
-
-.footer-info-links {
-	margin: 0 auto;
-	padding: 5px 10px;
-	width: 150px;
-	text-align: left;
-}
-
-.footer-bottom {
-	flex-basis: 100%;
-	padding: 5px 10px;
-	text-align: center;
+	& div {
+		width: 100%;
+		text-align: center;
+		font-size: .9rem;
+		text-transform: uppercase;
+		font-family: $font_header;
+		padding: .3rem;
+	}
 }
 
 /* width */
@@ -272,7 +240,6 @@ input:not([type='submit']), select, textarea {
 	/*margin: 0 5px 10px 5px;*/
 	margin-bottom: 10px;
 	font-size: 1rem;
-	color: $color_input;
 	display: block;
 	transition: all .2s ease-in-out;
 	&:focus {
@@ -293,7 +260,6 @@ input[type='checkbox'], input[type='radio'] {
 	font-size: 1rem;
 	transition: all .2s ease-in-out;
 	border: solid 1px #ccc;
-	font-family: $font_main;
 	border-radius: .2rem;
 	margin: 0 10px 2px 0;
 }
@@ -313,7 +279,7 @@ input[type='checkbox'], input[type='radio'] {
 
 .button-access {
 	color: #fff;
-	background-color: $color_green;
+	background-color: $green;
 	&:hover {
 		background-color: #35bc35 !important;
 		border: solid 1px #ADADAD;
@@ -357,7 +323,7 @@ input[type='checkbox'], input[type='radio'] {
 
 /* errors */
 .display-error {
-	color: $color_red;
+	color: $red;
 	margin: 5px;
 	font-size: .8rem;
 }
@@ -373,11 +339,11 @@ input[type='checkbox'], input[type='radio'] {
 }
 
 .gray {
-	color: $color_gray;
+	color: $gray-lighter;
 }
 
 .green {
-	color: $color_green;
+	color: $green;
 }
 
 .orange {
@@ -385,7 +351,7 @@ input[type='checkbox'], input[type='radio'] {
 }
 
 .red {
-	color: $color_red;
+	color: $red;
 }
 
 .bold {
@@ -398,10 +364,6 @@ input[type='checkbox'], input[type='radio'] {
 
 .normal {
 	font-weight: normal;
-}
-
-.gray {
-	color: $color_gray;
 }
 
 .text-small {
@@ -478,5 +440,3 @@ input[type='checkbox'], input[type='radio'] {
 	padding: 10px;
 	margin-bottom: 10px; 
 }
-
-/* switch */

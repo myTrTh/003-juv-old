@@ -129,7 +129,7 @@
 
 .ifscore {
 	height: 20px;
-	color: $color_red;
+	color: $red;
 	font-weight: bold;
 }
 
@@ -396,6 +396,7 @@
 	background-color: #ededed;
 	padding: .3rem;
 	font-weight: bold;
+	color: $gray_light;
 }
 
 .tr-line {

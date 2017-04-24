@@ -63,13 +63,12 @@ img.smile {
 .post {
 	border-radius: 0 0 5px 5px;
 	border: 1px solid #b1b1b1;
-	box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.5);	
+	box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.3);	
 }
 
 .post-header {
-	font-family: $font_arial;
 	background-color: #d9d9d9;
-	color: #757575;
+	color: $gray_main;
 	font-size: 1.1rem;
 	display: flex;
 	justify-content: space-between;
@@ -135,7 +134,7 @@ img.smile {
 
 .post-content-message {
 	padding: 0 10px;
-	line-height: 1.4;
+	line-height: 1.5;
 	word-break: break-all;
 	margin-bottom: 25px;
 	width: 100%;
@@ -145,7 +144,6 @@ img.smile {
 .post-content-numbers {
 	position: absolute;
 	right: 5px;
-	font-family: $font_arial;
 	font-size: 1rem;
 	bottom: 0;
 	opacity: .3;
@@ -155,13 +153,13 @@ img.smile {
 }
 
 .post-content-date {
-	color: #b1b1b1;
+	color: $gray_light;
 	margin: 10px 10px;
 	font-size: .8rem;
 }
 
 .count {
-	color: #b1b1b1;
+	color: $gray_light;
 	margin: 2px 0 0 0;
 	font-size: .8rem;
 }
@@ -207,7 +205,6 @@ img.smile {
 .rank-up, .rank-down {
 	font-weight: bold;
 	font-size: .8rem;
-	font-family: $font_arial;
 }
 
 .edit-post {
@@ -244,7 +241,7 @@ img.smile {
 	font-size: .8rem;
 	width: 100%;
 	float: left;
-	color: #757575;
+	color: $gray_main;
 	margin-bottom: 10px;
 }
 
@@ -254,7 +251,7 @@ img.smile {
 	padding-left: 7px;
 	font-style: italic;
 	font-size: .8rem;
-	color: #757575;
+	color: $gray_main;
 }
 
 /* nach */
@@ -360,7 +357,6 @@ img.smile {
 	background: #fff;
 	padding: 9px 14px;	
 	font-size: .9rem;
-	font-family: $font_main;
 	line-height: 1.3;
 }
 
