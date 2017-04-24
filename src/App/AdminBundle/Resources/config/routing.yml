@@ -89,7 +89,7 @@ app_admin_tournament:
 
 app_admin_tournaments:
     path:     adminpanel/tournaments/{page}
-    defaults: { _controller: AppAdminBundle:Admin:tournaments, page: 0 }
+    defaults: { _controller: AppAdminBundle:Admin:tournaments, page: 1 }
     requirements:
         page: '\d+'
 

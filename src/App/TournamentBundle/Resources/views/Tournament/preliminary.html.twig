@@ -22,6 +22,8 @@
 
 {% if app.user.id is defined and access == 0 %}
 	{{ form_start(form) }}
+		{{ tournament.id }}
+		{{ tournament.name }}
 		{{ form_widget(form.tournament, {'attr': {'value': tournament.id}}) }}
 		{# <input type='hidden' name='tournament' value="{{ tournament.id }}"> #}
 		<input type='submit' name='adduser' class='button button-main' value='Подать заявку'>

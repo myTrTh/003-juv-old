@@ -22,23 +22,61 @@ class TournamentController extends Controller
         $rules = $repository->get_content('rules');
 
         return $this->render('AppTournamentBundle:Pages:rules.html.twig', array('rules' => $rules));
-    }        
+    }
 
-    public function listAction($page) {
+    public function tournamentsAction($page) {
+        $status = 1;
+        $nav = 'tournament';
 
-        $repository = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament");
-
-        $result = $repository->show_tournaments_list($page);
+        $result = $this->listAction($page, $status);
 
         $tournaments = $result[0];
         $count = $result[1];
 
         return $this->render('AppTournamentBundle:Tournament:list.html.twig',
-            array("tournaments" => $tournaments, "count" => $count,
+            array("tournaments" => $tournaments, "countpage" => $count, "nav" => $nav,
+                  "page" => $page));        
+    }
+
+    public function archivesAction($page) {
+        $status = 2;
+        $nav = 'archive';
+
+        $result = $this->listAction($page, $status);
+
+        $tournaments = $result[0];
+        $count = $result[1];
+
+        return $this->render('AppTournamentBundle:Tournament:list.html.twig',
+            array("tournaments" => $tournaments, "countpage" => $count, "nav" => $nav,
                   "page" => $page));
     }
 
-    public function showAction($id, $tour) {
+    public function listAction($page, $status) {
+
+        $repository = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament");
+
+        $result = $repository->show_tournaments_list($page, $status);
+
+        return $result;
+    }
+
+    public function tournamentAction($id, $tour) {
+        $status = 1;
+        $nav = 'tournament';
+
+        return $this->showAction($id, $tour, $status, $nav);
+
+    }
+
+    public function archiveAction($id, $tour) {
+        $status = 2;
+        $nav = 'archive';        
+
+        return $this->showAction($id, $tour, $status, $nav);
+    }
+
+    public function showAction($id, $tour, $status, $nav) {
 
         /* if no user */
         $user = $this->getUser();
@@ -47,67 +85,14 @@ class TournamentController extends Controller
         else
             $userId = 0;
 
-        $tournament = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($id);
+        $tournament = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show($id, $status);
 
         if(empty($tournament)) {
             return $this->render('AppTournamentBundle:Tournament:noshow.html.twig',
                    array("tournament" => $tournament));
         }
 
-
-        if($tournament->getStatus() == 3 or $tournament->getStatus() == 4) {
-
-            $tournamentusers = new Tournamentusers();
-
-            $form_preliminary = $this->createForm(PreliminaryType::class, $tournamentusers);
-
-            $request = Request::createFromGlobals();
-
-            $form_preliminary->handleRequest($request);
-
-            if($form_preliminary->isSubmitted() && $form_preliminary->isValid()) {
-
-                $tr = (int) $form_preliminary->getData()->getTournament();
-
-                $repository = $this->getDoctrine()->getRepository("AppTournamentBundle:TOurnamentusers");
-
-                $order = $repository->order_preliminary($id, $userId);
-
-                if(!$order) {
-
-                    $tournamentusers->setUser($userId);
-                    $tournamentusers->setTournament($tr);
-                    $tournamentusers->setStatus(2);
-
-                    $em = $this->getDoctrine()->getManager();
-                    $em->persist($tournamentusers);
-                    $em->flush();
-
-                    return $this->redirect($this->generateUrl('app_tournament_show', array('id'=> $id)));
-
-                } else {
-
-                   $session = $this->get('session');
-                    $session
-                        ->getFlashBag()
-                        ->add('error', 'Вы уже заявлены на турнир.');
-
-                }
-
-            }
-
-            $repository_users = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournamentusers");
-
-            $result = $repository_users->show_users_for_tournament($id, $userId);
-
-            $tournamentusers = $result[0];
-            $access = $result[1];
-
-            return $this->render('AppTournamentBundle:Tournament:preliminary.html.twig',
-            array("tournament" => $tournament, 'form' => $form_preliminary->createView(),
-                  "tournamentusers" => $tournamentusers, 'access' => $access));
-
-        } else if ($tournament->getStatus() == 1) {
+        if($tournament->getStatus() == 1 or $tournament->getStatus() == 2) {
 
             if($tour == 0)
                 $tour = $this->getDoctrine()->getRepository("AppTournamentBundle:Tablelist")->get_actual_tour($id);
@@ -165,6 +150,7 @@ class TournamentController extends Controller
                    array("tournament" => $tournament,
                          "user" => $userId,
                          "tour" => $tour,
+                         "nav" => $nav,
                          "printtour" => $printtour,
                          "offstatus" => $offstatus,
                          "calendar" => $calendar,
@@ -174,11 +160,62 @@ class TournamentController extends Controller
                          "playoff" => $playoff_name,
                          "tourstatus" => $tourstatus,
                          "fore" => $fore, "table" => $table, "strickers" => $strickers));
-        } else {
 
-            return $this->render('AppTournamentBundle:Tournament:noshow.html.twig',
-                   array("tournament" => $tournament));
+        } else if ($tournament->getStatus() == 3 or $tournament->getStatus() == 4) {
+
+            $tournamentusers = new Tournamentusers();
+
+            $form_preliminary = $this->createForm(PreliminaryType::class, $tournamentusers);
+
+
+            $request = Request::createFromGlobals();
+
+            $form_preliminary->handleRequest($request);
+
+            if($form_preliminary->isSubmitted() && $form_preliminary->isValid()) {
+
+                $tr = (int) $form_preliminary->getData()->getTournament();
+
+                $repository = $this->getDoctrine()->getRepository("AppTournamentBundle:TOurnamentusers");
+
+                $order = $repository->order_preliminary($id, $userId);
+
+                if(!$order) {
+
+                    $tournamentusers->setUser($userId);
+                    $tournamentusers->setTournament($tr);
+                    $tournamentusers->setStatus(2);
+
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($tournamentusers);
+                    $em->flush();
+
+                    // return $this->redirect($this->generateUrl('app_tournament_show', array('id'=> $id)));
+
+                } else {
+
+                   $session = $this->get('session');
+                    $session
+                        ->getFlashBag()
+                        ->add('error', 'Вы уже заявлены на турнир.');
+
+                }
+
+            }
+
+            $repository_users = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournamentusers");
+
+            $result = $repository_users->show_users_for_tournament($id, $userId);
+
+            $tournamentusers = $result[0];
+            $access = $result[1];
+
+            return $this->render('AppTournamentBundle:Tournament:preliminary.html.twig',
+            array("tournament" => $tournament, 'form' => $form_preliminary->createView(),
+                  "tournamentusers" => $tournamentusers, 'access' => $access));
+
         }
+
     }
 
     public function forecastAction(Request $request) {
@@ -337,12 +374,17 @@ class TournamentController extends Controller
 
         $tournament = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($calendar_info[0]['tr']);
 
+        if($tournament->getStatus() == 1)
+            $nav = "tournament";
+        else if ($tournament->getStatus() == 2)
+            $nav = "archive";
+
         $games = $this->getDoctrine()->getRepository('AppTournamentBundle:Calendar')->get_games_in_pair($calendar_info[0]['user1'], $calendar_info[0]['user2']);
 
         return $this->render('AppTournamentBundle:Tournament:showgame.html.twig',
             array('tournament' => $tournament, 'tour' => $calendar_info[0]['tour'],
                 'forecast' => $fore, 'calendar' => $calendar_info, 'preset1' => $presetuser1,
-                'games' => $games,
+                'games' => $games, "nav" => $nav,
                 'preset2' => $presetuser2, "summ" => $summ));
     }
 

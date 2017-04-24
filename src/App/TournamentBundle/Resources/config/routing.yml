@@ -8,16 +8,29 @@ app_tournament_tourset:
 
 app_tournament_show:
     path:     /tournament/{id}/{tour}
-    defaults: { _controller: AppTournamentBundle:Tournament:show, id: 0, tour: 0 }
+    defaults: { _controller: AppTournamentBundle:Tournament:tournament, id: 0, tour: 0 }
     requirements:
         id: '\d+'
         tour: '\d+'
 
+app_tournament_archive:
+    path:     /archive/{id}/{tour}
+    defaults: { _controller: AppTournamentBundle:Tournament:archive, id: 0, tour: 0 }
+    requirements:
+        id: '\d+'
+        tour: '\d+'        
+
 app_tournament_list:
     path:     /tournaments/{page}
-    defaults: { _controller: AppTournamentBundle:Tournament:list, page: 0 }
+    defaults: { _controller: AppTournamentBundle:Tournament:tournaments, page: 1 }
     requirements:
         pages: '\d+'
+
+app_tournament_archives:
+    path:     /archives/{page}
+    defaults: { _controller: AppTournamentBundle:Tournament:archives, page: 1 }
+    requirements:
+        pages: '\d+'        
 
 app_tournament_rules:
     path:     /rules

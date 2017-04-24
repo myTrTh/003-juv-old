@@ -499,14 +499,15 @@ class AdminController extends Controller
     }    
 
     public function tournamentsAction($page) {
+        $status = 1;
 
-        $result = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournaments_list($page);
+        $result = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournaments_list($page, $status);
 
         $tournaments = $result[0];
         $count = $result[1];
 
         return $this->render("AppAdminBundle:Tournament:tournaments.html.twig",
-                array("tournaments" => $tournaments));
+                array("tournaments" => $tournaments, 'countpage' => $count, 'page' => $page));
     }
 
     public function tournamentAction($tournament) {

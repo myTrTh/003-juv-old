@@ -12,7 +12,8 @@
 {% endblock %}
 
 {% block content %}
-<a class='link-back' href='{{ path("app_tournament_show", {'id': tournament.id, 'tour': tour }) }}'><i class='fa fa-arrow-left'></i> К СПИСКУ ТУРНИРОВ</a>
+
+<a class='link-back' href='/{{ nav }}/{{ tournament.id }}/{{ tour }}'><i class='fa fa-arrow-left'></i> К СПИСКУ ТУРНИРОВ</a>
 <br>
 
 <div id='tournumber'>{{ calendar.0.tour }} ТУР</div><br>
@@ -74,7 +75,7 @@
 </table>
 {% endif %}
 
-{% if games is not empty %}
+{% if games != 0 %}
 	<br>
 	<h4>ПОСЛЕДНИЕ МАТЧИ МЕЖДУ КОМАНДАМИ</h4>
 	<div class='size09'>

@@ -22,13 +22,13 @@
 		{% if tour == i.tour %}
 			<div class='tourlist-active'>{{ i.tour }}</div>
 		{% else %}
-			<div><a href="{{ path("app_tournament_show", {"id": tournament.id, "tour": i.tour}) }}">{{ i.tour }}</a></div>	
+			<div><a href="/{{ nav }}/{{ tournament.id }}/{{ i.tour }}">{{ i.tour }}</a></div>	
 		{% endif %}
 	{% else %}
 		{% if tour == i.tour %}
 			<div class='tourlist-active'>{{ playoff[i.off] }}</div>
 		{% else %}
-			<div><a href="{{ path("app_tournament_show", {"id": tournament.id, "tour": i.tour}) }}">{{ playoff[i.off] }}</a></div>	
+			<div><a href="/{{ nav }}/{{ tournament.id }}/{{ i.tour }}">{{ playoff[i.off] }}</a></div>	
 		{% endif %}
 
 	{% endif %}
@@ -37,6 +37,7 @@
 
 <div class='h3' id='tournumber'>{{ printtour.name }}</div>
 <div class="tourstatus">
+{% if nav == 'tournament' %}
 	{% if tourstatus == 0 %}
 		<div class='statustour orange'><i class='fa fa-circle'></i> ТУР НЕ НАЧАЛСЯ</div>
 	{% elseif tourstatus == 1 %}
@@ -44,6 +45,7 @@
 	{% elseif tourstatus == 2 %}
 		<div class='statustour gray'><i class='fa fa-circle'></i> ТУР ЗАВЕРШЕН</div>
 	{% endif %}
+{% endif %}
 </div>
 
 {% if showtour|length > 1 %}

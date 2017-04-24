@@ -24,6 +24,6 @@ app_user:
 
 app_tournaments:
     path:     /{page}
-    defaults: { _controller: AppTournamentBundle:Tournament:list, page: 0 }
+    defaults: { _controller: AppTournamentBundle:Tournament:tournaments, page: 1 }
     requirements:
-        pages: '\d+'
+        pages: '\d+' 

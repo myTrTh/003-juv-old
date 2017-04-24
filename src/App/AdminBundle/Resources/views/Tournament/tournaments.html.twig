@@ -8,11 +8,16 @@
 	{% if is_granted('ROLE_ADMIN') %}
 		<a class='nostyle' href='{{ path('app_admin_create') }}'>+ СОЗДАТЬ ТУРНИР</a>
 	{% endif %}
+	<br><br>
 
 	{% if tournaments is empty %}
 		<br><br>
 		<div class='h4'>АКТИВНЫХ ТУРНИРОВ НЕТ..</div>
 	{% endif %}
+
+	{# page navigation #}
+	{% set page_navigation = '/adminpanel/tournaments' %}
+	{% include 'pagenavigation.html.twig' %}
 
 
 	{% for tournament in tournaments %}
@@ -27,5 +32,8 @@
 		</h3>
 
 	{% endfor %}
+
+	{# page navigation #}
+	{% include 'pagenavigation.html.twig' %}	
 
 {% endblock %}

@@ -1,14 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Турниры {% endblock %}
+{% block title %} {% if nav == 'tournament' %} Турниры {% elseif nav == 'archive' %} Архив {% endif %} {% endblock %}
 
-{% block header %} Турниры {% endblock %}
+{% block header %} {% if nav == 'tournament' %} Турниры {% elseif nav == 'archive' %} Архив {% endif %} {% endblock %}
 
 {% block content %}
 
 	{% if tournaments is empty %}
-		<div class='h4'>АКТИВНЫХ ТУРНИРОВ НЕТ..</div>
+		<div class='h4'>ТУРНИРОВ НЕТ..</div>
 	{% endif %}
+
+	{# page navigation #}
+	{% set page_navigation = '/'~nav~'s' %}
+	{% include 'pagenavigation.html.twig' %}
 
 	{% for tournament in tournaments %}
 
@@ -18,12 +22,15 @@
 		 	{% else %}
 		 	<img class='tournament-img' src='/public/images/interface/default_logo.png'>
 		 	{% endif %}
-			<a class='nostyle' href="{{ path('app_tournament_show', {"id": tournament.id}) }}">{{ tournament.name }}</a>
+			<a class='nostyle' href='{{ nav }}/{{ tournament.id}}'>{{ tournament.name }}</a>
 			{% if tournament.status == 3 or tournament.status == 4 %}
 				<sup><span class='texttop'>(ПРИЕМ ЗАЯВОК)</span></sup>
 			{% endif %}
 		</h2>
 
 	{% endfor %}
+
+	{# page navigation #}
+	{% include 'pagenavigation.html.twig' %}	
 
 {% endblock %}

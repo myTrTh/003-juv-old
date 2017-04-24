@@ -11,22 +11,56 @@ namespace App\TournamentBundle\Repository;
 class TournamentRepository extends \Doctrine\ORM\EntityRepository
 {
 
-	public function show_tournaments_list($page) {
+	public function show($tr, $status) {
+
+	    $append = $this->getStatus($status);
+
+		$dql = "SELECT t FROM AppTournamentBundle:Tournament t
+				WHERE t.id = :tr AND (".$append.")";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr);
+
+		$result = $query->execute();
+
+		if($result)
+			return $result[0];
+		else
+			return 0;
+
+	}
+
+	public function getStatus($status) {
+	    if($status == 2)
+	    	$append = "t.status = 2";
+	    else if ($status == 1) {
+	    	$append = "t.status = 1 OR t.status = 3 OR t.status = 4";
+	    }
+
+	    return $append;
+	}
+
+	public function show_tournaments_list($page, $status) {
 	    $list = $page - 1;
 	    $how = 10;
 	    if($list > 0)
 	        $list = $list * $how;
 
+	    $append = $this->getStatus($status);
+
 		$dql = "SELECT t.id, t.name, t.image, t.status
 				FROM AppTournamentBundle:Tournament t
-				WHERE t.status != 0 AND t.status != 2
-				ORDER BY t.id DESC";
+				WHERE ".$append." ORDER BY t.id DESC";
 
-		$query = $this->getEntityManager()->createQuery($dql);
+		$query = $this->getEntityManager()->createQuery($dql)
+                ->SetFirstResult($list)
+                ->SetMaxResults($how);
 
 		$tournament = $query->execute();
 
-	    $dql = 'SELECT count(t) FROM AppTournamentBundle:Tournament t';
+	    $dql = 'SELECT count(t) 
+	    		FROM AppTournamentBundle:Tournament t
+	    		WHERE '.$append;
 	    
 	    $query = $this->getEntityManager()->createQuery($dql);
 
