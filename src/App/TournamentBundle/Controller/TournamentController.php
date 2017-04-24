@@ -335,11 +335,14 @@ class TournamentController extends Controller
             $summ = [0, 0];
         }
 
-        $tournament = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($calendar_info[0]['tr']);        
+        $tournament = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($calendar_info[0]['tr']);
+
+        $games = $this->getDoctrine()->getRepository('AppTournamentBundle:Calendar')->get_games_in_pair($calendar_info[0]['user1'], $calendar_info[0]['user2']);
 
         return $this->render('AppTournamentBundle:Tournament:showgame.html.twig',
             array('tournament' => $tournament, 'tour' => $calendar_info[0]['tour'],
                 'forecast' => $fore, 'calendar' => $calendar_info, 'preset1' => $presetuser1,
+                'games' => $games,
                 'preset2' => $presetuser2, "summ" => $summ));
     }
 

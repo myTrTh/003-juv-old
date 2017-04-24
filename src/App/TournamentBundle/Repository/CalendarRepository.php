@@ -237,4 +237,64 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 
 		return $result;
 	}
+
+	public function get_games_in_pair($user1, $user2) {
+		$dql = "SELECT c.id, c.tr, t.name, c.tour, u1.username as username1, u2.username as username2, c.result1, c.result2
+				FROM AppTournamentBundle:Calendar c
+				INNER JOIN AppTournamentBundle:Tournament t
+				WHERE t.id = c.tr
+				INNER JOIN AppUserBundle:User u1
+				WHERE u1.id = c.user1
+				INNER JOIN AppUserBundle:User u2
+				WHERE u2.id = c.user2
+				WHERE c.result1 IS NOT NULL AND ((c.user1 = :user1 AND c.user2 = :user2) OR (c.user2 = :user2 AND c.user1 = :user1))
+				ORDER BY c.id DESC";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("user1", $user1)
+					  ->SetParameter("user2", $user2);
+
+		$result = $query->execute();
+
+		if(empty($result)) {
+			$res = 0;
+		} else {
+
+			$w1 = 0;
+			$w2 = 0;
+			$n = 0;
+			for($i=0;$i<count($result);$i++) {
+				if($i == 0) {
+					$user1 = $result[$i]['username1'];
+					$user2 = $result[$i]['username2'];
+				}
+
+				if($result[$i]['result1'] > $result[$i]['result2']) {
+
+					if($result[$i]['username1'] == $user1) {
+						$w1 += 1;
+					} else if ($result[$i]['username1'] == $user1) {
+						$w2 += 1;
+					}
+
+				} else if ($result[$i]['result1'] < $result[$i]['result2']) {
+					if($result[$i]['username1'] == $user1) {
+						$w2 += 1;
+					} else if ($result[$i]['username2'] == $user1) {
+						$w1 += 1;
+					}
+
+				} else if ($result[$i]['result1'] == $result[$i]['result2']) {
+					$n += 1;
+				}
+			}
+
+			$sum = $w1 + $w2 + $n;
+
+			$res = array("games" => $result, "stats" => ["user1" => [$user1, $w1], "user2" => [$user2, $w2], "n" => $n, "sum" => $sum]);
+
+		}
+
+		return $res;
+	}	
 }

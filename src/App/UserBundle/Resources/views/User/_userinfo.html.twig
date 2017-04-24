@@ -46,7 +46,7 @@
 </div>
 {% endif %}
 
-{% if tournaments is not empty and games is not empty %}
+{% if tournaments is not empty or games is not empty %}
 <div class='profile-header'>SPORTIVO</div>
 {% endif %}
 <div class='tr-html'>
@@ -63,7 +63,7 @@
 	<div class='tr-body'>
 	<div class='tr-header'>ПОСЛЕДНИЕ МАТЧИ</div>
 	{% for game in games %}
-		<div class='tr-line'><a class='nostyle' href='{{ path('app_tournament_showgame', {'id': game.id}) }}'><span class='gray'>{{ game.name }}</span> {{ game.username1 }} {{ game.result1 }}-{{ game.result2}} {{ game.username2 }}</a></div>
+		<div class='tr-line'><a class='nostyle' href='{{ path('app_tournament_showgame', {'id': game.id}) }}'><span class='gray'>{{ game.name }}. {{ game.tour }} ТУР</span> {{ game.username1 }} {{ game.result1 }}-{{ game.result2}} {{ game.username2 }}</a></div>
 	{% endfor %}
 	</div>
 {% endif %}

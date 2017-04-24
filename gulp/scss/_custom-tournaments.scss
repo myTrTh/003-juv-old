@@ -153,14 +153,14 @@
 
 .showgame {
 	border-spacing: 0;
-	border: solid 1px #ccc;
+	border: solid 1px #e0dbdb;
 	border-bottom: none;
 	font-size: .9rem;
 	& td:first-child, td:nth-child(2), td:nth-child(3), td:nth-child(4) {
 		text-align: center;
 	}
 	& td:first-child, td:nth-child(2), td:nth-child(3), td:nth-child(4) {
-		border-right: 1px solid #ccc;
+		border-right: 1px solid #e0dbdb;
 		width: 25px;
 	}
 	& td:first-child, td:nth-child(4) {
@@ -170,11 +170,11 @@
 
 .showgame td {
 	padding: .3rem;
-	border-bottom: solid 1px #ccc;
+	border-bottom: solid 1px #e0dbdb;
 }
 
 .showgame tr:first-child td {
-	background-color: #e0e0e0;
+	background-color: #ededed;
 	/*color: #8c9ba5;	*/
 }
 
@@ -393,13 +393,13 @@
 }
 
 .tr-header {
-	background-color: #e0dbdb;
+	background-color: #ededed;
 	padding: .3rem;
 	font-weight: bold;
 }
 
 .tr-line {
-	border-bottom: solid 1px #e0dbdb;
+	border-bottom: solid 1px #ededed;
 	padding: .2rem .3rem;
 }
 
@@ -425,4 +425,9 @@
 	.body30 {
 		width: 100%;
 	}
+}
+
+.size09 {
+	font-size: 1rem;
+	font-family: $font_header;
 }
