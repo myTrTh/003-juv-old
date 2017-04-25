@@ -7,9 +7,9 @@
 {% block content %}
 
 {# attention start #}
-{% if attention.0.description != "" %}
+{% if attention.description != "" %}
 <div class='alert alert-warning'>
-	{{ replace_text(adminreplace_text(attention.0.description))|raw|nl2br }}
+	{{ replace_text(adminreplace_text(attention.description))|raw|nl2br }}
 </div>
 {% endif %}
 	{# attention end #}
