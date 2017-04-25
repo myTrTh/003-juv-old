@@ -3,36 +3,34 @@
 {% block title %} Контент {% endblock %}
 
 {% block lowheader %}
-		{% if type == 'attention' %}
-			Оповещения
-		{% else %}
-			<a href='{{ path('app_admin_content', {'type': 'attention'}) }}'>
-				<span class='gray'>Оповещения</span>
-			</a>
-		{% endif %}
-	 |
-		{% if type == 'rules' %}
-			Правила
-		{% else %}
-			<a href='{{ path('app_admin_content', {'type': 'rules'}) }}'>
-				<span class='gray'>Правила</span>
-			</a>
-		{% endif %}
+	<a class='nostyle' href="{{ path('app_admin_content', {'type': 'attention'}) }}">
+		{% if content.chapter == 'attention' %} <span class='bold'>ОПОВЕЩЕНИЯ</span> {% else %}ОПОВЕЩЕНИЯ {% endif %}
+	</a> |
+	<a class='nostyle' href="{{ path('app_admin_content', {'type': 'rules'}) }}">
+		{% if content.chapter == 'rules' %} <span class='bold'>ПРАВИЛА</span> {% else %}ПРАВИЛА {% endif %}
+	</a> |
+	<a class='nostyle' href="{{ path('app_admin_content', {'type': 'about'}) }}">
+		{% if content.chapter == 'about' %} <span class='bold'>О НАС</span> {% else %}О НАС {% endif %}	</a> |
+	<a class='nostyle' href="{{ path('app_admin_content', {'type': 'faq'}) }}">
+		{% if content.chapter == 'faq' %} <span class='bold'>FAQ</span> {% else %}FAQ {% endif %}	</a> |
+	<a class='nostyle' href="{{ path('app_admin_content', {'type': 'version'}) }}">
+		{% if content.chapter == 'version' %} <span class='bold'>ВЕРСИЯ</span> {% else %}ВЕРСИЯ {% endif %}	</a>
 {% endblock %}
 
 {% block lowbody %}
 
-	{% if description is empty %}
-		{% set content = "" %}
+	{% if content.description is empty %}
+
+		{% set info = "" %}
 	{% else %}
-		{% set content = description.0.description %}
+		{% set info = content.description %}
 	{% endif %}
 
 	{{ form_start(form, {'method': 'post', 'attr': {'class': 'file_display_none'} }) }}
 	{# bb code #}
 	{% set adminbb = 1 %}	
 	{% include 'bbcode.html.twig' %}
-	{{ form_widget(form.description, {'value': content, 'attr': {'class': 'form-control'}} ) }}
+	{{ form_widget(form.description, {'value': info, 'attr': {'class': 'form-control'}} ) }}
 	{{ form_errors(form.description) }}	
 	{{ form_rest(form) }}
 	<br>

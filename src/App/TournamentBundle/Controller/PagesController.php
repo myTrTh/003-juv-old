@@ -7,11 +7,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class PagesController extends Controller
 {
 
-    public function rulesAction() {
+    public function contentAction($content) {
 
         $repository = $this->getDoctrine()->getRepository('AppTournamentBundle:Content');
-        $rules = $repository->get_content('rules');
+        $bodycontent = $repository->get_content($content);
 
-        return $this->render('AppTournamentBundle:Pages:rules.html.twig', array('rules' => $rules));
-    }    
+        return $this->render('AppTournamentBundle:Pages:content.html.twig', array('content' => $bodycontent));
+    }
 }

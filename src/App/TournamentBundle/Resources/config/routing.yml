@@ -32,6 +32,8 @@ app_tournament_archives:
     requirements:
         pages: '\d+'        
 
-app_tournament_rules:
-    path:     /rules
-    defaults: { _controller: AppTournamentBundle:Pages:rules }
+app_tournament_content:
+    path:     /{content}
+    defaults: { _controller: AppTournamentBundle:Pages:content }
+    requirements:
+        content: rules|about|faq|version

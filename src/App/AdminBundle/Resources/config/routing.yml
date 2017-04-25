@@ -162,7 +162,7 @@ app_admin_content:
     defaults: { _controller: AppAdminBundle:Admin:content, type: attention }
     methods: [GET|POST]
     requirements:
-        content: rules|attention
+        content: rules|attention|faq|version|about
 
 app_admin_delete:
     path:     /adminpanel/delete/{content}/{numb}

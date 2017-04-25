@@ -12,16 +12,17 @@ class ContentRepository extends \Doctrine\ORM\EntityRepository
 {
 	public function get_content($page)
 	{
-        $dql = 'SELECT c.description
+        $dql = 'SELECT c.title, c.chapter, c.description
             FROM AppTournamentBundle:Content c
-            WHERE c.title = :title
+            WHERE c.chapter = :chapter
             ORDER BY c.id DESC';
 
         $query = $this->getEntityManager()->createQuery($dql)
-                ->SetParameter('title', $page)
+                ->SetParameter('chapter', $page)
                 ->SetMaxResults(1);
 
         $result = $query->execute();
-        return $result;
+
+        return $result[0];
 	}
 }

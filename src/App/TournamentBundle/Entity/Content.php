@@ -25,6 +25,13 @@ class Content
     /**
      * @var string
      *
+     * @ORM\Column(name="chapter", type="string", length=255)
+     */
+    private $chapter;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
@@ -84,6 +91,30 @@ class Content
     {
         return $this->title;
     }
+
+    /**
+     * Set chapter
+     *
+     * @param string $chapter
+     *
+     * @return Content
+     */
+    public function setChapter($chapter)
+    {
+        $this->chapter = $chapter;
+
+        return $this;
+    }
+
+    /**
+     * Get chapter
+     *
+     * @return string
+     */
+    public function getChapter()
+    {
+        return $this->chapter;
+    }    
 
     /**
      * Set description

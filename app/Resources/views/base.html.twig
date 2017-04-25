@@ -20,9 +20,9 @@
             <li class='brand'><img src='{{ asset('/public/images/interface/king.png') }}'></li>
             <li><a>ТУРНИРЫ</a>
                 <ul>
-                    <li><a href='/tournaments'>АКТИВНЫЕ</a></li>
-                    <li><a href='/archives'>АРХИВ</a></li>
-                    <li><a href='/rules'>ПРАВИЛА</a></li>
+                    <li><a href='{{ path('app_tournament_list') }}'>АКТИВНЫЕ</a></li>
+                    <li><a href='{{ path('app_tournament_archives') }}'>АРХИВ</a></li>
+                    <li><a href='{{ path('app_tournament_content', {'content': 'rules'}) }}'>ПРАВИЛА</a></li>
                 </ul>
             </li>
             <li><a href='/users'>МЫ 
@@ -71,9 +71,10 @@
         {% endblock %}
     </div>
     <div class='basis' id='footer'>
-        <div>
-            © 2015 - {{ "now"|date('Y') }} JuvePro. Игровой портал
-        </div>
+        <div>© JuvePro. 2015 - {{ "now"|date('Y') }} </div>
+        <div><a class='nostyle' href='{{ path('app_tournament_content', {'content': 'about'}) }}'>О нас</a></div>
+        <div><a class='nostyle' href='{{ path('app_tournament_content', {'content': 'faq'}) }}'>FAQ</a></div>
+        <div><a class='nostyle' href='{{ path('app_tournament_content', {'content': 'version'}) }}'>VERSION 2.0</a></div>
     </div>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'></script>
     <script src='{{ asset('/public/js/libs.js') }}'></script>

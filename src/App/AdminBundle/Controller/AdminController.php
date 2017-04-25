@@ -142,6 +142,9 @@ class AdminController extends Controller
         $request = Request::createFromGlobals();
         $form->handleRequest($request);
 
+        $repository = $this->getDoctrine()->getRepository('AppTournamentBundle:Content');
+        $bodycontent = $repository->get_content($type);
+
         if($form->isSubmitted() && $form->isValid())
         {
 
@@ -159,7 +162,8 @@ class AdminController extends Controller
             $data = $form->getData();
             $message = strip_tags($data->getDescription());
 
-            $content->setTitle($type);
+            $content->setTitle($bodycontent['title']);
+            $content->setChapter($type);
             $content->setDescription($message);
             $content->setAuthor($userId);
 
@@ -169,10 +173,7 @@ class AdminController extends Controller
             return $this->redirect($this->generateUrl('app_admin_content', array('type'=> $type)));
         }
 
-        $repository = $this->getDoctrine()->getRepository('AppTournamentBundle:Content');
-        $description = $repository->get_content($type);
-
-        return $this->render('AppAdminBundle:Admin:content.html.twig', array('form'=>$form->createView(), 'description' => $description, 'type' => $type));
+        return $this->render('AppAdminBundle:Admin:content.html.twig', array('form'=>$form->createView(), 'content' => $bodycontent, 'type' => $type));
     }    
 
    public function uploadAction() {
