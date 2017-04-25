@@ -178,6 +178,9 @@ h6, .h6 { font-size: $font-size-h6; }
 	background-color: #cbe;
 	height: 200px;
 	max-width: 1200px;
+	& img {
+		height: 200px;
+	}
 }
 
 /* content */
