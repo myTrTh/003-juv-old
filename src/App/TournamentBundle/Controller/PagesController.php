@@ -14,4 +14,10 @@ class PagesController extends Controller
 
         return $this->render('AppTournamentBundle:Pages:content.html.twig', array('content' => $bodycontent));
     }
+
+    public function rankingAction() {
+    	$ranking = $this->getDoctrine()->getRepository('AppTournamentBundle:Tablelist')->get_ranking();
+
+    	return $this->render('AppTournamentBundle:Pages:ranking.html.twig', array('ranking' => $ranking));
+    }
 }

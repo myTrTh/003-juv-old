@@ -30,7 +30,7 @@
                 </a>
                 <ul>
                     <li><a href='{{ path('app_user_list') }}'>КОМАНДЫ</a></li>
-                    <li><a href='/archives'>РЕЙТИНГ</a></li>
+                    <li><a href='{{ path('app_tournament_ranking') }}'>РЕЙТИНГ</a></li>
                     <li><a href='{{ path('app_vote_list') }}'>ОПРОСЫ 
                         {% if notification_vote is defined and notification_vote|length > 0 %} 
                         <span class='normal little'><i class='fa fa-bell-o'></i> {{ notification_vote|length }}</span>

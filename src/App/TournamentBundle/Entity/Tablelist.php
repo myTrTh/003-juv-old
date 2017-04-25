@@ -60,9 +60,23 @@ class Tablelist
     /**
      * @var int
      *
+     * @ORM\Column(name="off", type="integer", nullable=true)
+     */
+    private $off;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="game", type="integer", nullable=true)
      */
     private $game;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="howgame", type="integer", nullable=true)
+     */
+    private $howgame;    
 
     /**
      * @var int
@@ -231,6 +245,30 @@ class Tablelist
         return $this->groups;
     }
 
+/**
+     * Set off
+     *
+     * @param integer $off
+     *
+     * @return Tablelist
+     */
+    public function setOff($off)
+    {
+        $this->off = $off;
+
+        return $this;
+    }
+
+    /**
+     * Get off
+     *
+     * @return int
+     */
+    public function getOff()
+    {
+        return $this->off;
+    }    
+
     /**
      * Set game
      *
@@ -254,6 +292,30 @@ class Tablelist
     {
         return $this->game;
     }
+
+    /**
+     * Set howgame
+     *
+     * @param integer $howgame
+     *
+     * @return Tablelist
+     */
+    public function setHowgame($howgame)
+    {
+        $this->howgame = $howgame;
+
+        return $this;
+    }
+
+    /**
+     * Get howgame
+     *
+     * @return int
+     */
+    public function getHowgame()
+    {
+        return $this->howgame;
+    }    
 
     /**
      * Set w

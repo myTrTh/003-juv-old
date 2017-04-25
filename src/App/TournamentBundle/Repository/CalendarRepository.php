@@ -133,7 +133,7 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	public function users_for_tournament($tr, $tour) {
-		$dql = "SELECT c.user1, c.user2, c.groups FROM AppTournamentBundle:Calendar c
+		$dql = "SELECT c.user1, c.user2, c.groups, c.off FROM AppTournamentBundle:Calendar c
 				WHERE c.tr = :tr AND c.tour = :tour";
 
 		$query = $this->getEntityManager()->createQuery($dql)
@@ -147,9 +147,10 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 			$user1 = $result[$i]['user1'];
 			$user2 = $result[$i]['user2'];
 			$group = $result[$i]['groups'];
+			$off = $result[$i]['off'];
 
-			$users[] = ["user" => $user1, "group" => $group];
-			$users[] = ["user" => $user2, "group" => $group];
+			$users[] = ["user" => $user1, "group" => $group, "off" => $off];
+			$users[] = ["user" => $user2, "group" => $group, "off" => $off];
 		}
 
 		return $users;

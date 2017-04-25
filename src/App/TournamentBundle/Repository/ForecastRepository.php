@@ -10,6 +10,20 @@ namespace App\TournamentBundle\Repository;
  */
 class ForecastRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function how_games($hash) {
+		$dql = "SELECT count(f.id) as summ FROM AppTournamentBundle:Forecast f WHERE f.hash = :hash";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+			 ->SetParameter('hash', $hash);
+
+		$result = $query->execute();
+
+		if(empty($result))
+			return 0;
+		else
+			return $result[0]['summ'];
+	}
+
 	public function get_forecast($forebridge) {
 
 		$dql = "SELECT f FROM AppTournamentBundle:Forecast f WHERE f.hash = :hash";

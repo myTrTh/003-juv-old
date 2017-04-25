@@ -1,3 +1,7 @@
+app_tournament_ranking:
+    path:     /ranking
+    defaults: { _controller: AppTournamentBundle:Pages:ranking }
+
 app_tournament_showgame:
     path:     /showgame/{id}
     defaults: { _controller: AppTournamentBundle:Tournament:showgame, id: 0 }

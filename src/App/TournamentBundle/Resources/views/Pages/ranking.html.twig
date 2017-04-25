@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Рейтинг {% endblock %}
+
+{% block header %} Рейтинг {% endblock %}
+
+{% block content %} 
+
+
+{% set i = 1 %}
+<div class='table-info'>Рейтинг</div>
+<table class='classifica classifica-ranking'>
+	<tr>
+		<td>#</td>
+		<td></td>
+		<td>КОМАНДA</td>
+		<td>М</td>
+		<td>О</td>
+		<td>О/И</td>
+		<td>Б</td>
+		<td>Б/И</td>
+		<td>П</td>
+		<td>POINT</td>
+	</tr>
+{% for line in ranking %}
+	<tr>
+	<td>{{ i }}</td>
+	<td>
+		{% if line.image is not null %}
+			<img class='classifica-img' src="/public/images/users/{{ line.image }}">
+		{% else %}
+			<img class='classifica-img' src="/public/images/interface/no_photo.png"><br>	
+		{% endif %}
+	</td>
+	<td>{{ line.username }}</td>
+	<td>{{ line.game }}</td>
+	<td>{{ line.score }}</td>
+	<td>{{ line.scorehg|number_format(2) }}</td>
+	<td>{{ line.bw }}</td>
+	<td>{{ line.bwhg|number_format(2) }}</td>
+	<td>{% if line.off == 0 %} - {% else %} {{ line.off }} {% endif %}</td>
+	<td>{{ line.points|number_format(0) }}</td>
+	</tr>
+	{% set i = i + 1 %}
+{% endfor %}
+</table>
+{% endblock %}

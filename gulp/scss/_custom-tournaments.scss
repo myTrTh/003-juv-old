@@ -218,7 +218,7 @@
 	& td:nth-child(3) {
 		width: 100px;
 		text-align: left;
-		font-size: 1.1rem;
+		font-size: 1rem;
 		font-weight: bold;
 	}
 	& td:nth-child(2) {
@@ -287,6 +287,18 @@
 	text-transform: uppercase;
 	margin: 2rem 0 0 0;
 	font-family: $font_header;
+}
+
+.classifica-ranking {
+	& td {
+		border-right: solid 1px #ccc !important;
+	}
+	& td:last-child {
+		border-right: none !important;
+	}
+	& td:nth-child(1), td:nth-child(2), td:nth-child(3) {
+		border-right: none !important;
+	}
 }
 
 .classifica-striker {

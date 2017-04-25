@@ -13,6 +13,12 @@ class resultsService
 		$this->em = $em;
 	}
 
+        public function add_howgame($tournament, $tour, $hash) {
+                $howgame = $this->em->getRepository('AppTournamentBundle:Forecast')->how_games($hash);
+
+                $this->em->getRepository('AppTournamentBundle:Tablelist')->set_how_games($tournament, $tour, $howgame);
+        }
+
 	public function add_tablelist($tr, $tour) {
         $users = $this->em->getRepository('AppTournamentBundle:Calendar')->users_for_tournament($tr, $tour);
 
@@ -22,7 +28,8 @@ class resultsService
         	$tablelist->setTr($tr);
         	$tablelist->setTour($tour);
                 $tablelist->setUser($users[$i]['user']);
-        	$tablelist->setGroups($users[$i]['group']);
+                $tablelist->setGroups($users[$i]['group']);
+        	$tablelist->setOff($users[$i]['off']);
         	$tablelist->setGame(0);
         	$tablelist->setW(0);
         	$tablelist->setN(0);

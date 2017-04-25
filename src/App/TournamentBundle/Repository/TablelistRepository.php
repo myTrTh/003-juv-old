@@ -1,6 +1,7 @@
 <?php
 
 namespace App\TournamentBundle\Repository;
+use Doctrine\ORM\EntityManager;
 
 /**
  * TablelistRepository
@@ -89,6 +90,36 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
 
 		return $maxtour;
 
+	}
+
+	public function get_ranking() {
+
+        $sql = "SELECT tl.user, u.username, u.image, sum(tl.howgame) as howgame, sum(tl.game) as game, sum(tl.bw) as bw, (sum(tl.bw)/sum(tl.howgame)) as bwhg, sum(tl.score) as score, (sum(tl.score)/sum(tl.howgame)) as scorehg, count(tl.off)*5 as off,
+        	((((sum(tl.bw)/sum(tl.howgame)) + (sum(tl.score)/sum(tl.howgame)))*100)+(count(tl.off)*5)) as points
+         		FROM tablelist as tl
+         		INNER JOIN users as u
+         		ON u.id = tl.user
+         		INNER JOIN tournaments as t
+         		ON tl.tr = t.id
+         		WHERE game > 0 AND (t.status = 1 OR t.status = 2) AND (t.created > NOW() - INTERVAL 24 MONTH)
+         		GROUP BY tl.user
+         		ORDER BY points DESC, scorehg DESC, bwhg DESC, score DESC, bw DESC";
+
+        $em = $this->getEntityManager();
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+		return $result;
+	}
+
+	public function set_how_games($tournament, $tour, $howgame) {
+        $em = $this->getEntityManager();
+        $params = array('howgame' => $howgame, 'tour' => $tour, 'tr' => $tournament);
+
+        $sql = "UPDATE tablelist SET howgame = :howgame WHERE tr = :tr AND tour = :tour";
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute($params);
 	}
 
 }

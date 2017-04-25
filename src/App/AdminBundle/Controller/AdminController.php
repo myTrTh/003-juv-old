@@ -1268,9 +1268,8 @@ class AdminController extends Controller
 
                 }
                 $em->flush();
-
-                // create tablelist
-                // $this->getDoctrine
+                
+                $this->get('app.results_tournament')->add_howgame($tournament, $tour, $hash);
 
                 return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
             }
