@@ -92,6 +92,48 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
 
 	}
 
+
+	public function get_last_tour() {
+		$upd = $this->get_updated();
+
+		$dql = "SELECT t.tr, t.tour FROM AppTournamentBundle:Tablelist t
+				WHERE t.updated = :updated";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter('updated', $upd)
+					  ->SetMaxResults(1);
+
+		$result = $query->execute();
+
+		$param = array('tr' => $result[0]['tr'], 'tour' => $result[0]['tour']);
+
+        $sql = "SELECT tl.user, u.username, u.image, sum(tl.howgame) as howgame, sum(tl.game) as game, sum(tl.bw) as bw, (sum(tl.bw)/sum(tl.howgame)) as bwhg, sum(tl.score) as score, (sum(tl.score)/sum(tl.howgame)) as scorehg, count(tl.off)*5 as off,
+        	((((sum(tl.bw)/sum(tl.howgame)) + (sum(tl.score)/sum(tl.howgame)))*100)+(count(tl.off)*5)) as points
+         		FROM tablelist as tl
+         		INNER JOIN users as u
+         		ON u.id = tl.user
+         		INNER JOIN tournaments as t
+         		ON tl.tr = t.id
+         		WHERE game > 0 AND (t.status = 1 OR t.status = 2) AND (t.created > NOW() - INTERVAL 24 MONTH) AND (tl.tr != :tr AND tl.tr != :tour)
+         		GROUP BY tl.user
+         		ORDER BY points DESC, scorehg DESC, bwhg DESC, score DESC, bw DESC";
+
+        $em = $this->getEntityManager();
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute($param);
+        $pre = $stmt->fetchAll();
+
+        $pres = [];
+        for($i=0;$i<count($pre);$i++) {
+        	$user = $pre[$i]['user'];
+        	$point = $pre[$i]['points'];
+
+        	$pres[$user] = $point;
+        }
+
+        return $pres;
+	}
+
 	public function get_ranking() {
 
         $sql = "SELECT tl.user, u.username, u.image, sum(tl.howgame) as howgame, sum(tl.game) as game, sum(tl.bw) as bw, (sum(tl.bw)/sum(tl.howgame)) as bwhg, sum(tl.score) as score, (sum(tl.score)/sum(tl.howgame)) as scorehg, count(tl.off)*5 as off,
@@ -101,7 +143,7 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
          		ON u.id = tl.user
          		INNER JOIN tournaments as t
          		ON tl.tr = t.id
-         		WHERE game > 0 AND (t.status = 1 OR t.status = 2) AND (t.created > NOW() - INTERVAL 24 MONTH)
+         		WHERE (t.status = 1 OR t.status = 2) AND (t.created > NOW() - INTERVAL 24 MONTH)
          		GROUP BY tl.user
          		ORDER BY points DESC, scorehg DESC, bwhg DESC, score DESC, bw DESC";
 
@@ -111,6 +153,20 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
         $result = $stmt->fetchAll();
 
 		return $result;
+	}
+
+	// ranking updated
+	public function get_updated() {
+		$dql = "SELECT max(t.updated) FROM AppTournamentBundle:Tablelist t";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetMaxResults(1);
+
+		$result = $query->execute();
+		if($result)
+			return $result[0][1];
+		else
+			return 0;
 	}
 
 	public function set_how_games($tournament, $tour, $howgame) {

@@ -18,6 +18,11 @@ class PagesController extends Controller
     public function rankingAction() {
     	$ranking = $this->getDoctrine()->getRepository('AppTournamentBundle:Tablelist')->get_ranking();
 
-    	return $this->render('AppTournamentBundle:Pages:ranking.html.twig', array('ranking' => $ranking));
+    	$last_date = $this->getDoctrine()->getRepository('AppTournamentBundle:Tablelist')->get_updated();
+
+		$pre = $this->getDoctrine()->getRepository('AppTournamentBundle:Tablelist')->get_last_tour();
+
+    	return $this->render('AppTournamentBundle:Pages:ranking.html.twig', 
+    		array('ranking' => $ranking, 'lastdate' => $last_date, 'pre' => $pre));
     }
 }

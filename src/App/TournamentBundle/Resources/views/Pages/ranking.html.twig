@@ -6,9 +6,8 @@
 
 {% block content %} 
 
-
 {% set i = 1 %}
-<div class='table-info'>Рейтинг</div>
+<div class='table-info'>Последнее обновление: {{ lastdate|date('d.m.Y') }}</div>
 <table class='classifica classifica-ranking'>
 	<tr>
 		<td>#</td>
@@ -19,29 +18,65 @@
 		<td>О/И</td>
 		<td>Б</td>
 		<td>Б/И</td>
-		<td>П</td>
+		<td>Д</td>
 		<td>POINT</td>
+		<td>PP</td>
 	</tr>
 {% for line in ranking %}
-	<tr>
-	<td>{{ i }}</td>
-	<td>
-		{% if line.image is not null %}
-			<img class='classifica-img' src="/public/images/users/{{ line.image }}">
-		{% else %}
-			<img class='classifica-img' src="/public/images/interface/no_photo.png"><br>	
+	
+	{% if pre[line.user] is defined %}
+		{% set pp = line.points - pre[line.user] %}
+	{% else %}
+		{% set pp = 'NEW' %}
+	{% endif %}
+
+	{% if line.game > 6 %}
+
+		<tr>
+		<td>{{ i }}</td>
+		<td>
+			{% if line.image is not null %}
+				<img class='classifica-img' src="/public/images/users/{{ line.image }}">
+			{% else %}
+				<img class='classifica-img' src="/public/images/interface/no_photo.png"><br>	
+			{% endif %}
+		</td>
+		<td><a class='nostyle' href='{{ path('app_user_show', {'id': line.user}) }}'>{{ line.username }}</a></td>	
+		<td>{{ line.game }}</td>
+		<td>{{ line.score }}</td>
+		<td>{{ line.scorehg|number_format(2) }}</td>
+		<td>{{ line.bw }}</td>
+		<td>{{ line.bwhg|number_format(2) }}</td>
+		<td>{% if line.off == 0 %} - {% else %} {{ line.off }} {% endif %}</td>
+		<td><span class='bold'>{{ line.points|number_format(0) }}</span></td>
+		<td>
+			{% if pp == 0 %}
+				-
+			{% elseif pp > 0 %}
+				<span class='green'>+{{ pp|number_format(0) }}</span>
+			{% elseif pp < 0 %}
+				<span class='red'>{{ pp|number_format(0) }}</span>
+			{% elseif pp == 'NEW' %}
+				NEW
+			{% endif %}
+		</td>
+		</tr>
+		{% set i = i + 1 %}
+
 		{% endif %}
-	</td>
-	<td>{{ line.username }}</td>
-	<td>{{ line.game }}</td>
-	<td>{{ line.score }}</td>
-	<td>{{ line.scorehg|number_format(2) }}</td>
-	<td>{{ line.bw }}</td>
-	<td>{{ line.bwhg|number_format(2) }}</td>
-	<td>{% if line.off == 0 %} - {% else %} {{ line.off }} {% endif %}</td>
-	<td>{{ line.points|number_format(0) }}</td>
-	</tr>
-	{% set i = i + 1 %}
 {% endfor %}
 </table>
+
+<h4>Правила</h4>
+М - Общее количество матчей<br>
+O - Общее количество очков<br>
+О/И - Очки / Количество игр, на которые делаются прогнозы в туре<br>
+Б - Общее количество баллов (забитых мячей)<br>
+Б/И - Баллы / Количество игр, на которые делаются прогнозы в туре<br>
+Д - Бонусный баллы за проход с следующий раунд плей-офф (+5 баллов к общему рейтингу за каждый этап плей-офф<br>
+POINT - Итоговый рейтинг. (О/И + Б/И) * 100 + Д<br>
+PP - Разница с предыдущим рейтингом 
+<br><br>
+Минимальное количество матчей для попадания в рейтинг - 7
+
 {% endblock %}

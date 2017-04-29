@@ -37,6 +37,13 @@ class Tablelist
     private $created;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     */
+    private $updated;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="tr", type="integer")
@@ -171,6 +178,24 @@ class Tablelist
     public function getCreated()
     {
         return $this->created;
+    }
+
+     /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdated()
+    {
+        $this->updated = new \DateTime();
+    } 
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
     }
 
     /**
