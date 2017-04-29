@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="calendar")
  * @ORM\Entity(repositoryClass="App\TournamentBundle\Repository\CalendarRepository")
+ * @ORM\HasLifecycleCallbacks()   
  */
 class Calendar
 {
@@ -20,6 +21,13 @@ class Calendar
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     */
+    private $updated;
 
     /**
      * @var int
@@ -310,5 +318,23 @@ class Calendar
     {
         return $this->result2;
     }
+
+     /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdated()
+    {
+        $this->updated = new \DateTime();
+    } 
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }    
 }
 
