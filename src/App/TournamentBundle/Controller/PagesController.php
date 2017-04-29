@@ -25,4 +25,9 @@ class PagesController extends Controller
     	return $this->render('AppTournamentBundle:Pages:ranking.html.twig', 
     		array('ranking' => $ranking, 'lastdate' => $last_date, 'pre' => $pre));
     }
+
+    public function toolsAction($tools, $first, $second) {
+    	return $this->render('AppTournamentBundle:Pages:tools.html.twig',
+    		array('tools' => $tools));
+    }
 }

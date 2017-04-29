@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} 
+	{% if tools == 'games' %}
+		История встреч
+	{% elseif tools == 'graph' %}
+		График
+	{% elseif tools == 'chess' %}
+		Шахматка
+	{% endif %}
+{% endblock %}
+
+{% block header %}
+	{% if tools == 'games' %}
+		История встреч
+	{% elseif tools == 'graph' %}
+		График
+	{% elseif tools == 'chess' %}
+		Шахматка
+	{% endif %}
+{% endblock %}
+
+{% block content %} 
+
+{% endblock %}
