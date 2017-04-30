@@ -1557,4 +1557,21 @@ class AdminController extends Controller
             // array("tournament" => $tournamentshow));
     }
 
+    public function headteamAction($tr) {
+        $user = $this->getUser();
+        if($user)
+            $userId = $user->getId();
+
+        $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tr);
+
+        if($tournamentshow['access']['creator'] != $userId)
+            if(!in_array($userId, $tournamentshow['access']['assistant']))
+                throw $this->createAccessDeniedException();
+
+        if($tournamentshow['types'] != 2)
+                throw $this->createAccessDeniedException();
+
+        return $this->render('AppAdminBundle:Tournament:headteam.html.twig');
+    }
+
 }
