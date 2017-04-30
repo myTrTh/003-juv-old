@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}История встреч{% endblock %}
+
+{% block header %}История встреч{% endblock %}
+
+{% block content %} 
+
+<form method='post'>
+<select class='small inline' name='user1'>
+	{% for user in users %}
+		{% if user.id == first %}
+			<option selected="selected" value='{{ user.id }}'>{{ user.username }}</option>
+		{% else %}
+			<option value='{{ user.id }}'>{{ user.username }}</option>
+		{% endif %}
+	{% endfor %}
+</select>
+<select class='small inline' name='user2'>
+	{% for user in users %}
+		{% if user.id == second %}
+			<option selected="selected" value='{{ user.id }}'>{{ user.username }}</option>
+		{% else %}
+			<option value='{{ user.id }}'>{{ user.username }}</option>
+		{% endif %}
+	{% endfor %}
+</select>
+<br>
+<input class='button button-main' type='submit' name='show_games' value='Показать'>
+</form>
+<br>
+{# show flash info #}
+{% include 'flashbug.html.twig' %}
+
+{% if first !=0 and second != 0 and games.games is empty %}
+	<h5>Соперники не проводили матчей между собой</h5>
+{% else %}
+
+	<div class='showmatches'>
+		<div>{{ games.games.0.username1 }} </div><div> {{ games.sum.g1 }}</div><div>:</div><div>{{ games.sum.g2 }} </div><div>{{ games.games.0.username2 }}</div>
+	</div>
+	<div class='showstats '>
+		<div class='green'>+{{ games.sum.w1 }}</div>
+		<div class='gray'>={{ games.sum.n }}</div>
+		<div class='red'>-{{ games.sum.w2 }}</div>
+	</div>	
+	<br>
+	{% for game in games.games %}
+
+		{% if game.off > 0 %}
+
+			{% set tour = playoff[game.off] %}
+		{% else %}
+			{% set tour = game.tour~' ТУР' %}
+		{% endif %}
+
+		<a class='nostyle' href='{{ path('app_tournament_showgame', {'id': game.id}) }}'>
+			<span class='gamestr'>{{ game.name }}</span>
+			<span class='gamestour'>{{ tour }}</span>
+			<span class='gamesusers'>{{ game.username1 }} {{ game.result1 }}-{{ game.result2 }} {{ game.username2 }}</span>
+		</a>
+		<br>
+	{% endfor %}
+
+{% endif %}
+
+{% endblock %}

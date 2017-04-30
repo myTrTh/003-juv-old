@@ -1,8 +1,7 @@
-app_tournament_tools:
-    path:     /tools/{tools}/{first}/{second}
+app_tournament_toolgames:
+    path:     /tools/games/{first}/{second}
     defaults: { _controller: AppTournamentBundle:Pages:tools, first: 0, second: 0 }
     requirements:
-        tools: graph|chess|games
         first: '\d+'
         second: '\d+'
 

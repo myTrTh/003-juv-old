@@ -344,6 +344,18 @@ input[type='checkbox'], input[type='radio'] {
 	text-align: justify;
 }
 
+.background-gray {
+	background-color: $gray_lighter;
+}
+
+.background-green {
+	background-color: $green;
+}
+
+.background-red {
+	background-color: $red;
+}
+
 .gray {
 	color: $gray-lighter;
 }
@@ -365,7 +377,7 @@ input[type='checkbox'], input[type='radio'] {
 }
 
 .little {
-	font-size: .9rem;
+	font-size: .9rem !important;
 }
 
 .normal {

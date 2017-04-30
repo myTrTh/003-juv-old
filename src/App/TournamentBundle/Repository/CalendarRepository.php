@@ -274,7 +274,7 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 
 					if($result[$i]['username1'] == $user1) {
 						$w1 += 1;
-					} else if ($result[$i]['username1'] == $user1) {
+					} else if ($result[$i]['username2'] == $user1) {
 						$w2 += 1;
 					}
 
@@ -298,4 +298,75 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 
 		return $res;
 	}	
+
+	public function get_games_tools($user1, $user2) {
+
+		$dql = "SELECT c.tour, c.id, t.name, c.user1, u1.username as username1, u2.username as username2, c.user2, c.result1, c.result2, c.off
+				FROM AppTournamentBundle:Calendar c
+				INNER JOIN AppTournamentBundle:Tournament t
+				WHERE c.tr = t.id
+				INNER JOIN AppUserBundle:User u1
+				WHERE u1.id = c.user1
+				INNER JOIN AppUserBundle:User u2
+				WHERE u2.id = c.user2
+				WHERE c.result1 IS NOT NULL AND ((c.user1 = :user1 AND c.user2 = :user2) OR (c.user2 = :user1 AND c.user1 = :user2))
+				ORDER BY c.updated DESC";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("user1", $user1)
+					  ->SetParameter("user2", $user2);
+
+		$result = $query->execute();
+
+			$w1 = 0;
+			$w2 = 0;
+			$n = 0;
+			$g1 = 0;
+			$g2 = 0;
+			for($i=0;$i<count($result);$i++) {
+
+				if($i == 0) {
+					$user1 = $result[$i]['user1'];
+					$user2 = $result[$i]['user2'];
+				}
+
+				if($result[$i]['result1'] > $result[$i]['result2']) {
+
+					if($result[$i]['user1'] == $user1) {
+						$w1 += 1;
+						$g1 += $result[$i]['result1'];
+						$g2 += $result[$i]['result2'];						
+
+					} else if ($result[$i]['user2'] == $user1) {
+						$w2 += 1;
+						$g1 += $result[$i]['result2'];
+						$g2 += $result[$i]['result1'];
+					}
+
+				} else if ($result[$i]['result1'] < $result[$i]['result2']) {
+					if($result[$i]['user1'] == $user1) {
+						$w2 += 1;
+						$g1 += $result[$i]['result2'];
+						$g2 += $result[$i]['result1'];						
+
+					} else if ($result[$i]['user2'] == $user1) {
+						$w1 += 1;
+						$g1 += $result[$i]['result1'];
+						$g2 += $result[$i]['result2'];						
+					}
+
+				} else if ($result[$i]['result1'] == $result[$i]['result2']) {
+					$n += 1;
+					$g1 += $result[$i]['result1'];
+					$g2 += $result[$i]['result2'];
+				}
+			}
+
+			$all = $w1 + $w2 + $n;
+
+			$sum = ["w1" => $w1, "w2" => $w2, "n" => $n, "g1" => $g1, "g2" => $g2, 'all' => $all];
+			$games = ["games" => $result, "sum" => $sum];
+
+		return $games;
+	}
 }

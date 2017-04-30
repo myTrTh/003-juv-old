@@ -444,3 +444,69 @@
 	font-size: 1rem;
 	font-family: $font_header;
 }
+
+.gamestr {
+	font-weight: bold;
+	font-size: .9rem;
+}
+
+.gamestour {
+	color: #999;
+	font-weight: bold;
+	font-size: .9rem;
+}
+
+.gamesusers {
+	font-weight: bold;
+	color: #4c71a1;
+	font-size: .9rem;
+}
+
+.showmatches {
+	width: 100%;
+	text-align: center;
+	font-size: 1rem;
+	& > div {
+		display: inline-block;
+		padding: 2px 5px;
+		margin: 2px;
+		border: solid 1px #ccc;
+	}
+	& > div:first-child {
+		background-color: #f0eded;
+		color: #999;
+		font-weight: bold;
+		width: 200px;
+		border-radius: 5px 0 0 5px;
+		text-align: right;
+	}
+	& > div:last-child {
+		width: 200px;
+		background-color: #f0eded;
+		color: #999;
+		font-weight: bold;
+		border-radius: 0 5px 5px 0;
+		text-align: left;
+	}
+	& > div:nth-child(2), div:nth-child(4) {
+		width: 50px;
+		background-color: #999;
+		color: $white;
+		font-weight: bold;
+	}
+	& > div:nth-child(3) {
+		border: none;
+		margin: 0;
+		padding: 2px;
+	}
+}
+
+.showstats {
+	width: 100%;
+	text-align: center;
+	& > div {
+		display: inline-block;
+		width: 30px;
+		font-weight: bold;
+	}
+}
