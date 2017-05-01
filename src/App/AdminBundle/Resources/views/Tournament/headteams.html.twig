@@ -1,0 +1,28 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Команды {% endblock %}
+
+{% block lowheader %} Команды {% endblock %}
+
+{% block lowbody %}
+
+{{ form_start(form) }}
+<h4>ДОБАВИТЬ КОМАНДУ</h4>
+{{ form_widget(form.name, {'attr': {'class': 'middle'}}) }}<br>
+{{ form_errors(form.name) }}
+{{ form_rest(form) }}
+
+<input class='button button-main' type="submit" value="Добавить" />
+{{ form_end(form) }}
+{# show flash info #}
+{% include 'flashbug.html.twig' %}
+
+{% if teams is not empty %}
+
+	{% for team in teams %}
+		{{ team.name }}<br>
+	{% endfor %}
+
+{% endif %}
+
+{% endblock %}

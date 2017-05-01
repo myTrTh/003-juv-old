@@ -1,3 +1,7 @@
+app_admin_headteams:
+    path:     /adminpanel/headteams
+    defaults: { _controller: AppAdminBundle:Admin:headteams }
+
 app_admin_headteam:
     path:     /adminpanel/tournament/{tr}/headteam
     defaults: { _controller: AppAdminBundle:Admin:headteam, tr: 0 }

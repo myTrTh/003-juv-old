@@ -107,8 +107,8 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
 
 		$param = array('tr' => $result[0]['tr'], 'tour' => $result[0]['tour']);
 
-        $sql = "SELECT tl.user, u.username, u.image, sum(tl.howgame) as howgame, sum(tl.game) as game, sum(tl.bw) as bw, (sum(tl.bw)/sum(tl.howgame)) as bwhg, sum(tl.score) as score, (sum(tl.score)/sum(tl.howgame)) as scorehg, count(tl.off)*5 as off,
-        	((((sum(tl.bw)/sum(tl.howgame)) + (sum(tl.score)/sum(tl.howgame)))*100)+(count(tl.off)*5)) as points
+        $sql = "SELECT tl.user, u.username, u.image, sum(tl.howgame) as howgame, sum(tl.game) as game, sum(tl.bw) as bw, (sum(tl.bw)/sum(tl.howgame)) as bwhg, sum(tl.score) as score, (sum(tl.score)/sum(tl.howgame))*2 as scorehg, count(tl.off)*5 as off,
+        	((((sum(tl.bw)/sum(tl.howgame)) + (sum(tl.score)/sum(tl.howgame))*2)*100)+(count(tl.off)*5)) as points
          		FROM tablelist as tl
          		INNER JOIN users as u
          		ON u.id = tl.user
@@ -136,8 +136,8 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
 
 	public function get_ranking() {
 
-        $sql = "SELECT tl.user, u.username, u.image, sum(tl.howgame) as howgame, sum(tl.game) as game, sum(tl.bw) as bw, (sum(tl.bw)/sum(tl.howgame)) as bwhg, sum(tl.score) as score, (sum(tl.score)/sum(tl.howgame)) as scorehg, count(tl.off)*5 as off,
-        	((((sum(tl.bw)/sum(tl.howgame)) + (sum(tl.score)/sum(tl.howgame)))*100)+(count(tl.off)*5)) as points
+        $sql = "SELECT tl.user, u.username, u.image, sum(tl.howgame) as howgame, sum(tl.game) as game, sum(tl.bw) as bw, (sum(tl.bw)/sum(tl.howgame)) as bwhg, sum(tl.score) as score, (sum(tl.score)/sum(tl.howgame))*2 as scorehg, count(tl.off)*5 as off,
+        	((((sum(tl.bw)/sum(tl.howgame)) + (sum(tl.score)/sum(tl.howgame))*2)*100)+(count(tl.off)*5)) as points
          		FROM tablelist as tl
          		INNER JOIN users as u
          		ON u.id = tl.user

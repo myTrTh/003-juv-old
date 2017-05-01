@@ -24,8 +24,10 @@ use App\TournamentBundle\Form\NameType;
 use App\TournamentBundle\Form\ForecastType;
 use App\TournamentBundle\Form\ForebridgeType;
 use App\TournamentBundle\Form\TeamType;
+use App\TournamentBundle\Form\HeadteamType;
 use App\TournamentBundle\Entity\Tournament;
 use App\TournamentBundle\Entity\Team;
+use App\TournamentBundle\Entity\Headteam;
 use App\TournamentBundle\Entity\Forecast;
 use App\TournamentBundle\Entity\Forebridge;
 
@@ -1572,6 +1574,60 @@ class AdminController extends Controller
                 throw $this->createAccessDeniedException();
 
         return $this->render('AppAdminBundle:Tournament:headteam.html.twig');
+    }
+
+    public function headteamsAction() {
+        /* if no admin */
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $user = $this->getUser();
+        if($user)
+            $userId = $user->getId();
+
+        $teams = new Headteam();
+        $form = $this->createForm(HeadteamType::class, $teams);
+
+        $request = Request::createFromGlobals();
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $team = trim($data->getName());
+
+            if(!$team) {
+                $session = $this->get('session');
+                $session
+                    ->getFlashBag()
+                    ->add('error', 'Введите название команды.');
+                return $this->redirect($this->generateUrl('app_admin_headteams'));
+            }
+
+            $result = $this->getDoctrine()->getRepository('AppTournamentBundle:Headteam')->showHeadTeam($team);
+
+            if($result) {
+                $session = $this->get('session');
+                $session
+                    ->getFlashBag()
+                    ->add('error', 'Команда уже существует.');
+                return $this->redirect($this->generateUrl('app_admin_headteams'));
+            }
+            
+            $em = $this->getDoctrine()->getManager();
+            $teams->setName($team);
+            $teams->setAuthor($userId);
+            $teams->setStatus(1);
+            $em->persist($teams);
+            $em->flush();
+
+        }
+
+        $heads = $this->getDoctrine()->getRepository('AppTournamentBundle:Headteam')->get_teams();
+
+        return $this->render('AppAdminBundle:Tournament:headteams.html.twig',
+            array('form' => $form->createView(), 'teams' => $heads));
     }
 
 }
