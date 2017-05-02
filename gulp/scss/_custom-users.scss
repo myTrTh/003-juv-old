@@ -10,17 +10,22 @@
 }
 
 .container-users {
-    display: flex;
-    flex-wrap: wrap;
+    & > div {
+        display: inline-block;
+        vertical-align: top;
+    }
 }
 
 .board-user {
-    display: flex;
     width: 280px;
     margin: 5px;
     border: solid 1px #ccc;
     font-size: .9rem;
     font-family: $font_header;
+    & div {
+        display: inline-block;
+        vertical-align: top;
+    }
     & span {
         font-size: 1.2rem;
     }
@@ -36,21 +41,26 @@
 }
 
 .users-container {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+     & > div {
+        display: inline-block;
+    }
 }
 
 .user-block {
     margin: 5px 5px 25px 5px;
-    flex-basis: 300px;
-    flex-shrink: 0;
+    width: 35%;
+    min-width: 300px;
+    vertical-align: top;
     & > img {
         max-width: 200px;
         max-height: 200px;
         border: solid 1px #f2f2f2;
         box-shadow: 1px 1px 2px #f2f2f2;
     }
+}
+
+.block-shirt {
+    width: 300px !important;
 }
 
 .user-block > ul li {
