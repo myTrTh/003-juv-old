@@ -69,7 +69,7 @@ img.smile {
 .post-header {
 	background-color: #d9d9d9;
 	color: $gray_main;
-	font-size: 1.1rem;
+	font-size: 1rem;
 	height: 23px;
 	font-weight: bold;
 	padding: 0 .3rem 0 0;
@@ -79,38 +79,48 @@ img.smile {
 }
 
 .post-header-username {
-	height: 22px;
-	padding: 0;
-	margin: 0;
-	& div {
-		display: inline-block;
-		height: 22px;		
-	}
-	& div > img {
+	height: 23px;
+	float: left;
+	// & div {
+	// 	display: inline-block;
+	// 	height: 22px;		
+	// }
+	& img {
 		max-height: 20px;
-		max-width: 20px;
+		vertical-align: top;
+		max-width: 23px;
 		margin-left: 3px;
 	}
 }
 
 .post-author {
-	margin-top: 10px;
 	padding: 0;
 	margin-left: 3px;
 }
 
 .post-header-id {
-	height: 22px;	
+	height: 23px;	
 	float: right;
 }
 
 .post-body {
-	// display: flex;
+	width: 100%;
+	clear: both;
+	position: relative;	
+	// overflow: hidden;
+	&:after {
+		content: "";
+		display: table;
+		clear: both;
+	}
 }
 
 .post-info {
-	flex: 0 0 170px;
+	vertical-align: top;
+	float: left;
+	width: 170px;
 	text-align: center;
+	display: inline-block;
 	padding: 2px;
 	& > img {
 		max-width: 166px;
@@ -130,8 +140,6 @@ img.smile {
 }
 
 .post-content {
-	flex: 1 0 10px;
-	position: relative;
 	overflow: hidden;
 }
 
@@ -170,8 +178,9 @@ img.smile {
 .quote {
 	color: white;
 	background: #b5b5b5;
-	padding: 1px 15px;
+	padding: 2px 15px;
 	font-size: .9rem;
+	vertical-align: top;
 	margin-right: 7px;
 	border-radius: 3px;
 	font-weight: bold;
@@ -182,7 +191,6 @@ img.smile {
 
 /*rate */
 .rate-panel {
-	flex-basis: 100%;
 	background-color: #FAFAFA;
 	min-height: 23px;
 	text-align: right;
@@ -273,14 +281,14 @@ img.smile {
 }
 
 .toolkit {
-	/*border: solid 1px #ccc;*/
 	min-width: 100px;
-	font-size: 15px;
-	font-family: 'Open Sans Condensed', sans-serif;	
+	font-size: 1rem;
+	font-family: $font_header;
 	display: none;
 	position: absolute;
-	z-index: 1;
+	z-index: 2;
 	bottom: 12px;
+	padding: .3rem;
 	cursor: default;
 }
 

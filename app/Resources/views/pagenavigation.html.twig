@@ -10,12 +10,12 @@
 		{% if page > 3 %}
 		<div>
 			<a class='nostyle' href="{{ page_navigation }}/1">
-				<<
+				<i class='fa fa-angle-double-left'></i>
 			</a>
 		</div>
 		<div>
 			<a class='nostyle' href="{{ page_navigation }}/{{ prevpage }}">
-				<
+				<i class='fa fa-angle-left'></i>
 			</a>
 		</div>
 		{% else %}
@@ -73,11 +73,11 @@
 
 		{% if countpage > 5 and page <= countpage - 3 %}
 		<div><a class='nostyle' href="{{ page_navigation }}/{{ nextpage }}">
-				>
+				<i class='fa fa-angle-right'></i>
 			</a>
 		</div>
 		<div><a class='nostyle' href="{{ page_navigation }}/{{ countpage}}">
-				>>
+				<i class='fa fa-angle-double-right'></i>
 			</a>
 		</div>
 		{% else %}

@@ -41,7 +41,6 @@
 <div class="post" id="post{{ post.id }}">
 	<div class="post-header">
 		<div class="post-header-username">
-			<div>
 			{% if achives[post.user] is defined %}
 				{% spaceless %}						
 					{% for achive in achives[post.user] %}
@@ -49,7 +48,6 @@
 					{% endfor %}
 				{% endspaceless %}
 			{% endif %}
-			</div>
 			<div>
 				<a class='nostyle' href='{{ path('app_user_show', {'id': post.user}) }}'><span class='post-author'>{{ post.username }}</span></a>
 			</div>
@@ -57,7 +55,6 @@
 		<div class="post-header-id">
 			<div>
 			{% if is_granted('ROLE_VERIFIED_USER') and order_quote == 1 %}
-				{# <i class='quote fa fa-commenting-o'></i> #}
 				<span class='quote'>reply</span>
 			{% endif %}
 			</div>
@@ -148,12 +145,12 @@
 				...<i class='fa fa-edit'></i> {{ replace_date(post.updated) }}
 			{% endif %}
 			</span>
+		</div>		
 			<div class='post-content-numbers'>
 				{% if numbers[post.user] is defined %}
 					numero {{ set_number(numbers[post.user])|raw }}
 				{% endif %}
-			</div>			
-		</div>		
+			</div>					
 	</div>
 	<div class="rate-panel">
 		<div class='rate-panel'>
