@@ -43,7 +43,7 @@ gulp.task('scripts', function() {
 gulp.task('browser-sync', function() {
 	browserSync({
 		// server: {
-		// 	baseDir: 'app'
+		// 	baseDir: 'localhost:8000'
 		// }
 		proxy: 'localhost:8000',
 	});

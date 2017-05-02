@@ -70,39 +70,42 @@ img.smile {
 	background-color: #d9d9d9;
 	color: $gray_main;
 	font-size: 1.1rem;
-	display: flex;
-	justify-content: space-between;
 	height: 23px;
 	font-weight: bold;
 	padding: 0 .3rem 0 0;
+	& div {
+		display: inline-block
+	}
 }
 
 .post-header-username {
-	display: flex;
+	height: 22px;
+	padding: 0;
+	margin: 0;
 	& div {
-		align-self: center;
+		display: inline-block;
+		height: 22px;		
 	}
 	& div > img {
 		max-height: 20px;
 		max-width: 20px;
 		margin-left: 3px;
-		vertical-align: middle;
 	}
 }
 
 .post-author {
+	margin-top: 10px;
+	padding: 0;
 	margin-left: 3px;
 }
 
 .post-header-id {
-	display: flex;
-	& div {
-		align-self: center;
-	}
+	height: 22px;	
+	float: right;
 }
 
 .post-body {
-	display: flex;
+	// display: flex;
 }
 
 .post-info {
@@ -118,7 +121,7 @@ img.smile {
 
 @media all and (max-width: 499px) {
 	.post-info {
-		flex: 0 0 140px;
+		width: 140px;
 		& > img {
 			max-width: 136px;
 			max-height: 180px;
@@ -167,7 +170,7 @@ img.smile {
 .quote {
 	color: white;
 	background: #b5b5b5;
-	padding: 2px 15px;
+	padding: 1px 15px;
 	font-size: .9rem;
 	margin-right: 7px;
 	border-radius: 3px;

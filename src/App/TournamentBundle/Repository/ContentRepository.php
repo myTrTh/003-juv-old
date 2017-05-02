@@ -23,6 +23,9 @@ class ContentRepository extends \Doctrine\ORM\EntityRepository
 
         $result = $query->execute();
 
-        return $result[0];
+        if(empty($result))
+            return 0;
+        else
+            return $result[0];
 	}
 }

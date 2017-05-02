@@ -1,4 +1,86 @@
 <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>  
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">    
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <meta name='author' content="">
+    <link href="http://juvepro.ru/" rel="canonical">
+    <link rel="shortcut icon" type="image/png" href="{{ asset('favicon.png') }}">
+    <link rel="apple-touch-icon" type="image/png" href="{{ asset('apple-touch-icon.png') }}">    
+    <script src="https://use.fontawesome.com/fabe02ceef.js"></script>   
+    <link rel='stylesheet' href='{{ asset('/public/css/main.css') }}'>
+    <title>{% block title %} v2.0 {% endblock %} - JuvePro</title>
+</head>
+<body>
+    <div id="main">
+        <div id="navigation">
+            <ul>
+                <li class='brand'><img src='{{ asset('/public/images/interface/king.png') }}'></li><li><a>ТУРНИРЫ</a>
+                    <ul>
+                        <li><a href='{{ path('app_tournament_list') }}'>АКТИВНЫЕ</a></li>
+                        <li><a href='{{ path('app_tournament_archives') }}'>АРХИВ</a></li>
+                        <li><a href='{{ path('app_tournament_content', {'content': 'rules'}) }}'>ПРАВИЛА</a></li>
+                    </ul>
+                </li><li><a href='/users'>МЫ 
+                        {% if notification_vote is defined and notification_vote|length > 0 %} * {% endif %}
+                    </a>
+                    <ul>
+                        <li><a href='{{ path('app_user_list') }}'>КОМАНДЫ</a></li>
+                        <li><a href='{{ path('app_tournament_ranking') }}'>РЕЙТИНГ</a></li>
+                        <li><a href='{{ path('app_vote_list') }}'>ОПРОСЫ 
+                            {% if notification_vote is defined and notification_vote|length > 0 %} 
+                            <span class='normal little'><i class='fa fa-bell-o'></i> {{ notification_vote|length }}</span>
+                            {% endif %}
+                        </a></li>
+                        <li><a href='{{ path('app_tournament_toolgames') }}'>СТАТИСТИКА</a></li>
+                    </ul>
+                </li><li><a href='/guestbook'>ГЕСТА 
+                            {% if notification_guestbook is defined and notification_guestbook|length > 0 %} 
+                                <span class='normal little'><i class='fa fa-bell-o'></i> {{ notification_guestbook|length }}
+                            {% endif %}
+                        </a></li><li>
+                    {% if is_granted('ROLE_VERIFIED_USER') %}
+                        <a>INFO</a>
+                            <ul>
+                                <li><a href='{{ path("fos_user_profile_show") }}'>ПРОФИЛЬ</a></li>
+                                   {% if is_granted('ROLE_ADMIN') %}
+                                   <li><a href='{{ path("app_admin_users") }}'>АДМИНКА
+                                        {% if is_granted('ROLE_ADMIN') and notification_adminbook is defined and notification_adminbook|length > 0 %} * {% endif %}
+                                   </a></li>
+                                {% endif %}
+                            <li><a href='{{ path("fos_user_security_logout") }}'>ВЫЙТИ</a></li>
+                        </ul>               
+                    {% else %}
+                        <a href='{{ path("fos_user_security_login") }}'>ВХОД</a>
+                    {% endif %}
+                </li>
+            </ul>
+        </div>
+        <div id="header">
+            <img src="/public/images/interface/head.jpg">
+        </div>
+        <div id="content">
+            <h1>{% block header %} ТУРНИРЫ {% endblock %}</h1>
+            {% block content %}
+
+            {% endblock %}
+        </div>
+        <div id="empty"></div>
+    </div>
+    <div id='footer'>
+        <div>© JuvePro. 2015 - {{ "now"|date('Y') }} </div>
+        <div><a class='nostyle' href='{{ path('app_tournament_content', {'content': 'about'}) }}'>О нас</a></div>
+        <div><a class='nostyle' href='{{ path('app_tournament_content', {'content': 'faq'}) }}'>FAQ</a></div>
+    </div>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'></script>
+    <script src='{{ asset('/public/js/libs.js') }}'></script>
+</body>
+</html>
+
+{# <!DOCTYPE html>
 <html lang='en'>
 <head>
     <meta charset='UTF-8'>
@@ -80,4 +162,4 @@
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'></script>
     <script src='{{ asset('/public/js/libs.js') }}'></script>
 </body>
-</html>
+</html> #}

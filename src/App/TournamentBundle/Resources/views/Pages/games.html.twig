@@ -32,9 +32,11 @@
 {# show flash info #}
 {% include 'flashbug.html.twig' %}
 
-{% if first !=0 and second != 0 and games.games is empty %}
+{% if first !=0 and second != 0 %}
 	<h5>Соперники не проводили матчей между собой</h5>
 {% else %}
+
+    {% if games.games is defined and games.games is not empty %}
 
 	<div class='showmatches'>
 		<div>{{ games.games.0.username1 }} </div><div> {{ games.sum.g1 }}</div><div>:</div><div>{{ games.sum.g2 }} </div><div>{{ games.games.0.username2 }}</div>
@@ -61,6 +63,8 @@
 		</a>
 		<br>
 	{% endfor %}
+
+{% endif %}
 
 {% endif %}
 
