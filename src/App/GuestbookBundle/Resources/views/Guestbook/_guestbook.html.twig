@@ -41,6 +41,7 @@
 <div class="post" id="post{{ post.id }}">
 	<div class="post-header">
 		<div class="post-header-username">
+			<div>
 			{% if achives[post.user] is defined %}
 				{% spaceless %}						
 					{% for achive in achives[post.user] %}
@@ -48,6 +49,7 @@
 					{% endfor %}
 				{% endspaceless %}
 			{% endif %}
+			</div>
 			<div>
 				<a class='nostyle' href='{{ path('app_user_show', {'id': post.user}) }}'><span class='post-author'>{{ post.username }}</span></a>
 			</div>

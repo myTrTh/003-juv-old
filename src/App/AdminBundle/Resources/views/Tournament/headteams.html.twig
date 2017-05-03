@@ -17,11 +17,14 @@
 {# show flash info #}
 {% include 'flashbug.html.twig' %}
 
+<br>
 {% if teams is not empty %}
 
+	<div class='numbers-area'>
 	{% for team in teams %}
-		{{ team.name }}<br>
+		<div><a class='nostyle' href='{{ path('app_admin_team', {'team': team.id}) }}'>{{ team.name }}</a></div>
 	{% endfor %}
+	</div>
 
 {% endif %}
 

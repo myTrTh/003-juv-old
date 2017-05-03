@@ -53,7 +53,9 @@
 
 	<a class='nostyle' href="{{ path("app_admin_logo", {"tournament": tournament.id}) }}"><h6><i class='fa fa-mail-forward'></i> ДОБАВИТЬ ЛОГОТИП</h6></a>
 
-	<a class='nostyle' href="{{ path("app_admin_headteam", {"tournament": tournament.id}) }}"><h6><i class='fa fa-mail-forward'></i> ГЛАВНАЯ КОМАНДА</h6></a>
+	{% if tournament.types == 2 %}
+	<a class='nostyle' href="{{ path("app_admin_headteam", {"tr": tournament.id}) }}"><h6><i class='fa fa-mail-forward'></i> ГЛАВНАЯ КОМАНДА</h6></a>
+	{% endif %}
 
 	<a class='nostyle' href="{{ path("app_admin_addteam", {"tournament": tournament.id}) }}"><h6><i class='fa fa-mail-forward'></i> ДОБАВИТЬ КОМАНДЫ</h6></a>
 

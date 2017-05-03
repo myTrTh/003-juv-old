@@ -22,7 +22,7 @@
 		<li><a class='nostyle' href='{{ path('app_admin_champions') }}'>Чемпионы</a></li>
 		<li><a class='nostyle' href='{{ path('app_admin_tournaments') }}'>Турниры</a></li>
 	{% endif %}
-	{% if is_granted('ROLE__ADMIN') %}
+	{% if is_granted('ROLE_ADMIN') %}
 		<li><a class='nostyle' href='{{ path('app_admin_headteams') }}'>Команды</a></li>
 	{% endif %}
 </ul>

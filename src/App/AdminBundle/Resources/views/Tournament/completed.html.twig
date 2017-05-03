@@ -32,14 +32,8 @@
 	{{ form_widget(form.usergroups, {"attr": {"class": "small"}}) }}
 </div>
 <br>
-{% if app.session.flashBag.has('error') %}
-	<span class="display-error">
-	    {% for msg in app.session.flashBag.get('error') %}
-	        {{ msg }}
-	    {% endfor %}
-	</span>
-	<br>
-{% endif %}
+	{# show flash info #}
+	{% include 'flashbug.html.twig' %}
 <br>
 {{ form_widget(form.create_tournament, {"attr": {"class": "button button-main"}}) }}
 

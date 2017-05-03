@@ -331,7 +331,7 @@
 	border: solid 1px #ccc;
 	padding: .2rem;
 	font-family: $font_header;
-	background-color: #e8e3df;
+	background-color: $gray_lightest;
 	margin: .2rem 0;
 }
 
@@ -509,4 +509,38 @@
 		width: 30px;
 		font-weight: bold;
 	}
+}
+
+.player {
+	margin-bottom: 3px;
+	font-family: $font_header;
+	& > div {
+		display: inline-block;
+		vertical-align: top;
+	}
+	& .pos {
+		font-size: .9rem;
+	}
+}
+
+.player-image {
+	width: 70px;
+	height: 70px;
+	& > img {
+		height: 70px;
+		max-width: 70px;
+		margin-left: .3rem;
+	}
+}
+
+.player-info {
+	padding: 0 .3rem;
+}
+
+.player-first {
+	text-transform: capitalize;
+}
+
+.player-second {
+	text-transform: uppercase;
 }

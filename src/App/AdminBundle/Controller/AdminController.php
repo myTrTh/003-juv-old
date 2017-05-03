@@ -25,9 +25,11 @@ use App\TournamentBundle\Form\ForecastType;
 use App\TournamentBundle\Form\ForebridgeType;
 use App\TournamentBundle\Form\TeamType;
 use App\TournamentBundle\Form\HeadteamType;
+use App\TournamentBundle\Form\PlayerType;
 use App\TournamentBundle\Entity\Tournament;
 use App\TournamentBundle\Entity\Team;
 use App\TournamentBundle\Entity\Headteam;
+use App\TournamentBundle\Entity\Player;
 use App\TournamentBundle\Entity\Forecast;
 use App\TournamentBundle\Entity\Forebridge;
 
@@ -1622,12 +1624,57 @@ class AdminController extends Controller
             $em->persist($teams);
             $em->flush();
 
+            return $this->redirect($this->generateUrl('app_admin_headteams'));            
+
         }
 
         $heads = $this->getDoctrine()->getRepository('AppTournamentBundle:Headteam')->get_teams();
 
         return $this->render('AppAdminBundle:Tournament:headteams.html.twig',
             array('form' => $form->createView(), 'teams' => $heads));
+    }
+
+    public function teamAction($team) {
+
+        $info = $this->getDoctrine()->getRepository('AppTournamentBundle:Headteam')->get_team($team);
+
+        $players = $this->getDoctrine()->getRepository('AppTournamentBundle:Player')->get_players($team);
+
+        $player = new Player();
+
+        $form = $this->createForm(PlayerType::class, $player);
+
+        $request = Request::createFromGlobals();
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $first = mb_strtolower($data->getFirst());
+            $second = mb_strtolower($data->getSecond());
+            $position = $data->getPosition();
+
+            $em = $this->getDoctrine()->getManager();
+            $player->setTeam($team);
+            $player->setFirst($first);
+            $player->setSecond($second);
+            $player->setPosition($position);
+            $player->setStatus(1);
+            $em->persist($player);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('app_admin_team', array('team' => $team))); 
+        }
+
+        return $this->render('AppAdminBundle:Tournament:team.html.twig',
+            array('team' => $info, 'players' => $players, 'form' => $form->createView()));
+    }
+
+    public function playerAction($team, $player) {
+
+        $player = $this->getDoctrine()->getRepository('AppTournamentBundle:Player')->show_player($player);
+        return $this->render('AppAdminBundle:Tournament:player.html.twig',
+            array('player' => $player));
     }
 
 }

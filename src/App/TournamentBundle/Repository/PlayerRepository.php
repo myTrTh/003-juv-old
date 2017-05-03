@@ -10,4 +10,39 @@ namespace App\TournamentBundle\Repository;
  */
 class PlayerRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function get_players($team) {
+		$dql = "SELECT p FROM AppTournamentBundle:Player p
+				WHERE p.team = :team
+				ORDER BY p.position ASC, p.second ASC";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter('team', $team);
+
+		$result = $query->execute();
+
+		return $result;	
+	}
+
+	public function show_player($playerid) {
+		$dql = "SELECT p.id, p.first, p.second, p.position FROM AppTournamentBundle:Player p
+				WHERE p.id = :player AND p.status = 1";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter('player', $playerid);
+
+		$result = $query->execute();
+
+		if(empty($result)) {
+			return 0;
+		} else {
+			$player = [];
+			$player['id'] = $result[0]['id'];
+			$player['first'] = $result[0]['first'];
+			$player['second'] = $result[0]['second'];
+			$player['position'] = $result[0]['position'];
+
+			return $player;	
+		}
+
+	}	
 }

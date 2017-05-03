@@ -1,0 +1,11 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Футболист {% endblock %}
+
+{% block lowheader %} {{ player.first }} {{ player.second }} {% endblock %}
+
+{% block lowbody %}
+<a class='link-back' href='{{ path("app_admin_headteams") }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
+<br>
+
+{% endblock %}

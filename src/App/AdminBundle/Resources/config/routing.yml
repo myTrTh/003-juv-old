@@ -1,3 +1,13 @@
+app_admin_player:
+    path:     /adminpanel/player/{team}/{player}
+    defaults: { _controller: AppAdminBundle:Admin:player }
+    methods: [GET|POST]
+
+app_admin_team:
+    path:     /adminpanel/team/{team}
+    defaults: { _controller: AppAdminBundle:Admin:team, team: Ювентус }
+    methods: [GET|POST]
+
 app_admin_headteams:
     path:     /adminpanel/headteams
     defaults: { _controller: AppAdminBundle:Admin:headteams }

@@ -72,6 +72,7 @@ class TournamentRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	public function show_tournament_for_admin($tournament) {
+
 		$dql = "SELECT t.id, t.types, t.name, t.access, t.image, t.info, t.status FROM AppTournamentBundle:Tournament t
 			WHERE t.id = :id";
 

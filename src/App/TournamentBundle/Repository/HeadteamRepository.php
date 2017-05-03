@@ -37,4 +37,25 @@ class HeadteamRepository extends \Doctrine\ORM\EntityRepository
 		return $result;
 	}
 
+	public function get_team($team) {
+		$dql = "SELECT h.id, h.name FROM AppTournamentBundle:Headteam h
+				WHERE h.id = :team";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter('team', $team);
+
+		$result = $query->execute();
+
+		$info = [];
+		if(!empty($result)) {
+			$info['name'] = $result[0]['name'];
+			$info['id'] = $result[0]['id'];
+		} else {
+			$info['name'] = '';
+			$info['id'] = 0;
+		}
+
+		return $info;
+	}
+
 }
