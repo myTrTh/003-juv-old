@@ -5,7 +5,17 @@
 {% block lowheader %} {{ player.first }} {{ player.second }} {% endblock %}
 
 {% block lowbody %}
-<a class='link-back' href='{{ path("app_admin_headteams") }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
+<a class='link-back' href='{{ path("app_admin_team", {'team': team}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
 <br>
+{{ form_start(form) }}
+ИМЯ<br>
+{{ form_widget(form.first, {'attr': {'class': 'middle'}}) }}
+ФАМИЛИЯ<br>
+{{ form_widget(form.second, {'attr': {'class': 'middle'}}) }}
+ПОЗИЦИЯ<br>
+{{ form_widget(form.position, {'attr': {'class': 'middle'}}) }}
+{{ form_errors(form) }}
+{{ form_widget(form.save, {'attr': {'class': 'button button-main'}}) }}
+{{ form_end(form) }}
 
 {% endblock %}

@@ -26,6 +26,7 @@ use App\TournamentBundle\Form\ForebridgeType;
 use App\TournamentBundle\Form\TeamType;
 use App\TournamentBundle\Form\HeadteamType;
 use App\TournamentBundle\Form\PlayerType;
+use App\TournamentBundle\Form\ChangeplayerType;
 use App\TournamentBundle\Entity\Tournament;
 use App\TournamentBundle\Entity\Team;
 use App\TournamentBundle\Entity\Headteam;
@@ -1672,9 +1673,25 @@ class AdminController extends Controller
 
     public function playerAction($team, $player) {
 
+        $footballer = $this->getDoctrine()->getRepository('AppTournamentBundle:Player')->find($player);
+
+        $form = $this->createForm(ChangeplayerType::class, $footballer);
+
+        $request = Request::createFromGlobals();
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($footballer);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('app_admin_player', array('team' => $team, 'player' => $player))); 
+        }
+
         $player = $this->getDoctrine()->getRepository('AppTournamentBundle:Player')->show_player($player);
         return $this->render('AppAdminBundle:Tournament:player.html.twig',
-            array('player' => $player));
+            array('player' => $footballer, 'form' => $form->createView(), 'team' => $team));
     }
 
 }
