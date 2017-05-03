@@ -3,6 +3,7 @@
 namespace App\TournamentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Player
@@ -51,10 +52,11 @@ class Player
     private $position;
 
     /**
-     * @var string
-     *
      * @ORM\Column(name="image", type="string", length=255, nullable=true)
-     */
+     * @Assert\File(mimeTypes={ "image/png", "image/jpeg", "image/gif" })
+     * @Assert\File(maxSize="50k")
+     *
+    */    
     private $image;
 
     /**

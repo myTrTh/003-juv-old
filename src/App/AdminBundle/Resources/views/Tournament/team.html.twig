@@ -39,9 +39,9 @@
 		<div class='player'>
 			<div style='border-left: solid 1px {{ cl }}' class='player-image'>
 				{% if player.image is not empty %}
-
+					<img src="/public/images/players/{{ player.image }}">
 				{% else %}
-					<img src='{{ asset('/public/images/interface/noplayer.png') }}'>
+					<img src="/public/images/interface/noplayer.png">					
 				{% endif %}
 			</div>
 			<div class='player-info'>
