@@ -27,6 +27,7 @@ use App\TournamentBundle\Form\TeamType;
 use App\TournamentBundle\Form\HeadteamType;
 use App\TournamentBundle\Form\PlayerType;
 use App\TournamentBundle\Form\ChangeplayerType;
+use App\TournamentBundle\Form\StatusplayerType;
 use App\TournamentBundle\Form\ImageplayerType;
 use App\TournamentBundle\Entity\Tournament;
 use App\TournamentBundle\Entity\Team;
@@ -1653,7 +1654,8 @@ class AdminController extends Controller
             $data = $form->getData();
 
             $first = mb_strtolower($data->getFirst());
-            $second = mb_strtolower($data->getSecond());
+            $first = ucfirst($first);
+            $second = mb_strtoupper($data->getSecond());
             $position = $data->getPosition();
 
             $em = $this->getDoctrine()->getManager();
@@ -1676,53 +1678,80 @@ class AdminController extends Controller
 
         $footballer = $this->getDoctrine()->getRepository('AppTournamentBundle:Player')->find($player);
 
-        $form = $this->createForm(ChangeplayerType::class, $footballer);
+        if(empty($footballer))
+            throw $this->createAccessDeniedException();
+             
+        $pl = new Player();
+        $pl->setFirst(ucfirst($footballer->getFirst()));
+        $pl->setSecond(mb_strtoupper($footballer->getSecond()));
+        $pl->setPosition($footballer->getPosition());
 
+        $oldimage = $footballer->getImage();
+
+        $form = $this->createForm(ChangeplayerType::class, $pl);
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
-
             $em = $this->getDoctrine()->getManager();
+            $footballer->setFirst(mb_strtolower($pl->getFirst()));
+            $footballer->setSecond(mb_strtolower($pl->getSecond()));
+            $footballer->setPosition($pl->getPosition());
             $em->persist($footballer);
             $em->flush();
 
             return $this->redirect($this->generateUrl('app_admin_player', array('team' => $team, 'player' => $player))); 
         }
 
-        $formimage = $this->createForm(ImageplayerType::class, $footballer);
+        $fimage = new Player();
 
-        // $formimage->handleRequest($request);
-        // $oldimage = $footballer->getImage();
+        $formimage = $this->createForm(ImageplayerType::class, $fimage);
 
-        // if($formimage->isSubmitted() && $formimage->isValid()) {
+        $formimage->handleRequest($request);
 
-        //     $file = $footballer->getImage();
+        if($formimage->isSubmitted() && $formimage->isValid()) {
+
+            $file = $fimage->getImage();
         //     # upload file
-        //     $fileName = $this->get('app.image_uploader')->image_upload($file, 'public/images/players', 50000, 150, 150);
+            $fileName = $this->get('app.image_uploader')->image_upload($file, 'public/images/players', 50000, 150, 150);
 
         //     # if file is upload, write in db
-        //     if($fileName) {
+            if($fileName) {
 
-        //         # delete old image
-        //         if($oldimage)
-        //             $this->get('app.image_uploader')->image_delete($oldimage, 'public/images/players');
+                # delete old image
+                if($oldimage)
+                    $this->get('app.image_uploader')->image_delete($oldimage, 'public/images/players');
 
-        //         $em = $this->getDoctrine()->getManager();
+                $em = $this->getDoctrine()->getManager();
 
-        //         # set new image in db
-        //         $footballer->setImage($fileName);
-        //         $em->persist($footballer);
-        //         $em->flush();
+                # set new image in db
+                $footballer->setImage($fileName);
+                $em->persist($footballer);
+                $em->flush();
 
-        //         return $this->redirect($this->generateUrl('app_admin_player', array('team' => $team, 'player' => $player)));
-        //     }
+                return $this->redirect($this->generateUrl('app_admin_player', array('team' => $team, 'player' => $player)));
+            }
 
-        // }        
+        }
 
-        $player = $this->getDoctrine()->getRepository('AppTournamentBundle:Player')->show_player($player);
+        $playerstatus = new Player();
+        $formstatus = $this->createForm(StatusplayerType::class, $playerstatus);
+        $formstatus->handleRequest($request);
+
+        if($formstatus->isSubmitted() && $formstatus->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+            $footballer->setStatus(0);
+            $em->persist($footballer);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('app_admin_team', array('team' => $team))); 
+        }        
+
+        $p = $this->getDoctrine()->getRepository('AppTournamentBundle:Player')->show_player($player);
+
         return $this->render('AppAdminBundle:Tournament:player.html.twig',
-            array('player' => $footballer, 'form' => $form->createView(), 'team' => $team,
-                  'formimage' => $formimage->createView()));
+            array('player' => $p, 'image' => $oldimage, 'form' => $form->createView(), 'team' => $team,
+                  'formimage' => $formimage->createView(), 'formstatus' => $formstatus->createView()));
     }
 
 }

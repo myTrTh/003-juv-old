@@ -12,7 +12,7 @@ class PlayerRepository extends \Doctrine\ORM\EntityRepository
 {
 	public function get_players($team) {
 		$dql = "SELECT p FROM AppTournamentBundle:Player p
-				WHERE p.team = :team
+				WHERE p.team = :team AND p.status = 1
 				ORDER BY p.position ASC, p.second ASC";
 
 		$query = $this->getEntityManager()->createQuery($dql)
@@ -24,8 +24,8 @@ class PlayerRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	public function show_player($playerid) {
-		$dql = "SELECT p.id, p.first, p.second, p.position FROM AppTournamentBundle:Player p
-				WHERE p.id = :player AND p.status = 1";
+		$dql = "SELECT p.id, p.first, p.second, p.position, p.status FROM AppTournamentBundle:Player p
+				WHERE p.id = :player";
 
 		$query = $this->getEntityManager()->createQuery($dql)
 					  ->SetParameter('player', $playerid);
@@ -40,6 +40,7 @@ class PlayerRepository extends \Doctrine\ORM\EntityRepository
 			$player['first'] = $result[0]['first'];
 			$player['second'] = $result[0]['second'];
 			$player['position'] = $result[0]['position'];
+			$player['status'] = $result[0]['status'];
 
 			return $player;	
 		}

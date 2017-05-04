@@ -116,7 +116,7 @@ class UserController extends Controller
                 $em->persist($user);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('app_user_settings'));                
+                return $this->redirect($this->generateUrl('app_user_settings'));
             }
         }
 

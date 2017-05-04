@@ -8,24 +8,14 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
-class ChangeplayerType extends AbstractType
+class StatusplayerType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('first')
-                ->add('second')
-                ->add('position', ChoiceType::class, array(
-                        'choices' => array(
-                            'Вратарь' => 1,
-                            'Защитник' => 2,
-                            'Полузащитник' => 3,
-                            'Нападающий' => 4
-                            )
-                        ))
-                ->add('savechange', SubmitType::class, array('label' => 'Обновить'));                
+        $builder->add('savestatus', SubmitType::class, array('label' => 'Удалить футболиста'));
     }
     
     /**

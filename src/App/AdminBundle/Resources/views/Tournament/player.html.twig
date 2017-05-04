@@ -2,35 +2,53 @@
 
 {% block title %} Футболист {% endblock %}
 
-{% block lowheader %} {{ player.first }} {{ player.second }} {% endblock %}
+{% block lowheader %} {% if player is not null %} {{ player.first }} {{ player.second }} {% else %} Такого футболиста нет {% endif %} {% endblock %}
 
 {% block lowbody %}
 <a class='link-back' href='{{ path("app_admin_team", {'team': team}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
 <br>
-{% if player.image is not empty %}
-	<img src="/public/images/players/{{ player.image }}">
-{% else %}
-	<img src="/public/images/interface/noplayer.png">					
-{% endif %}
-{# {{ form_start(formimage) }}
-<i class="fa fa-folder-open-o in-file"></i><span class="in-file-text">Выберите изображение...</span>
-<div class="file-style middle">
-{{ form_widget(formimage.image, {'attr': {'class': 'middle opacity'}}) }}
-</div>
-{{ form_errors(formimage.image) }}
-<input class='button button-main' type='submit' name='upload_image' value='Загрузить'>
-{{ form_end(formimage) }}
-<br><br> #}
 
-{{ form_start(form) }}
-ИМЯ<br>
-{{ form_widget(form.first, {'attr': {'class': 'middle'}}) }}
-ФАМИЛИЯ<br>
-{{ form_widget(form.second, {'attr': {'class': 'middle'}}) }}
-ПОЗИЦИЯ<br>
-{{ form_widget(form.position, {'attr': {'class': 'middle'}}) }}
-{{ form_errors(form) }}
-{{ form_widget(form.save, {'attr': {'class': 'button button-main'}}) }}
-{{ form_end(form) }}
+{% if player.status is defined and player.status == 1 %}
+	{% if image is not empty %}
+		<img src="/public/images/players/{{ image }}">
+	{% else %}
+		<img src="/public/images/interface/noplayer.png">					
+	{% endif %}
+	{{ form_start(formimage) }}
+	<i class="fa fa-folder-open-o in-file"></i><span class="in-file-text">Выберите изображение...</span>
+	<div class="file-style middle">
+	{{ form_widget(formimage.image, {'attr': {'class': 'middle opacity'}}) }}
+	</div>
+	{{ form_errors(formimage.image) }}
+	<input class='button button-main' type='submit' name='upload_image' value='Загрузить'>
+	{{ form_end(formimage) }}
+	<br><br>
+
+	{{ form_start(form) }}
+	ИМЯ<br>
+	{{ form_widget(form.first, {'attr': {'class': 'middle'}}) }}
+	ФАМИЛИЯ<br>
+	{{ form_widget(form.second, {'attr': {'class': 'middle'}}) }}
+	ПОЗИЦИЯ<br>
+	{{ form_widget(form.position, {'attr': {'class': 'middle'}}) }}
+	{{ form_errors(form) }}
+	{{ form_widget(form.savechange, {'attr': {'class': 'button button-main'}}) }}
+	{{ form_end(form) }}
+
+	<br>
+	<hr>
+	{{ form_start(formstatus) }}
+	{{ form_widget(formstatus.savestatus, {'attr': {'class': 'button button-main'}}) }}
+	{{ form_end(formstatus) }}
+
+{% elseif player.status is defined and player.status == 0 %}
+	{% if image is not empty %}
+		<img src="/public/images/players/{{ image }}">
+	{% else %}
+		<img src="/public/images/interface/noplayer.png">					
+	{% endif %}
+	<br>
+	Футболист удален из списка команды
+{% endif %}
 
 {% endblock %}
