@@ -1616,7 +1616,7 @@ class AdminController extends Controller
         }        
 
         return $this->render('AppAdminBundle:Tournament:headteam.html.twig', 
-            array('team' => $team, 'form' => $form->createView()));
+            array('team' => $team, 'form' => $form->createView(), 'tournament' => $tournamentshow));
     }
 
     public function headteamsAction() {

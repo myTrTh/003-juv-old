@@ -2,12 +2,12 @@
 
 {% block title %} Команды {% endblock %}
 
-{% block lowheader %} Команды {% endblock %}
+{% block lowheader %} {{ tournament.name }} {% endblock %}
 
 {% block lowbody %}
 
 {% if team != 0 %}
-	<h4>{{ team.name }}</h4>
+	<h5>{{ team.name }}</h5>
 {% else %}
 	Команда не выбрана...
 {% endif %}
