@@ -5,7 +5,10 @@
 {% block lowheader %} {{ tournament.name }} {% endblock %}
 
 {% block lowbody %}
+<a class='link-back' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
+<br><br>
 
+<h4>Команда турнира</h4>
 {% if team != 0 %}
 	<h5>{{ team.name }}</h5>
 {% else %}
