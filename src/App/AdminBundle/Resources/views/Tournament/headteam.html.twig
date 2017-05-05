@@ -1,1 +1,40 @@
-headteam
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Команды {% endblock %}
+
+{% block lowheader %} Команды {% endblock %}
+
+{% block lowbody %}
+
+{% if team != 0 %}
+	<h4>{{ team.name }}</h4>
+{% else %}
+	Команда не выбрана...
+{% endif %}
+
+<hr>
+
+<h4>ВЫБРАТЬ КОМАНДУ</h4>
+{{ form_start(form) }}
+{{ form_widget(form.team, {'attr': {'class': 'middle'}}) }}<br>
+{{ form_errors(form.team) }}
+{{ form_widget(form.save, {'attr': {'class': 'button button-main'}}) }}<br>
+{{ form_rest(form) }}
+
+{{ form_end(form) }}
+
+{# show flash info #}
+{% include 'flashbug.html.twig' %}
+
+<br>
+{# {% if team is not empty %}
+
+	<div class='numbers-area'>
+	{% for team in teams %}
+		<div><a class='nostyle' href='{{ path('app_admin_team', {'team': team.id}) }}'>{{ team.name }}</a></div>
+	{% endfor %}
+	</div>
+
+{% endif %} #}
+
+{% endblock %}

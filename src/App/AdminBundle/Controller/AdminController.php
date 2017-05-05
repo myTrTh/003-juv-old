@@ -29,8 +29,10 @@ use App\TournamentBundle\Form\PlayerType;
 use App\TournamentBundle\Form\ChangeplayerType;
 use App\TournamentBundle\Form\StatusplayerType;
 use App\TournamentBundle\Form\ImageplayerType;
+use App\TournamentBundle\Form\TrteamType;
 use App\TournamentBundle\Entity\Tournament;
 use App\TournamentBundle\Entity\Team;
+use App\TournamentBundle\Entity\Trteam;
 use App\TournamentBundle\Entity\Headteam;
 use App\TournamentBundle\Entity\Player;
 use App\TournamentBundle\Entity\Forecast;
@@ -1565,6 +1567,10 @@ class AdminController extends Controller
     }
 
     public function headteamAction($tr) {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $user = $this->getUser();
         if($user)
             $userId = $user->getId();
@@ -1578,7 +1584,39 @@ class AdminController extends Controller
         if($tournamentshow['types'] != 2)
                 throw $this->createAccessDeniedException();
 
-        return $this->render('AppAdminBundle:Tournament:headteam.html.twig');
+        $team = $this->getDoctrine()->getRepository('AppTournamentBundle:Trteam')->get_team($tr);
+        $other = $this->getDoctrine()->getRepository('AppTournamentBundle:Trteam')->get_teams($tr);
+
+        $newteam = new Trteam();
+        $form = $this->createForm(TrteamType::class, $newteam, array('data' => array($other)));
+
+        $request = Request::createFromGlobals();
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $newheadteam = (int) $data['team'];
+            
+            $thisteam = $this->getDoctrine()->getRepository('AppTournamentBundle:Trteam')->findOneBy(array('tr' => $tr, 'team' => $team));
+
+                $em = $this->getDoctrine()->getManager();
+            if($thisteam) {
+                $thisteam->setTeam($newheadteam);
+                $em->persist($thisteam);
+            } else {
+                $newteam->setTr($tr);
+                $newteam->setTeam($newheadteam);
+                $newteam->setStatus(1);
+                $newteam->setAuthor($userId);
+                $em->persist($newteam);
+            }
+                $em->flush();
+
+                return $this->redirect($this->generateUrl("app_admin_headteam", array("tr" => $tr)));
+        }        
+
+        return $this->render('AppAdminBundle:Tournament:headteam.html.twig', 
+            array('team' => $team, 'form' => $form->createView()));
     }
 
     public function headteamsAction() {
