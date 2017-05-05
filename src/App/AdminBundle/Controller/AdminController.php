@@ -1588,7 +1588,7 @@ class AdminController extends Controller
         $other = $this->getDoctrine()->getRepository('AppTournamentBundle:Trteam')->get_teams($tr);
 
         $newteam = new Trteam();
-        $form = $this->createForm(TrteamType::class, $newteam, array('data' => array($other)));
+        $form = $this->createForm(TrteamType::class, $newteam, array('data' => $other));
 
         $request = Request::createFromGlobals();
         $form->handleRequest($request);

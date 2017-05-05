@@ -16,7 +16,7 @@ class TrteamType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('team', ChoiceType::class, array(
-                      'choices' => array($options['data'])))
+                      'choices' => $options['data']))
                 ->add('save', SubmitType::class, array('label' => 'Установить команду'));
     }
     
