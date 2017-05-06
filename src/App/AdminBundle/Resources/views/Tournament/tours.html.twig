@@ -54,37 +54,45 @@
 	<a class='nostyle bold' href='{{ path('app_admin_tour_completed', {'tournament': tournament.id, 'tour': tour}) }}'>ПРОСТАВИТЬ РЕЗУЛЬТАТЫ ТУРА</a>
 	<br><hr><br>
 {% endif %}
+{% if forecast != 0 and tournament.types == 2 %}
 
-<form method='post'>
-	<h5>Добавить матчи</h5>
-<div class='scoregroup'>
-	<div class='score'>
-		<input class='small' type='text' name='date[]' placeholder="Дата">
-		<select class='small' name='team1[]'>
-			{% for team in teams %}
-				<option>{{ team.name }}</option>
-			{% endfor %}
-		</select>
-		<select class='small' name='team2[]'>
-			{% for team in teams %}
-				<option>{{ team.name }}</option>
-			{% endfor %}
-		</select>
-	</div>
-	</div>
-	<br>
-		<span class='add' id='add_score'><i class='fa fa-plus'></i> Добавить</span>
-		<span class='add' id='remove_score'><i class='fa fa-minus'></i> Удалить</span><br><br>		
-	{% if forecast == 0 %}
-		<input class='button button-main' type='submit' name='create_score' value='Создать'>
-	{% else %}
-		<input class='button button-main' type='submit' name='create_score' value='Добавить'>
-	{% endif %}
-</form>
-
-{% if forecast == 0 %}
-	<br>
-	<a class='nostyle' href="{{ path('app_admin_addtours', {"tournament": tournament.id, 'tour': tour}) }}"><i class='fa fa-mail-forward'></i> Добавить тур из другого турнира</a>
+{% else %}
+	<form method='post'>
+		<h5>Добавить матчи</h5>
+	<div class='scoregroup'>
+		<div class='score'>
+			<input class='small' type='text' name='date[]' placeholder="Дата">
+			<select class='small' name='team1[]'>
+				{% for team in teams %}
+					<option>{{ team.name }}</option>
+				{% endfor %}
+			</select>
+			<select class='small' name='team2[]'>
+				{% for team in teams %}
+					<option>{{ team.name }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		</div>
+		<br>
 {% endif %}
+{% if tournament.types == 1 %}		
+			<span class='add' id='add_score'><i class='fa fa-plus'></i> Добавить</span>
+			<span class='add' id='remove_score'><i class='fa fa-minus'></i> Удалить</span><br><br>		
+{% endif %}
+
+		{% if forecast == 0 %}
+			<input class='button button-main' type='submit' name='create_score' value='Создать'>
+		{% elseif forecast != 0 and tournament.types == 2 %}
+
+		{% else %}
+			<input class='button button-main' type='submit' name='create_score' value='Добавить'>
+		{% endif %}
+	</form>
+
+	{% if forecast == 0 %}
+		<br>
+		<a class='nostyle' href="{{ path('app_admin_addtours', {"tournament": tournament.id, 'tour': tour}) }}"><i class='fa fa-mail-forward'></i> Добавить тур из другого турнира</a>
+	{% endif %}
 
 {% endblock %}

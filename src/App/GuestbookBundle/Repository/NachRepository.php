@@ -39,7 +39,8 @@ class NachRepository extends \Doctrine\ORM\EntityRepository
 				INNER JOIN AppGuestbookBundle:Guestbook g
 				WHERE n.number = g.id
 				INNER JOIN AppUserBundle:User u
-				WHERE u.id = g.user";
+				WHERE u.id = g.user
+				ORDER BY n.number DESC";
 
 		$query = $this->getEntityManager()->createQuery($dql);
 
@@ -60,7 +61,9 @@ class NachRepository extends \Doctrine\ORM\EntityRepository
 	}
 
     public function get_nach(){
-        $sql = "SELECT id, user FROM guestbook WHERE id RLIKE '([1-9]+0$)'";
+        $sql = "SELECT id, user 
+        		FROM guestbook 
+        		WHERE id RLIKE '([1-9]+0$)'";
 
         $em = $this->getEntityManager();
         $stmt = $em->getConnection()->prepare($sql);
