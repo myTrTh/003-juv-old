@@ -3,6 +3,7 @@
 namespace App\TournamentBundle\Services;
 use Doctrine\ORM\EntityManager;
 use App\TournamentBundle\Entity\Usercast;
+use App\TournamentBundle\Entity\Forescored;
 use App\TournamentBundle\Entity\Tablelist;
 
 class resultsService
@@ -266,4 +267,20 @@ class resultsService
 		return $result; 
 	}
 
+        public function add_playerslist($tournament, $tour) {
+                $getplayers = $this->em->getRepository('AppTournamentBundle:Tournament')->get_players($tournament);
+
+                for($i=0;$i<count($getplayers);$i++) {
+                        $score = new Forescored();
+
+                        $score->setTr($tournament);
+                        $score->setTour($tour);
+                        $score->setPlayer($getplayers[$i]['id']);
+                        $this->em->persist($score);
+                }
+
+                $this->em->flush();
+        }
+
 }
+

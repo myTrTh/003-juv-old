@@ -91,4 +91,22 @@ class TournamentRepository extends \Doctrine\ORM\EntityRepository
 		return $result;
 	}
 
+	public function get_players($tournament) {
+
+		print "here";
+		$dql = "SELECT p.id FROM AppTournamentBundle:Player p
+				INNER JOIN AppTournamentBundle:Trteam t
+				WHERE p.team = t.team
+				INNER JOIN AppTournamentBundle:Tournament tr
+				WHERE t.tr = tr.id
+				WHERE tr.id = :tr AND p.status = 1";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter('tr', $tournament);
+
+		$result = $query->execute();
+
+		return $result;
+	}
+
 }

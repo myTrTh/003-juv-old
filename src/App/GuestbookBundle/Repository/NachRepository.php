@@ -40,7 +40,7 @@ class NachRepository extends \Doctrine\ORM\EntityRepository
 				WHERE n.number = g.id
 				INNER JOIN AppUserBundle:User u
 				WHERE u.id = g.user
-				ORDER BY n.number DESC";
+				ORDER BY n.number ASC";
 
 		$query = $this->getEntityManager()->createQuery($dql);
 

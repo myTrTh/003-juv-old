@@ -1277,10 +1277,14 @@ class AdminController extends Controller
 
                 }
                 $em->flush();
+
+                if($tournamentshow['types'] == 2) {
+                    $this->get('app.results_tournament')->add_playerslist($tournament, $tour);
+                }                
                 
                 $this->get('app.results_tournament')->add_howgame($tournament, $tour, $hash);
 
-                return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
+                // return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
             }
 
         // update tours
@@ -1383,9 +1387,9 @@ class AdminController extends Controller
 
                 return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
             }
-        }        
+        }    
 
-        $forecast = $this->getDoctrine()->getRepository('AppTournamentBundle:Forecast')->getActiveTours();
+        $forecast = $this->getDoctrine()->getRepository('AppTournamentBundle:Forecast')->getActiveTours($tournamentshow['types']);
 
         return $this->render("AppAdminBundle:Tournament:addtours.html.twig", array(
                 "tournament" => $tournamentshow, "forecast" => $forecast, "tour" => $tour

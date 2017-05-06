@@ -39,10 +39,17 @@ class ForecastRepository extends \Doctrine\ORM\EntityRepository
 		return $result;
 	}
 
-	public function getActiveTours() {
-		$dql = "SELECT f.hash, f.team1, f.team2 FROM AppTournamentBundle:Forecast f WHERE f.timer > CURRENT_DATE()";
+	public function getActiveTours($types) {
+		$dql = "SELECT f.hash, f.team1, f.team2 
+				FROM AppTournamentBundle:Forecast f
+				INNER JOIN AppTournamentBundle:Forebridge b
+				WHERE f.hash = b.hash
+				INNER JOIN AppTournamentBundle:Tournament t
+				WHERE b.tr = t.id
+				WHERE f.timer > CURRENT_DATE() AND t.types = :types";
 
-		$query = $this->getEntityManager()->createQuery($dql);
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter('types', $types);
 
 		$result = $query->execute();
 
