@@ -39,6 +39,12 @@
 {% set page_navigation = '/guestbook' %}
 {% include 'pagenavigation.html.twig' %}
 
+
+{% if notification_guestbook is defined and notification_guestbook|length > 0 %}
+	{% set post_link = count - notification_guestbook|length %}
+	<a href='{{ path('app_guestbook_post', {'post': post_link}) }}'><i class='fa fa-location-arrow'></i> Перейти к непрочитанным</a>
+{% endif %}
+
 {# base guestbook body for all realize guestbook #}
 {% include 'AppGuestbookBundle:Guestbook:_guestbook.html.twig' %}
 

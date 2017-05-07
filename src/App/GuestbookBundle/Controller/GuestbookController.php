@@ -101,7 +101,9 @@ class GuestbookController extends Controller
         $countpage = $result[1];        
 
         /* count users message */
-        $count_message = $repository->count_message();
+        $cres = $repository->count_message();
+        $count_message = $cres['users'];
+        $count_summ = $cres['summ'];
 
         /* rate */
         $repository_rate = $this->getDoctrine()->getRepository('AppGuestbookBundle:Rate');
@@ -132,7 +134,7 @@ class GuestbookController extends Controller
                   'rate_message' => $rate[0], 'rate_user' => $rate[1],
                   'count_message' => $count_message, 'attention' => $attention,
                   'numbers' => $numbers, 'nach' => $nach, 'topnach' => $topnach,
-                  'achives' => $achives, 'quote' => $old_style_quote));
+                  'achives' => $achives, 'quote' => $old_style_quote, 'count' => $count_summ));
 
     }
 

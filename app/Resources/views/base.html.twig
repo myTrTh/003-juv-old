@@ -39,7 +39,7 @@
                     </ul>
                 </li><li><a href='/guestbook'>ГЕСТА 
                             {% if notification_guestbook is defined and notification_guestbook|length > 0 %} 
-                                <span class='normal little'><i class='fa fa-bell-o'></i> {{ notification_guestbook|length }}
+                                <span class='normal little'><i class='fa fa-bell-o'></i> {{ notification_guestbook|length }}</span>
                             {% endif %}
                         </a></li><li>
                     {% if is_granted('ROLE_VERIFIED_USER') %}

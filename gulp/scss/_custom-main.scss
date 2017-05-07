@@ -488,3 +488,16 @@ input[type='checkbox'], input[type='radio'] {
 	padding: 10px;
 	margin-bottom: 10px; 
 }
+
+.nota {
+	display: inline-block !important;
+	color: $gray_lighter;
+	font-weight: 600;
+	line-height: 1.6;
+	font-size: 1.2rem;
+	transition: all .2s ease-out;
+	&:hover {
+		background-color: #424242;
+		color: $white;
+	}
+}

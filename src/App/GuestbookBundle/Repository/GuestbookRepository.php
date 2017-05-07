@@ -75,12 +75,17 @@ class GuestbookRepository extends \Doctrine\ORM\EntityRepository {
         $count_message = $pagequery->execute();
         
         $users = [];
+        $summ = 0;
         for($i=0;$i<count($count_message);$i++)
         {
             $user = $count_message[$i]['user'];
             $users[$user] = $count_message[$i][1];
+            $summ += $count_message[$i][1];
         }
-        return $users;
+
+        $result = ['users' => $users, 'summ' => $summ];
+
+        return $result;
     }
 
     public function last_message($userId, $message) {
