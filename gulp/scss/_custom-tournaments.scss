@@ -7,7 +7,7 @@
 .tournament-img-header {
 	max-width: 50px;
 	max-height: 50px;
-	vertical-align: bottom;
+	vertical-align: middle;
 }
 
 .texttop {
@@ -543,4 +543,33 @@
 
 .player-second {
 	text-transform: uppercase;
+}
+
+.player-scored {
+	width: 25px;
+}
+
+.player-scored-info {
+	width: 100px;
+}
+
+.show_image {
+	font-size: .8rem;
+	& img {
+	vertical-align: middle;
+		max-height: 30px;
+		max-width: 30px;
+	}
+}
+
+.player-scored, .player-keeper {
+	cursor: pointer;
+	& img {
+		width: 25px;
+		height: 25px;
+	}
+}
+
+.activehow {
+	font-size: 1.2rem;
 }

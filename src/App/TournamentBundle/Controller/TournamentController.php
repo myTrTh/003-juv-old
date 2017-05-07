@@ -233,9 +233,9 @@ class TournamentController extends Controller
         // add forecast in first schema
         if($request->isMethod("POST")) {
             if($request->request->has('set_score')) {
-
-                $tr = $request->request->get('htr');
-                $tour = $request->request->get('htour');
+                
+                $tr = $request->request->get('tr');
+                $tour = $request->request->get('tour');
 
                 $idfore = $request->request->get('id');
                 $r1 = $request->request->get('r1');
@@ -305,7 +305,27 @@ class TournamentController extends Controller
                 if($how > 0)
                     $em->flush();
             }
-        }        
+        }
+
+        # add forescored
+        if($request->isMethod("POST")) {
+            if($request->request->has('set_forescored')) {
+                $tr = $request->request->get('tr');
+                $tour = $request->request->get('tour');
+
+                $player = $request->request->get('player');
+                $first = $request->request->get('first');
+                $second = $request->request->get('second');
+                $three = $request->request->get('three');
+
+                print "<pre>";
+                print_r($player);
+                print_r($first);
+                print_r($second);
+                print_r($three);
+                print "</pre>";
+            }
+        }                
 
 
         if(empty($tr))

@@ -18,6 +18,17 @@
 	<a class='link-back' href='{{ path("app_tournament_show", {'id': tournament.id, 'tour': tour}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
 		<br>
 
+	<div class='show_image'>
+		<img src='/public/images/scored/goal.png'> - Гол (Вратарь, Защитник - 6; Полузащитник - 5; Нападающий - 4)<br>
+		<img src='/public/images/scored/assist.png'> - Ассист (Вратарь, Защитник - 6; Нападающий - 5; Полузащитник - 4)<br>
+		<img src='/public/images/scored/yellow.png'> - Желтая карточка (Защитник, Полузащитник - 3; Нападающий, Вратарь - 4)<br>
+		<img src='/public/images/scored/red.png'> - Красная карточка (Вратарь, Защитник, Полузащитник, Нападающий - 8)<br>
+		<img src='/public/images/scored/null.png'> - Угадано количество пропущенных голов вратарем - 3 балла<br><br>
+	</div>
+	<div class='activehow'>Действия: <span id='howscored'>0</span>/7</div>
+	<br>
+
+<form method='post'>
 {% for player in forecast %}
 
 	{% if player.position == 1 %}
@@ -42,51 +53,37 @@
 				<img src="/public/images/interface/noplayer.png">					
 			{% endif %}
 		</div>
-		<div class='player-info'>
+		<div class='player-info player-scored-info'>
 			<span class='player-second'>{{ player.second }}</span><br>
 			<span class='pos'>{{ pos }}</span>
 		</div>
-		<div class='player-scored player-first'>ball</div>
-		<div class='player-scored player-second'>assist</div>
-		<div class='player-scored player-three'>yellow</div>
+		{% if player.position == 1 %}
+		<div class='player-keeper player-first'>
+			<img src='/public/images/scored/emptykeeper.png'>
+			<input type='hidden' name='first[]' value='emptykeeper'>
+		</div>
+		{% else %}
+		<div class='player-scored player-first'>
+			<img src='/public/images/scored/empty.png'>
+			<input type='hidden' name='first[]' value='empty'>
+		</div>
+		{% endif %}
+		<div class='player-scored player-second'>
+			<img src='/public/images/scored/empty.png'>
+			<input type='hidden' name='second[]' value='empty'>
+		</div>
+		<div class='player-scored player-three'>
+			<img src='/public/images/scored/empty.png'>
+			<input type='hidden' name='three[]' value='empty'>
+		</div>
 	</div>
+	<input type='hidden' name='player[]' value='{{ player.player }}'>
 
 {% endfor %}
-
-
-
-{# 	<form method='post'>
-	<table class='show-score'>
-	<div class='ifscore'>{% if how > 0 %} Прогноз внесен  {% endif %}</div>
-	{% for fore in forecast %}
-		{% if date(fore.timer) > date() %}
-			{% set acc = 1 %}
-		{% else %}
-			{% set acc = 0 %}
-		{% endif %}
-		<tr>
-			<td>
-				{{ utc_to_locale(fore.timer)|date('d.m H:i') }}
-			</td>
-			<td class='show-team'>
-				{{ fore.team1 }}
-			</td>
-			<td class='show-table-result'>
-				<input type='hidden' name='id[]' value='{{ fore.id }}'>
-				<input type='text' {% if acc == 0 %} style="background-color: #ffd700; border-color: #ffd700" {% endif %} pattern='[0-9]' maxlength="1" class='extra-small inline' name='r1[]' value="{% if preset[fore.id].result1 is defined %}{{ preset[fore.id].result1 }}{% endif %}">
-			</td>
-			<td class='show-table-result'>
-				<input type='text' {% if acc == 0 %} style="background-color: #ffd700; border-color: #ffd700" {% endif %} pattern='[0-9]' maxlength="1" class='extra-small inline' name='r2[]' value="{% if preset[fore.id].result2 is defined %}{{ preset[fore.id].result2 }}{% endif %}">
-			</td>
-			<td class='show-team'>
-				{{ fore.team2 }}
-			</td>			
-	{% endfor %}
-	</table>
 	<br>
-	<input type='hidden' name='htr' value='{{ tournament.id }}'>
-	<input type='hidden' name='htour' value='{{ tour }}'>
-	<input type='submit' class='button button-main' name='set_score' value='Отправить'>
-	</form> #}
+	<input type='hidden' name='tr' value='{{ tournament.id }}'>
+	<input type='hidden' name='tour' value='{{ tour }}'>	
+	<input type='submit' class='button button-main' name='set_forescored' value='Отправить'>	
+</form>
 
 {% endblock %}
