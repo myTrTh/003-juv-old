@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {% if tr is defined %} {{ tournament.name }} {% else %} Что-то пошло не так... {% endif %} {% endblock %}
+
+{% block header %} 
+
+		{% if tournament.image is not null %}
+		 	<img class='tournament-img-header' src='/public/images/custom/logo/{{ tournament.image }}'>
+	 	{% else %}
+		 	<img class='tournament-img-header' src='/public/images/interface/default_logo.png'>
+		{% endif %}
+		{{ tournament.name }}
+
+{% endblock %}
+
+{% block content %}
+
+	<a class='link-back' href='{{ path("app_tournament_show", {'id': tournament.id, 'tour': tour}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
+		<br>
+
+{% for player in forecast %}
+
+	{% if player.position == 1 %}
+		{% set pos = 'Вратарь' %}
+		{% set cl = 'orange' %}
+	{% elseif player.position == 2 %}
+		{% set pos = 'Защитник' %}
+		{% set cl = 'green' %}
+	{% elseif player.position == 3 %}
+		{% set pos = 'Полузащитник' %}
+		{% set cl = 'blue' %}
+	{% elseif player.position == 4 %}
+		{% set pos = 'Нападающий' %}
+		{% set cl = 'red' %}
+	{% endif %}
+
+	<div class='player'>
+		<div style='border-left: solid 1px {{ cl }}' class='player-image'>
+			{% if player.image is not empty %}
+				<img src="/public/images/players/{{ player.image }}">
+			{% else %}
+				<img src="/public/images/interface/noplayer.png">					
+			{% endif %}
+		</div>
+		<div class='player-info'>
+			<span class='player-second'>{{ player.second }}</span><br>
+			<span class='pos'>{{ pos }}</span>
+		</div>
+		<div class='player-scored player-first'>ball</div>
+		<div class='player-scored player-second'>assist</div>
+		<div class='player-scored player-three'>yellow</div>
+	</div>
+
+{% endfor %}
+
+
+
+{# 	<form method='post'>
+	<table class='show-score'>
+	<div class='ifscore'>{% if how > 0 %} Прогноз внесен  {% endif %}</div>
+	{% for fore in forecast %}
+		{% if date(fore.timer) > date() %}
+			{% set acc = 1 %}
+		{% else %}
+			{% set acc = 0 %}
+		{% endif %}
+		<tr>
+			<td>
+				{{ utc_to_locale(fore.timer)|date('d.m H:i') }}
+			</td>
+			<td class='show-team'>
+				{{ fore.team1 }}
+			</td>
+			<td class='show-table-result'>
+				<input type='hidden' name='id[]' value='{{ fore.id }}'>
+				<input type='text' {% if acc == 0 %} style="background-color: #ffd700; border-color: #ffd700" {% endif %} pattern='[0-9]' maxlength="1" class='extra-small inline' name='r1[]' value="{% if preset[fore.id].result1 is defined %}{{ preset[fore.id].result1 }}{% endif %}">
+			</td>
+			<td class='show-table-result'>
+				<input type='text' {% if acc == 0 %} style="background-color: #ffd700; border-color: #ffd700" {% endif %} pattern='[0-9]' maxlength="1" class='extra-small inline' name='r2[]' value="{% if preset[fore.id].result2 is defined %}{{ preset[fore.id].result2 }}{% endif %}">
+			</td>
+			<td class='show-team'>
+				{{ fore.team2 }}
+			</td>			
+	{% endfor %}
+	</table>
+	<br>
+	<input type='hidden' name='htr' value='{{ tournament.id }}'>
+	<input type='hidden' name='htour' value='{{ tour }}'>
+	<input type='submit' class='button button-main' name='set_score' value='Отправить'>
+	</form> #}
+
+{% endblock %}

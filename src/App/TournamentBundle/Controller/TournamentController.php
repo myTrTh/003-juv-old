@@ -230,7 +230,7 @@ class TournamentController extends Controller
             throw $this->createAccessDeniedException();
 
         $how = 0;
-        // add tours
+        // add forecast in first schema
         if($request->isMethod("POST")) {
             if($request->request->has('set_score')) {
 
@@ -317,23 +317,39 @@ class TournamentController extends Controller
 
         $access = $result[1];
 
-        // $tourstatus = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->get_tour_status($tr, $tour);
-
         if($access != 1 and $tourstatus != 1)
             throw $this->createAccessDeniedException();
 
         $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($tr, $tour);
-        if($forebridge) {
-            $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);
 
-            $preset = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($userId, $fore);
-        } else {
-            $fore = 0;
-            $preset = 0;
+        if($tournament->getTypes() == 1) {
+
+            if($forebridge) {
+                $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);
+                $preset = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($userId, $fore);
+            } else {
+                $fore = 0;
+                $preset = 0;
+            }
+
+            return $this->render('AppTournamentBundle:Tournament:forecast.html.twig',
+                array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $fore, 'preset' => $preset, 'how' => $how));
+
+        } else if ($tournament->getTypes() == 2) {
+
+            if($forebridge) {
+                $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forescored")->get_forescored($tr, $tour);
+                $preset = 0;
+                // $preset = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($userId, $fore);
+
+            } else {
+                $fore = 0;
+                $preset = 0;
+            }            
+
+            return $this->render('AppTournamentBundle:Tournament:forescored.html.twig',
+                array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $fore, 'preset' => $preset, 'how' => $how));
         }
-
-        return $this->render('AppTournamentBundle:Tournament:forecast.html.twig',
-            array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $fore, 'preset' => $preset, 'how' => $how));
     }
 
     public function showgameAction($id) {
