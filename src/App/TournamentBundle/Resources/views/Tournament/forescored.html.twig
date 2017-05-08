@@ -14,9 +14,14 @@
 {% endblock %}
 
 {% block content %}
-
 	<a class='link-back' href='{{ path("app_tournament_show", {'id': tournament.id, 'tour': tour}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
 		<br>
+
+	{% if date(fore.0.timer) > date() %}
+		{% set accesclass = 'player-scored' %}
+	{% else %}
+		{% set accesclass = 'player-ascored' %}
+	{% endif %}
 
 	<div class='show_image'>
 		<img src='/public/images/scored/goal.png'> - Гол (Вратарь, Защитник - 6; Полузащитник - 5; Нападающий - 4)<br>
@@ -25,7 +30,7 @@
 		<img src='/public/images/scored/red.png'> - Красная карточка (Вратарь, Защитник, Полузащитник, Нападающий - 8)<br>
 		<img src='/public/images/scored/null.png'> - Угадано количество пропущенных голов вратарем - 3 балла<br><br>
 	</div>
-	<div class='activehow'>Действия: <span id='howscored'>0</span>/7</div>
+	<div class='activehow'>Действия: <span id='howscored'>{{ how }}</span>/7</div>
 	<br>
 
 <form method='post'>
@@ -45,6 +50,28 @@
 		{% set cl = 'red' %}
 	{% endif %}
 
+	{% if preset[player.player].first is defined %}
+		{% set presetfirst = preset[player.player].first %}
+	{% else %}
+		{% if player.position == 1 %}
+			{% set presetfirst = 'emptykeeper' %}
+		{% else %}
+			{% set presetfirst = 'empty' %}
+		{% endif %}
+	{% endif %}
+
+	{% if preset[player.player].second is defined %}
+		{% set presetsecond = preset[player.player].second %}
+	{% else %}
+		{% set presetsecond = 'empty' %}
+	{% endif %}
+
+	{% if preset[player.player].three is defined %}
+		{% set presetthree = preset[player.player].three %}
+	{% else %}
+		{% set presetthree = 'empty' %}					
+	{% endif %}
+
 	<div class='player'>
 		<div style='border-left: solid 1px {{ cl }}' class='player-image'>
 			{% if player.image is not empty %}
@@ -59,31 +86,33 @@
 		</div>
 		{% if player.position == 1 %}
 		<div class='player-keeper player-first'>
-			<img src='/public/images/scored/emptykeeper.png'>
-			<input type='hidden' name='first[]' value='emptykeeper'>
+			<img src='/public/images/scored/{{ presetfirst }}.png'>
+			<input type='hidden' name='first[]' value='{{ presetfirst }}'>
 		</div>
 		{% else %}
-		<div class='player-scored player-first'>
-			<img src='/public/images/scored/empty.png'>
-			<input type='hidden' name='first[]' value='empty'>
+		<div class='{{ accesclass }} player-first'>
+			<img src='/public/images/scored/{{ presetfirst }}.png'>
+			<input type='hidden' name='first[]' value='{{ presetfirst }}'>
 		</div>
 		{% endif %}
-		<div class='player-scored player-second'>
-			<img src='/public/images/scored/empty.png'>
-			<input type='hidden' name='second[]' value='empty'>
+		<div class='{{ accesclass }} player-second'>
+			<img src='/public/images/scored/{{ presetsecond }}.png'>
+			<input type='hidden' name='second[]' value='{{ presetsecond }}'>
 		</div>
-		<div class='player-scored player-three'>
-			<img src='/public/images/scored/empty.png'>
-			<input type='hidden' name='three[]' value='empty'>
+		<div class='{{ accesclass }} player-three'>
+			<img src='/public/images/scored/{{ presetthree }}.png'>
+			<input type='hidden' name='three[]' value='{{ presetthree }}'>
 		</div>
 	</div>
 	<input type='hidden' name='player[]' value='{{ player.player }}'>
 
 {% endfor %}
 	<br>
+	{% if date(fore.0.timer) > date() %}	
 	<input type='hidden' name='tr' value='{{ tournament.id }}'>
 	<input type='hidden' name='tour' value='{{ tour }}'>	
 	<input type='submit' class='button button-main' name='set_forescored' value='Отправить'>	
+	{% endif %}
 </form>
 
 {% endblock %}

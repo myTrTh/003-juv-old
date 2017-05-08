@@ -5,13 +5,13 @@ namespace App\TournamentBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Forescored
+ * Userscored
  *
- * @ORM\Table(name="forescored")
- * @ORM\Entity(repositoryClass="App\TournamentBundle\Repository\ForescoredRepository")
+ * @ORM\Table(name="userscored")
+ * @ORM\Entity(repositoryClass="App\TournamentBundle\Repository\UserscoredRepository")
  * @ORM\HasLifecycleCallbacks()  
  */
-class Forescored
+class Userscored
 {
     /**
      * @var int
@@ -39,6 +39,13 @@ class Forescored
     /**
      * @var int
      *
+     * @ORM\Column(name="user", type="integer")
+     */
+    private $user;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="player", type="integer")
      */
     private $player;
@@ -46,21 +53,21 @@ class Forescored
     /**
      * @var string
      *
-     * @ORM\Column(name="first", type="string", nullable=true)
+     * @ORM\Column(name="first", type="string", length=255, nullable=true)
      */
     private $first;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="second", type="string", nullable=true)
+     * @ORM\Column(name="second", type="string", length=255, nullable=true)
      */
     private $second;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="three", type="string", nullable=true)
+     * @ORM\Column(name="three", type="string", length=255, nullable=true)
      */
     private $three;
 
@@ -70,6 +77,14 @@ class Forescored
      * @ORM\Column(name="created", type="datetime")
      */
     private $created;
+
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="score", type="integer")
+     */
+    private $score;
+
 
     /**
      * Get id
@@ -86,7 +101,7 @@ class Forescored
      *
      * @param integer $tr
      *
-     * @return Forescored
+     * @return Userscored
      */
     public function setTr($tr)
     {
@@ -110,7 +125,7 @@ class Forescored
      *
      * @param integer $tour
      *
-     * @return Forescored
+     * @return Userscored
      */
     public function setTour($tour)
     {
@@ -130,11 +145,35 @@ class Forescored
     }
 
     /**
+     * Set user
+     *
+     * @param integer $user
+     *
+     * @return Userscored
+     */
+    public function setUser($user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return int
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
      * Set player
      *
      * @param integer $player
      *
-     * @return Forescored
+     * @return Userscored
      */
     public function setPlayer($player)
     {
@@ -154,11 +193,35 @@ class Forescored
     }
 
     /**
+     * Set score
+     *
+     * @param integer $score
+     *
+     * @return Userscored
+     */
+    public function setScore($score)
+    {
+        $this->score = $score;
+
+        return $this;
+    }
+
+    /**
+     * Get score
+     *
+     * @return int
+     */
+    public function getScore()
+    {
+        return $this->score;
+    }    
+
+    /**
      * Set first
      *
      * @param string $first
      *
-     * @return Forescored
+     * @return Userscored
      */
     public function setFirst($first)
     {
@@ -182,7 +245,7 @@ class Forescored
      *
      * @param string $second
      *
-     * @return Forescored
+     * @return Userscored
      */
     public function setSecond($second)
     {
@@ -206,7 +269,7 @@ class Forescored
      *
      * @param string $three
      *
-     * @return Forescored
+     * @return Userscored
      */
     public function setThree($three)
     {

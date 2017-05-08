@@ -562,12 +562,16 @@
 	}
 }
 
-.player-scored, .player-keeper {
+.player-scored, .player-keeper, .player-ascored {
 	cursor: pointer;
 	& img {
 		width: 25px;
 		height: 25px;
 	}
+}
+
+.player-ascored {
+	cursor: default;
 }
 
 .activehow {

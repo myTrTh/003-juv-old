@@ -5,6 +5,7 @@ namespace App\TournamentBundle\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use App\TournamentBundle\Entity\Tournamentusers;
 use App\TournamentBundle\Entity\Usercast;
+use App\TournamentBundle\Entity\Userscored;
 use App\TournamentBundle\Form\PreliminaryType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -112,7 +113,12 @@ class TournamentController extends Controller
 
             $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($id, $tour);
         if($forebridge) {
-            $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_balls($id, $tour, $forebridge);
+
+            if($tournament->getTypes() == 1)
+                $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_balls($id, $tour, $forebridge);
+            else if ($tournament->getTypes() == 2)
+                $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Userscored")->get_balls($id, $tour, $forebridge);
+
         } else {
             $fore['started'] = 0;
         }
@@ -318,12 +324,35 @@ class TournamentController extends Controller
                 $second = $request->request->get('second');
                 $three = $request->request->get('three');
 
-                print "<pre>";
-                print_r($player);
-                print_r($first);
-                print_r($second);
-                print_r($three);
-                print "</pre>";
+                $oldresult = $this->getDoctrine()->getRepository('AppTournamentBundle:Userscored')->findBy(array(
+                    'tr' => $tr, 'tour' => $tour, 'user' => $userId));
+
+                $em = $this->getDoctrine()->getManager();
+
+                if(!empty($oldresult)) {
+
+                    for($i=0;$i<count($oldresult);$i++) {
+                        $em->remove($oldresult[$i]);
+                    }
+
+                    $em->flush();
+
+                }
+
+                for($i=0;$i<count($player);$i++) {
+                    $score = new Userscored();
+                    $score->setTr($tr);
+                    $score->setTour($tour);
+                    $score->setUser($userId);
+                    $score->setPlayer($player[$i]);
+                    $score->setFirst($first[$i]);
+                    $score->setSecond($second[$i]);
+                    $score->setThree($three[$i]);
+                    $em->persist($score);
+                }
+
+                $em->flush();               
+
             }
         }                
 
@@ -358,9 +387,12 @@ class TournamentController extends Controller
         } else if ($tournament->getTypes() == 2) {
 
             if($forebridge) {
-                $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forescored")->get_forescored($tr, $tour);
-                $preset = 0;
-                // $preset = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($userId, $fore);
+                $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);                
+                $scored = $this->getDoctrine()->getRepository("AppTournamentBundle:Forescored")->get_forescored($tr, $tour);
+                $pres = $this->getDoctrine()->getRepository("AppTournamentBundle:Userscored")->get_prescored($userId, $tr, $tour);
+
+                $preset = $pres['players'];
+                $howactive = $pres['how'];
 
             } else {
                 $fore = 0;
@@ -368,7 +400,7 @@ class TournamentController extends Controller
             }            
 
             return $this->render('AppTournamentBundle:Tournament:forescored.html.twig',
-                array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $fore, 'preset' => $preset, 'how' => $how));
+                array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $scored, 'fore' => $fore, 'preset' => $preset, 'how' => $howactive));
         }
     }
 

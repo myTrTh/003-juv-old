@@ -24,17 +24,6 @@ class ForescoredRepository extends \Doctrine\ORM\EntityRepository
 
 		$result = $query->execute();
 
-		// $results = [];
-		// for($i=0;$i<count($result);$i++) {
-		// 	$pl = $result[$i]['player'];
-		// 	$fir = $result[$i]['first'];
-		// 	$sec = $result[$i]['second'];
-		// 	$img = $result[$i]['image'];
-		// 	$pos = $result[$i]['position'];
-
-		// 	$results[$pl] = ["first" => $fir, "second" => $sec, "image" => $img, "position" => $pos];
-		// }
-
 		return $result;
 	}
 
