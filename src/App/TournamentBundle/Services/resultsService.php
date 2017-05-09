@@ -296,6 +296,79 @@ class resultsService
                 // user scored
                 $userscoredplayers = $this->em->getRepository('AppTournamentBundle:Userscored')->findBy(array('tr' => $tr, 'tour' => $tour, 'player' => $player));
 
+                for($y=0;$y<count($userscoredplayers);$y++) {
+                    $ball = 0;
+                    $useractive = [$userscoredplayers[$y]->getFirst(), $userscoredplayers[$y]->getSecond(), $userscoredplayers[$y]->getThree()];
+
+                    $scoreball = array_intersect($foreactive, $useractive);
+                    $scoreball = array_values($scoreball);
+
+                    if ($position == 1) {
+
+                        for($x=0;$x<count($scoreball);$x++) {        
+                            if($scoreball[$x] == 'null' or $scoreball[$x] == 'one' or $scoreball[$x] == 'two' or $scoreball[$x] == 'three') {
+                                $ball += 3;
+                            } else if ($scoreball[$x] == 'goal') {
+                                $ball += 6;
+                            } else if ($scoreball[$x] == 'assist') {
+                                $ball += 6;
+                            } else if ($scoreball[$x] == 'yellow') {
+                                $ball += 4;
+                            } else if ($scoreball[$x] == 'red') {
+                                $ball += 8;
+                            }
+                        }
+
+
+                    } else if ($position == 2) {
+
+                        for($x=0;$x<count($scoreball);$x++) {
+
+                            if ($scoreball[$x] == 'goal') {
+                                $ball += 6;
+                            } else if ($scoreball[$x] == 'assist') {
+                                $ball += 6;
+                            } else if ($scoreball[$x] == 'yellow') {
+                                $ball += 3;
+                            } else if ($scoreball[$x] == 'red') {
+                                $ball += 8;
+                            }
+                        }
+
+                    } else if ($position == 3) {
+
+                        for($x=0;$x<count($scoreball);$x++) {
+                        
+                            if ($scoreball[$x] == 'goal') {
+                                $ball += 5;
+                            } else if ($scoreball[$x] == 'assist') {
+                                $ball += 4;
+                            } else if ($scoreball[$x] == 'yellow') {
+                                $ball += 3;
+                            } else if ($scoreball[$x] == 'red') {
+                                $ball += 8;
+                            }                                                
+                        }
+
+                    } else if ($position == 4) {
+
+                        for($x=0;$x<count($scoreball);$x++) {
+                            if ($scoreball[$x] == 'goal') {
+                                $ball += 6;
+                            } else if ($scoreball[$x] == 'assist') {
+                                $ball += 6;
+                            } else if ($scoreball[$x] == 'yellow') {
+                                $ball += 3;
+                            } else if ($scoreball[$x] == 'red') {
+                                $ball += 8;
+                            }                                                
+                        }
+                    }
+
+                    $userscoredplayers[$y]->setScore($ball);
+                    $this->em->persist($userscoredplayers[$y]);
+                }
+                $this->em->flush();
 
             }
 
