@@ -30,6 +30,14 @@
 		<img src='/public/images/scored/red.png'> - Красная карточка (Вратарь, Защитник, Полузащитник, Нападающий - 8)<br>
 		<img src='/public/images/scored/null.png'> - Угадано количество пропущенных голов вратарем - 3 балла<br><br>
 	</div>
+	<h3>{{ fore.0.team1 }}
+		{% if fore.0.result1 is null %} 
+			-
+		{% else %}
+			{{ fore.0.result1 }}:{{ fore.0.result2 }}
+		{% endif %}
+		{{ fore.0.team2 }}
+	</h3>
 	<div class='activehow'>Действия: <span id='howscored'>{{ how }}</span>/7</div>
 	<br>
 

@@ -9,7 +9,7 @@
 {% if is_granted('ROLE_ADMIN') %}
 	{% set adminbb = 0 %}
 	{% include 'bbcode.html.twig' %}
-	{{ form_start(form) }}
+	{{ form_start(form, {'action': path('app_admin_guestbook')}) }}
 	{{ form_widget(form.message) }}
 	
 	{# show flash info #}
@@ -30,6 +30,13 @@
 {# page navigation #}
 {% set page_navigation = '/adminpanel/adminbook' %}
 {% include 'pagenavigation.html.twig' %}
+
+{% if notification_adminbook is defined and notification_adminbook|length > 0 %}
+	{% set post_link = (count - notification_adminbook|length) + 1 %}
+	<div class='message-anchor'>
+	<a href='{{ path('app_guestbook_post', {'post': post_link}) }}'><i class='fa fa-anchor'></i> Перейти к непрочитанным ({{ notification_adminbook|length }})</a>
+	</div>
+{% endif %}
 
 {# base guestbook body for all realize guestbook #}
 {% include 'AppGuestbookBundle:Guestbook:_guestbook.html.twig' %}

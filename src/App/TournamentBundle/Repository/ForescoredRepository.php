@@ -11,7 +11,7 @@ namespace App\TournamentBundle\Repository;
 class ForescoredRepository extends \Doctrine\ORM\EntityRepository
 {
 	public function get_forescored($tr, $tour) {
-		$dql = "SELECT f.player, p.first, p.second, p.image, p.position
+		$dql = "SELECT f.player, p.first, p.second, p.image, p.position, f.first as scorefirst, f.second as scoresecond, f.three as scorethree
 				FROM AppTournamentBundle:Forescored f
 				INNER JOIN AppTournamentBundle:Player p
 				WHERE f.player = p.id

@@ -90,7 +90,7 @@ class GuestbookController extends Controller
             }
 
             return $this->redirect($this->generateUrl($this->url));
-        }        
+        }
 
         $repository = $this->getDoctrine()->getRepository($this->bundle);
         $result = $repository->show_guestbook($page, $this->posts);

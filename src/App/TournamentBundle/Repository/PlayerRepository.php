@@ -45,5 +45,17 @@ class PlayerRepository extends \Doctrine\ORM\EntityRepository
 			return $player;	
 		}
 
-	}	
+	}
+
+	public function get_position($player) {
+		$dql = "SELECT p.position FROM AppTournamentBundle:Player p
+				WHERE p.id = :player";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter('player', $player);
+
+		$result = $query->execute();
+
+		return $result[0]['position'];
+	}
 }

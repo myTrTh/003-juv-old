@@ -1,0 +1,119 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Проставить результаты {% endblock %}
+
+{% block lowheader %} {{ tournament.name }} {% endblock %}
+
+{% block lowbody %}
+<a class='link-back' href='{{ path("app_admin_tours", {"tournament": tournament.id, "tour": tour}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
+<br><br>
+
+	<form method='post'>
+	<table class='show-score'>
+	{% for fore in forecast %}
+		{% if date(fore.timer) > date() %}
+			{% set acc = 1 %}
+		{% else %}
+			{% set acc = 0 %}
+		{% endif %}
+		<tr>
+			<td>
+				{{ utc_to_locale(fore.timer)|date('d.m H:i') }}
+			</td>
+			<td class='show-team'>
+				{{ fore.team1 }}
+			</td>
+			<td class='show-table-result'>
+				<input type='hidden' name='id[]' value='{{ fore.id }}'>
+				<input type='text' pattern='[0-9]+' class='extra-small inline' name='r1[]' value="{% if fore.result1 is defined %}{{ fore.result1 }}{% endif %}">
+			</td>
+			<td class='show-table-result'>
+				<input type='text' pattern='[0-9]' maxlength="1" class='extra-small inline' name='r2[]' value="{% if fore.result2 is defined %}{{ fore.result2 }}{% endif %}">
+			</td>
+			<td class='show-team'>
+				{{ fore.team2 }}
+			</td>			
+	{% endfor %}
+	</table>
+	<br>
+
+{% for player in scored %}
+
+	{% if player.position == 1 %}
+		{% set pos = 'Вратарь' %}
+		{% set cl = 'orange' %}
+	{% elseif player.position == 2 %}
+		{% set pos = 'Защитник' %}
+		{% set cl = 'green' %}
+	{% elseif player.position == 3 %}
+		{% set pos = 'Полузащитник' %}
+		{% set cl = 'blue' %}
+	{% elseif player.position == 4 %}
+		{% set pos = 'Нападающий' %}
+		{% set cl = 'red' %}
+	{% endif %}
+
+	{% if player.scorefirst is defined %}
+		{% set presetfirst = player.scorefirst %}
+	{% else %}
+		{% if player.position == 1 %}
+			{% set presetfirst = 'emptykeeper' %}
+		{% else %}
+			{% set presetfirst = 'empty' %}
+		{% endif %}
+	{% endif %}
+
+	{% if player.scoresecond is defined %}
+		{% set presetsecond = player.scoresecond %}
+	{% else %}
+		{% set presetsecond = 'empty' %}
+	{% endif %}
+
+	{% if player.scorethree is defined %}
+		{% set presetthree = player.scorethree %}
+	{% else %}
+		{% set presetthree = 'empty' %}					
+	{% endif %}
+
+	<div class='player'>
+		<div style='border-left: solid 1px {{ cl }}' class='player-image'>
+			{% if player.image is not empty %}
+				<img src="/public/images/players/{{ player.image }}">
+			{% else %}
+				<img src="/public/images/interface/noplayer.png">					
+			{% endif %}
+		</div>
+		<div class='player-info player-scored-info'>
+			<span class='player-second'>{{ player.second }}</span><br>
+			<span class='pos'>{{ pos }}</span>
+		</div>
+		{% if player.position == 1 %}
+		<div class='player-keeper player-first'>
+			<img src='/public/images/scored/{{ presetfirst }}.png'>
+			<input type='hidden' name='first[]' value='{{ presetfirst }}'>
+		</div>
+		{% else %}
+		<div class='player-scored player-first'>
+			<img src='/public/images/scored/{{ presetfirst }}.png'>
+			<input type='hidden' name='first[]' value='{{ presetfirst }}'>
+		</div>
+		{% endif %}
+		<div class='player-scored player-second'>
+			<img src='/public/images/scored/{{ presetsecond }}.png'>
+			<input type='hidden' name='second[]' value='{{ presetsecond }}'>
+		</div>
+		<div class='player-scored player-three'>
+			<img src='/public/images/scored/{{ presetthree }}.png'>
+			<input type='hidden' name='three[]' value='{{ presetthree }}'>
+		</div>
+	</div>
+	<input type='hidden' name='player[]' value='{{ player.player }}'>
+
+{% endfor %}
+	<br>
+
+	<input type='hidden' name='fore_end' value='1'>
+	<input type='submit' class='button button-main' name='set_fore' value='Отправить'>
+	</form>
+
+{% endblock %}

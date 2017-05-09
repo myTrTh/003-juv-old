@@ -282,5 +282,39 @@ class resultsService
                 $this->em->flush();
         }
 
-}
+        public function calc_forescored($tr, $tour) {
 
+            $forescored = $this->em->getRepository('AppTournamentBundle:Forescored')->findBy(array('tr' => $tr, 'tour' => $tour));
+
+            for($i=0;$i<count($forescored);$i++) {
+                $player = $forescored[$i]->getPlayer();
+
+                $position = $this->em->getRepository('AppTournamentBundle:Player')->get_position($player);
+
+                $foreactive = [$forescored[$i]->getFirst(), $forescored[$i]->getSecond(), $forescored[$i]->getThree()];
+
+                // user scored
+                $userscoredplayers = $this->em->getRepository('AppTournamentBundle:Userscored')->findBy(array('tr' => $tr, 'tour' => $tour, 'player' => $player));
+
+
+            }
+
+                // $ball = 0;
+
+                // for($i=0;$i<count($userscoredplayers);$i++) {
+                //         $useractive = [$userscoredplayers[$i]->getFirst(), $userscoredplayers[$i]->getSecond(), $userscoredplayers[$i]->getThree()];
+
+                //         if ($position == 1) {
+                            
+                //         } else if {$position == 2} {
+
+                //         } else if ($position == 3) {
+
+                //         } else if ($position == 4) {
+
+                //         }
+                // }
+
+    }
+
+}

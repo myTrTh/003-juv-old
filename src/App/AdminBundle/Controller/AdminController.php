@@ -1441,20 +1441,56 @@ class AdminController extends Controller
                 }
                 $em->flush();
 
-                                        // Если рассчитать турнир
+                // Вносим результат второго турнира
+                if($tournamentshow['types'] == 2) {
+                    $player = $request->request->get('player');
+                    $first = $request->request->get('first');
+                    $second = $request->request->get('second');
+                    $three = $request->request->get('three');
+
+                    for($i=0;$i<count($player);$i++) {
+                        $scoreid = $this->getDoctrine()->getRepository('AppTournamentBundle:Forescored')->findOneBy(array('tr' => $tournament, 'tour' => $tour, 'player' => $player[$i]));
+
+                        $scoreid->setFirst($first[$i]);
+                        $scoreid->setSecond($second[$i]);
+                        $scoreid->setThree($three[$i]);
+
+                        $em->persist($scoreid);
+                    }
+
+                    $em->flush();
+
+                    $this->get('app.results_tournament')->calc_forescored($tournament, $tour);                    
+                }
+
+                // Рассчитать турнир
                 if($fore_end)
                     $this->get('app.results_tournament')->completed_tour($hash);
+
             }
         }
 
         $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($tournament, $tour);
-        if($forebridge)
-            $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);
-        else
-            $fore = 0;
+        if($forebridge) {
 
-        return $this->render('AppAdminBundle:Tournament:tourcompleted.html.twig',
-            array('tour' => $tour, 'tournament' => $tournamentshow, "forecast" => $fore));
+            if($tournamentshow['types'] == 1) {
+                $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);
+            } else if ($tournamentshow['types'] == 2) {
+                $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);
+                $scored = $this->getDoctrine()->getRepository("AppTournamentBundle:Forescored")->get_forescored($tournament, $tour);
+            }
+
+        } else {
+            $fore = 0;
+        }
+
+        if($tournamentshow['types'] == 1) {
+            return $this->render('AppAdminBundle:Tournament:tourcompleted.html.twig',
+                array('tour' => $tour, 'tournament' => $tournamentshow, "forecast" => $fore));
+        } else if ($tournamentshow['types'] == 2) {
+            return $this->render('AppAdminBundle:Tournament:scoredcompleted.html.twig',
+                array('tour' => $tour, 'tournament' => $tournamentshow, "forecast" => $fore, "scored" => $scored));
+        }
     }    
 
    public function playoffAction($tr, $tour) {
