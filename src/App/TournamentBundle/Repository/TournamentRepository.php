@@ -93,7 +93,6 @@ class TournamentRepository extends \Doctrine\ORM\EntityRepository
 
 	public function get_players($tournament) {
 
-		print "here";
 		$dql = "SELECT p.id FROM AppTournamentBundle:Player p
 				INNER JOIN AppTournamentBundle:Trteam t
 				WHERE p.team = t.team

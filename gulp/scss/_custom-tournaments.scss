@@ -577,3 +577,10 @@
 .activehow {
 	font-size: 1.2rem;
 }
+
+.table-showgame {
+	border-collapse: collapse;
+	& td {
+		border-bottom: solid 1px #ccc;
+	}
+}

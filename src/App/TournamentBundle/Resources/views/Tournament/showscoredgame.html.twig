@@ -25,6 +25,92 @@
 		<h4>{{ fore.team1 }} {% if fore.result1 is not null and fore.result2 is not null %} {{ fore.result1 }}:{{ fore.result2 }} {% endif %} {{ fore.team2 }}</h4>
 	{% endfor %}
 {% endif %}
+<br>
+
+<table class='table-showgame'>
+{% for player in set %}
+
+	{% if player.position == 1 %}
+		{% set pos = 'Вратарь' %}
+		{% set cl = 'orange' %}
+	{% elseif player.position == 2 %}
+		{% set pos = 'Защитник' %}
+		{% set cl = 'green' %}
+	{% elseif player.position == 3 %}
+		{% set pos = 'Полузащитник' %}
+		{% set cl = 'blue' %}
+	{% elseif player.position == 4 %}
+		{% set pos = 'Нападающий' %}
+		{% set cl = 'red' %}
+	{% endif %}
+
+	{% if player.scorefirst is defined and player.scorefirst != 'empty' %}
+		{% set presetfirst = player.scorefirst %}
+	{% else %}
+		{% if player.position == 1 %}
+			{% set presetfirst = 'emptykeeper' %}
+		{% else %}
+			{% set presetfirst = 'emptynone' %}
+		{% endif %}
+	{% endif %}
+
+	{% if player.scoresecond is defined and player.scoresecond != 'empty' %}
+		{% set presetsecond = player.scoresecond %}
+	{% else %}
+		{% set presetsecond = 'emptynone' %}
+	{% endif %}
+
+	{% if player.scorethree is defined and player.scorethree != 'empty' %}
+		{% set presetthree = player.scorethree %}
+	{% else %}
+		{% set presetthree = 'emptynone' %}
+	{% endif %}
+
+<tr>
+	<td>
+	<div class='player'>
+		<div style='border-left: solid 1px {{ cl }}' class='player-image'>
+			{% if player.image is not empty %}
+				<img src="/public/images/players/{{ player.image }}">
+			{% else %}
+				<img src="/public/images/interface/noplayer.png">					
+			{% endif %}
+		</div>
+		<div class='player-info player-scored-info'>
+			<span class='player-first'>{{ player.first }}</span><br><span class='player-second'>{{ player.second }}</span><br>
+			<span class='pos'>{{ pos }}</span>
+		</div>
+	</div>
+	</td>
+	<td>
+		player1
+	</td>
+	<td>
+	<div class='player'>
+		{% if player.position == 1 %}
+		<div class='player-keeper player-first'>
+			<img src='/public/images/scored/{{ presetfirst }}.png'>
+		</div>
+		{% else %}
+		<div class='player-ascored player-first'>
+			<img src='/public/images/scored/{{ presetfirst }}.png'>
+		</div>
+		{% endif %}
+		<div class='player-ascored player-second'>
+			<img src='/public/images/scored/{{ presetsecond }}.png'>
+		</div>
+		<div class='player-ascored player-three'>
+			<img src='/public/images/scored/{{ presetthree }}.png'>
+		</div>
+	</div>
+	</td>
+	<td>
+		player2
+	</td>
+</tr>
+{% endfor %}
+</table>
+
 
 {% if games != 0 %}
 	<br>

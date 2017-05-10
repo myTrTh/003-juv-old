@@ -1254,6 +1254,15 @@ class AdminController extends Controller
                 $em = $this->getDoctrine()->getEntityManager();
                 for($i=0;$i<count($date);$i++) {
 
+                    if(empty($date[$i]) or empty($team1[$i]) or empty($team2[$i])) {
+                       $session = $this->get('session');
+                        $session
+                            ->getFlashBag()
+                            ->add('error', 'Заполните все поля');
+
+                        return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
+                    }
+
                     $date[$i] = $this->get('app.date_mode')->locale_to_utc($date[$i]);
                     $team1[$i] = trim(strip_tags($team1[$i]));
                     $team2[$i] = trim(strip_tags($team2[$i]));
@@ -1284,7 +1293,7 @@ class AdminController extends Controller
                 
                 $this->get('app.results_tournament')->add_howgame($tournament, $tour, $hash);
 
-                // return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
+                return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
             }
 
         // update tours

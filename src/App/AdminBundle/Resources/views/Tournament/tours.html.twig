@@ -81,6 +81,9 @@
 			<span class='add' id='remove_score'><i class='fa fa-minus'></i> Удалить</span><br><br>		
 {% endif %}
 
+	{# show flash info #}
+	{% include 'flashbug.html.twig' %}
+
 		{% if forecast == 0 %}
 			<input class='button button-main' type='submit' name='create_score' value='Создать'>
 		{% elseif forecast != 0 and tournament.types == 2 %}

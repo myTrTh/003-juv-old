@@ -462,6 +462,7 @@ class TournamentController extends Controller
             $set = $this->getDoctrine()->getRepository('AppTournamentBundle:Forescored')->get_forescored($calendar_info[0]['tr'], $calendar_info[0]['tour']);
             $preset1 = $this->getDoctrine()->getRepository('AppTournamentBundle:Userscored')->get_prescored($calendar_info[0]['user1'], $calendar_info[0]['tr'], $calendar_info[0]['tour']);
             $preset2 = $this->getDoctrine()->getRepository('AppTournamentBundle:Userscored')->get_prescored($calendar_info[0]['user2'], $calendar_info[0]['tr'], $calendar_info[0]['tour']);
+
             return $this->render('AppTournamentBundle:Tournament:showscoredgame.html.twig',
                 array('tournament' => $tournament, 'tour' => $calendar_info[0]['tour'],
                     'forecast' => $fore, 'calendar' => $calendar_info, 'preset1' => $preset1,
