@@ -67,7 +67,6 @@ class GuestbookRepository extends \Doctrine\ORM\EntityRepository {
     public function count_message()
     {
         $count = 'SELECT g.user, count(g.user) FROM '.$this->bundle.' g
-        WHERE g.status = 1
         GROUP BY g.user
         ';
         $pagequery = $this->getEntityManager()->createQuery($count);

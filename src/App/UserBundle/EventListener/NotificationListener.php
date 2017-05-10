@@ -43,7 +43,7 @@ class NotificationListener
             // GUESTBOOK NOTIFICATION
             $guestbook_last_date = $repository->last_visit($userId, 'guestbook');
 
-            $new_guestbook = $this->em->getRepository('AppUserBundle:Notification')->get_single_new('AppGuestbookBundle:Guestbook', $guestbook_last_date);
+            $new_guestbook = $this->em->getRepository('AppUserBundle:Notification')->get_single_new($userId, 'AppGuestbookBundle:Guestbook', $guestbook_last_date);
 
             if($options['notification']['notification_guestbook'] == 'true')
                 $this->twig->addGlobal('notification_guestbook', $new_guestbook);
@@ -68,7 +68,7 @@ class NotificationListener
                 // ADMBOOK NOTIFICATION
                 $adminbook_last_date = $repository->last_visit($userId, 'adminbook');
 
-                $new_adminbook = $this->em->getRepository('AppUserBundle:Notification')->get_single_new('AppAdminBundle:Adminbook', $adminbook_last_date);
+                $new_adminbook = $this->em->getRepository('AppUserBundle:Notification')->get_single_new($userId, 'AppAdminBundle:Adminbook', $adminbook_last_date);
 
                 $this->twig->addGlobal('notification_adminbook', $new_adminbook);
 

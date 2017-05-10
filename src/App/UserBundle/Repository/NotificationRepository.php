@@ -39,7 +39,7 @@ class NotificationRepository extends \Doctrine\ORM\EntityRepository {
 		return $results;
 	}
 
-	public function get_single_new($entity, $date) {
+	public function get_single_new($user, $entity, $date) {
 
 		if(!$date) {
 			$now = new \DateTime();
@@ -47,10 +47,11 @@ class NotificationRepository extends \Doctrine\ORM\EntityRepository {
 		}
 
 		$dql = "SELECT n.id FROM ".$entity." n 
-		 		WHERE n.created > :last";
+		 		WHERE n.created > :last AND n.user != :user";
 
 		$query = $this->getEntityManager()->createQuery($dql)
-					  ->SetParameter("last", $date);
+					  ->SetParameter("last", $date)
+					  ->SetParameter("user", $user);
 
 		$result = $query->execute();
 
