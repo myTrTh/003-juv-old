@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ tournament.name }} {% endblock %}
+
+{% block header %} 
+	{% if tournament.image is not null %}
+	 	<img class='tournament-img-header' src='/public/images/custom/logo/{{ tournament.image }}'>
+ 	{% else %}
+	 	<img class='tournament-img-header' src='/public/images/interface/default_logo.png'>
+	{% endif %}
+	{{ tournament.name }}
+{% endblock %}
+
+{% block content %}
+
+<a class='link-back' href='/{{ nav }}/{{ tournament.id }}/{{ tour }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
+<br>
+
+<div id='tournumber'>{{ calendar.0.tour }} ТУР</div><br>
+
+{% if forecast == 0 %}
+	<h4>Тур не начался</h4>
+{% else %}
+	{% for fore in forecast %}
+		<h4>{{ fore.team1 }} {% if fore.result1 is not null and fore.result2 is not null %} {{ fore.result1 }}:{{ fore.result2 }} {% endif %} {{ fore.team2 }}</h4>
+	{% endfor %}
+{% endif %}
+
+{% if games != 0 %}
+	<br>
+	<h4>ПОСЛЕДНИЕ МАТЧИ МЕЖДУ КОМАНДАМИ</h4>
+	<div class='size09'>
+	{% for games in games.games %}
+		<a class='nostyle' href="{{ path("app_tournament_showgame", {'id': games.id}) }}">{{ games.name }}. {{ games.tour }} ТУР. {{ games.username1 }} {{ games.result1 }}-{{ games.result2 }} {{ games.username2 }}</a><br>
+	{% endfor %}
+	</div>
+	<br>
+	<h4>ИСТОРИЯ ВСТРЕЧ</h4>
+	<div class='size09'>	
+	<div class='bold'>ВСЕГО МАТЧЕЙ: {{ games.stats.sum }}</div>
+	ПОБЕДЫ {{ games.stats.user1.0 }}: {% if games.stats.user1.1 == 0 %} - {% else %} {{ games.stats.user1.1 }} {% endif %}<br>
+	ПОБЕДЫ {{ games.stats.user2.0 }}: {% if games.stats.user2.1 == 0 %} - {% else %} {{ games.stats.user2.1 }} {% endif %}<br>
+	НИЧЬИ: {% if games.stats.n == 0 %} - {% else %} {{ games.stats.n }} {% endif %}
+	</div>
+{% endif %}
+{% endblock %}

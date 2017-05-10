@@ -450,11 +450,24 @@ class TournamentController extends Controller
 
         $games = $this->getDoctrine()->getRepository('AppTournamentBundle:Calendar')->get_games_in_pair($calendar_info[0]['user1'], $calendar_info[0]['user2']);
 
-        return $this->render('AppTournamentBundle:Tournament:showgame.html.twig',
-            array('tournament' => $tournament, 'tour' => $calendar_info[0]['tour'],
-                'forecast' => $fore, 'calendar' => $calendar_info, 'preset1' => $presetuser1,
-                'games' => $games, "nav" => $nav,
-                'preset2' => $presetuser2, "summ" => $summ));
+        if($calendar_info[0]['types'] == 1) {
+
+            return $this->render('AppTournamentBundle:Tournament:showgame.html.twig',
+                array('tournament' => $tournament, 'tour' => $calendar_info[0]['tour'],
+                    'forecast' => $fore, 'calendar' => $calendar_info, 'preset1' => $presetuser1,
+                    'games' => $games, "nav" => $nav,
+                    'preset2' => $presetuser2, "summ" => $summ));
+        } else if ($calendar_info[0]['types'] == 2) {
+
+            $set = $this->getDoctrine()->getRepository('AppTournamentBundle:Forescored')->get_forescored($calendar_info[0]['tr'], $calendar_info[0]['tour']);
+            $preset1 = $this->getDoctrine()->getRepository('AppTournamentBundle:Userscored')->get_prescored($calendar_info[0]['user1'], $calendar_info[0]['tr'], $calendar_info[0]['tour']);
+            $preset2 = $this->getDoctrine()->getRepository('AppTournamentBundle:Userscored')->get_prescored($calendar_info[0]['user2'], $calendar_info[0]['tr'], $calendar_info[0]['tour']);
+            return $this->render('AppTournamentBundle:Tournament:showscoredgame.html.twig',
+                array('tournament' => $tournament, 'tour' => $calendar_info[0]['tour'],
+                    'forecast' => $fore, 'calendar' => $calendar_info, 'preset1' => $preset1,
+                    'games' => $games, "nav" => $nav, 'set' => $set,
+                    'preset2' => $preset2, "summ" => $summ));
+        }
     }
 
 }
