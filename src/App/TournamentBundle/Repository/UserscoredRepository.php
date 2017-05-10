@@ -30,12 +30,13 @@ class UserscoredRepository extends \Doctrine\ORM\EntityRepository
 			$second = $result[$i]['second'];
 			$three = $result[$i]['three'];
 
-			if($first != 'empty' and $first != 'null' and $first != 'one' and $first != 'two' and $first != 'three' )
+			if($first != 'empty' and $first != 'emptykeeper' and $first != 'null' and $first != 'one' and $first != 'two' and $first != 'three') {
 				$how += 1;
-			if($second != 'empty')
+			} if($second != 'empty') {
 				$how += 1;
-			if($three != 'empty')
-				$how += 1;							
+			} if($three != 'empty') {
+				$how += 1;
+			}
 
 			$players[$player] = ['first' => $first, 'second' => $second, 'three' => $three];
 		}
@@ -81,5 +82,26 @@ class UserscoredRepository extends \Doctrine\ORM\EntityRepository
 
 		return $res;
 
+	}
+
+	public function table_ball($tr, $tour) {
+		$dql = "SELECT u.user, sum(u.score) as summ FROM AppTournamentBundle:Userscored u WHERE u.tr = :tr AND u.tour = :tour
+		        GROUP BY u.user";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr)
+					  ->SetParameter("tour", $tour);
+
+		$result = $query->execute();
+
+		$results = [];
+		for($i=0;$i<count($result);$i++) {
+			$user = $result[$i]['user'];
+			$sum = $result[$i]['summ'];
+
+			$results[$user] = $sum;
+		}
+
+		return $results;
 	}	
 }

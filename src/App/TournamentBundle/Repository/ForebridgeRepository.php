@@ -28,7 +28,9 @@ class ForebridgeRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	public function get_all_trs($hash) {
-		$dql = "SELECT f.tr, f.tour FROM AppTournamentBundle:Forebridge f
+		$dql = "SELECT f.tr, f.tour, t.types FROM AppTournamentBundle:Forebridge f
+				INNER JOIN AppTournamentBundle:Tournament t
+				WHERE t.id = f.tr
 				WHERE f.hash = :hash";
 
 		$query = $this->getEntityManager()->createQuery($dql)

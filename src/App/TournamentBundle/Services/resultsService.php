@@ -51,7 +51,11 @@ class resultsService
         $tablelist = [];
 
 		for($y=0;$y<count($trs);$y++) {
-        	$balls = $this->em->getRepository('AppTournamentBundle:Usercast')->table_ball($trs[$y]['tr'], $trs[$y]['tour']);
+            if($trs[$y]['types'] == 1) {
+        	   $balls = $this->em->getRepository('AppTournamentBundle:Usercast')->table_ball($trs[$y]['tr'], $trs[$y]['tour']);
+            } else if ($trs[$y]['types'] == 2) {
+               $balls = $this->em->getRepository('AppTournamentBundle:Userscored')->table_ball($trs[$y]['tr'], $trs[$y]['tour']);
+            }
         	
         	$calendar = $this->em->getRepository('AppTournamentBundle:Calendar')->get_pair($trs[$y]['tr'], $trs[$y]['tour']);
 

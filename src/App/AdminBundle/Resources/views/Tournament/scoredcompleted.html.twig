@@ -53,7 +53,7 @@
 		{% set cl = 'red' %}
 	{% endif %}
 
-	{% if player.scorefirst is defined %}
+	{% if player.scorefirst is defined and player.scorefirst is not null  %}
 		{% set presetfirst = player.scorefirst %}
 	{% else %}
 		{% if player.position == 1 %}
@@ -63,13 +63,13 @@
 		{% endif %}
 	{% endif %}
 
-	{% if player.scoresecond is defined %}
+	{% if player.scoresecond is defined  and player.scoresecond is not null  %}
 		{% set presetsecond = player.scoresecond %}
 	{% else %}
 		{% set presetsecond = 'empty' %}
 	{% endif %}
 
-	{% if player.scorethree is defined %}
+	{% if player.scorethree is defined and player.scorethree is not null  %}
 		{% set presetthree = player.scorethree %}
 	{% else %}
 		{% set presetthree = 'empty' %}					

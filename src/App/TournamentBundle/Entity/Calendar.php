@@ -1,6 +1,7 @@
 <?php
 
 namespace App\TournamentBundle\Entity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ORM\Mapping as ORM;
 

@@ -79,9 +79,16 @@ class Userscored
     private $created;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="updated", type="datetime", nullable=true)
+     */
+    private $updated;
+
+    /**
      * @var int
      *
-     * @ORM\Column(name="score", type="integer")
+     * @ORM\Column(name="score", type="integer", nullable=true)
      */
     private $score;
 
@@ -305,6 +312,24 @@ class Userscored
     {
         return $this->created;
     }
+
+     /**
+     * @ORM\PreUpdate
+     */
+    public function setUpdated()
+    {
+        $this->updated = new \DateTime();
+    } 
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
+    }        
 
 }
 

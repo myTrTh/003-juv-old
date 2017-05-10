@@ -348,6 +348,7 @@ class TournamentController extends Controller
                     $score->setFirst($first[$i]);
                     $score->setSecond($second[$i]);
                     $score->setThree($three[$i]);
+                    $score->setScore(0);
                     $em->persist($score);
                 }
 

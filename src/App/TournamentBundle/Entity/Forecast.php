@@ -1,6 +1,7 @@
 <?php
 
 namespace App\TournamentBundle\Entity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -61,6 +62,7 @@ class Forecast
      * @var \DateTime
      *
      * @ORM\Column(name="timer", type="datetime", nullable=true)
+     * @Assert\NotBlank()     
      */
     private $timer;
 
