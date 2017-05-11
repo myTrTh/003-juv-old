@@ -71,12 +71,20 @@ class UserscoredRepository extends \Doctrine\ORM\EntityRepository
 
 		$result = $query->execute();
 
+
+		$usersteps = $this->get_steps($tr, $tour);
+
 		$results = [];
 		for($i=0;$i<count($result);$i++) {
 			$user = $result[$i]['user'];
 			$sum = $result[$i]['summ'];
 
-			$results[$user] = $sum;
+			if(empty($usersteps[$user] or $usersteps[$user] == 0)) {
+				$results[$user] = $sum;
+			} else {
+				$summ = $sum - $usersteps[$user];
+				$results[$user] = $summ;
+			}
 		}
 
 		$res['members'] = $results;
@@ -95,14 +103,59 @@ class UserscoredRepository extends \Doctrine\ORM\EntityRepository
 
 		$result = $query->execute();
 
+		$usersteps = $this->get_steps($tr, $tour);
+
 		$results = [];
 		for($i=0;$i<count($result);$i++) {
 			$user = $result[$i]['user'];
 			$sum = $result[$i]['summ'];
 
-			$results[$user] = $sum;
+			if(empty($usersteps[$user] or $usersteps[$user] == 0)) {
+				$results[$user] = $sum;
+			} else {
+				$summ = $sum - $usersteps[$user];
+				$results[$user] = $summ;
+			}
 		}
 
 		return $results;
+	}	
+
+	public function get_steps($tr, $tour) {
+		$dql = "SELECT u.user, u.first, u.second, u.three
+				FROM AppTournamentBundle:Userscored u
+				WHERE u.tr = :tr AND u.tour = :tour";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter('tr', $tr)
+					  ->SetParameter('tour', $tour);
+
+		$result = $query->execute();
+
+		$users = [];
+		for($i=0;$i<count($result);$i++) {
+			$how = 0;
+			$user = $result[$i]['user'];
+			$first = $result[$i]['first'];
+			$second = $result[$i]['second'];
+			$three = $result[$i]['three'];
+
+			if($first != 'empty' and $first != 'emptykeeper' and $first != 'null' and $first != 'one' and $first != 'two' and $first != 'three') {
+				$how = 1;
+			} if($second != 'empty') {
+				$how = 1;
+			} if($three != 'empty') {
+				$how = 1;
+			}
+
+			if(empty($users[$user]))
+				$users[$user] = $how;
+			else
+				$users[$user] += $how;
+
+		}
+
+		return $users;
+
 	}	
 }
