@@ -358,11 +358,11 @@ class resultsService
 
                         for($x=0;$x<count($scoreball);$x++) {
                             if ($scoreball[$x] == 'goal') {
-                                $ball += 6;
+                                $ball += 4;
                             } else if ($scoreball[$x] == 'assist') {
-                                $ball += 6;
+                                $ball += 5;
                             } else if ($scoreball[$x] == 'yellow') {
-                                $ball += 3;
+                                $ball += 4;
                             } else if ($scoreball[$x] == 'red') {
                                 $ball += 8;
                             }                                                
@@ -375,23 +375,6 @@ class resultsService
                 $this->em->flush();
 
             }
-
-                // $ball = 0;
-
-                // for($i=0;$i<count($userscoredplayers);$i++) {
-                //         $useractive = [$userscoredplayers[$i]->getFirst(), $userscoredplayers[$i]->getSecond(), $userscoredplayers[$i]->getThree()];
-
-                //         if ($position == 1) {
-                            
-                //         } else if {$position == 2} {
-
-                //         } else if ($position == 3) {
-
-                //         } else if ($position == 4) {
-
-                //         }
-                // }
-
     }
 
 }
