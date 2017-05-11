@@ -512,6 +512,7 @@
 }
 
 .player {
+	min-width: 80px;
 	margin-bottom: 3px;
 	font-family: $font_header;
 	& > div {
@@ -562,7 +563,7 @@
 	}
 }
 
-.player-scored, .player-keeper, .player-ascored {
+.player-scored, .player-keeper, .player-ascored, .player-akeeper {
 	cursor: pointer;
 	& img {
 		width: 25px;
@@ -570,7 +571,7 @@
 	}
 }
 
-.player-ascored {
+.player-ascored, .player-akeeper {
 	cursor: default;
 }
 
@@ -583,4 +584,20 @@
 	& td {
 		border-bottom: solid 1px #ccc;
 	}
+	& tr:first-child td {
+		font-family: $font_header;
+		font-size: 1.6rem;
+	}
+	& tr:first-child td:nth-child(2) {
+		text-align: right;
+	}
+	& tr:first-child td:nth-child(3) {
+		text-align: center;
+	}
+}
+
+.player-number-score {
+	background-color: #e7e7e7;
+	width: 25px;
+	text-align: center;
 }

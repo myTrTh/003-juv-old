@@ -104,7 +104,8 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	public function get_info($id) {
-		$dql = "SELECT c.tr, c.tour, t.types, c.user1, c.user2, u1.username as login1, u2.username as login2 FROM AppTournamentBundle:Calendar c
+		$dql = "SELECT c.tr, c.tour, t.types, c.user1, c.user2, u1.username as login1, u2.username as login2, c.result1, c.result2
+				FROM AppTournamentBundle:Calendar c
 				INNER JOIN AppTournamentBundle:Tournament t
 				WHERE c.tr = t.id
 				INNER JOIN AppUserBundle:User u1

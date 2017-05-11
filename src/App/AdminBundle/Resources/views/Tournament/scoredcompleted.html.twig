@@ -37,6 +37,13 @@
 	</table>
 	<br>
 
+<table class='table-showgame'>
+	<tr>
+		<td></td>
+		<td colspan="2"></td>
+		<td></td>
+		<td colspan="2"></td>
+	</tr>	
 {% for player in scored %}
 
 	{% if player.position == 1 %}
@@ -75,6 +82,8 @@
 		{% set presetthree = 'empty' %}					
 	{% endif %}
 
+<tr>
+	<td>
 	<div class='player'>
 		<div style='border-left: solid 1px {{ cl }}' class='player-image'>
 			{% if player.image is not empty %}
@@ -88,6 +97,10 @@
 			<span class='player-second'>{{ player.second }}</span><br>
 			<span class='pos'>{{ pos }}</span>
 		</div>
+	</div>
+	</td>
+	<td>
+	<div class='player'>		
 		{% if player.position == 1 %}
 		<div class='player-keeper player-first'>
 			<img src='/public/images/scored/{{ presetfirst }}.png'>
@@ -107,10 +120,12 @@
 			<img src='/public/images/scored/{{ presetthree }}.png'>
 			<input type='hidden' name='three[]' value='{{ presetthree }}'>
 		</div>
-	</div>
 	<input type='hidden' name='player[]' value='{{ player.player }}'>
-
+	</div>
+	</td>
+</tr>
 {% endfor %}
+</table>
 	<br>
 
 	<input type='hidden' name='fore_end' value='1'>

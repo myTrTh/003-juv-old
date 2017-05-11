@@ -11,7 +11,7 @@ namespace App\TournamentBundle\Repository;
 class UserscoredRepository extends \Doctrine\ORM\EntityRepository
 {
 	public function get_prescored($userId, $tr, $tour) {
-		$dql = "SELECT u.player, u.first, u.second, u.three
+		$dql = "SELECT u.player, u.first, u.second, u.three, u.score
 				FROM AppTournamentBundle:Userscored u
 				WHERE u.tr = :tr AND u.tour = :tour AND u.user = :user";
 
@@ -29,6 +29,7 @@ class UserscoredRepository extends \Doctrine\ORM\EntityRepository
 			$first = $result[$i]['first'];
 			$second = $result[$i]['second'];
 			$three = $result[$i]['three'];
+			$score = $result[$i]['score'];
 
 			if($first != 'empty' and $first != 'emptykeeper' and $first != 'null' and $first != 'one' and $first != 'two' and $first != 'three') {
 				$how += 1;
@@ -38,7 +39,7 @@ class UserscoredRepository extends \Doctrine\ORM\EntityRepository
 				$how += 1;
 			}
 
-			$players[$player] = ['first' => $first, 'second' => $second, 'three' => $three];
+			$players[$player] = ['first' => $first, 'second' => $second, 'three' => $three, 'score' => $score];
 		}
 
 		$res = array('players' => $players, 'how' => $how);

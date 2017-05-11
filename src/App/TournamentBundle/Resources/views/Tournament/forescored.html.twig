@@ -19,8 +19,10 @@
 
 	{% if date(fore.0.timer) > date() %}
 		{% set accesclass = 'player-scored' %}
+		{% set accesclasskeeper = 'player-keeper' %}
 	{% else %}
 		{% set accesclass = 'player-ascored' %}
+		{% set accesclasskeeper = 'player-akeeper' %}
 	{% endif %}
 
 	<div class='show_image'>
@@ -43,7 +45,13 @@
 
 
 <form method='post'>
-	<table class='table-showgame'>
+<table class='table-showgame'>
+	<tr>
+		<td></td>
+		<td colspan="2"></td>
+		<td></td>
+		<td colspan="2"></td>
+	</tr>	
 {% for player in forecast %}
 
 	{% if player.position == 1 %}
@@ -102,7 +110,7 @@
 	<td>
 		<div class='player'>
 		{% if player.position == 1 %}
-		<div class='player-keeper player-first'>
+		<div class='{{ accesclasskeeper }} player-first'>
 			<img src='/public/images/scored/{{ presetfirst }}.png'>
 			<input type='hidden' name='first[]' value='{{ presetfirst }}'>
 		</div>
