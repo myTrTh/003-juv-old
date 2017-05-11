@@ -21,35 +21,55 @@
 
 <br><br>
 {% if players is not empty %}
-	{% for player in players %}
-		{% if player.position == 1 %}
-			{% set pos = 'Вратарь' %}
-			{% set cl = 'orange' %}
-		{% elseif player.position == 2 %}
-			{% set pos = 'Защитник' %}
-			{% set cl = 'green' %}
-		{% elseif player.position == 3 %}
-			{% set pos = 'Полузащитник' %}
-			{% set cl = 'blue' %}
-		{% elseif player.position == 4 %}
-			{% set pos = 'Нападающий' %}
-			{% set cl = 'red' %}
-		{% endif %}
+<table class='table-showgame'>
+	<tr>
+		<td></td>
+		<td colspan="2"></td>
+		<td></td>
+		<td colspan="2"></td>
+	</tr>	
+{% for player in players %}
 
-		<div class='player'>
-			<div style='border-left: solid 1px {{ cl }}' class='player-image'>
-				{% if player.image is not empty %}
-					<img src="/public/images/players/{{ player.image }}">
-				{% else %}
-					<img src="/public/images/interface/noplayer.png">					
-				{% endif %}
-			</div>
-			<div class='player-info'>
-				<a class='nostyle' href='{{ path('app_admin_player', {'team': team.id, 'player': player.id}) }}'><span class='player-first'>{{ player.first }}</span> <span class='player-second'>{{ player.second }}</span></a><br>
-				<span class='pos'>{{ pos }}</span>
-			</div>
+	{% if player.position == 1 %}
+		{% set pos = 'Вратарь' %}
+		{% set cl = 'orange' %}
+	{% elseif player.position == 2 %}
+		{% set pos = 'Защитник' %}
+		{% set cl = 'green' %}
+	{% elseif player.position == 3 %}
+		{% set pos = 'Полузащитник' %}
+		{% set cl = 'blue' %}
+	{% elseif player.position == 4 %}
+		{% set pos = 'Нападающий' %}
+		{% set cl = 'red' %}
+	{% endif %}
+
+	<tr>
+		<td>
+	<div class='player'>
+		<div style='border-left: solid 1px {{ cl }}' class='player-image'>
+			{% if player.image is not empty %}
+				<img src="/public/images/players/{{ player.image }}">
+			{% else %}
+				<img src="/public/images/interface/noplayer.png">					
+			{% endif %}
 		</div>
-	{% endfor %}
+		<div class='player-info player-scored-info'>
+			<a class='nostyle' href='{{ path('app_admin_player', {'team': team.id, 'player': player.id}) }}'>
+				<span class='player-first'>{{ player.first }}</span>
+				<br>
+				<span class='player-second'>{{ player.second }}</span>
+			</a>
+			<br>
+			<span class='pos'>{{ pos }}</span>
+		</div>
+	</div>
+	</td>
+	<td>
+	</td>
+</tr>
+{% endfor %}
+</table>
 {% endif %}
 
 {% endblock %}
