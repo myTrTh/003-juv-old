@@ -42,7 +42,7 @@
 	{% for fore in forecast %}
 
 			<input type='hidden' name='fore[]' value='{{ fore.id }}'>
-			<input class='small inline' type='text' name='upd_date[]' value='{{ utc_to_locale(fore.timer)|date('d.m.Y H:i') }}'>
+			<input class='datetimepicker small inline' type='text' name='upd_date[]' value='{{ utc_to_locale(fore.timer)|date('d.m.Y H:i') }}'>
 			<input class='small inline' type='text' name='upd_team1[]' value='{{ fore.team1 }}'>
 			<input class='small inline' type='text' name='upd_team2[]' value='{{ fore.team2 }}'>
 			<br>

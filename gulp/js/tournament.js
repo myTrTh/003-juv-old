@@ -1,3 +1,9 @@
+$(function() {
+	$('.datetimepicker').flatpickr(optional_config);
+})
+
+
+
 /* switch access tournament */
 $(function() {
 	$('.tournament-access').on('click', function() {
