@@ -39,13 +39,15 @@
 
 		<h5>Матчи</h5>
 	<form method='post'>
+	{% set numinptime = 0 %}
 	{% for fore in forecast %}
 
 			<input type='hidden' name='fore[]' value='{{ fore.id }}'>
-			<input class='datetimepicker small inline' type='text' name='upd_date[]' value='{{ utc_to_locale(fore.timer)|date('d.m.Y H:i') }}'>
+			<input id='dtpafter{{numinptime}}' class='small inline' type='text' name='upd_date[]' value='{{ utc_to_locale(fore.timer)|date('Y-m-d H:i') }}'>
 			<input class='small inline' type='text' name='upd_team1[]' value='{{ fore.team1 }}'>
 			<input class='small inline' type='text' name='upd_team2[]' value='{{ fore.team2 }}'>
 			<br>
+			{% set numinptime = numinptime + 1 %}
 	{% endfor %}
 	<input class='button button-main' type='submit' name='update_score' value='Обновить'>
 	</form>
@@ -61,7 +63,7 @@
 		<h5>Добавить матчи</h5>
 	<div class='scoregroup'>
 		<div class='score'>
-			<input class='small' type='text' name='date[]' placeholder="Дата">
+			<input id='dtpbefore0' class='small' type='text' name='date[]' placeholder="Дата">
 			<select class='small' name='team1[]'>
 				{% for team in teams %}
 					<option>{{ team.name }}</option>

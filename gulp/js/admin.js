@@ -1,3 +1,18 @@
+/* datetime picker */
+var flatpickr_option = 	{
+    	enableTime: true,
+    	minDate: "today",
+    	"locale": {
+    		"firstDayOfWeek": 1
+    	},
+    	time_24hr: true
+    };
+
+$(function() {
+	flatpickr("input[id^=dtp]", flatpickr_option);
+})
+
+
 /* show and hide users panel */
 $(function(){
 	$('.users-panel-info').on('click', function(){
@@ -163,12 +178,26 @@ $(function() {
 
 /* add score */
 $(function(){
-	$('#add_score').on('click', function(){
+	$('#add_score').on('click', function(event){
+		event.stopPropagation();
 		var block = $('.scoregroup');
 		var inputblock = $('.score').last();
-		inputblock.clone().appendTo(block);
+		var count = $('.scoregroup > .score').length;		
+		var newblock = inputblock.clone();
+		$('input', newblock).prop('id', 'dtpbefore' + count);
+		newblock.appendTo(block);
+		newblock.find("input[id^=dtp]").flatpickr(flatpickr_option);
 	})
 })
+
+// $("#addTask").on("click", function(event){
+// event.stopPropagation();
+
+// const newClone = clone.clone();
+// $("#taskEmpty").append(newClone);
+// $(newClone).find(".input-group").flatpickr(fpConf);
+// });
+
 
 // delete vote options
 $(function(){

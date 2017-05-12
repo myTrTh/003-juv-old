@@ -1,6 +1,4 @@
-$(function() {
-	$('.datetimepicker').flatpickr(optional_config);
-})
+
 
 
 
