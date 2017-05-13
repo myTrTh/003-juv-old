@@ -376,7 +376,8 @@ class TournamentController extends Controller
 
             if($forebridge) {
                 $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);
-                $preset = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($userId, $fore);
+                $preset = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($userId, $tr, $tour);
+
             } else {
                 $fore = 0;
                 $preset = 0;
@@ -417,14 +418,14 @@ class TournamentController extends Controller
         if($forebridge) {
             $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);
 
-            $presetuser1 = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($calendar_info[0]['user1'], $fore);
+            $presetuser1 = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($calendar_info[0]['user1'], $calendar_info[0]['tr'], $calendar_info[0]['tour']);
 
             $sum1 = 0;
             foreach ($presetuser1 as $key) {
                 $sum1 += (int) $key['ball'];
             }
 
-            $presetuser2 = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($calendar_info[0]['user2'], $fore);
+            $presetuser2 = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($calendar_info[0]['user2'], $calendar_info[0]['tr'], $calendar_info[0]['tour']);
 
             $sum2 = 0;
             foreach ($presetuser2 as $key) {

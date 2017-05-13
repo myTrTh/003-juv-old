@@ -40,7 +40,8 @@ class ForecastRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	public function getActiveTours($types) {
-		$dql = "SELECT f.hash, f.team1, f.team2 
+
+		$dql = "SELECT t.name, b.tour, f.hash, f.team1, f.team2 
 				FROM AppTournamentBundle:Forecast f
 				INNER JOIN AppTournamentBundle:Forebridge b
 				WHERE f.hash = b.hash
@@ -61,8 +62,11 @@ class ForecastRepository extends \Doctrine\ORM\EntityRepository
 				$hash = $result[$i]['hash'];
 				$team1 = $result[$i]['team1'];
 				$team2 = $result[$i]['team2'];
+				$name = $result[$i]['name'];
+				$tour = $result[$i]['tour'];
 
-				$results[$hash][] = ["team1" => $team1, "team2" => $team2, "hash" => $hash];
+				$results[$hash][] = ["team1" => $team1, "team2" => $team2, "hash" => $hash, "tr" => $name,
+									 "tour" => $tour];
 			}
 		}
 

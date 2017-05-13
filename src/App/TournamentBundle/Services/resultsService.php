@@ -286,6 +286,20 @@ class resultsService
                 $this->em->flush();
         }
 
+        public function setadd_playerslist($tr, $tour, $players) {
+
+            for($i=0;$i<count($players);$i++) {
+                $score = new Forescored();
+
+                $score->setTr($tr);
+                $score->setTour($tour);
+                $score->setPlayer($players[$i]['player']);
+                $this->em->persist($score);
+            }
+
+                $this->em->flush();
+        }        
+
         public function calc_forescored($tr, $tour) {
 
             $forescored = $this->em->getRepository('AppTournamentBundle:Forescored')->findBy(array('tr' => $tr, 'tour' => $tour));

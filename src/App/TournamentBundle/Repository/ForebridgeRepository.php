@@ -40,4 +40,29 @@ class ForebridgeRepository extends \Doctrine\ORM\EntityRepository
 
 		return $result;
 	}
+
+	public function make_addscored($hash) {
+		$dql = "SELECT f.tr, f.tour FROM AppTournamentBundle:Forebridge f
+				WHERE f.hash = :hash";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("hash", $hash)
+					  ->setMaxResults(1);
+
+		$result = $query->execute();
+
+		$tr = $result[0]['tr'];
+		$tour = $result[0]['tour'];
+
+		$dql = "SELECT f.player FROM AppTournamentBundle:Forescored f
+				WHERE f.tr = :tr AND f.tour = :tour";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr)
+					  ->SetParameter("tour", $tour);
+
+		$result = $query->execute();
+
+		return $result;
+	}	
 }

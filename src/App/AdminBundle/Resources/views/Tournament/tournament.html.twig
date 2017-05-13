@@ -9,11 +9,20 @@
 <br><br>
 
 {% if access >= 1 %}
-	{% if tournament.status == 1 %}
+	{% if tournament.status == 1 and (tournament.types == 1 or (tournament.types == 2 and headteam != 0)) %}
 	<a class='nostyle' href="{{ path("app_admin_tours", {"tournament": tournament.id}) }}"><h3><span class='alert alert-warning'> ДОБАВИТЬ / РЕДАКТИРОВАТЬ ТУР</span></h3></a>
 	<br>
 	{% else %}
-		<h4>Расписание матчей еще не создано</h4><br>
+		{% if tournament.types == 1 %}
+			<h4>Расписание матчей еще не создано</h4>
+		{% elseif tournament.types == 2 %}
+			{% if headteam != 0 %}
+				<h4>Расписание матчей еще не создано</h4>
+			{% else %}
+				<h4>Не выбрана главная команда</h4>
+			{% endif %}
+		{% endif %}
+		<br>
 	{% endif %}
 {% endif %}
 

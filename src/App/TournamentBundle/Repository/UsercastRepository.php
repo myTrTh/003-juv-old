@@ -27,7 +27,33 @@ class UsercastRepository extends \Doctrine\ORM\EntityRepository
 		return $result;
 	}
 
-	public function get_prescore($userId, $fore) {
+	public function get_prescore($userId, $tr, $tour) {
+
+		$dql = "SELECT u.idfore, u.result1, u.result2, u.ball FROM AppTournamentBundle:Usercast u
+				WHERE u.user = :user AND u.tr = :tr AND u.tour = :tour";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("user", $userId)
+					  ->SetParameter("tr", $tr)
+					  ->SetParameter("tour", $tour);
+
+		$result = $query->execute();
+
+		$results = [];
+		for($i=0;$i<count($result);$i++) {
+
+			$idfore = $result[$i]['idfore'];
+			$r1 = $result[$i]['result1'];
+			$r2 = $result[$i]['result2'];
+			$ball = $result[$i]['ball'];
+
+			$results[$idfore] = ['result1' => $r1, 'result2' => $r2, 'ball' => $ball];
+		}
+
+		return $results;
+	}
+
+	public function oldget_prescore($userId, $fore) {
 
 		$ids = [];
 		for($i=0;$i<count($fore);$i++) {

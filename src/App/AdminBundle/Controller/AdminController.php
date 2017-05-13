@@ -643,6 +643,8 @@ class AdminController extends Controller
         else
             $access = 0;
 
+        $headteam = $this->getDoctrine()->getRepository('AppTournamentBundle:Trteam')->get_team($tournament);
+
         if($tr['status'] == 1 or $tr['status'] == 3 or $tr['status'] == 4) {
 
             return $this->render("AppAdminBundle:Tournament:tournament.html.twig",
@@ -650,7 +652,7 @@ class AdminController extends Controller
                           "form_pos" => $form_pos->createView(),
                           "form_archive" => $form_archive->createView(),
                           "form_delete" => $form_delete->createView(),
-                          "access" => $access
+                          "access" => $access, 'headteam' => $headteam,
                           ));
 
         } else {
@@ -1393,6 +1395,12 @@ class AdminController extends Controller
                 $em->flush();
 
                 $this->get('app.results_tournament')->add_tablelist($tournament, $tour);
+
+                $types = $tournamentshow['types'];
+                if($types == 2) {
+                    $players = $this->getDoctrine()->getRepository('AppTournamentBundle:Forebridge')->make_addscored($hash);
+                    $this->get('app.results_tournament')->setadd_playerslist($tournament, $tour, $players);
+                }
 
                 return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
             }

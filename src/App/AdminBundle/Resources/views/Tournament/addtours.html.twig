@@ -13,8 +13,14 @@
 	{# show flash info #}
 	{% include 'flashbug.html.twig' %}
 
+	{% if forecast == 0 %}
+		<br>
+		Нет доступных туров...
+	{% endif %}
+
 	{% for fore in forecast %}
 		<div class="show-tours-teams">
+		{{ fore.0.tr }}<br>
 		{% for f in fore %}
 			{{ f.team1 }} - {{ f.team2 }}<br>
 		{% endfor %}
