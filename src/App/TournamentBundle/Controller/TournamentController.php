@@ -106,6 +106,7 @@ class TournamentController extends Controller
             $info = $tournament->getInfo();
             $schema = $info['schema'];
 
+
             $rep_calendar = $this->getDoctrine()->getRepository("AppTournamentBundle:Calendar");
             $showtour = $rep_calendar->get_tour($id, $tour, $schema);
             $calendar = $rep_calendar->get_calendar($id);
@@ -319,6 +320,8 @@ class TournamentController extends Controller
                 $tr = $request->request->get('tr');
                 $tour = $request->request->get('tour');
 
+                $forebridge = $this->getDoctrine()->getRepository('AppTournamentBundle:Forebridge')->getForeBridge($tr, $tour);
+
                 $player = $request->request->get('player');
                 $first = $request->request->get('first');
                 $second = $request->request->get('second');
@@ -339,16 +342,22 @@ class TournamentController extends Controller
 
                 }
 
+                $idfore = $this->getDoctrine()->getRepository('AppTournamentBundle:Forescored')->get_forescored_id($forebridge);
+
                 for($i=0;$i<count($player);$i++) {
+
+                    $idplayer = $player[$i];
+
                     $score = new Userscored();
                     $score->setTr($tr);
                     $score->setTour($tour);
                     $score->setUser($userId);
-                    $score->setPlayer($player[$i]);
+                    $score->setPlayer($idplayer);
                     $score->setFirst($first[$i]);
                     $score->setSecond($second[$i]);
                     $score->setThree($three[$i]);
                     $score->setScore(0);
+                    $score->setIdfore($idfore[$idplayer]);
                     $em->persist($score);
                 }
 
@@ -389,8 +398,9 @@ class TournamentController extends Controller
         } else if ($tournament->getTypes() == 2) {
 
             if($forebridge) {
-                $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);                
-                $scored = $this->getDoctrine()->getRepository("AppTournamentBundle:Forescored")->get_forescored($tr, $tour);
+                $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);
+
+                $scored = $this->getDoctrine()->getRepository("AppTournamentBundle:Forescored")->get_forescored($forebridge);
                 $pres = $this->getDoctrine()->getRepository("AppTournamentBundle:Userscored")->get_prescored($userId, $tr, $tour);
 
                 $preset = $pres['players'];
@@ -460,7 +470,7 @@ class TournamentController extends Controller
                     'preset2' => $presetuser2, "summ" => $summ));
         } else if ($calendar_info[0]['types'] == 2) {
 
-            $set = $this->getDoctrine()->getRepository('AppTournamentBundle:Forescored')->get_forescored($calendar_info[0]['tr'], $calendar_info[0]['tour']);
+            $set = $this->getDoctrine()->getRepository('AppTournamentBundle:Forescored')->get_forescored($forebridge);
             $preset1 = $this->getDoctrine()->getRepository('AppTournamentBundle:Userscored')->get_prescored($calendar_info[0]['user1'], $calendar_info[0]['tr'], $calendar_info[0]['tour']);
             $preset2 = $this->getDoctrine()->getRepository('AppTournamentBundle:Userscored')->get_prescored($calendar_info[0]['user2'], $calendar_info[0]['tr'], $calendar_info[0]['tour']);
 

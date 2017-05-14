@@ -1290,7 +1290,7 @@ class AdminController extends Controller
                 $em->flush();
 
                 if($tournamentshow['types'] == 2) {
-                    $this->get('app.results_tournament')->add_playerslist($tournament, $tour);
+                    $this->get('app.results_tournament')->add_playerslist($tournament, $hash);
                 }                
                 
                 $this->get('app.results_tournament')->add_howgame($tournament, $tour, $hash);
@@ -1396,12 +1396,6 @@ class AdminController extends Controller
 
                 $this->get('app.results_tournament')->add_tablelist($tournament, $tour);
 
-                $types = $tournamentshow['types'];
-                if($types == 2) {
-                    $players = $this->getDoctrine()->getRepository('AppTournamentBundle:Forebridge')->make_addscored($hash);
-                    $this->get('app.results_tournament')->setadd_playerslist($tournament, $tour, $players);
-                }
-
                 return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
             }
         }    
@@ -1460,13 +1454,15 @@ class AdminController extends Controller
 
                 // Вносим результат второго турнира
                 if($tournamentshow['types'] == 2) {
+
                     $player = $request->request->get('player');
                     $first = $request->request->get('first');
                     $second = $request->request->get('second');
                     $three = $request->request->get('three');
 
                     for($i=0;$i<count($player);$i++) {
-                        $scoreid = $this->getDoctrine()->getRepository('AppTournamentBundle:Forescored')->findOneBy(array('tr' => $tournament, 'tour' => $tour, 'player' => $player[$i]));
+
+                        $scoreid = $this->getDoctrine()->getRepository('AppTournamentBundle:Forescored')->findOneBy(array('hash' => $hash, 'player' => $player[$i]));
 
                         $scoreid->setFirst($first[$i]);
                         $scoreid->setSecond($second[$i]);
@@ -1476,8 +1472,8 @@ class AdminController extends Controller
                     }
 
                     $em->flush();
-
-                    $this->get('app.results_tournament')->calc_forescored($tournament, $tour);                    
+                    
+                    $this->get('app.results_tournament')->calc_forescored($tournament, $tour, $hash);
                 }
 
                 // Рассчитать турнир
@@ -1488,13 +1484,17 @@ class AdminController extends Controller
         }
 
         $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($tournament, $tour);
+
         if($forebridge) {
 
             if($tournamentshow['types'] == 1) {
                 $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);
             } else if ($tournamentshow['types'] == 2) {
+
                 $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);
-                $scored = $this->getDoctrine()->getRepository("AppTournamentBundle:Forescored")->get_forescored($tournament, $tour);
+
+                $scored = $this->getDoctrine()->getRepository("AppTournamentBundle:Forescored")->get_forescored($forebridge);
+
             }
 
         } else {
@@ -1505,6 +1505,7 @@ class AdminController extends Controller
             return $this->render('AppAdminBundle:Tournament:tourcompleted.html.twig',
                 array('tour' => $tour, 'tournament' => $tournamentshow, "forecast" => $fore));
         } else if ($tournamentshow['types'] == 2) {
+
             return $this->render('AppAdminBundle:Tournament:scoredcompleted.html.twig',
                 array('tour' => $tour, 'tournament' => $tournamentshow, "forecast" => $fore, "scored" => $scored));
         }

@@ -49,11 +49,10 @@ class UserscoredRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	public function get_balls($tr, $tour, $forebridge) {
-		$dql = "SELECT f.id FROM AppTournamentBundle:Forescored f WHERE f.tr = :tr AND f.tour = :tour AND f.first IS NOT NULL";
+		$dql = "SELECT f.id FROM AppTournamentBundle:Forecast f WHERE f.hash = :hash AND (f.result1 IS NOT NULL OR f.result2 IS NOT NULL)";
 
 		$query = $this->getEntityManager()->createQuery($dql)
-					  ->SetParameter("tr", $tr)
-					  ->SetParameter("tour", $tour);
+					  ->SetParameter("hash", $forebridge);
 
 		$result = $query->execute();
 
@@ -82,7 +81,7 @@ class UserscoredRepository extends \Doctrine\ORM\EntityRepository
 			if(empty($usersteps[$user] or $usersteps[$user] == 0)) {
 				$results[$user] = $sum;
 			} else {
-				$summ = $sum - $usersteps[$user];
+				$summ = $sum + (7 - $usersteps[$user]);
 				$results[$user] = $summ;
 			}
 		}
@@ -113,7 +112,7 @@ class UserscoredRepository extends \Doctrine\ORM\EntityRepository
 			if(empty($usersteps[$user] or $usersteps[$user] == 0)) {
 				$results[$user] = $sum;
 			} else {
-				$summ = $sum - $usersteps[$user];
+				$summ = $sum + (7 - $usersteps[$user]);
 				$results[$user] = $summ;
 			}
 		}

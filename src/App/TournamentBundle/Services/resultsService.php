@@ -271,15 +271,14 @@ class resultsService
 		return $result; 
 	}
 
-        public function add_playerslist($tournament, $tour) {
+        public function add_playerslist($tournament, $hash) {
                 $getplayers = $this->em->getRepository('AppTournamentBundle:Tournament')->get_players($tournament);
 
                 for($i=0;$i<count($getplayers);$i++) {
                         $score = new Forescored();
 
-                        $score->setTr($tournament);
-                        $score->setTour($tour);
                         $score->setPlayer($getplayers[$i]['id']);
+                        $score->setHash($hash);
                         $this->em->persist($score);
                 }
 
@@ -300,11 +299,14 @@ class resultsService
                 $this->em->flush();
         }        
 
-        public function calc_forescored($tr, $tour) {
+        public function calc_forescored($tr, $tour, $hash) {
 
-            $forescored = $this->em->getRepository('AppTournamentBundle:Forescored')->findBy(array('tr' => $tr, 'tour' => $tour));
+            $forescored = $this->em->getRepository('AppTournamentBundle:Forescored')->findBy(array('hash' => $hash));
 
             for($i=0;$i<count($forescored);$i++) {
+
+                $foreid = $forescored[$i]->getId();
+
                 $player = $forescored[$i]->getPlayer();
 
                 $position = $this->em->getRepository('AppTournamentBundle:Player')->get_position($player);
@@ -312,7 +314,7 @@ class resultsService
                 $foreactive = [$forescored[$i]->getFirst(), $forescored[$i]->getSecond(), $forescored[$i]->getThree()];
 
                 // user scored
-                $userscoredplayers = $this->em->getRepository('AppTournamentBundle:Userscored')->findBy(array('tr' => $tr, 'tour' => $tour, 'player' => $player));
+                $userscoredplayers = $this->em->getRepository('AppTournamentBundle:Userscored')->findBy(array('idfore' => $foreid));
 
                 for($y=0;$y<count($userscoredplayers);$y++) {
                     $ball = 0;

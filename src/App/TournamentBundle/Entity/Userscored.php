@@ -25,6 +25,13 @@ class Userscored
     /**
      * @var int
      *
+     * @ORM\Column(name="idfore", type="integer")
+     */
+    private $idfore;
+
+    /**
+     * @var int
+     *
      * @ORM\Column(name="tr", type="integer")
      */
     private $tr;
@@ -330,6 +337,30 @@ class Userscored
     {
         return $this->updated;
     }        
+
+    /**
+     * Set idfore
+     *
+     * @param integer $idfore
+     *
+     * @return Usercast
+     */
+    public function setIdfore($idfore)
+    {
+        $this->idfore = $idfore;
+
+        return $this;
+    }
+
+    /**
+     * Get idfore
+     *
+     * @return int
+     */
+    public function getIdfore()
+    {
+        return $this->idfore;
+    }    
 
 }
 

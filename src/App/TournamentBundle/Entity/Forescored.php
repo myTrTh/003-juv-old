@@ -23,18 +23,11 @@ class Forescored
     private $id;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="tr", type="integer")
+     * @ORM\Column(name="hash", type="string")
      */
-    private $tr;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="tour", type="integer")
-     */
-    private $tour;
+    private $hash;
 
     /**
      * @var int
@@ -82,51 +75,27 @@ class Forescored
     }
 
     /**
-     * Set tr
+     * Set hash
      *
-     * @param integer $tr
+     * @param string $hash
      *
      * @return Forescored
      */
-    public function setTr($tr)
+    public function setHash($hash)
     {
-        $this->tr = $tr;
+        $this->hash = $hash;
 
         return $this;
     }
 
     /**
-     * Get tr
+     * Get hash
      *
-     * @return int
+     * @return string
      */
-    public function getTr()
+    public function getHash()
     {
-        return $this->tr;
-    }
-
-    /**
-     * Set tour
-     *
-     * @param integer $tour
-     *
-     * @return Forescored
-     */
-    public function setTour($tour)
-    {
-        $this->tour = $tour;
-
-        return $this;
-    }
-
-    /**
-     * Get tour
-     *
-     * @return int
-     */
-    public function getTour()
-    {
-        return $this->tour;
+        return $this->hash;
     }
 
     /**
