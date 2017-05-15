@@ -86,7 +86,7 @@ class PagesController extends Controller
         }
 
 
-        $users = $this->getDoctrine()->getRepository('AppUserBundle:User')->show_users();
+        $users = $this->getDoctrine()->getRepository('AppTournamentBundle:Tournamentusers')->users_for_tournament($tournament);
 
         $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tournament);
 
@@ -100,6 +100,7 @@ class PagesController extends Controller
         $user2 = (int) $request->request->get('user2');
         $user3 = (int) $request->request->get('user3');
 
+        // Доступен ли график для турнира
         $accesstr = $this->getDoctrine()->getRepository('AppTournamentBundle:Tournament')->get_acces_type_one($tr);
 
         if($accesstr) {
@@ -107,9 +108,19 @@ class PagesController extends Controller
             $users = [$user1, $user2, $user3];
 
             $uniq = array_unique($users);
+            $uniqs = [];
+            for($i=0;$i<count($uniq);$i++) {
+                if($uniq[$i] != 0)
+                    $uniqs[] = $uniq[$i];
+            }
 
-            $result = $this->getDoctrine()->getRepository('AppTournamentBundle:Tournament')->get_graph($uniq);
-            
+            $result = $this->getDoctrine()->getRepository('AppTournamentBundle:Tablelist')->get_graph($tr, $uniqs);
+
+            if(!$result) {
+                $resp['error'] = 1;
+                return new Response(json_encode($resp));
+            }
+
             $resp['error'] = 0;
             $resp['graph'] = $result;
 

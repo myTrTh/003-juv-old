@@ -178,4 +178,55 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
         $stmt->execute($params);
 	}
 
+	public function get_graph($tr, $uniq) {
+		$dql = "SELECT max(t.tour) as maxtour FROM AppTournamentBundle:Tablelist t
+				WHERE t.tr = :tr AND t.game = 1";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter('tr', $tr);
+
+		$result = $query->execute();
+
+		if(empty($result)) {
+			return 0;
+		} else {
+			$max = $result[0]['maxtour'];
+		}
+
+		$all = [];
+		for($i=1;$i<=$max;$i++) {
+			$dql = "SELECT t.user, sum(t.score) as sc, sum(t.bw) as bw
+					FROM AppTournamentBundle:Tablelist t
+					WHERE t.tr = :tr AND t.tour <= :tour
+					GROUP BY t.user
+					ORDER BY sc DESC, bw DESC";
+
+			$query = $this->getEntityManager()->createQuery($dql)
+						  ->SetParameter("tr", $tr)
+						  ->SetParameter("tour", $i);
+
+			$result = $query->execute();
+
+			for($y=0;$y<count($result);$y++) {
+				$user = $result[$y]['user'];
+
+				if(in_array($user, $uniq)) {
+					$pos = $y + 1;
+					$all[$user][] = $pos;
+				}
+			}
+		}
+
+		// количество участников по диагонали y
+		$ynum = count($result);
+
+		$res['ynum'] = $ynum;
+		$res['tours'] = range(1, $max, 1);
+		$res['pos'] = $all;
+
+
+
+		return $res;
+	}	
+
 }

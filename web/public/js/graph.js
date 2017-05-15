@@ -6,71 +6,83 @@ $(document).ready(function() {
     var tr = $("#tr").html();
 
 	if(id1 != 0 || id2 != 0 || id3 != 0) {
-		var senddata = 'user1='+escape(id1)+'&user2='+escape(id2)+'&user3='+escape(id3)+'&tr='+escape(tr);
-		$.ajax({
+    var senddata = 'user1='+escape(id1)+'&user2='+escape(id2)+'&user3='+escape(id3)+'&tr='+escape(tr);
+    $.ajax({
             url: "/graph/get",
-			data: senddata,
-			type: "POST",
-			dataType: "json",
-			success: function(allinformation){
-                if(allinformation['error'] == 1) {
-                    $('#errorsview').html("График не может быть выведен.");
-                }
+      data: senddata,
+      type: "POST",
+      dataType: "json",
+      success: function(all){
 
-                console.log(allinformation);
-			// 	for(i=0; i<3; i++) {
-			// 		if(allinformation.logins[i] == undefined)
-			// 			allinformation.logins[i] = " ";
-			// 	}
-   //                 	Highcharts.setOptions({
-   //                 		colors: ['#058DC7', '#FF9655', '#00CC33']
-   //                 	});
-   //                  $('#bodytools').highcharts({
-   //                      title: {
-   //                          text: allinformation.name,
-   //                          x: -20 //center
-   //                      },
-   //                      xAxis: {
-   //                          categories: allinformation.tours
-   //                      },
-   //                      yAxis: {
-   //                      	categories: allinformation.positions,
-   //                      	reversed: true,
-   //                      	tickInterval: 1,
-   //                      	min: 1,
-   //                      	max: allinformation.users,
-   //                          title: {
-   //                              text: ''
-   //                          },
-   //                          plotLines: [{
-   //                              value: 0,
-   //                              width: 1,
-   //                              color: '#808080'
-   //                          }]
-   //                      },
-   //                      tooltip: {
-   //                          valueSuffix: ' место'
-   //                      },
-   //                      legend: {
-   //                          layout: 'vertical',
-   //                          align: 'right',
-   //                          verticalAlign: 'middle',
-   //                          borderWidth: 0
-   //                      },
-   //                      series: [
-   //                      {
-   //                          name: allinformation.logins[0],
-   //                          data: allinformation.line[0]
-   //                      }, 
-   //                      {
-   //                          name: allinformation.logins[1],
-   //                          data: allinformation.line[1]
-   //                      }, 
-   //                      {
-   //                          name: allinformation.logins[2],
-   //                          data: allinformation.line[2]
-   //                      }]
-   //                  });
+        console.log(all.graph.pos[9])
+
+        if(all['error'] == 1) {
+          $('#errorsview').html("График не может быть выведен.");
+        }
+
+        Highcharts.setOptions({
+          colors: ['#058DC7', '#FF9655', '#00CC33']
+        });
+        $('#bodytools').highcharts({
+          title: {
+            text: ""
+          },
+          xAxis: {
+            categories: all.graph.pos.tours
+          },          
+          yAxis: {
+            categories: 20,
+            reversed: true,
+            tickInterval: 1,
+            min: 1,
+            max: all.graph.ynum,
+            title: {
+              text: ''
+            },
+            plotLines: [{
+              value: 0,
+              width: 1,
+              color: '#808080'
+            }]
+            },
+            tooltip: {
+              valueSuffix: ' место'
+            },
+            legend: {
+              layout: 'vertical',
+              align: 'right',
+              verticalAlign: 'middle',
+              borderWidth: 0
+            },
+            plotOptions: {
+              series: {
+                pointStart: 1
+              }
+            },
+            series: [
+            {
+              name: 'Slava',
+              data: all.graph.pos[9]
+            },
+            {
+              name: 'bello',
+              data: all.graph.pos[4]
+            },            
+            ]
+            // series: [
+            // {
+            //   name: all.body.pos,
+            //   data: all.body.score
+            // }, 
+            // {
+            //   name: allinformation.logins[1],
+            //   data: allinformation.line[1]
+            // }, 
+            // {
+            //   name: allinformation.logins[2],
+            //   data: allinformation.line[2]
+            // }]
+            });
             }
         });
     };

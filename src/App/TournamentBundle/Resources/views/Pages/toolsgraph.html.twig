@@ -27,29 +27,32 @@
 <div class='hidden' id='tool3'>{{ three }}</div>
 <form method='post'>
 <select class='small inline' name='user1'>
+	<option value='0'>Команда</option>
 	{% for user in users %}
-		{% if user.id == first %}
-			<option selected="selected" value='{{ user.id }}'>{{ user.username }}</option>
+		{% if user.user == first %}
+			<option selected="selected" value='{{ user.user }}'>{{ user.username }}</option>
 		{% else %}
-			<option value='{{ user.id }}'>{{ user.username }}</option>
+			<option value='{{ user.user }}'>{{ user.username }}</option>
 		{% endif %}
 	{% endfor %}
 </select>
 <select class='small inline' name='user2'>
+	<option value='0'>Команда</option>
 	{% for user in users %}
-		{% if user.id == second %}
-			<option selected="selected" value='{{ user.id }}'>{{ user.username }}</option>
+		{% if user.user == second %}
+			<option selected="selected" value='{{ user.user }}'>{{ user.username }}</option>
 		{% else %}
-			<option value='{{ user.id }}'>{{ user.username }}</option>
+			<option value='{{ user.user }}'>{{ user.username }}</option>
 		{% endif %}
 	{% endfor %}
 </select>
 <select class='small inline' name='user3'>
+	<option value='0'>Команда</option>
 	{% for user in users %}
-		{% if user.id == three %}
-			<option selected="selected" value='{{ user.id }}'>{{ user.username }}</option>
+		{% if user.user == three %}
+			<option selected="selected" value='{{ user.user }}'>{{ user.username }}</option>
 		{% else %}
-			<option value='{{ user.id }}'>{{ user.username }}</option>
+			<option value='{{ user.user }}'>{{ user.username }}</option>
 		{% endif %}
 	{% endfor %}
 </select>

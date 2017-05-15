@@ -130,10 +130,4 @@ class TournamentRepository extends \Doctrine\ORM\EntityRepository
 			return 0;
 	}
 
-	public function get_graph($uniq) {
-		print "<pre>";
-		print_r($uniq);
-		print "</pre>";
-	}
-
 }
