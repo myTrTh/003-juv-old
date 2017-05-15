@@ -242,7 +242,7 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 		return $result;
 	}
 
-	public function get_games_in_pair($user1, $user2) {
+	public function get_games_in_pair($us1, $us2) {
 		$dql = "SELECT c.id, c.tr, t.name, c.tour, u1.username as username1, u2.username as username2, c.result1, c.result2
 				FROM AppTournamentBundle:Calendar c
 				INNER JOIN AppTournamentBundle:Tournament t
@@ -255,8 +255,8 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 				ORDER BY c.id DESC";
 
 		$query = $this->getEntityManager()->createQuery($dql)
-					  ->SetParameter("user1", $user1)
-					  ->SetParameter("user2", $user2);
+					  ->SetParameter("user1", $us1)
+					  ->SetParameter("user2", $us2);
 
 		$result = $query->execute();
 
@@ -302,7 +302,7 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 		return $res;
 	}	
 
-	public function get_games_tools($user1, $user2) {
+	public function get_games_tools($us1, $us2) {
 
 		$dql = "SELECT c.tour, c.id, t.name, c.user1, u1.username as username1, u2.username as username2, c.user2, c.result1, c.result2, c.off
 				FROM AppTournamentBundle:Calendar c
@@ -316,8 +316,8 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 				ORDER BY c.updated DESC";
 
 		$query = $this->getEntityManager()->createQuery($dql)
-					  ->SetParameter("user1", $user1)
-					  ->SetParameter("user2", $user2);
+					  ->SetParameter("user1", $us1)
+					  ->SetParameter("user2", $us2);
 
 		$result = $query->execute();
 
@@ -367,7 +367,10 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 
 			$all = $w1 + $w2 + $n;
 
-			$sum = ["w1" => $w1, "w2" => $w2, "n" => $n, "g1" => $g1, "g2" => $g2, 'all' => $all];
+			if($us1 == $user1)
+				$sum = ["w1" => $w1, "w2" => $w2, "n" => $n, "g1" => $g1, "g2" => $g2, 'all' => $all];
+			else
+				$sum = ["w1" => $w2, "w2" => $w1, "n" => $n, "g1" => $g2, "g2" => $g1, 'all' => $all];
 			$games = ["games" => $result, "sum" => $sum];
 
 		return $games;

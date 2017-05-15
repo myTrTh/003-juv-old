@@ -87,4 +87,22 @@ class ForecastRepository extends \Doctrine\ORM\EntityRepository
 
 		return $result;
 	}
+
+	public function is_exist($tr, $tour) {
+		$dql = "SELECT f.id FROM AppTournamentBundle:Forecast f
+				INNER JOIN AppTournamentBundle:Forebridge b
+				WHERE f.hash = b.hash
+				WHERE b.tr = :tr AND b.tour = :tour";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr)
+					  ->SetParameter("tour", $tour);
+
+		$result = $query->execute();
+
+		if(empty($result))
+			return 0;
+		else
+			return 1;
+	}
 }

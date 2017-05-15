@@ -32,14 +32,14 @@
 {# show flash info #}
 {% include 'flashbug.html.twig' %}
 
-	{% if games.games is empty %}
+	{% if games.games is defined and games.games is empty %}
 		<h4>Соперника не играли против друг друга</h4>
 	{% endif %}
 
     {% if games.games is defined and games.games is not empty %}
 
 	<div class='showmatches'>
-		<div>{{ games.games.0.username1 }} </div><div> {{ games.sum.g1 }}</div><div>:</div><div>{{ games.sum.g2 }} </div><div>{{ games.games.0.username2 }}</div>
+		<div><a class='nostyle' href='{{ path('app_user_show', {'id': us1.0.id }) }}'>{{ us1.0.username }}</a> </div><div> {{ games.sum.g1 }}</div><div>:</div><div>{{ games.sum.g2 }} </div><div><a class='nostyle' href='{{ path('app_user_show', {'id': us2.0.id }) }}'>{{ us2.0.username }}</a></div>
 	</div>
 	<div class='showstats '>
 		<div class='green'>+{{ games.sum.w1 }}</div>

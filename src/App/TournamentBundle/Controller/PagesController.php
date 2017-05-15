@@ -66,7 +66,10 @@ class PagesController extends Controller
                              '16' => '1/16 ФИНАЛА', '32' => '1/32 ФИНАЛА', '64' => '1/64 ФИНАЛA',
                              '128' => '1/128 ФИНАЛA', '256' => '1/256 ФИНАЛA'];
 
+        $us1 = $this->getDoctrine()->getRepository('AppUserBundle:User')->get_user_info($first);
+        $us2 = $this->getDoctrine()->getRepository('AppUserBundle:User')->get_user_info($second);
+
     	return $this->render('AppTournamentBundle:Pages:games.html.twig',
-    		array('users' => $users, 'games' => $games, 'first' => $first, 'second' => $second, 'playoff' => $playoff_name));
+    		array('users' => $users, 'games' => $games, 'first' => $first, 'second' => $second, 'playoff' => $playoff_name, 'us1' => $us1, 'us2' => $us2));
     }
 }

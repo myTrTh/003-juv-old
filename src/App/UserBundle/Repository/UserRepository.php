@@ -107,4 +107,17 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         }
         return $results;
     }
+
+    public function get_user_info($user) {
+        $dql = "SELECT u.id, u.username
+                FROM AppUserBundle:User u
+                WHERE u.id = :user";
+
+        $query = $this->getEntityManager()->createQuery($dql)
+                      ->SetParameter('user', $user);
+
+        $result = $query->execute();
+
+        return $result;
+    }    
 }

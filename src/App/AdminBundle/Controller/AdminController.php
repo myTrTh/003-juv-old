@@ -1269,6 +1269,18 @@ class AdminController extends Controller
                     $team1[$i] = trim(strip_tags($team1[$i]));
                     $team2[$i] = trim(strip_tags($team2[$i]));
 
+                    if($tournamentshow['types'] == 2) {
+                        $is_ready = $this->getDoctrine()->getRepository('AppTournamentBundle:Forecast')->is_exist($tournament, $tour);
+                        if($is_ready) {
+                           $session = $this->get('session');
+                            $session
+                                ->getFlashBag()
+                                ->add('error', 'Тур уже внесен.');
+
+                            return $this->redirect($this->generateUrl('app_admin_tours', array('tournament'=> $tournament, 'tour' => $tour)));
+                        }
+                    }
+
                     $forecast = new Forecast();
                     $forecast->setHash($hash);
                     $forecast->setTeam1($team1[$i]);
@@ -1431,7 +1443,7 @@ class AdminController extends Controller
                 $r2 = $request->request->get('r2');
                 $fore_end = $request->request->get('fore_end');
 
-                $em = $this->getDoctrine()->getManager();
+                $em = $this->getDoctrine()->getManager();                
 
                 for($i=0;$i<count($idfore);$i++) {
                     $idfore[$i] = (int) $idfore[$i];
