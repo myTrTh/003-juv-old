@@ -1,6 +1,15 @@
+app_tournament_toolgraph:
+    path:     /tools/graph/{tournament}/users/{first}/{second}/{three}
+    defaults: { _controller: AppTournamentBundle:Pages:toolgraph, tournament: 0,  first: 0, second: 0, three: 0 }
+    requirements:
+        tournament: '\d+'
+        first: '\d+'
+        second: '\d+'
+        three: '\d+'
+
 app_tournament_toolgames:
     path:     /tools/games/{first}/{second}
-    defaults: { _controller: AppTournamentBundle:Pages:tools, first: 0, second: 0 }
+    defaults: { _controller: AppTournamentBundle:Pages:toolgames, first: 0, second: 0 }
     requirements:
         first: '\d+'
         second: '\d+'

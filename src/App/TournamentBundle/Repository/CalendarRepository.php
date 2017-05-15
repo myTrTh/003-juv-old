@@ -321,6 +321,11 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 
 		$result = $query->execute();
 
+		if(empty($result)) {
+			$games = ["games" => $result, "sum" => 0];
+			return $games;
+		}
+
 			$w1 = 0;
 			$w2 = 0;
 			$n = 0;
@@ -349,13 +354,13 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 				} else if ($result[$i]['result1'] < $result[$i]['result2']) {
 					if($result[$i]['user1'] == $user1) {
 						$w2 += 1;
-						$g1 += $result[$i]['result2'];
-						$g2 += $result[$i]['result1'];						
+						$g1 += $result[$i]['result1'];
+						$g2 += $result[$i]['result2'];						
 
 					} else if ($result[$i]['user2'] == $user1) {
 						$w1 += 1;
-						$g1 += $result[$i]['result1'];
-						$g2 += $result[$i]['result2'];						
+						$g1 += $result[$i]['result2'];
+						$g2 += $result[$i]['result1'];						
 					}
 
 				} else if ($result[$i]['result1'] == $result[$i]['result2']) {

@@ -27,7 +27,7 @@ class PagesController extends Controller
     		array('ranking' => $ranking, 'lastdate' => $last_date, 'pre' => $pre));
     }
 
-    public function toolsAction($first, $second, Request $request) {
+    public function toolgamesAction($first, $second, Request $request) {
 
     	$users = $this->getDoctrine()->getRepository('AppUserBundle:User')->show_users();
 
@@ -69,7 +69,11 @@ class PagesController extends Controller
         $us1 = $this->getDoctrine()->getRepository('AppUserBundle:User')->get_user_info($first);
         $us2 = $this->getDoctrine()->getRepository('AppUserBundle:User')->get_user_info($second);
 
-    	return $this->render('AppTournamentBundle:Pages:games.html.twig',
+    	return $this->render('AppTournamentBundle:Pages:toolsgames.html.twig',
     		array('users' => $users, 'games' => $games, 'first' => $first, 'second' => $second, 'playoff' => $playoff_name, 'us1' => $us1, 'us2' => $us2));
+    }
+
+    public function toolgraphAction($tournament, $first, $second, $three, Request $request) {
+        return $this->render('AppTournamentBundle:Pages:toolsgraph.html.twig');
     }
 }
