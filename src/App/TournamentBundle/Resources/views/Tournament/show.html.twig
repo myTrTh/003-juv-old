@@ -210,4 +210,9 @@
 		<br>
 	{% endif %}
 
+{% if tournament.info.schema == 1 %}
+	<div><a href='{{ path('app_tournament_toolgraph', {'tournament': tournament.id}) }}'>ГРАФИК</a></div>
+	<div>ШАХМАТКА</div>
+{% endif %}
+
 {% endblock %}

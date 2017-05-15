@@ -4,6 +4,7 @@ namespace App\TournamentBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class PagesController extends Controller
 {
@@ -74,6 +75,49 @@ class PagesController extends Controller
     }
 
     public function toolgraphAction($tournament, $first, $second, $three, Request $request) {
-        return $this->render('AppTournamentBundle:Pages:toolsgraph.html.twig');
+
+        if($request->request->get('show_games')) {
+            $user1 = $request->request->get('user1');
+            $user2 = $request->request->get('user2');
+            $user3 = $request->request->get('user3');
+
+            return $this->redirect($this->generateUrl('app_tournament_toolgraph', array('tournament' => $tournament,
+                'first' => $user1, 'second' => $user2, 'three' => $user3)));
+        }
+
+
+        $users = $this->getDoctrine()->getRepository('AppUserBundle:User')->show_users();
+
+        $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tournament);
+
+        return $this->render('AppTournamentBundle:Pages:toolsgraph.html.twig',
+            array('tournament' => $tournamentshow, 'users' => $users, 'first' => $first, 'second' => $second, 'three' => $three));
+    }
+
+    public function graphgetAction(Request $request) {
+        $tr = (int) $request->request->get('tr');
+        $user1 = (int) $request->request->get('user1');
+        $user2 = (int) $request->request->get('user2');
+        $user3 = (int) $request->request->get('user3');
+
+        $accesstr = $this->getDoctrine()->getRepository('AppTournamentBundle:Tournament')->get_acces_type_one($tr);
+
+        if($accesstr) {
+
+            $users = [$user1, $user2, $user3];
+
+            $uniq = array_unique($users);
+
+            $result = $this->getDoctrine()->getRepository('AppTournamentBundle:Tournament')->get_graph($uniq);
+            
+            $resp['error'] = 0;
+            $resp['graph'] = $result;
+
+            return new Response(json_encode($resp));
+        } else {
+            $resp['error'] = 1;
+            return new Response(json_encode($resp));
+        }
+
     }
 }

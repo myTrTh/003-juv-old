@@ -1,1 +1,63 @@
-graph
+{% extends 'base.html.twig' %}
+
+{% block jscripts %}
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src='{{ asset('/public/js/graph.js') }}'></script>    
+{% endblock %}
+
+
+{% block title %}График{% endblock %}
+
+{% block header %} 
+	{% if tournament.image is not null %}
+	 	<img class='tournament-img-header' src='/public/images/custom/logo/{{ tournament.image }}'>
+ 	{% else %}
+	 	<img class='tournament-img-header' src='/public/images/interface/default_logo.png'>
+	{% endif %}
+	{{ tournament.name }}
+{% endblock %}
+
+{% block content %} 
+<a class='link-back' href='{{ path("app_tournament_show", {'id': tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД К ТУРНИРУ</a>
+<br>
+<h3>График</h3>
+<div class='hidden' id='tr'>{{ tournament.id }}</div>
+<div class='hidden' id='tool1'>{{ first }}</div>
+<div class='hidden' id='tool2'>{{ second }}</div>
+<div class='hidden' id='tool3'>{{ three }}</div>
+<form method='post'>
+<select class='small inline' name='user1'>
+	{% for user in users %}
+		{% if user.id == first %}
+			<option selected="selected" value='{{ user.id }}'>{{ user.username }}</option>
+		{% else %}
+			<option value='{{ user.id }}'>{{ user.username }}</option>
+		{% endif %}
+	{% endfor %}
+</select>
+<select class='small inline' name='user2'>
+	{% for user in users %}
+		{% if user.id == second %}
+			<option selected="selected" value='{{ user.id }}'>{{ user.username }}</option>
+		{% else %}
+			<option value='{{ user.id }}'>{{ user.username }}</option>
+		{% endif %}
+	{% endfor %}
+</select>
+<select class='small inline' name='user3'>
+	{% for user in users %}
+		{% if user.id == three %}
+			<option selected="selected" value='{{ user.id }}'>{{ user.username }}</option>
+		{% else %}
+			<option value='{{ user.id }}'>{{ user.username }}</option>
+		{% endif %}
+	{% endfor %}
+</select>
+<br>
+<input class='button button-main' type='submit' name='show_games' value='Показать'>
+</form>
+<br>
+<div id='errorsview'></div>
+<div id='bodytools'></div>
+
+{% endblock %}

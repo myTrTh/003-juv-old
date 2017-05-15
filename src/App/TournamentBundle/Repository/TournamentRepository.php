@@ -108,4 +108,32 @@ class TournamentRepository extends \Doctrine\ORM\EntityRepository
 		return $result;
 	}
 
+	public function get_acces_type_one($tr)	{
+		$dql = "SELECT t.info FROM AppTournamentBundle:Tournament t
+				WHERE t.id = :id";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter('id', $tr);
+
+		$result = $query->execute();
+
+		if(empty($result))
+			return 0;
+
+		$info = unserialize($result[0]['info']);
+
+		$schema = $info['schema'];
+
+		if($schema == 1)
+			return 1;
+		else
+			return 0;
+	}
+
+	public function get_graph($uniq) {
+		print "<pre>";
+		print_r($uniq);
+		print "</pre>";
+	}
+
 }
