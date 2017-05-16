@@ -131,4 +131,26 @@ class PagesController extends Controller
         }
 
     }
+
+    public function toolchessAction($tournament) {
+        $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tournament);
+
+        // Доступен ли график для турнира
+        $accesstr = $this->getDoctrine()->getRepository('AppTournamentBundle:Tournament')->get_acces_type_one($tournament);
+
+        if($accesstr) {
+            $order = 1;
+
+            $users = $this->getDoctrine()->getRepository('AppTournamentBundle:Tournamentusers')->users_for_tournament($tournament);            
+            $chess = $this->getDoctrine()->getRepository('AppTournamentBundle:Calendar')->get_chess($tournament);
+
+        } else {
+            $order = 0;
+            $chess = '';
+            $users = '';
+        }
+
+        return $this->render('AppTournamentBundle:Pages:toolschess.html.twig',
+            array('tournament' => $tournamentshow, 'chess' => $chess, 'order' => $order, 'users' => $users));
+    }
 }

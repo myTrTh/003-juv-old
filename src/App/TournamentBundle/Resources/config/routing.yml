@@ -1,3 +1,9 @@
+app_tournament_toolchess:
+    path:     /tools/chess/{tournament}
+    defaults: { _controller: AppTournamentBundle:Pages:toolchess, tournament: 0 }
+    requirements:
+        tournament: '\d+'
+
 app_tournament_getgraph:
     path:     /graph/get
     defaults: {_controller: AppTournamentBundle:Pages:graphget }

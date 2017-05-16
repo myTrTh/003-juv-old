@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Шахматка{% endblock %}
+
+{% block header %}Шахматка{% endblock %}
+
+{% block content %} 
+<a class='link-back' href='{{ path("app_tournament_show", {'id': tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД К ТУРНИРУ</a>
+<br>
+<div class='center'><h3>{{ tournament.name }}</h3></div>
+
+{% if order == 1 %}
+
+	<table class='chess'>
+		<tr>
+			<td></td>
+			{% for yuser in users %}
+				<td><div class='chess-transform'><a class='nostyle' href='{{ path('app_user_show', {'id': yuser.user} ) }}'>{{ yuser.username }}</a></div></td>
+			{% endfor %}			
+		</tr>
+		{% for xuser in users %}
+			<tr>
+				<td><a class='nostyle' href='{{ path('app_user_show', {'id': xuser.user} ) }}'>{{ xuser.username }}</a></td>
+				{% for yuser in users %}
+					{% if xuser.user == yuser.user %}
+						<td class='chess-box'>
+					{% else %}
+						<td>
+					{% endif %}
+						{% set result = xuser.user~'.'~yuser.user %}
+						{% set revers = yuser.user~'.'~xuser.user %}
+	
+						{% if xuser.user != yuser.user %}
+							{% for game in chess[result] %}
+								{% if game.3 == game.4 %}
+									{% set class = 'bg-yellow' %}
+								{% elseif game.3 > game.4 %}
+									{% set class = 'bg-green' %}
+								{% elseif game.4 > game.3 %}
+									{% set class = 'bg-red' %}									
+								{% endif %}
+								<div class='{{ class }}'>
+									<a class='nostyle' href='{{ path('app_tournament_showgame', {'id': game.0}) }}'>{{ game.3 }}:{{ game.4 }}</a>
+								</div>
+							{% endfor %}
+							{% for game in chess[revers] %}
+								{% if game.3 == game.4 %}
+									{% set class = 'bg-yellow' %}
+								{% elseif game.3 > game.4 %}
+									{% set class = 'bg-red' %}
+								{% elseif game.4 > game.3 %}
+									{% set class = 'bg-green' %}									
+								{% endif %}
+								<div class='{{ class }}'>
+									<a class='nostyle' href='{{ path('app_tournament_showgame', {'id': game.0}) }}'>{{ game.4 }}:{{ game.3 }}</a>
+								</div>
+							{% endfor %}						
+						{% endif %}
+					</td>
+				{% endfor %}
+			</tr>
+		{% endfor %}
+	</table>
+
+{% else %}
+	<div>Шахматка не доступна для этого турнира</div>
+{% endif %}
+
+
+{% endblock %}

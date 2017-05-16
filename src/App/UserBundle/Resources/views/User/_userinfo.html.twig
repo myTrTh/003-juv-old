@@ -15,7 +15,7 @@
 				{% if app.user.id is defined and app.user.id == user.id %}
 	    		<li><i class='fa fa-fix fa-at'></i> {{ user.email }}</li>
 	    		<li><i class='fa fa-fix fa-pencil'></i> <a class="link-black" href='{{ path('fos_user_change_password') }}' class='gray'>Сменить пароль</a></li>				
-	    		<li><i class='fa fa-fix fa-gear'></i> <a class="link-black" href='{{ path('app_user_settings') }}' class='gray'>Настройки</a></li>
+	    		<li><i class='fa fa-fix fa-sliders'></i> <a class="link-black" href='{{ path('app_user_settings') }}' class='gray'>Настройки</a></li>
 	    		{% endif %}
 		    </ul>
 		</div>

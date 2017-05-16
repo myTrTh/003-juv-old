@@ -380,4 +380,35 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 
 		return $games;
 	}
+
+	public function get_chess($tournament) {
+
+		$dql = "SELECT c.id, c.user1, c.user2, u1.username as username1, u2.username as username2, c.result1, c.result2
+				FROM AppTournamentBundle:Calendar c
+				INNER JOIN AppUserBundle:User u1
+				WHERE u1.id = c.user1
+				INNER JOIN AppUserBundle:User u2
+				WHERE u2.id = c.user2
+				WHERE c.tr = :tr";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tournament);
+
+		$result = $query->execute();
+
+		$chess = [];
+		for($i=0;$i<count($result);$i++) {
+			$username1 = $result[$i]['username1'];
+			$user1 = $result[$i]['user1'];
+			$username2 = $result[$i]['username2'];
+			$user2 = $result[$i]['user2'];
+			$result1 = $result[$i]['result1'];
+			$result2 = $result[$i]['result2'];
+			$id = $result[$i]['id'];
+
+			$chess[$user1.".".$user2][] = [$id, $username1, $username2, $result1, $result2];
+		}
+
+		return $chess;
+	}
 }

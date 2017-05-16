@@ -211,8 +211,8 @@
 	{% endif %}
 
 {% if tournament.info.schema == 1 %}
-	<div><a href='{{ path('app_tournament_toolgraph', {'tournament': tournament.id}) }}'>ГРАФИК</a></div>
-	<div>ШАХМАТКА</div>
+	<div class='achess'><a class='nostyle' href='{{ path('app_tournament_toolgraph', {'tournament': tournament.id}) }}'><i class='fa fa-line-chart'></i> ГРАФИК</a></div>
+	<div class='achess'><a class='nostyle' href='{{ path('app_tournament_toolchess', {'tournament': tournament.id}) }}'><i class='fa fa-sitemap'></i> ШАХМАТКА</a></div>
 {% endif %}
 
 {% endblock %}
