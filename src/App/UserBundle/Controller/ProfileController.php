@@ -59,10 +59,12 @@ class ProfileController extends Controller
         $repository_guestbook = $this->getDoctrine()->getRepository('AppGuestbookBundle:Guestbook');
         $messages = $repository_guestbook->how_messages($id);        
 
+        $activity = $this->getDoctrine()->getRepository('AppUserBundle:Activity')->show_user_activity($id);
+
         return $this->render('@FOSUser/Profile/show.html.twig', array(
             'user' => $user, 'number' => $number, 'champions' => $champions,
             "tournaments" => $tournament_player, "rate" => $rate,
-            "games" => $games, "messages" => $messages
+            "games" => $games, "messages" => $messages, 'activity' => $activity
         ));
     }
 
