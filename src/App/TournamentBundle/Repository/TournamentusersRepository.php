@@ -115,6 +115,10 @@ class TournamentusersRepository extends \Doctrine\ORM\EntityRepository
         $stmt = $em->getConnection()->prepare($sql);
         $stmt->execute($params);
 
+        $sql = "UPDATE userscored SET user = :newuser WHERE user = :inuser AND tr = :tr";
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute($params);
+
         $sql = "UPDATE tablelist SET user = :newuser WHERE user = :inuser AND tr = :tr";
         $stmt = $em->getConnection()->prepare($sql);
         $stmt->execute($params);
