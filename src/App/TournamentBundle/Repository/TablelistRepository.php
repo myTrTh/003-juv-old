@@ -195,8 +195,10 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
 
 		$all = [];
 		for($i=1;$i<=$max;$i++) {
-			$dql = "SELECT t.user, sum(t.score) as sc, sum(t.bw) as bw
+			$dql = "SELECT t.user, u.username, sum(t.score) as sc, sum(t.bw) as bw
 					FROM AppTournamentBundle:Tablelist t
+					INNER JOIN AppUserBundle:User u
+					WHERE u.id = t.user
 					WHERE t.tr = :tr AND t.tour <= :tour
 					GROUP BY t.user
 					ORDER BY sc DESC, bw DESC";
@@ -209,24 +211,29 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
 
 			for($y=0;$y<count($result);$y++) {
 				$user = $result[$y]['user'];
+				$username = $result[$y]['username'];
 
+				$pos = $y + 1;
 				if(in_array($user, $uniq)) {
-					$pos = $y + 1;
-					$all[$user][] = $pos;
+					$all[$user]['name'] = $username;
+					$all[$user]['data'][] = $pos;
 				}
 			}
 		}
 
-		// количество участников по диагонали y
-		$ynum = count($result);
+		$data = [];
+		foreach ($all as $us => $pos) {
+			$data[] = $pos;
+		}
 
-		$res['ynum'] = $ynum;
-		$res['tours'] = range(1, $max, 1);
-		$res['pos'] = $all;
+		$tours = count($data[0]['data']);
+		$users = count($result);
 
+		$options['series'] = $data;
+		$options['tours'] = $tours;
+		$options['users'] = $users;
 
-
-		return $res;
+		return $options;
 	}	
 
 }
