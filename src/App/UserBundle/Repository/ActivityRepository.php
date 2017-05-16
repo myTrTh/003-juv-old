@@ -22,4 +22,22 @@ class ActivityRepository extends \Doctrine\ORM\EntityRepository
         $result = $query->execute();
         return $result;
 	}
+
+    public function show_user_activity($user) {
+        $dql = 'SELECT a.lastActivity
+            FROM AppUserBundle:Activity a
+            INNER JOIN AppUserBundle:User u
+            WHERE a.user = u.id
+            WHERE a.user = :user';
+
+        $query = $this->getEntityManager()->createQuery($dql)
+                      ->SetParameter('user', $user);
+
+        $result = $query->execute();
+
+        if(empty($result))
+            return 'неизвестно';
+        else
+            return $result[0]['lastActivity'];
+    }    
 }

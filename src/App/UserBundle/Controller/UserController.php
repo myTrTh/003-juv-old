@@ -31,11 +31,13 @@ class UserController extends Controller
         $repository_guestbook = $this->getDoctrine()->getRepository('AppGuestbookBundle:Guestbook');
         $messages = $repository_guestbook->how_messages($id);        
 
+        $activity = $this->getDoctrine()->getRepository('AppUserBundle:Activity')->show_user_activity($user);
+
         return $this->render('AppUserBundle:User:show.html.twig',
         	array("user" => $user, 'number' => $number,
                   "tournaments" => $tournament_player,
                   "games" => $games, "messages" => $messages,
-                  "rate" => $rate,
+                  "rate" => $rate, 'activity' => $activity,
                   "champions" => $champions));
     }
 

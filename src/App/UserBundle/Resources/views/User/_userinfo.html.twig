@@ -12,6 +12,7 @@
 			<div class='h1'>{{ user.username }}</div>
 			<ul>
 				<li><i class='fa fa-fix fa-calendar'></i> {{ user.created|date("d.m.Y") }}</li>
+				<li><i class='fa fa-fix fa-clock-o'></i> Активность: {{ replace_date(activity) }}</li>
 				{% if app.user.id is defined and app.user.id == user.id %}
 	    		<li><i class='fa fa-fix fa-at'></i> {{ user.email }}</li>
 	    		<li><i class='fa fa-fix fa-pencil'></i> <a class="link-black" href='{{ path('fos_user_change_password') }}' class='gray'>Сменить пароль</a></li>				
