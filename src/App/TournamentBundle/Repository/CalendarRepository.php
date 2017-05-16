@@ -251,7 +251,7 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 				WHERE u1.id = c.user1
 				INNER JOIN AppUserBundle:User u2
 				WHERE u2.id = c.user2
-				WHERE c.result1 IS NOT NULL AND ((c.user1 = :user1 AND c.user2 = :user2) OR (c.user2 = :user2 AND c.user1 = :user1))
+				WHERE c.result1 IS NOT NULL AND ((c.user1 = :user1 AND c.user2 = :user2) OR (c.user2 = :user1 AND c.user1 = :user2))
 				ORDER BY c.id DESC";
 
 		$query = $this->getEntityManager()->createQuery($dql)
