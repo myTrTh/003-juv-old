@@ -125,7 +125,6 @@ class VoteController extends Controller {
             $result_sum = $results[1];
             $sum = $results[2];            
 
-
         	return $this->render('AppVoteBundle:Vote:show_open.html.twig', array(
         		'vote' => $vote, 'options' => $options,
                 'results' => $result_users, 'option_sum' => $result_sum, 'sum' => $sum,

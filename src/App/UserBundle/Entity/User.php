@@ -54,7 +54,7 @@ class User extends BaseUser
 
         # set default role and default ban status
         $this->roles = array('ROLE_VERIFIED_USER', 'ROLE_BANNED_0');
-        $this->options = serialize(array('timezone' => 100, 'notification' => array('notification_guestbook' => true, 'notification_vote' => true)));
+        $this->options = serialize(array('timezone' => 100, 'notification' => array('notification_guestbook' => false, 'notification_vote' => true)));
     }
 
     /**
