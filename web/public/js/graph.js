@@ -13,6 +13,9 @@ $(document).ready(function() {
       type: "POST",
       dataType: "json",
       success: function(all){
+
+        var tournament = $('#trname').html();
+
         if(all['error'] == 1) {
           $('#errorsview').html("График не может быть выведен.");
         }
@@ -24,7 +27,7 @@ $(document).ready(function() {
         $('#bodytools').highcharts({
 
           title: {
-              text: ''
+              text: tournament
           },
 
             tooltip: {

@@ -8,14 +8,7 @@
 
 {% block title %}График{% endblock %}
 
-{% block header %} 
-	{% if tournament.image is not null %}
-	 	<img class='tournament-img-header' src='/public/images/custom/logo/{{ tournament.image }}'>
- 	{% else %}
-	 	<img class='tournament-img-header' src='/public/images/interface/default_logo.png'>
-	{% endif %}
-	{{ tournament.name }}
-{% endblock %}
+{% block header %}График{% endblock %}
 
 {% block content %} 
 <a class='link-back' href='{{ path("app_tournament_show", {'id': tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД К ТУРНИРУ</a>
@@ -25,6 +18,7 @@
 <div class='hidden' id='tool1'>{{ first }}</div>
 <div class='hidden' id='tool2'>{{ second }}</div>
 <div class='hidden' id='tool3'>{{ three }}</div>
+<div class='hidden' id='trname'>{{ tournament.name }}</div>
 <form method='post'>
 <select class='small inline' name='user1'>
 	<option value='0'>Команда</option>
