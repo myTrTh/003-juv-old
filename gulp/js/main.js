@@ -42,12 +42,15 @@ $(function() {
 	})
 })
 
+// if exist
 $(document).ready(function() {
-	  var sum = $('.text_signature > input').val().length;
+	  var inp = $('.text_signature > input');
+	  var sum = inp.val().length;
 	  $('#numsymbols').html(sum);
 
 	$( ".text_signature > input" ).keyup(function() {
-	  var sum = $(this).val().length;
-	  $('#numsymbols').html(sum);
+	  var sum2 = $(this).val().length;
+	  console.log(sum2);
+	  $('#numsymbols').html(sum2);
 	});
 })

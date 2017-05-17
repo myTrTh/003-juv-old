@@ -12,7 +12,8 @@
     <link rel="apple-touch-icon" type="image/png" href="{{ asset('apple-touch-icon.png') }}">    
     <script src="https://use.fontawesome.com/fabe02ceef.js"></script>
     <link rel='stylesheet' href='{{ asset('/public/css/main.css') }}'>
-    <link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">    
+    {% block stylescripts %}
+    {% endblock %}    
     <title>{% block title %} v2.0 {% endblock %} - JuvePro</title>
 </head>
 <body>
@@ -78,7 +79,6 @@
     </div>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js'></script>
     <script src='{{ asset('/public/js/libs.js') }}'></script>
-    <script src="https://unpkg.com/flatpickr"></script>
 {% block jscripts %}
 {% endblock %}
 </body>

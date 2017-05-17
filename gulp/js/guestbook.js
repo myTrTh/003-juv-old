@@ -55,7 +55,6 @@ $(function(){
 		// Набор bb кодов
 		var tag_start = smile;
 		var tag_end = '';
-		console.log(tag_start);
 
 		var start = textbody[0].selectionStart;
 		var end = textbody[0].selectionEnd;
@@ -235,7 +234,7 @@ $(function() {
 // quote
 $(function(){
 	$('.quote').on('click', function(){
-		var quoteid = $(this).parent().parent().parent().parent().attr('id');
+		var quoteid = $(this).parent().parent().parent().parent().parent().parent().parent().attr('id');
 		var id = quoteid.substr(4);
 		var user = $(this).parent().parent().prev().children().next().children().children().html().trim();
 		var date = $('#hd' + id).text().trim();
@@ -255,7 +254,7 @@ $(function(){
 		// var height_elem = $('.bbpanel').offset();
 		// var height_this = $(this).offset();
 
-		$("html, body").animate({ scrollTop: 400 }, 500);
+		$("html, body").animate({ scrollTop: 320 }, 500);
 
 		return false;
 	});
