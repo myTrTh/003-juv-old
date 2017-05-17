@@ -41,7 +41,7 @@ class GuestbookRepository extends \Doctrine\ORM\EntityRepository {
         if($list > 0)
             $list = $list * $posts;
 
-        $dql = 'SELECT g.id, g.user, g.message, g.created, g.updated, g.quote, u.username, u.image, g.quote, g.status
+        $dql = 'SELECT g.id, g.user, g.message, g.created, g.updated, g.quote, u.username, u.image, u.signature, g.quote, g.status
             FROM '.$this->bundle.' g
             INNER JOIN AppUserBundle:User u
             WHERE u.id = g.user

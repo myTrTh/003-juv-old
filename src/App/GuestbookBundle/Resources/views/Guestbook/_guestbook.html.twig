@@ -39,38 +39,41 @@
 <div id='hm{{ post.id }}' class="hidden">{{ post.message }}</div>
 
 <div class="post" id="post{{ post.id }}">
-	<div class="post-header">
-		<div class="post-header-username">
-			<div>
-			{% if achives[post.user] is defined %}
-				{% spaceless %}						
-					{% for achive in achives[post.user] %}
-						<img title="{{ achive.1 }}" class='book-achive' src="/public/images/custom/achive/{{ achive.0 }}">
-					{% endfor %}
-				{% endspaceless %}
-			{% endif %}
-			</div>
-			<div>
-				<a class='nostyle' href='{{ path('app_user_show', {'id': post.user}) }}'><span class='post-author'>{{ post.username }}</span></a>
-			</div>
-		</div>
-		<div class="post-header-id">
-			<div>
-			{% if is_granted('ROLE_VERIFIED_USER') and order_quote == 1 %}
-				<span class='quote'>reply</span>
-			{% endif %}
-			</div>
-			<div>
-			{% if is_granted('ROLE_ADMIN') and order_delete == 1 %}
-				#<a class='nostyle' href='{{ path('app_guestbook_delete', {'post': post.id }) }}'>{{ post.id }}</a>
-			{% else %}
-				#{{ post.id }}
-			{% endif %}
-			</div>
-		</div>
-	</div>
-	<div class="post-body">
-		<div class="post-info">
+<table class='newbook'>
+		<tr class="post-header">
+			<td colspan="3">
+				<div class='post-header-username'>
+					<div>
+					{% if achives[post.user] is defined %}
+						{% spaceless %}						
+							{% for achive in achives[post.user] %}
+								<img title="{{ achive.1 }}" class='book-achive' src="/public/images/custom/achive/{{ achive.0 }}">
+							{% endfor %}
+						{% endspaceless %}
+					{% endif %}
+					</div>
+					<div>
+					<a class='nostyle' href='{{ path('app_user_show', {'id': post.user}) }}'><span class='post-author'>{{ post.username }}</span></a>
+					</div>
+				</div>
+				<div class='post-header-id'>
+					<div>
+					{% if is_granted('ROLE_VERIFIED_USER') and order_quote == 1 %}
+						<span class='quote'>reply</span>
+					{% endif %}
+					</div>
+					<div>
+					{% if is_granted('ROLE_ADMIN') and order_delete == 1 %}
+						#<a class='nostyle' href='{{ path('app_guestbook_delete', {'post': post.id }) }}'>{{ post.id }}</a>
+					{% else %}
+						#{{ post.id }}
+					{% endif %}
+					</div>
+				</div>
+			</td>
+		</tr>
+	<tr>
+		<td rowspan="5" class='post-info'>
 			{% if post.image is not null %}
 				<img src="/public/images/users/{{ post.image }}">
 			{% else %}
@@ -83,56 +86,59 @@
 						<i class='star fa fa-star'></i>
 					{% endfor %}
 				{% endif %}
-							<div class='rate'>
-								<span>RATE</span>
-								<span class='rank-show us{{ post.user }}'>
-								{% if rate_user[post.user] == 0 %}
-									<span class='gray'>0</span>
-								{% elseif rate_user[post.user] > 0 %}
-									<span class='green'>+{{ rate_user[post.user] }}</span>
-								{% elseif rate_user[post.user] < 0 %}
-									<span class='red'>{{ rate_user[post.user] }}</span>
-								{% endif %}
-								</span>
-							</div>
-						{% if topnach[post.user] is defined %}
-							<div class='topnach'>
-								{% for tn in topnach[post.user] %}
-								<div  class='topnach-achive fa fa-flash' id='topnach{{ tn.0 }}'>
-									<div class='toptoolkit'>
-										<div class='toptoolkit-info'><strong>ТОПНАХ #{{ tn.0 }}</strong>  {{ tn.1 }}</div>
-										<div class='toptoolkit-body'>{{ replace_text(adminreplace_text(tn.2))|raw|nl2br }}</div>
-									</div>
+				<div class='rate'>
+					<span>RATE</span>
+					<span class='rank-show us{{ post.user }}'>
+					{% if rate_user[post.user] == 0 %}
+						<span class='gray'>0</span>
+					{% elseif rate_user[post.user] > 0 %}
+						<span class='green'>+{{ rate_user[post.user] }}</span>
+					{% elseif rate_user[post.user] < 0 %}
+						<span class='red'>{{ rate_user[post.user] }}</span>
+					{% endif %}
+					</span>
+				</div>
+				{% if topnach[post.user] is defined %}
+				<div class='topnach'>
+					{% for tn in topnach[post.user] %}
+					<div  class='topnach-achive fa fa-flash' id='topnach{{ tn.0 }}'>
+						<div class='toptoolkit'>
+							<div class='toptoolkit-info'><strong>ТОПНАХ #{{ tn.0 }}</strong>  {{ tn.1 }}</div>
+							<div class='toptoolkit-body'>{{ replace_text(adminreplace_text(tn.2))|raw|nl2br }}</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			{% endif %}
+			{% if nach[post.user] is defined %}
+				<div class='nach'>
+					{% for n in nach[post.user] %}
+						<div class='nach-achive fa fa-asterisk' id='nach{{ n }}'>
+							<div class='toolkit'>
+								<div>
+									<span class='toolkit-info'>НАХ</span><span class='toolkit-body'>{{ n }}</span>
 								</div>
-								{% endfor %}
-							</div>
-						{% endif %}
-
-						{% if nach[post.user] is defined %}
-							<div class='nach'>
-								{% for n in nach[post.user] %}
-									<div class='nach-achive fa fa-asterisk' id='nach{{ n }}'>
-										<div class='toolkit'>
-											<div>
-												<span class='toolkit-info'>НАХ</span><span class='toolkit-body'>{{ n }}</span>
-											</div>
-											<div class='triangle'></div>
-										</div>
-									</div>
-								{% endfor %}
-							</div>
-						{% endif %}			
+							<div class='triangle'></div>
+						</div>
+						</div>
+					{% endfor %}
+				</div>
+			{% endif %}			
 			</div>
-		</div>
-		<div class="post-content">
-			<div class="post-content-date">
-				{{ replace_date(post.created) }}
-				{% if app.user.id is defined and app.user.id == post.user and order_edit == 1 %}
-					<i id='edit{{ post.id }}' class='edit-post fa fa-pencil' title='Редактировать'></i>
-				{% endif %}
-			</div class='post-content-old-quote'>
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" class="post-content-date">
+			{{ replace_date(post.created) }}
+			{% if app.user.id is defined and app.user.id == post.user and order_edit == 1 %}
+				<i id='edit{{ post.id }}' class='edit-post fa fa-pencil' title='Редактировать'></i>
+			{% endif %}
+		</td>		
+	</tr>
+	<tr>
+		<td colspan="2" class='content-cell'>
 			{# old quote #}
-			<div>
+			<div class='post-content-old-quote'>
 			{% if quote[post.id]['message'] is defined %}
 				<div class='quote-author'>{{ quote[post.id]['user'] }},
 				{{ replace_date(quote[post.id]['created']) }}</div>
@@ -142,67 +148,80 @@
 			<div class='post-content-message' id='message{{ post.id }}'>
 				{{ replace_text(post.message)|raw|nl2br }}
 			</div>
-			<span class='info-post-edit' id='post-edit{{ post.id }}'>
+		</td>
+	</tr>
+	<tr>
 			{% if post.updated != null %}
+		<td colspan="2" class='info-post-edit' id='post-edit{{ post.id }}'>
 				...<i class='fa fa-edit'></i> {{ replace_date(post.updated) }}
+		</td>
+			{% else %}
+				<td colspan="2"></td>
 			{% endif %}
-			</span>
-			<div class='post-content-signature'>
-				<div class='post-signature'>
-				{% if post.signature is not null %}
-					{{ post.signature }}
-				{% endif %}
-				</div>
-				<div class='post-number'>
-				{% if numbers[post.user] is defined %}
-					numero {{ set_number(numbers[post.user])|raw }}
-				{% endif %}
-				</div>
-			</div>				
-		</div>						
-	</div>
-	<div class="rate-panel">
-		<div class='rate-panel'>
-		{% if order_rate == 1 %}
-			<div id='u{{ post.id }}' class='tumbler like post-up'>
-			{% if is_granted('ROLE_BANNED_0') and app.user.id is defined and app.user.id != post.user and rate_access == 1 and rate_message[post.id]['allow'] == 0 %}
-				<i class='fa fa-thumbs-o-up'></i>
+	</tr>
+	<tr>
+		<td class='signature-line'>
+			{% if post.signature is not null %}
+			<div class='post-signature'>
+				{{ post.signature }}
+			</div>
+			{% endif %}
+		</td>
+		<td class='signature-line'>
+			<div class='post-number'>
+			{% if numbers[post.user] is defined %}
+				numero {{ set_number(numbers[post.user])|raw }}
 			{% endif %}
 			</div>
-			<div id='r{{ post.id }}' class='like post-ranking'>
-				{% if rate_message[post.id]['sum'] == 0 %}
-					<span class='gray'>{{ rate_message[post.id]['sum'] }}</span>
-				{% elseif rate_message[post.id]['sum'] > 0 %}
-					<span class='green'>+{{ rate_message[post.id]['sum'] }}</span>
-				{% elseif rate_message[post.id]['sum'] < 0 %}
-					<span class='red'>{{ rate_message[post.id]['sum'] }}</span>
-				{% endif %}
-			</div>
-			<div id='d{{ post.id }}' class='tumbler like post-down'>
-			{% if is_granted('ROLE_BANNED_0') and app.user.id is defined and app.user.id != post.user and rate_access == 1 and rate_message[post.id]['allow'] == 0 %}
-				<i class='fa fa-thumbs-o-down'></i>
-			{% endif %}
-			</div>
-			<div class='rank-users'>
-				<div id='ru{{ post.id }}' class='rank-up green'>
-					{% if rate_message[post.id]['plus'] != "" %}
-						{{ rate_message[post.id]['plus'] }}
-					{% else %}
-						{% if rate_message[post.id]['minus'] != "" %}
-						{% else %}
-							<span class='gray'>Голосов нет</span>
+		</td>		
+	</tr>	
+	<tr>
+		<td colspan="3">
+				<div class="rate-panel">
+					<div class='rate-panel'>
+					{% if order_rate == 1 %}
+						<div id='u{{ post.id }}' class='tumbler like post-up'>
+						{% if is_granted('ROLE_BANNED_0') and app.user.id is defined and app.user.id != post.user and rate_access == 1 and rate_message[post.id]['allow'] == 0 %}
+							<i class='fa fa-thumbs-o-up'></i>
 						{% endif %}
-					{% endif %}
+						</div>
+						<div id='r{{ post.id }}' class='like post-ranking'>
+							{% if rate_message[post.id]['sum'] == 0 %}
+								<span class='gray'>{{ rate_message[post.id]['sum'] }}</span>
+							{% elseif rate_message[post.id]['sum'] > 0 %}
+								<span class='green'>+{{ rate_message[post.id]['sum'] }}</span>
+							{% elseif rate_message[post.id]['sum'] < 0 %}
+								<span class='red'>{{ rate_message[post.id]['sum'] }}</span>
+							{% endif %}
+						</div>
+						<div id='d{{ post.id }}' class='tumbler like post-down'>
+						{% if is_granted('ROLE_BANNED_0') and app.user.id is defined and app.user.id != post.user and rate_access == 1 and rate_message[post.id]['allow'] == 0 %}
+							<i class='fa fa-thumbs-o-down'></i>
+						{% endif %}
+						</div>
+						<div class='rank-users'>
+							<div id='ru{{ post.id }}' class='rank-up green'>
+								{% if rate_message[post.id]['plus'] != "" %}
+									{{ rate_message[post.id]['plus'] }}
+								{% else %}
+									{% if rate_message[post.id]['minus'] != "" %}
+									{% else %}
+										<span class='gray'>Голосов нет</span>
+									{% endif %}
+								{% endif %}
+							</div>
+							<div id='rd{{ post.id }}' class='rank-down red'>
+								{% if rate_message[post.id]['minus'] != "" %}
+									{{ rate_message[post.id]['minus'] }}
+								{% endif %}
+							</div>
+						</div>
+						{% endif %}
+					</div> 
 				</div>
-				<div id='rd{{ post.id }}' class='rank-down red'>
-					{% if rate_message[post.id]['minus'] != "" %}
-						{{ rate_message[post.id]['minus'] }}
-					{% endif %}
-				</div>
-			</div>
-			{% endif %}
-		</div> 
-	</div>	
+		</td>
+	</tr>	
+</table>
 </div>
 
 {% else %}

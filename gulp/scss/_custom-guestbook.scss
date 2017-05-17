@@ -80,12 +80,7 @@ img.smile {
 }
 
 .post-header-username {
-	height: 23px;
-	float: left;
-	// & div {
-	// 	display: inline-block;
-	// 	height: 22px;		
-	// }
+	/*height: 23px;*/
 	& img {
 		max-height: 20px;
 		vertical-align: top;
@@ -96,11 +91,10 @@ img.smile {
 
 .post-author {
 	padding: 0;
-	margin-left: 3px;
+	/*margin-left: 3px;*/
 }
 
 .post-header-id {
-	height: 23px;	
 	float: right;
 }
 
@@ -118,10 +112,9 @@ img.smile {
 
 .post-info {
 	vertical-align: top;
-	float: left;
+	word-break: break-all;	
 	width: 170px;
 	text-align: center;
-	display: inline-block;
 	padding: 2px;
 	& > img {
 		max-width: 166px;
@@ -148,7 +141,7 @@ img.smile {
 	padding: 0 10px;
 	line-height: 1.5;
 	word-break: break-all;
-	margin-bottom: 25px;
+	margin-bottom: 10px;
 	width: 100%;
 	overflow: hidden;
 }
@@ -165,20 +158,32 @@ img.smile {
 }
 
 .post-number {
+	width: 83px;
 	float: right;
-	opacity: .3;	
+	opacity: .3;
+	padding: 5px 5px 0 5px;
+	& img {
+		height: 23px;	
+	}
 }
 
 .post-signature {
-	font-size: .8rem;
-	color: #657a88;
+	font-size: .79rem;
+	color: #999;
 	border-top: solid 1px #ccc;
+	vertical-align: bottom;
+	padding-left: 10px;
 }
 
 .post-content-date {
 	color: $gray_light;
-	margin: 10px 10px;
+	padding: 0 0 0 10px;
 	font-size: .8rem;
+	height: 35px;
+}
+
+.content-cell {
+	vertical-align: top;
 }
 
 .count {
@@ -399,8 +404,22 @@ img.smile {
 	padding: 0 10px;
 	font-size: .8rem;
 	font-style: italic;
+	height: 30px;
 }
 
 .message-anchor {
 	margin-bottom: 5px;
+}
+
+.newbook {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+.signature-line {
+	height: 30px;
+}
+
+.signature-line:last-child {
+	width: 83px;
 }
