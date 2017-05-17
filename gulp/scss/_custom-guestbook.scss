@@ -113,12 +113,12 @@ img.smile {
 
 .post-info {
 	vertical-align: top;
-	word-break: break-all;	
-	width: 170px;
+	word-break: break-word;
+	width: 156px;
 	text-align: center;
 	padding: 2px;
 	& > img {
-		max-width: 166px;
+		max-width: 154px;
 		max-height: 220px;
 		border-radius: 3px;
 	}
@@ -141,7 +141,7 @@ img.smile {
 .post-content-message {
 	padding: 0 10px;
 	line-height: 1.5;
-	word-break: break-all;
+	word-break: break-word;
 	margin-bottom: 10px;
 	width: 100%;
 	overflow: hidden;

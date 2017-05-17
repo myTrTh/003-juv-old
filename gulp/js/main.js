@@ -44,13 +44,15 @@ $(function() {
 
 // if exist
 $(document).ready(function() {
-	  var inp = $('.text_signature > input');
-	  var sum = inp.val().length;
-	  $('#numsymbols').html(sum);
+	var inp = $('.text_signature > input');
 
-	$( ".text_signature > input" ).keyup(function() {
-	  var sum2 = $(this).val().length;
-	  console.log(sum2);
-	  $('#numsymbols').html(sum2);
-	});
+	if(inp.length > 0) {
+		var sum = inp.val().length;
+		$('#numsymbols').html(sum);
+
+		$( ".text_signature > input" ).keyup(function() {
+			var sum2 = $(this).val().length;
+		 	$('#numsymbols').html(sum2);
+		});
+	};
 })
