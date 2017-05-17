@@ -30,6 +30,15 @@
 
 	<br><br>
 
+	<h3>Подпись</h3>
+	<div class='little'>Отображается в гостевой под сообщением и в профиле. Испольвано: <span id='numsymbols'></span> из 150 символов</div>
+	{{ form_start(form_sign) }}
+	<div class='text_signature'>{{ form_widget(form_sign.signature) }}</div>
+	{{ form_errors(form_sign.signature) }}
+	{{ form_widget(form_sign.savesignature, {'attr': {'class': 'button button-main'}}) }}
+	{{ form_end(form_sign) }}	
+	<br><br>
+
 	<h3>Уведомления</h3>
 	{% if user.options.notification.notification_guestbook == 'true' %}
 		<input checked='checked' type="checkbox" class="checkbox notification" id="notification_guestbook" />

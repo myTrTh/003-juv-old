@@ -24,9 +24,9 @@ class Option
     private $id;
 
     /**
-     * @var string
+     * @var text
      *
-     * @ORM\Column(name="description", type="string", length=255)
+     * @ORM\Column(name="description", type="text")
      * @Assert\NotBlank(message="Пожалуйста, заполните это поле перед отправкой")          
      */
     private $description;

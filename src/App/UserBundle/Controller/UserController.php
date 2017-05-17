@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use App\UserBundle\Entity\User;
 use App\UserBundle\Form\ImageType;
+use App\UserBundle\Form\SignatureType;
 use App\UserBundle\Form\TimezoneType;
 
 class UserController extends Controller
@@ -145,14 +146,33 @@ class UserController extends Controller
             return $this->redirect($this->generateUrl('app_user_settings'));              
         }
 
-        # FOR EXAMPLE
-        $date = $this->get('app.date_mode')->replace_date(date("d.m.Y H:i"));
+        # signature
+        $signature = new User();
+        $signature->setSignature($user->getSignature());
+        $form_sign = $this->createForm(SignatureType::class, $signature);
+        $form_sign->handleRequest($request);
+
+        # signature update
+        if($form_sign->isSubmitted() && $form_sign->isValid()) {
+
+            $new = $form_sign->getData();
+
+            $new_sign = $new->getSignature();
+
+            $em = $this->getDoctrine()->getManager();
+            $user->setSignature($new_sign);
+            $em->persist($user);
+            $em->flush();
+
+            return $this->redirect($this->generateUrl('app_user_settings'));              
+        }        
+
 
         return $this->render('AppUserBundle:User:settings.html.twig',
             array("user" => $user,
                   "form_image" => $form_image->createView(),
                   "form_date" => $form_date->createView(),
-                  "date" => $date
+                  "form_sign" => $form_sign->createView()
                 ));
     }
 

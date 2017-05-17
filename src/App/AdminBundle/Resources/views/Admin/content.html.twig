@@ -13,8 +13,6 @@
 		{% if content.chapter == 'about' %} <span class='bold'>О НАС</span> {% else %}О НАС {% endif %}	</a> |
 	<a class='nostyle' href="{{ path('app_admin_content', {'type': 'faq'}) }}">
 		{% if content.chapter == 'faq' %} <span class='bold'>FAQ</span> {% else %}FAQ {% endif %}	</a> |
-	<a class='nostyle' href="{{ path('app_admin_content', {'type': 'version'}) }}">
-		{% if content.chapter == 'version' %} <span class='bold'>ВЕРСИЯ</span> {% else %}ВЕРСИЯ {% endif %}	</a>
 {% endblock %}
 
 {% block lowbody %}

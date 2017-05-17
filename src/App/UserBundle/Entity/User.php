@@ -41,12 +41,19 @@ class User extends BaseUser
     private $image;
 
     /**
-     * @var int
+     * @var string
      *
      * @ORM\Column(name="options", type="string", nullable=true)
      * @Assert\NotBlank()
      */
     protected $options;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="signature", type="string", length=150, nullable=true)
+     */
+    protected $signature;    
 
 
     public function __construct() {
@@ -131,5 +138,29 @@ class User extends BaseUser
     public function getOptions()
     {
         return unserialize($this->options);
-    } 
+    }
+
+    /**
+     * Set options
+     *
+     * @param string $signature
+     *
+     * @return User
+     */
+    public function setSignature($signature)
+    {
+        $this->signature = $signature;
+
+        return $this;
+    }
+
+    /**
+     * Get options
+     *
+     * @return string
+     */
+    public function getSignature()
+    {
+        return $this->signature;
+    }     
 }

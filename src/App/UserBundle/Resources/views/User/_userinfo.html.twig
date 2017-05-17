@@ -33,6 +33,10 @@
 
 	</div>
 
+	{% if user.signature is not null %}
+		<div class='signature'>{{ user.signature }}</div>
+	{% endif %}
+
 {% if champions != 0 %}
 <br>
 <br>

@@ -41,3 +41,13 @@ $(function() {
 		})
 	})
 })
+
+$(document).ready(function() {
+	  var sum = $('.text_signature > input').val().length;
+	  $('#numsymbols').html(sum);
+
+	$( ".text_signature > input" ).keyup(function() {
+	  var sum = $(this).val().length;
+	  $('#numsymbols').html(sum);
+	});
+})
