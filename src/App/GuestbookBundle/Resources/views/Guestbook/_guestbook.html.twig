@@ -147,12 +147,19 @@
 				...<i class='fa fa-edit'></i> {{ replace_date(post.updated) }}
 			{% endif %}
 			</span>
-		</div>		
-			<div class='post-content-numbers'>
+			<div class='post-content-signature'>
+				<div class='post-signature'>
+				{% if post.signature is not null %}
+					{{ post.signature }}
+				{% endif %}
+				</div>
+				<div class='post-number'>
 				{% if numbers[post.user] is defined %}
 					numero {{ set_number(numbers[post.user])|raw }}
 				{% endif %}
-			</div>					
+				</div>
+			</div>				
+		</div>						
 	</div>
 	<div class="rate-panel">
 		<div class='rate-panel'>

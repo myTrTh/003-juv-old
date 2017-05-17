@@ -153,15 +153,26 @@ img.smile {
 	overflow: hidden;
 }
 
-.post-content-numbers {
-	position: absolute;
-	right: 5px;
-	font-size: 1rem;
-	bottom: 0;
-	opacity: .3;
-	& > img {
-		height: 23px;
+.post-content-signature {
+	vertical-align: bottom;
+	margin: 0 5px;
+	& > div {
+		display: inline-block;
 	}
+	& > div img {
+		height: 23px;
+	}		
+}
+
+.post-number {
+	float: right;
+	opacity: .3;	
+}
+
+.post-signature {
+	font-size: .8rem;
+	color: #657a88;
+	border-top: solid 1px #ccc;
 }
 
 .post-content-date {
