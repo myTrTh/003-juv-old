@@ -1249,7 +1249,7 @@ class AdminController extends Controller
                     $hash = $forebridge;
                     $br = 1;
                 } else {
-                    $hash = substr(sha1(uniqid()), 0, 9);
+                    $hash = sha1(uniqid());
                     $br = 0;
                 }
 

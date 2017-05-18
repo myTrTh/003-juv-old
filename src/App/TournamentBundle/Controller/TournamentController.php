@@ -113,6 +113,7 @@ class TournamentController extends Controller
             $member = $rep_calendar->get_member($id, $tour, $userId);
 
             $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($id, $tour);
+
         if($forebridge) {
 
             if($tournament->getTypes() == 1)
@@ -140,6 +141,7 @@ class TournamentController extends Controller
             $playoff_name = ['1' => 'ФИНАЛ', '2' => '1/2 ФИНАЛА', '4' => '1/4 ФИНАЛА', '8' => '1/8 ФИНАЛА',
                              '16' => '1/16 ФИНАЛА', '32' => '1/32 ФИНАЛА', '64' => '1/64 ФИНАЛA',
                              '128' => '1/128 ФИНАЛA', '256' => '1/256 ФИНАЛA'];
+
 
             // tour name
             $get_tour = $calendar[$tour];
