@@ -104,7 +104,7 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	public function get_info($id) {
-		$dql = "SELECT c.tr, c.tour, t.types, c.user1, c.user2, u1.username as login1, u2.username as login2, c.result1, c.result2
+		$dql = "SELECT c.tr, c.tour, t.types, c.off, c.user1, c.user2, u1.username as login1, u2.username as login2, c.result1, c.result2
 				FROM AppTournamentBundle:Calendar c
 				INNER JOIN AppTournamentBundle:Tournament t
 				WHERE c.tr = t.id
@@ -243,7 +243,7 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	public function get_games_in_pair($us1, $us2) {
-		$dql = "SELECT c.id, c.tr, t.name, c.tour, u1.username as username1, u2.username as username2, c.result1, c.result2
+		$dql = "SELECT c.id, c.tr, t.name, c.off, c.tour, u1.username as username1, u2.username as username2, c.result1, c.result2
 				FROM AppTournamentBundle:Calendar c
 				INNER JOIN AppTournamentBundle:Tournament t
 				WHERE t.id = c.tr
@@ -313,7 +313,7 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 				INNER JOIN AppUserBundle:User u2
 				WHERE u2.id = c.user2
 				WHERE c.result1 IS NOT NULL AND ((c.user1 = :user1 AND c.user2 = :user2) OR (c.user2 = :user1 AND c.user1 = :user2))
-				ORDER BY c.updated DESC";
+				ORDER BY c.updated DESC, c.id DESC";
 
 		$query = $this->getEntityManager()->createQuery($dql)
 					  ->SetParameter("user1", $us1)

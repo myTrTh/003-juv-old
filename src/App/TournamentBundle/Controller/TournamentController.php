@@ -135,25 +135,16 @@ class TournamentController extends Controller
 
             $strickers = $this->getDoctrine()->getRepository('AppTournamentBundle:Tablelist')->show_strickers($id, $tour);
 
-            $groups_name = ['', 'ГРУППА A', 'ГРУППА B', 'ГРУППА C', 'ГРУППА D', 'ГРУППА E', 'ГРУППА F', 'ГРУППА G', 'ГРУППА H', 'ГРУППА I', 'ГРУППА J', 'ГРУППА K', 'ГРУППА L', 'ГРУППА M', 'ГРУППА N', 'ГРУППА O', 'ГРУППА P', 'ГРУППА Q', 'ГРУППА R', 'ГРУППА S', 'ГРУППА T', 'ГРУППА U', 'ГРУППА V', 'ГРУППА W', 'ГРУППА X', 'ГРУППА Y', 'ГРУППА Z'];
-
-
-            $playoff_name = ['1' => 'ФИНАЛ', '2' => '1/2 ФИНАЛА', '4' => '1/4 ФИНАЛА', '8' => '1/8 ФИНАЛА',
-                             '16' => '1/16 ФИНАЛА', '32' => '1/32 ФИНАЛА', '64' => '1/64 ФИНАЛA',
-                             '128' => '1/128 ФИНАЛA', '256' => '1/256 ФИНАЛA'];
-
-
             // tour name
-            $get_tour = $calendar[$tour];
-            $off = $get_tour['off'];
 
-            if($off != 0) {
-                $printtour = array("tour" => $tour, "name" => $playoff_name[$off]);
-                $offstatus = 1;
-            } else {
-                $printtour = array("tour" => $tour, "name" => $tour." ТУР");
-                $offstatus = 0;
-            }
+            $get_tour = $calendar[$tour];
+            $info_about_tour = $this->get_info_about_tour($get_tour);
+            $printtour = $info_about_tour['printtour'];
+            $offstatus = $info_about_tour['offstatus'];
+            $playoff_name = $info_about_tour['playoff'];
+            $groups_name = $info_about_tour['groups'];
+
+
 
             return $this->render('AppTournamentBundle:Tournament:show.html.twig',
                    array("tournament" => $tournament,
@@ -164,9 +155,9 @@ class TournamentController extends Controller
                          "offstatus" => $offstatus,
                          "calendar" => $calendar,
                          "showtour" => $showtour,
-                         "member" => $member,
-                         "groups" => $groups_name,
                          "playoff" => $playoff_name,
+                         "groups" => $groups_name,
+                         "member" => $member,
                          "tourstatus" => $tourstatus,
                          "fore" => $fore, "table" => $table, "strickers" => $strickers));
 
@@ -463,12 +454,19 @@ class TournamentController extends Controller
 
         $games = $this->getDoctrine()->getRepository('AppTournamentBundle:Calendar')->get_games_in_pair($calendar_info[0]['user1'], $calendar_info[0]['user2']);
 
+            $get_tour = array('tour' => $calendar_info[0]['tour'], 'off' => $calendar_info[0]['off']);
+            $info_about_tour = $this->get_info_about_tour($get_tour);
+            $printtour = $info_about_tour['printtour'];
+            $offstatus = $info_about_tour['offstatus'];
+            $playoff_name = $info_about_tour['playoff'];
+            $groups_name = $info_about_tour['groups'];
+
         if($calendar_info[0]['types'] == 1) {
 
             return $this->render('AppTournamentBundle:Tournament:showgame.html.twig',
                 array('tournament' => $tournament, 'tour' => $calendar_info[0]['tour'],
                     'forecast' => $fore, 'calendar' => $calendar_info, 'preset1' => $presetuser1,
-                    'games' => $games, "nav" => $nav,
+                    'games' => $games, "nav" => $nav, 'printtour' => $printtour, 'playoff' => $playoff_name,
                     'preset2' => $presetuser2, "summ" => $summ));
         } else if ($calendar_info[0]['types'] == 2) {
 
@@ -482,6 +480,34 @@ class TournamentController extends Controller
                     'games' => $games, "nav" => $nav, 'set' => $set,
                     'preset2' => $preset2, "summ" => $summ));
         }
+    }
+
+    private function get_info_about_tour($get_tour) {
+
+            $off = $get_tour['off'];
+            $tour = $get_tour['tour'];
+
+            $groups_name = ['', 'ГРУППА A', 'ГРУППА B', 'ГРУППА C', 'ГРУППА D', 'ГРУППА E', 'ГРУППА F', 'ГРУППА G', 'ГРУППА H', 'ГРУППА I', 'ГРУППА J', 'ГРУППА K', 'ГРУППА L', 'ГРУППА M', 'ГРУППА N', 'ГРУППА O', 'ГРУППА P', 'ГРУППА Q', 'ГРУППА R', 'ГРУППА S', 'ГРУППА T', 'ГРУППА U', 'ГРУППА V', 'ГРУППА W', 'ГРУППА X', 'ГРУППА Y', 'ГРУППА Z'];
+
+
+            $playoff_name = ['1' => 'ФИНАЛ', '2' => '1/2 ФИНАЛА', '4' => '1/4 ФИНАЛА', '8' => '1/8 ФИНАЛА',
+                             '16' => '1/16 ФИНАЛА', '32' => '1/32 ФИНАЛА', '64' => '1/64 ФИНАЛA',
+                             '128' => '1/128 ФИНАЛA', '256' => '1/256 ФИНАЛA'];
+
+            if($off != 0) {
+                $printtour = array("tour" => $tour, "name" => $playoff_name[$off]);
+                $offstatus = 1;
+            } else {
+                $printtour = array("tour" => $tour, "name" => $tour." ТУР");
+                $offstatus = 0;
+            }
+
+            $result['printtour'] = $printtour;
+            $result['offstatus'] = $offstatus;
+            $result['playoff'] = $playoff_name;
+            $result['groups'] = $groups_name;
+
+            return $result;
     }
 
 }
