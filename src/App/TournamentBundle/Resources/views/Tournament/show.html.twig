@@ -137,12 +137,14 @@
 	{% for team in table[x] %}
 		<tr>
 			<td>{{ i }}</td>
-			<td>
+			<td class='td-classifica-img'>
+				<div>
 				{% if team.image is not null %}
 					<img class='classifica-img' src="/public/images/users/{{ team.image }}">
 				{% else %}
 					<img class='classifica-img' src="/public/images/interface/no_photo.png"><br>	
 				{% endif %}				
+				</div>
 			</td>
 			<td><a class='nostyle' href='{{ path('app_user_show', {'id': team.user}) }}'>{{ team.username }}</a></td>
 			<td>{{ team.game }}</td>
@@ -183,12 +185,14 @@
 	{% for stricker in strickers %}
 		<tr>
 			<td>{{ i }}</td>
-			<td>
+			<td  class='td-classifica-img'>
+				<div>
 				{% if stricker.image is not null %}
 					<img class='classifica-img' src="/public/images/users/{{ stricker.image }}">
 				{% else %}
 					<img class='classifica-img' src="/public/images/interface/no_photo.png"><br>	
 				{% endif %}	
+				</div>
 			</td>
 			<td>{{ stricker.username }}</td>
 			<td class='classifica-striker'>{{ stricker.bw }}</td>
