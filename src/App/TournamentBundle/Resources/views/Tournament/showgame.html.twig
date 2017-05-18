@@ -80,7 +80,9 @@
 	<h4>ПОСЛЕДНИЕ МАТЧИ МЕЖДУ КОМАНДАМИ</h4>
 	<div class='size09'>
 	{% for games in games.games %}
+		{% if loop.index < 6 %}
 		<a class='nostyle' href="{{ path("app_tournament_showgame", {'id': games.id}) }}">{{ games.name }}. {{ games.tour }} ТУР. {{ games.username1 }} {{ games.result1 }}-{{ games.result2 }} {{ games.username2 }}</a><br>
+		{% endif %}
 	{% endfor %}
 	</div>
 	<br>
