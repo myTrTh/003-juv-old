@@ -12,7 +12,11 @@
 {% endblock %}
 
 {% block content %}
-<a class='link-back' href='{{ path("app_tournament_list") }}'><i class='fa fa-arrow-left'></i> К СПИСКУ ТУРНИРОВ</a>
+{% if nav == 'tournament' %}
+	<a class='link-back' href='{{ path("app_tournament_list") }}'><i class='fa fa-arrow-left'></i> К СПИСКУ ТУРНИРОВ</a>
+{% else %}
+	<a class='link-back' href='{{ path("app_tournament_archives") }}'><i class='fa fa-arrow-left'></i> К СПИСКУ ТУРНИРОВ</a>
+{% endif %}
 <br>
 {# tours list #}
 <div class='tourlist'>
