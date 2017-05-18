@@ -627,14 +627,20 @@
 		background-color: $gray_lightest;
 	}
 	& tr:first-child td {
-		height: 100px !important;
+		height: 150px !important;
 	}
 }
 
 .chess-transform {
 	transform: rotate(270deg);
+	width: 40px;
 }
 
 .chess-box {
 	background-color: #e8e8e8 !important;
+}
+
+.chess-vertical {
+	vertical-align: bottom;
+	padding-bottom: 20px;
 }

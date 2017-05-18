@@ -46,24 +46,6 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
 
         $em = $this->getEntityManager();
 
-     //    for($i=1;$i<45;$i++) {
-
-     //    	$hash = sha1(uniqid());
-	    //     $params = array('hash' => $hash, 'tr' => 13, 'tour' => $i);
-
-	    //     $sql = "UPDATE forecast SET hash = :hash WHERE trnmt = :tr AND tour = :tour";
-	    //     $stmt = $em->getConnection()->prepare($sql);
-	    //     $stmt->execute($params);
-
-	    //     $sql = "INSERT INTO forebridge (tr, tour, hash) VALUES (:tr, :tour, :hash)";
-	    //     $stmt = $em->getConnection()->prepare($sql);
-	    //     $stmt->execute($params);
-
-	    //     $sql = "UPDATE forescored SET hash = :hash WHERE tr = :tr AND tour = :tour";
-	    //     $stmt = $em->getConnection()->prepare($sql);
-	    //     $stmt->execute($params);	        
-	    // }
-
 		return $result;
 	}
 

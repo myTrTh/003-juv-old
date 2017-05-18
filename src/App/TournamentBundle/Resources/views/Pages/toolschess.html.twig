@@ -15,7 +15,7 @@
 		<tr>
 			<td></td>
 			{% for yuser in users %}
-				<td><div class='chess-transform'><a class='nostyle' href='{{ path('app_user_show', {'id': yuser.user} ) }}'>{{ yuser.username }}</a></div></td>
+				<td class='chess-vertical'><div class='chess-transform'><a class='nostyle' href='{{ path('app_user_show', {'id': yuser.user} ) }}'>{{ yuser.username }}</a></div></td>
 			{% endfor %}			
 		</tr>
 		{% for xuser in users %}
@@ -33,7 +33,11 @@
 						{% if xuser.user != yuser.user %}
 							{% for game in chess[result] %}
 								{% if game.3 == game.4 %}
-									{% set class = 'bg-yellow' %}
+									{% if game.3 is not null and game.4 is not null %}
+										{% set class = 'bg-yellow' %}
+									{% else %}
+										{% set class = 'bg-white' %}
+									{% endif %}
 								{% elseif game.3 > game.4 %}
 									{% set class = 'bg-green' %}
 								{% elseif game.4 > game.3 %}
