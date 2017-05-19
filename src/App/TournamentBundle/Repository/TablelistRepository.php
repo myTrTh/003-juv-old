@@ -109,16 +109,17 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
 
 		$param = array('tr' => $result[0]['tr'], 'tour' => $result[0]['tour']);
 
-        $sql = "SELECT tl.user, u.username, u.image, sum(tl.howgame) as howgame, sum(tl.game) as game, sum(tl.bw) as bw, (sum(tl.bw)/sum(tl.howgame)) as bwhg, sum(tl.score) as score, (sum(tl.score)/sum(tl.howgame))*2 as scorehg, count(tl.off)*5 as off,
-        	((((sum(tl.bw)/sum(tl.howgame)) + (sum(tl.score)/sum(tl.howgame))*2)*100)+(count(tl.off)*5)) as points
+        $sql = "SELECT tl.user, u.username, u.image, sum(tl.howgame) as howgame, sum(tl.game) as game, sum(tl.bw) as bw, (sum(tl.bw)/sum(tl.howgame)) as bwhg, sum(tl.score) as score, (sum(tl.score)/sum(tl.game))*2 as scorehg, count(tl.off)*5 as off,
+        	((((sum(tl.bw)/sum(tl.howgame)) + (sum(tl.score)/sum(tl.game))*2)*100)+(count(tl.off)*5)) as points
          		FROM tablelist as tl
          		INNER JOIN users as u
          		ON u.id = tl.user
          		INNER JOIN tournaments as t
          		ON tl.tr = t.id
-         		WHERE game > 0 AND (t.status = 1 OR t.status = 2) AND (t.created > NOW() - INTERVAL 24 MONTH) AND (tl.tr != :tr AND tl.tr != :tour)
+         		WHERE t.types = 1 AND (t.status = 1 OR t.status = 2) AND tl.game > 0
+         			AND (t.created > NOW() - INTERVAL 24 MONTH) AND NOT (tl.tr = :tr AND tl.tour = :tour)
          		GROUP BY tl.user
-         		ORDER BY points DESC, scorehg DESC, bwhg DESC, score DESC, bw DESC";
+         		ORDER BY points DESC, scorehg DESC, bwhg DESC, score DESC, bw DESC";         		
 
         $em = $this->getEntityManager();
         $stmt = $em->getConnection()->prepare($sql);
@@ -138,14 +139,15 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
 
 	public function get_ranking() {
 
-        $sql = "SELECT tl.user, u.username, u.image, sum(tl.howgame) as howgame, sum(tl.game) as game, sum(tl.bw) as bw, (sum(tl.bw)/sum(tl.howgame)) as bwhg, sum(tl.score) as score, (sum(tl.score)/sum(tl.howgame))*2 as scorehg, count(tl.off)*5 as off,
-        	((((sum(tl.bw)/sum(tl.howgame)) + (sum(tl.score)/sum(tl.howgame))*2)*100)+(count(tl.off)*5)) as points
+        $sql = "SELECT tl.user, u.username, u.image, sum(tl.howgame) as howgame, sum(tl.game) as game, sum(tl.bw) as bw, (sum(tl.bw)/sum(tl.howgame)) as bwhg, sum(tl.score) as score, (sum(tl.score)/sum(tl.game))*2 as scorehg, count(tl.off)*5 as off,
+        	((((sum(tl.bw)/sum(tl.howgame)) + (sum(tl.score)/sum(tl.game))*2)*100)+(count(tl.off)*5)) as points
          		FROM tablelist as tl
          		INNER JOIN users as u
          		ON u.id = tl.user
          		INNER JOIN tournaments as t
          		ON tl.tr = t.id
-         		WHERE (t.status = 1 OR t.status = 2) AND (t.created > NOW() - INTERVAL 24 MONTH)
+         		WHERE t.types = 1 AND (t.status = 1 OR t.status = 2) 
+         			AND (t.created > NOW() - INTERVAL 24 MONTH) AND tl.game > 0
          		GROUP BY tl.user
          		ORDER BY points DESC, scorehg DESC, bwhg DESC, score DESC, bw DESC";
 
@@ -165,6 +167,7 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
 					  ->SetMaxResults(1);
 
 		$result = $query->execute();
+
 		if($result)
 			return $result[0][1];
 		else
