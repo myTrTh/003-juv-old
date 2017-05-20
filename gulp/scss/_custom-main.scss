@@ -205,10 +205,10 @@ li.brand {
 #header {
 	margin: 0 auto;
 	background-color: #cbe;
-	height: 200px;
+	// height: 200px;
 	max-width: 1200px;
 	& img {
-		height: 200px;
+		width: 100%;
 	}
 }
 
