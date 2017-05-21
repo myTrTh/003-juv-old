@@ -62,7 +62,7 @@
 						<span class='quote'>reply</span>
 					{% endif %}
 					</div>
-					<div>
+					<div class='id-show'>
 					{% if is_granted('ROLE_ADMIN') and order_delete == 1 %}
 						#<a class='nostyle' href='{{ path('app_guestbook_delete', {'post': post.id }) }}'>{{ post.id }}</a>
 					{% else %}

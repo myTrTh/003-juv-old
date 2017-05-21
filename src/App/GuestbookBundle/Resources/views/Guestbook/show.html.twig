@@ -43,7 +43,7 @@
 {% if notification_guestbook is defined and notification_guestbook|length > 0 %}
 	{% set post_link = (count - notification_guestbook|length) + 1 %}
 	<div class='message-anchor'>
-	<a href='{{ path('app_guestbook_post', {'post': post_link}) }}'><i class='fa fa-anchor'></i> Перейти к непрочитанным ({{ notification_guestbook|length }})</a>
+	<a class='book-links' href='{{ path('app_guestbook_post', {'post': post_link}) }}'><i class='fa fa-anchor'></i> Перейти к непрочитанным ({{ notification_guestbook|length }})</a>
 	</div>
 {% endif %}
 

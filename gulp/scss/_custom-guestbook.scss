@@ -117,7 +117,7 @@ img.smile {
 
 .post-info {
 	vertical-align: top;
-	word-break: break-word;
+	word-wrap: break-word;
 	width: 156px;
 	text-align: center;
 	padding: 2px;
@@ -145,7 +145,7 @@ img.smile {
 .post-content-message {
 	padding: 0 10px;
 	line-height: 1.5;
-	word-break: break-word;
+	word-wrap: break-word;
 	margin-bottom: 10px;
 	width: 100%;
 	overflow: hidden;
@@ -196,6 +196,7 @@ img.smile {
 
 .content-cell {
 	vertical-align: top;
+	display: table-cell;
 
 }
 
@@ -421,6 +422,9 @@ img.smile {
 
 .message-anchor {
 	margin-bottom: 5px;
+	& a {
+		color: #8c9ba5;
+	}
 }
 
 .newbook {
@@ -434,4 +438,8 @@ img.smile {
 
 .signature-line:last-child {
 	width: 100px;
+}
+
+.id-show {
+	padding-right: .1rem;
 }
