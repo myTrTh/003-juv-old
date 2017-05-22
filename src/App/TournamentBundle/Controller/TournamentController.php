@@ -144,8 +144,6 @@ class TournamentController extends Controller
             $playoff_name = $info_about_tour['playoff'];
             $groups_name = $info_about_tour['groups'];
 
-
-
             return $this->render('AppTournamentBundle:Tournament:show.html.twig',
                    array("tournament" => $tournament,
                          "user" => $userId,

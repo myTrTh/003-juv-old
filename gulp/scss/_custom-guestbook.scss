@@ -145,7 +145,8 @@ img.smile {
 .post-content-message {
 	padding: 0 10px;
 	line-height: 1.5;
-	word-wrap: break-word;
+	word-break: break-word;
+	word-break: break-all;
 	margin-bottom: 10px;
 	width: 100%;
 	overflow: hidden;
@@ -261,12 +262,14 @@ img.smile {
 }
 
 .rate {
-	font-family: 'Annie Use Your Telescope', cursive;
-	font-size: 19px;
+	font-size: .7rem;
+	font-weight: bold;
+	color: #818080;
 	line-height: 1;
 	margin: 4px;
+	padding: .2rem;
 	box-shadow: 0 0 3px #ccc;
-	background: #fcfcfc;
+	background-color: #f2f2f2;
 	border-radius: 0 20px 0 20px;
 }
 

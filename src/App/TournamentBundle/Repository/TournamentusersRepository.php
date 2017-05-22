@@ -162,7 +162,7 @@ class TournamentusersRepository extends \Doctrine\ORM\EntityRepository
 				FROM AppTournamentBundle:Tournamentusers tu
 				INNER JOIN AppTournamentBundle:Tournament t
 				WHERE tu.tournament = t.id
-				WHERE tu.user = :user
+				WHERE tu.user = :user AND t.status = 1
 				ORDER BY t.id DESC";
 
 		$query = $this->getEntityManager()->createQuery($dql)
