@@ -146,7 +146,6 @@ img.smile {
 	padding: 0 10px;
 	line-height: 1.5;
 	word-break: break-word;
-	word-break: break-all;
 	margin-bottom: 10px;
 	width: 100%;
 	overflow: hidden;
@@ -208,17 +207,12 @@ img.smile {
 }
 
 .quote {
+	font-family: $font_header;
 	color: white;
 	background: #b5b5b5;
-	padding: 1px 15px;
-	font-size: .9rem;
-	vertical-align: top;
-	margin-right: 7px;
-	border-radius: 3px;
-	font-weight: bold;
-	text-align: center;
+	padding: 0 .5rem;
 	cursor: pointer;
-	vertical-align: 1px;
+	margin-right: .4rem;
 }
 
 /*rate */
@@ -284,6 +278,7 @@ img.smile {
 	display: inline-block;
 	border-radius: 0 7px 7px 0;
 	border: solid 1px #dcdcdc;
+	margin-bottom: 10px;
 	font-size: .8rem;
 	width: 100%;
 	color: $gray_main;

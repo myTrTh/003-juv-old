@@ -33,7 +33,7 @@ class Guestbook
     /**
      * @var string
      *
-     * @ORM\Column(name="message", type="text")
+     * @ORM\Column(name="message", type="text" nullable=true)
      * @Assert\NotBlank(message="Пожалуйста, заполните это поле перед отправкой")
      */
     private $message;

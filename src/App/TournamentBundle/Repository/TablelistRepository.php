@@ -77,17 +77,6 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
 
 	public function get_actual_tour($tr) {
 
-        $em = $this->getEntityManager();
-        $date = new \DateTime('2016-07-10 22:45');
-        $tr = 7;
-        for($i=6;$i>0;$i--) {
-        	$params = array('setd' => $date->format('Y-m-d H:i:s'), 'tour' => $i, 'tr' => $tr);
-	        $sql = "UPDATE calendar SET updated = :setd WHERE tr = :tr AND tour = :tour";
-	        $stmt = $em->getConnection()->prepare($sql);
-	        $stmt->execute($params);
-		    $date->modify('-4 days');
-        }
-
 		$dql = "SELECT max(t.tour) as maxtour FROM AppTournamentBundle:Tablelist t
 				WHERE t.tr = :tr";
 
