@@ -25,7 +25,7 @@ class Userscored
     /**
      * @var int
      *
-     * @ORM\Column(name="idfore", type="integer")
+     * @ORM\Column(name="idfore", type="integer", nullable=true)
      */
     private $idfore;
 

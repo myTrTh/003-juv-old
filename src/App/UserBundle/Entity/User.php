@@ -33,9 +33,6 @@ class User extends BaseUser
 
     /**
      * @ORM\Column(name="image", type="string", length=255, nullable=true)
-     * groups={"Registration", "Profile"}
-     * @Assert\File(mimeTypes={ "image/png", "image/jpeg", "image/gif" })
-     * @Assert\File(maxSize="50k")
      *
     */    
     private $image;
