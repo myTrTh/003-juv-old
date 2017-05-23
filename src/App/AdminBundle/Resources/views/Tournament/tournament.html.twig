@@ -83,12 +83,12 @@
 	<hr>
 
 	{{ form_start(form_archive) }}
-	{{ form_widget(form_archive.save_archive, {"attr": {"class": "button button-main"}}) }}
+	{{ form_widget(form_archive.save_archive, {"attr": {"class": "button button-main", "onclick": "return confirm('Действительно перевести в архив?')"}}) }}
 	{{ form_rest(form_archive) }}
 	{{ form_end(form_archive) }}
 	<br>
 	{{ form_start(form_delete) }}
-	{{ form_widget(form_delete.save_delete, {"attr": {"class": "button button-main"}}) }}
+	{{ form_widget(form_delete.save_delete, {"attr": {"class": "button button-main", "onclick": "return confirm('Действительно удалить?')"}}) }}
 	{{ form_rest(form_delete) }}
 	{{ form_end(form_delete) }}
 
