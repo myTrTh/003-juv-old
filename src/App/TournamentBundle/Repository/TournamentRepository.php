@@ -50,7 +50,7 @@ class TournamentRepository extends \Doctrine\ORM\EntityRepository
 
 		$dql = "SELECT t.id, t.name, t.image, t.status
 				FROM AppTournamentBundle:Tournament t
-				WHERE ".$append." ORDER BY t.id DESC";
+				WHERE ".$append." ORDER BY t.id ASC";
 
 		$query = $this->getEntityManager()->createQuery($dql)
                 ->SetFirstResult($list)

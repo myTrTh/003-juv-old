@@ -208,24 +208,29 @@ class resultsService
 
 		for($i=0;$i<count($scores);$i++) {
 			$one = $this->annihilation(array($r1, $r2));
-			$two = $this->annihilation(array($scores[$i]['result1'], $scores[$i]['result2']));
 
-			if($one == $two){ 
-				$result = 5;
-			} else if ($one[0] == $two[0] and $one[1] == $two[1] and (abs($one[3] - $two[3]) <= 2)){
-				if($one[0] == 0)
-					$result = 3;
-				else
-					$result = 4;
-			} else if ($one[0] == $two[0] and $one[1] == $two[1] and (abs($one[3] - $two[3]) > 2)){ 
-				$result = 3;
-			} else if ($one[0] == $two[0] and (abs($one[1] - $two[1]) <= 1) and (abs($one[3] - $two[3]) <= 1)) {
-				$result = 3;
-			} else if ($one[0] == $two[0]) {  
-				$result = 2;
-			} else {
-				$result = 0;
-			}
+            if(is_null($scores[$i]['result1']) or is_null($scores[$i]['result2'])) {
+                $result = 0;
+            } else {
+    			$two = $this->annihilation(array($scores[$i]['result1'], $scores[$i]['result2']));
+
+    			if($one == $two){ 
+    				$result = 5;
+    			} else if ($one[0] == $two[0] and $one[1] == $two[1] and (abs($one[3] - $two[3]) <= 2)){
+    				if($one[0] == 0)
+    					$result = 3;
+    				else
+    					$result = 4;
+    			} else if ($one[0] == $two[0] and $one[1] == $two[1] and (abs($one[3] - $two[3]) > 2)){ 
+    				$result = 3;
+    			} else if ($one[0] == $two[0] and (abs($one[1] - $two[1]) <= 1) and (abs($one[3] - $two[3]) <= 1)) {
+    				$result = 3;
+    			} else if ($one[0] == $two[0]) {  
+    				$result = 2;
+    			} else {
+    				$result = 0;
+    			}
+            }
 
 			$usercast = $this->em->getRepository('AppTournamentBundle:Usercast')->find($scores[$i]['id']);
 
