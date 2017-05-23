@@ -6,11 +6,11 @@
 $(function() {
 	$('.tournament-access').on('click', function() {
 		var rowuser = $(this).attr('id');
-		var user = rowuser.substr(4);
+		var user = rowuser.substr(1);
+		var st = rowuser.substr(0, 1);
 		var status = $(this).prop('checked');
 		var tr = $('#trid').html();
-		console.log(status);
-		var senddata = 'user='+escape(user)+'&status='+escape(status)+'&tr='+escape(tr);
+		var senddata = 'user='+escape(user)+'&status='+escape(status)+'&tr='+escape(tr)+'&st='+escape(st);
 		$.ajaxSetup({cache: false}); 
 		$.ajax({
 			url: "/access/set",

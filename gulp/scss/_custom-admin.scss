@@ -141,3 +141,11 @@
 	border-radius: 5px;
 	margin-bottom: 10px;
 }
+
+.access-admins {
+	width: 100%;
+	& tr:first-child td {
+		padding-bottom: 10px;
+		font-weight: bold;
+	}
+}
