@@ -1207,12 +1207,12 @@ class AdminController extends Controller
     }    
 
     public function toursAction($tournament, $tour, Request $request) {
-
         $user = $this->getUser();
         if($user)
             $userId = $user->getId();
 
         $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tournament);
+
 
         if($tournamentshow['access']['creator'] != $userId)
             if(!in_array($userId, $tournamentshow['access']['assistant']))
@@ -1222,7 +1222,7 @@ class AdminController extends Controller
             $tour = $this->getDoctrine()->getRepository("AppTournamentBundle:Tablelist")->get_actual_tour($tournament);
 
         if($tour == 0)
-            $tour = 1;            
+            $tour = 1;
 
         $tr = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($tournament);
 
@@ -1230,6 +1230,7 @@ class AdminController extends Controller
         $calendar = $rep_calendar->get_calendar($tournament);
 
         $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($tournament, $tour);
+
         if($forebridge)
             $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);
         else

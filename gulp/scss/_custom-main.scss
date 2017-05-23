@@ -20,6 +20,18 @@ $font_header: 'Open Sans Condensed', sans-serif;
 	}
 }
 
+@media all and (max-width: 599px) {
+	body {
+		font-size: 14px;
+	}
+}
+
+@media all and (min-width: 600px) {
+	body {
+		font-size: 16px;
+	}
+}
+
 /* common */
 html, body {
 	margin: 0;
@@ -34,7 +46,6 @@ body {
 	font-family: $font-family-base;
 	line-height: 1.6;
 	align-items: center;
-	font-size: 16px;
 }
 
 #main {

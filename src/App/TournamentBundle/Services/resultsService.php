@@ -21,6 +21,11 @@ class resultsService
         }
 
 	public function add_tablelist($tr, $tour) {
+        print "here";
+        print "<pre>";
+        print_r($tr);
+        print_r($tour);
+        print "</pre>";
         $users = $this->em->getRepository('AppTournamentBundle:Calendar')->users_for_tournament($tr, $tour);
 
         for($i=0;$i<count($users);$i++) {
