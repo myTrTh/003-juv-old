@@ -1,5 +1,5 @@
 /* fonts */
-@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300');
+@import url('https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300&subset=cyrillic');
 
 /* presets */
 $brand_black: #333;
@@ -276,6 +276,10 @@ li.brand {
 .extra-small {
 	width: 35px !important;
 	text-align: center;
+}
+
+.nolineheight {
+	line-height: 1.1;
 }
 
 /* icons */

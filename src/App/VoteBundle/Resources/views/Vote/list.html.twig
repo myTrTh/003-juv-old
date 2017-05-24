@@ -15,8 +15,10 @@
 {% set page_navigation = '/votes' %}
 {% include 'pagenavigation.html.twig' %}
 
+<table class='vote-views'>
 {% for vote in votes %}
-	<div class='vote-list'>	
+	<tr>
+		<td>
 	{% if notification_vote is defined and vote.id in notification_vote %}
 		<a class='nostyle' href='{{ path('app_vote_show', {'vote': vote.id}) }}'><span class='h4 bold'>
 			<i class='fa fa-question gray'></i>
@@ -28,9 +30,10 @@
 			{{ vote.title }}
 		</span></a>
 	{% endif %}
-	</div>
+		</td>
+</tr>
 {% endfor %}
-
+</table>
 {# page navigation #}
 {% include 'pagenavigation.html.twig' %}
 

@@ -19,19 +19,22 @@
 	{% set page_navigation = '/adminpanel/tournaments' %}
 	{% include 'pagenavigation.html.twig' %}
 
-
+	<table class='tr-views'>
 	{% for tournament in tournaments %}
-
-		<h3>
+	<tr>
+		<td>
 			{% if tournament.image is not null %}
 		 		<img class='tournament-img' src='/public/images/custom/logo/{{ tournament.image }}'>
 		 	{% else %}
 			 	<img class='tournament-img' src='/public/images/interface/default_logo.png'>
 		 	{% endif %}
+		</td>
+		<td>
 			<a class='nostyle' href="{{ path('app_admin_tournament', {"tournament": tournament.id}) }}">{{ tournament.name }}</a>
-		</h3>
-
+		</td>
+	</tr>
 	{% endfor %}
+	</table>
 
 	{# page navigation #}
 	{% include 'pagenavigation.html.twig' %}	

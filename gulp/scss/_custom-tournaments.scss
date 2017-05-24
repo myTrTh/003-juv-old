@@ -654,3 +654,17 @@
 	vertical-align: bottom;
 	padding-bottom: 20px;
 }
+
+.tr-views {
+	width: 100%;
+	font-family: $font_header;
+	font-size: 2rem;
+	text-transform: uppercase;
+	line-height: 1;
+	& td {
+		padding-bottom: 1rem;
+	}
+	& td:first-child {
+		width: 70px;
+	}
+}

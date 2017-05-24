@@ -14,22 +14,25 @@
 	{% set page_navigation = '/'~nav~'s' %}
 	{% include 'pagenavigation.html.twig' %}
 
+	<table class='tr-views'>
 	{% for tournament in tournaments %}
-
-		<h2>
-			{% if tournament.image is not null %}
-		 	<img class='tournament-img' src='/public/images/custom/logo/{{ tournament.image }}'>
-		 	{% else %}
-		 	<img class='tournament-img' src='/public/images/interface/default_logo.png'>
-		 	{% endif %}
-			<a class='nostyle' href='{{ nav }}/{{ tournament.id}}'>{{ tournament.name }}</a>
-			{% if tournament.status == 3 or tournament.status == 4 %}
-				<sup><span class='texttop'>(ПРИЕМ ЗАЯВОК)</span></sup>
-			{% endif %}
-		</h2>
-
+		<tr>
+			<td>
+				{% if tournament.image is not null %}
+			 	<img class='tournament-img' src='/public/images/custom/logo/{{ tournament.image }}'>
+			 	{% else %}
+			 	<img class='tournament-img' src='/public/images/interface/default_logo.png'>
+			 	{% endif %}
+			</td>
+			<td>
+					<a class='nostyle' href='{{ nav }}/{{ tournament.id}}'>{{ tournament.name }}</a>
+					{% if tournament.status == 3 or tournament.status == 4 %}
+						<sup><span class='texttop'>(ПРИЕМ ЗАЯВОК)</span></sup>
+					{% endif %}
+			</td>
+		</tr>
 	{% endfor %}
-
+	</table>
 	{# page navigation #}
 	{% include 'pagenavigation.html.twig' %}	
 

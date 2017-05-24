@@ -3,15 +3,18 @@
 {% block title %} {{ tournament.name }} {% endblock %}
 
 {% block header %} 
-	{% if tournament.image is not null %}
-	 	<img class='tournament-img-header' src='/public/images/custom/logo/{{ tournament.image }}'>
- 	{% else %}
-	 	<img class='tournament-img-header' src='/public/images/interface/default_logo.png'>
-	{% endif %}
-	{{ tournament.name }}
 {% endblock %}
 
 {% block content %}
+
+	<div class='h1 nolineheight'>
+		{% if tournament.image is not null %}
+		 	<img class='tournament-img-header' src='/public/images/custom/logo/{{ tournament.image }}'>
+	 	{% else %}
+		 	<img class='tournament-img-header' src='/public/images/interface/default_logo.png'>
+		{% endif %}
+		{{ tournament.name }}
+	</div>
 {% if nav == 'tournament' %}
 	<a class='link-back' href='{{ path("app_tournament_list") }}'><i class='fa fa-arrow-left'></i> К СПИСКУ ТУРНИРОВ</a>
 {% else %}

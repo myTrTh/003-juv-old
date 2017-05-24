@@ -11,9 +11,6 @@ var gulp         = require('gulp'), // Подключаем Gulp
     cssnano      = require('gulp-cssnano'), // Подключаем пакет для минификации CSS
     browserSync  = require('browser-sync'), // Отслеживание изменений online
     autoprefixer = require('gulp-autoprefixer');// Библиотека для автоматического добавления префиксов
-    
-const Flatpickr    = require('flatpickr'); // календарь
-
 
 gulp.task('sass', function() {
 	return gulp.src('gulp/scss/*.scss')
