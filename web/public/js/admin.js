@@ -8,8 +8,10 @@ var flatpickr_option = 	{
     	time_24hr: true
     };
 
+
 $(function() {
-	flatpickr("input[id^=dtp]", flatpickr_option);
+	// new Flatpickr(document.querySelectorAll('input[id^=dtp]'), flatpickr_option);
+	$("input[id^=dtp]").flatpickr(flatpickr_option);
 })
 
 

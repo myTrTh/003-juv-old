@@ -1,5 +1,5 @@
 /*
-npm i --save-dev gulp gulp-sass gulp-concat gulp-uglifyjs gulp-cssnano browser-sync gulp-autoprefixer gulp-twig gulp-rename flatpickr
+npm i --save-dev gulp gulp-sass gulp-concat gulp-uglifyjs gulp-cssnano browser-sync gulp-autoprefixer gulp-twig gulp-rename flatpickr font-awesome
 */
 
 var gulp         = require('gulp'), // Подключаем Gulp
@@ -11,6 +11,8 @@ var gulp         = require('gulp'), // Подключаем Gulp
     cssnano      = require('gulp-cssnano'), // Подключаем пакет для минификации CSS
     browserSync  = require('browser-sync'), // Отслеживание изменений online
     autoprefixer = require('gulp-autoprefixer');// Библиотека для автоматического добавления префиксов
+    
+const Flatpickr    = require('flatpickr'); // календарь
 
 
 gulp.task('sass', function() {
@@ -29,17 +31,6 @@ gulp.task('scripts', function() {
 		   .pipe(gulp.dest('web/public/js'))
 		   .pipe(browserSync.reload({stream: true}))
 });
-
-// gulp.task('twig', function() {
-// 	'use strict';
-// 	return gulp.src('app/twig/*.html.twig')
-// 		   .pipe(twig())
-// 		   .pipe(rename(function(path) {
-// 		   		path.extname = ""
-// 		   }))
-// 		   .pipe(gulp.dest('app'))
-// 		   .pipe(browserSync.reload({stream: true}))
-// })
 
 gulp.task('browser-sync', function() {
 	browserSync({

@@ -1,7 +1,3 @@
-
-
-
-
 /* switch access tournament */
 $(function() {
 	$('.tournament-access').on('click', function() {
