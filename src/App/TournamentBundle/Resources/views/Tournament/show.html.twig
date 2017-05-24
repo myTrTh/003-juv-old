@@ -201,7 +201,7 @@
 				{% endif %}	
 				</div>
 			</td>
-			<td>{{ stricker.username }}</td>
+			<td><a class='nostyle' href='{{ path('app_user_show', {'id': stricker.user}) }}'>{{ stricker.username }}</a></td>
 			<td class='classifica-striker'>{{ stricker.bw }}</td>
 		</tr>
 		{% set i = i + 1 %}
