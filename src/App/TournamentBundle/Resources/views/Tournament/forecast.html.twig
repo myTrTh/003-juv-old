@@ -27,9 +27,11 @@
 		{% else %}
 			{% set acc = 0 %}
 		{% endif %}
+		{% set timedm = fore.timer %}
+		{% set timehi = fore.timer %}
 		<tr>
 			<td>
-				{{ utc_to_locale(fore.timer)|date('d.m H:i') }}
+				{{ utc_to_locale(timehi)|date('d.m H:i') }}				
 			</td>
 			<td class='show-team'>
 				{{ fore.team1 }}
