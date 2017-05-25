@@ -170,9 +170,6 @@
 			<div class='post-signature'>
 				{{ post.signature }}
 			</div>
-		{% else %}
-			<td class='no-height'>
-			</td>
 		{% endif %}
 	</tr>	
 	<tr>
@@ -239,11 +236,7 @@
 				</div>
 				<div class='post-header-id'>
 					<div class='id-show'>
-					{% if is_granted('ROLE_ADMIN') and order_delete == 1 %}
-						#<a onclick='return confirm("Действительно удалить сообщение?")' class='nostyle' href='{{ path('app_guestbook_delete', {'post': post.id }) }}'>{{ post.id }}</a>
-					{% else %}
 						#{{ post.id }}
-					{% endif %}
 					</div>
 				</div>
 			</td>
