@@ -44,8 +44,6 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
 
 		$result = $query->execute();
 
-        $em = $this->getEntityManager();
-
 		return $result;
 	}
 

@@ -38,9 +38,15 @@
 
     {% if games.games is defined and games.games is not empty %}
 
-	<div class='showmatches'>
-		<div><a class='nostyle' href='{{ path('app_user_show', {'id': us1.0.id }) }}'>{{ us1.0.username }}</a> </div><div> {{ games.sum.g1 }}</div><div>:</div><div>{{ games.sum.g2 }} </div><div><a class='nostyle' href='{{ path('app_user_show', {'id': us2.0.id }) }}'>{{ us2.0.username }}</a></div>
-	</div>
+	<table class='showmatches'>
+		<tr>
+			<td><a class='nostyle' href='{{ path('app_user_show', {'id': us1.0.id }) }}'>{{ us1.0.username }}</a></td>
+			<td>{{ games.sum.g1 }}</td>
+			<td>:</td>
+			<td>{{ games.sum.g2 }}</td>
+			<td><a class='nostyle' href='{{ path('app_user_show', {'id': us2.0.id }) }}'>{{ us2.0.username }}</td>
+		</tr>
+	</table>
 	<div class='showstats '>
 		<div class='green'>+{{ games.sum.w1 }}</div>
 		<div class='gray'>={{ games.sum.n }}</div>

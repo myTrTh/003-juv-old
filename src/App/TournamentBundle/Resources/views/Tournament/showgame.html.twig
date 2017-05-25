@@ -89,7 +89,7 @@
 			{% set tourshow = games.tour~' ТУР' %}
 		{% endif %}
 
-		<a class='nostyle' href="{{ path("app_tournament_showgame", {'id': games.id}) }}">{{ games.name }}. {{ tourshow }}. {{ games.username1 }} {{ games.result1 }}-{{ games.result2 }} {{ games.username2 }}</a><br>
+		<a class='nostyle' href="{{ path("app_tournament_showgame", {'id': games.id}) }}"><span class='gamestr normal'>{{ games.name }}.</span> <span class='gamestour normal'>{{ tourshow }}.</span> <span class='gamesusers normal'>{{ games.username1 }} {{ games.result1 }}-{{ games.result2 }} {{ games.username2 }}</span></a><br>
 		{% endif %}
 	{% endfor %}
 	</div>

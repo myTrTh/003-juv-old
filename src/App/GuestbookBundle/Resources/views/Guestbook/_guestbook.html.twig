@@ -128,7 +128,7 @@
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2" class="post-content-date">
+		<td class="post-content-date">
 			{{ replace_date(post.created) }}
 			{% if app.user.id is defined and app.user.id == post.user and order_edit == 1 %}
 				<i id='edit{{ post.id }}' class='edit-post fa fa-pencil' title='Редактировать'></i>
@@ -136,7 +136,7 @@
 		</td>		
 	</tr>
 	<tr>
-		<td colspan="2" class='content-cell'>
+		<td class='content-cell'>
 			{# old quote #}
 			<div class='post-content-old-quote'>
 			{% if quote[post.id]['message'] is defined %}
@@ -152,28 +152,28 @@
 	</tr>
 	<tr>
 			{% if post.updated != null %}
-		<td colspan="2" class='info-post-edit' id='post-edit{{ post.id }}'>
+		<td class='info-post-edit' id='post-edit{{ post.id }}'>
 				...<i class='fa fa-edit'></i> {{ replace_date(post.updated) }}
 		</td>
 			{% else %}
-				<td colspan="2"></td>
+				<td></td>
 			{% endif %}
 	</tr>
 	<tr>
-		<td class='signature-line'>
-			{% if post.signature is not null %}
+		<td  class='signature-line'>
+			{% if numbers[post.user] is defined %}
+			<div class='post-number'>
+				numero {{ set_number(numbers[post.user])|raw }}
+			</div>
+			{% endif %}
+		{% if post.signature is not null %}
 			<div class='post-signature'>
 				{{ post.signature }}
 			</div>
-			{% endif %}
-		</td>
-		<td class='signature-line'>
-			<div class='post-number'>
-			{% if numbers[post.user] is defined %}
-				numero {{ set_number(numbers[post.user])|raw }}
-			{% endif %}
-			</div>
-		</td>		
+		{% else %}
+			<td class='no-height'>
+			</td>
+		{% endif %}
 	</tr>	
 	<tr>
 		<td colspan="3">
@@ -227,22 +227,28 @@
 {% else %}
 
 <div class="post" id="post{{ post.id }}">
-	<div class="post-header">
-		<div class="post-header-username">
-			<div>
-			</div>
-			<div>
-				<span class='post-delete-text'>Сообщение пользователя <a class='nostyle' href='{{ path('app_user_show', {'id': post.user}) }}'><span class='post-author'>{{ post.username }}</span></a> удалено.</span>
-			</div>
-		</div>
-		<div class="post-header-id">
-			<div>
-			</div>
-			<div>
-				#{{ post.id }}
-			</div>
-		</div>
-	</div>
+	<table class='newbook'>
+		<tr class="post-header">
+			<td>
+				<div class='post-header-username'>
+					<div>
+					</div>
+					<div class='normal'>
+					Сообщение удалено
+					</div>
+				</div>
+				<div class='post-header-id'>
+					<div class='id-show'>
+					{% if is_granted('ROLE_ADMIN') and order_delete == 1 %}
+						#<a onclick='return confirm("Действительно удалить сообщение?")' class='nostyle' href='{{ path('app_guestbook_delete', {'post': post.id }) }}'>{{ post.id }}</a>
+					{% else %}
+						#{{ post.id }}
+					{% endif %}
+					</div>
+				</div>
+			</td>
+		</tr>
+	</table>
 </div>
 
 {% endif %}

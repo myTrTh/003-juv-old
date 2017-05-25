@@ -435,7 +435,7 @@ input[type='checkbox'], input[type='radio'] {
 }
 
 .red {
-	color: $red;
+	color: $red !important;
 }
 
 .bold {
@@ -455,7 +455,7 @@ input[type='checkbox'], input[type='radio'] {
 }
 
 .normal {
-	font-weight: normal;
+	font-weight: normal !important;
 }
 
 .text-small {
