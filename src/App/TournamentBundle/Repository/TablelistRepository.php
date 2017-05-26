@@ -29,14 +29,15 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
 		for($i=0;$i<count($result);$i++) {
 			if($result[$i]['image'] != '') {
 				$info = getimagesize("public/images/users/".$result[$i]['image']);
-				if($info[1] >= $info[0])
+				if($info[1] >= $info[0]) {
 					$result[$i]['resize'] = 0;
-				else
+				} else {
 					$result[$i]['resize'] = 1;
+				}
 			} else {
 				$result[$i]['resize'] = 0;
 			}
-		}  		
+		}
 
 		return $result;
 	}
