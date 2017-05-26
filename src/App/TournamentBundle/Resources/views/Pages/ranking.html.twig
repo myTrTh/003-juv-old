@@ -32,14 +32,20 @@
 
 	{% if line.game > 6 %}
 
+		{% if line.resize == 0 %}
+			{% set class = 'photo-height' %}
+		{% else %}
+			{% set class = 'photo-width' %}
+		{% endif %}
+
 		<tr>
 		<td>{{ i }}</td>
 		<td class='td-classifica-img'>
 			<div>
 			{% if line.image is not null %}
-				<img class='classifica-img' src="/public/images/users/{{ line.image }}">
+				<img class='{{ class }}' src="/public/images/users/{{ line.image }}">
 			{% else %}
-				<img class='classifica-img' src="/public/images/interface/no_photo.png"><br>	
+				<img class='photo-height' src="/public/images/interface/no_photo.png"><br>	
 			{% endif %}
 			</div>
 		</td>

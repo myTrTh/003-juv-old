@@ -16,7 +16,7 @@
 {% else %}
 	{% set coef = 0 %}
 {% endif %}
-
+<br><br><br>
 <table class='votes'>
 	<tr>
 		<td>ВСЕГО ГОЛОСОВ</td>
@@ -31,7 +31,6 @@
 	{% else %} 
 		{% set cnt = 0 %}
 	{% endif %}	
-	<br>
 	{% if sum != 0 %}
 		{% set procent = (cnt / sum) * 100 %}
 	{% else %}
@@ -63,9 +62,9 @@
 		{% if results[option.id] is defined %}
 			{% for user in results[option.id] %}
 				{% if user.anon == 1 %}
-					<span class='text-small'>Anonimous{% if loop.last == 0 %}, {% endif %}</span>
+					<span class='text-small darkgray'>Anonimous{% if loop.last == 0 %}, {% endif %}</span>
 				{% else %}
-					<span class='text-small'><a class='nostyle' href='{{ path('app_user_show', {'id': user.id }) }}'>{{ user.user }}</a>{% if loop.last == 0 %}, {% endif %}</span>
+					<span class='text-small darkgray'><a class='nostyle' href='{{ path('app_user_show', {'id': user.id }) }}'>{{ user.user }}</a>{% if loop.last == 0 %}, {% endif %}</span>
 				{% endif %}
 			{% endfor %}
 		{% endif %}

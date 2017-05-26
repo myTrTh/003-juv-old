@@ -124,7 +124,7 @@
 	</table>
 
 
-{% if table[x] is not empty and offstatus == 0 %}
+{% if table[x] is not empty and offstatus == 0 %}	
 
 <div class='classifica-body'>
 	<div class='table-info'>Турнирная таблица</div>
@@ -142,14 +142,21 @@
 		</tr>
 	{% set i = 1 %}
 	{% for team in table[x] %}
+
+		{% if team.resize == 0 %}
+			{% set class = 'photo-height' %}
+		{% else %}
+			{% set class = 'photo-width' %}
+		{% endif %}	
+
 		<tr>
 			<td>{{ i }}</td>
 			<td class='td-classifica-img'>
 				<div>
 				{% if team.image is not null %}
-					<img class='classifica-img' src="/public/images/users/{{ team.image }}">
+					<img class='{{ class }}' src="/public/images/users/{{ team.image }}">
 				{% else %}
-					<img class='classifica-img' src="/public/images/interface/no_photo.png"><br>	
+					<img class='photo-height' src="/public/images/interface/no_photo.png"><br>	
 				{% endif %}				
 				</div>
 			</td>
@@ -190,14 +197,21 @@
 			<td>МЯЧИ</td>
 		</tr>
 	{% for stricker in strickers %}
+
+		{% if stricker.resize == 0 %}
+			{% set class = 'photo-height' %}
+		{% else %}
+			{% set class = 'photo-width' %}
+		{% endif %}	
+
 		<tr>
 			<td>{{ i }}</td>
 			<td  class='td-classifica-img'>
 				<div>
 				{% if stricker.image is not null %}
-					<img class='classifica-img' src="/public/images/users/{{ stricker.image }}">
+					<img class='{{ class }}' src="/public/images/users/{{ stricker.image }}">
 				{% else %}
-					<img class='classifica-img' src="/public/images/interface/no_photo.png"><br>	
+					<img class='photo-height' src="/public/images/interface/no_photo.png"><br>	
 				{% endif %}	
 				</div>
 			</td>
