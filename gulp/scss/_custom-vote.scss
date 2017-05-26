@@ -18,6 +18,9 @@
 .votes {
 	width: 100%;
 	margin-bottom: 15px;
+	& td {
+		vertical-align: bottom;
+	}
 	& td:nth-child(2) {
 		width: 70px;
 		text-align: right;
