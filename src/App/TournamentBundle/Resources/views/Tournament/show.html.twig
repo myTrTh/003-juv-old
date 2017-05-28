@@ -77,7 +77,7 @@
 			<td>
 				<a class='ashowtour' href='{{ path('app_tournament_showgame', {'id': game.id }) }}'>
 					{% if fore.started == 1 %}
-						{% if fore.members[game.uid1] is defined %}
+						{% if fore.members[game.uid1] is defined and fore.members[game.uid1] is not null %}
 							{{ fore.members[game.uid1] }}
 						{% else %}
 							0
@@ -96,7 +96,7 @@
 			<td>
 				<a class='ashowtour' href='{{ path('app_tournament_showgame', {'id': game.id }) }}'>
 					{% if fore.started == 1 %}
-						{% if fore.members[game.uid2] is defined %}
+						{% if fore.members[game.uid2] is defined and fore.members[game.uid2] is not null %}
 							{{ fore.members[game.uid2] }}
 						{% else %}
 							0

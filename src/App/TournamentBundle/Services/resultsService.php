@@ -209,9 +209,7 @@ class resultsService
 		for($i=0;$i<count($scores);$i++) {
 			$one = $this->annihilation(array($r1, $r2));
 
-            if(is_null($scores[$i]['result1']) or is_null($scores[$i]['result2'])) {
-                $result = 0;
-            } else {
+            if(is_numeric($scores[$i]['result1']) and is_numeric($scores[$i]['result2'])) {
     			$two = $this->annihilation(array($scores[$i]['result1'], $scores[$i]['result2']));
 
     			if($one == $two){ 
@@ -230,6 +228,8 @@ class resultsService
     			} else {
     				$result = 0;
     			}
+            } else {
+                $result = 0;
             }
 
 			$usercast = $this->em->getRepository('AppTournamentBundle:Usercast')->find($scores[$i]['id']);
