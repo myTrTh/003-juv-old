@@ -1,0 +1,18 @@
+{% extends 'AppAdminBundle::baseadmin.html.twig' %}
+
+{% block title %} Хранилище {% endblock %}
+
+{% block lowheader %} Хранилище {% endblock %}
+
+{% block lowbody %}
+	{{ form_start(form) }}
+	{{ form_widget(form.folder[0]) }} Хранилище<br>
+	{{ form_errors(form.folder) }}
+	<i class="fa fa-folder-open-o in-file"></i><span class="in-file-text">Выберите изображение...</span>
+	<div class="file-style middle">
+		{{ form_widget(form.image, {'attr': {'class': 'middle opacity'}}) }}
+	</div>	
+	{{ form_errors(form.image) }}
+	<input class='upload_image button button-main' type='submit' name='submit_image_user' value='Загрузить'>
+	{{ form_end(form) }}
+{% endblock %}

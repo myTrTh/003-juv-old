@@ -1889,4 +1889,53 @@ class AdminController extends Controller
                   'formimage' => $formimage->createView(), 'formstatus' => $formstatus->createView()));
     }
 
+    public function filesAction() {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
+        $upload = new Upload();
+        $form = $this->createForm(UploadType::class, $upload);
+
+        $folder = "files";
+        $request = Request::createFromGlobals();
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+
+            $file = $data->getImage();
+
+            $user = $this->getUser();
+            if($user)
+                $userId = $user->getId();
+            else
+                return false;
+
+            $fileName = $this->get('app.image_uploader')->image_upload($file, 'public/images/custom/'.$folder, 50000, 500, 500);
+
+            if($fileName)
+            {
+                $em = $this->getDoctrine()->getManager();
+                $upload->setFolder($folder);
+                $upload->setImage($fileName);
+                $upload->setAuthor($userId);
+                $upload->setStatus(1);
+                $em->persist($upload);
+                $em->flush();
+
+                return $this->redirect($this->generateUrl('app_admin_upload'));
+            }
+
+
+        }
+
+        $repository = $this->getDoctrine()->getRepository('AppAdminBundle:Upload');
+        $images = $repository->show_upload();
+
+        return $this->render('AppAdminBundle:Admin:files.html.twig',
+                        array('form' => $form->createView(),
+                              'images' => $images));
+    }
+
 }
