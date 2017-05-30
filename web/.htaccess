@@ -1,5 +1,7 @@
 php_value date.timezone "UTC"
 php_flag display_errors off
+php_value post_max_size 2M
+php_value upload_max_filesize 1M
 
 # Use the front controller as index file. It serves as a fallback solution when
 # every other rewrite/redirect fails (e.g. in an aliased environment without

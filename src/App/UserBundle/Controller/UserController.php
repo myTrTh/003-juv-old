@@ -103,7 +103,7 @@ class UserController extends Controller
 
             $file = $image->getImage();
             # upload file
-            $fileName = $this->get('app.image_uploader')->image_upload($file, 'public/images/users', 50000, 220, 220);
+            $fileName = $this->get('app.image_uploader')->image_upload($file, 'public/images/users', 60000, 220, 220);
 
             # if file is upload, write in db
             if($fileName) {

@@ -17,7 +17,7 @@ class ImageType extends AbstractType
     {
         $builder->add('image', FileType::class, array(
                 'required' => true,
-                'constraints' => array(new File(array('mimeTypes' => array("image/png", "image/jpeg", "image/gif"), 'mimeTypesMessage' => 'Mime тип не соответсвует изображению', 'maxSize' => "100k", 'maxSizeMessage' => 'Размер файла превышен')))
+                'constraints' => array(new File(array('mimeTypes' => array("image/png", "image/jpeg", "image/gif"), 'mimeTypesMessage' => 'Mime тип не соответсвует изображению', 'maxSize' => "60k", 'maxSizeMessage' => 'Размер файла превышен')))
             ));
     }
     
