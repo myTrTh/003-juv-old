@@ -192,14 +192,6 @@ $(function(){
 	})
 })
 
-// $("#addTask").on("click", function(event){
-// event.stopPropagation();
-
-// const newClone = clone.clone();
-// $("#taskEmpty").append(newClone);
-// $(newClone).find(".input-group").flatpickr(fpConf);
-// });
-
 
 // delete vote options
 $(function(){
@@ -213,4 +205,10 @@ $(function(){
 			alert("Должен быть минимум один матч");
 		}
 	})
+})
+
+$( function(){
+    $('.select-text').click( function(){
+        $(this).select()
+    })
 })

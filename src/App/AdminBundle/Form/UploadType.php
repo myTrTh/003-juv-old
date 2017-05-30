@@ -6,6 +6,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 
 class UploadType extends AbstractType
@@ -23,7 +24,10 @@ class UploadType extends AbstractType
                             'expanded' => true,
                             'multiple' => false,
                             'data' => 'logo'))
-                ->add('image', FileType::class);
+                ->add('image', FileType::class, array(
+                        'required' => true,
+                        'constraints' => array(new File(array('mimeTypes' => array("image/png", "image/jpeg", "image/gif"), 'mimeTypesMessage' => 'Mime тип не соответсвует изображению', 'maxSize' => "100k", 'maxSizeMessage' => 'Размер файла превышен')))
+                    ));
     }
     
     /**

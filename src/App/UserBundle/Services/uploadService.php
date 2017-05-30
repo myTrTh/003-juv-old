@@ -9,7 +9,7 @@ class uploadService {
 	public function image_upload(UploadedFile $file, $directory, $fileSize, $mustBeWidth, $mustBeHeight) {
 
 		# create file name
-		$fileName = substr(sha1(uniqid()), 0, 7);
+		$fileName = substr(sha1(uniqid()), 0, 15);
 		
 		# get file expansion
 		if($file->guessExtension() == 'jpeg')

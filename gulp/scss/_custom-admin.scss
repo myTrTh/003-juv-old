@@ -149,3 +149,20 @@
 		font-weight: bold;
 	}
 }
+
+.rep-image {
+	margin-top: 30px;
+	max-height: 200px;
+	& img {
+		max-height: 200px;
+	}
+}
+
+.rep-info {
+	background-color: #cbe;
+	font-size: .8rem;
+	word-break: break-all;
+	& input {
+		width: 100%;
+	}
+}

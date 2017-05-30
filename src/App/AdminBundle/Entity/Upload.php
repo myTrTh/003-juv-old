@@ -33,9 +33,7 @@ class Upload
     /**
      * @var string
      *
-     * @ORM\Column(name="image", type="string", length=255)
-     * @Assert\File(mimeTypes={ "image/png", "image/jpeg", "image/gif" })
-     * @Assert\File(maxSize="50k")      
+     * @ORM\Column(name="image", type="string", length=255)   
      */
     private $image;
 

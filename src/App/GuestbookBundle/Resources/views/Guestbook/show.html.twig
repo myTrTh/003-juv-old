@@ -8,9 +8,10 @@
 
 {# attention start #}
 {% if attention.description != "" %}
-<div class='alert alert-warning'>
-	{{ replace_text(adminreplace_text(attention.description))|raw|nl2br }}
-</div>
+{# <div class='alert alert-warning'> #}
+	{{ adminreplace_text(replace_text(attention.description))|raw|nl2br }}
+{# </div> #}
+<br><br>
 {% endif %}
 	{# attention end #}
 

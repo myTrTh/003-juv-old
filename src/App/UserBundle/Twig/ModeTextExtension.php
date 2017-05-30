@@ -102,20 +102,40 @@ class ModeTextExtension extends \Twig_Extension
 		}
 
 		// links //
-		$pattern = "/(https?\:\/\/)?([\.a-zA-Z0-9\-]+\.[a-zA-Z]{2,6}(?:\/(?:[^\s\]\[\'\"\<\>]+)?)?)/ui";
+		$pattern = "/(\[(?:url=|img]))?(https?\:\/\/)?([\.a-zA-Z0-9\-]+\.[a-zA-Z]{2,6}(?:\/(?:[^\s\]\[\'\"\<\>]+)?)?)(?:\])?(?:(.*)(\[\/(?:url|img)\]))?/ui";
 		
 		$message = preg_replace_callback($pattern, function($matches) {
-			$linkfullpath = $matches[1].$matches[2];
-			$http = $matches[1];
-			$link = $matches[2];
+
+			$linkfullpath = $matches[2].$matches[3];
+			$http = $matches[2];
+			$link = $matches[3];
 
 			if(strlen($linkfullpath) > 60) {
 				$first = substr($linkfullpath, 0, 40);
-				$middle = "...";
+				$middle = ".....";
 				$end = substr($linkfullpath, -10);
 				$modelink = $first.$middle.$end;
 			} else {
 				$modelink = $linkfullpath;
+			}			
+			
+			if(isset($matches[1])) {
+				$stag = $matches[1];
+
+				if(isset($matches[5])) {
+					$etag = $matches[5];
+					if($stag == '[img]')
+						return $stag.$http.$link.$etag;
+				}				
+			}
+			if(isset($matches[4]))
+				$content = $matches[4];
+
+			if($stag and $etag) {
+				if($content == '')
+					return "<a class='glink' target='_blank' href='http://{$link}'>{$modelink}</a>";
+				else
+					return "<a class='glink' target='_blank' href='http://{$link}'>{$content}</a>";
 			}
 
 			return "<a class='glink' target='_blank' href='http://{$link}'>{$modelink}</a>";

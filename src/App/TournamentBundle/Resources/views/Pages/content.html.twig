@@ -6,7 +6,7 @@
 
 {% block content %} 
 {% if content.description is defined %}
-	{{ replace_text(adminreplace_text(content.description))|raw|nl2br }}
+	{{ adminreplace_text(replace_text(content.description))|raw|nl2br }}
 {% endif %}
 
 {% endblock %}

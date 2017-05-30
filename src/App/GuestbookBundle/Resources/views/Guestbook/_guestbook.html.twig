@@ -10,8 +10,10 @@
 		{% set stars = 3 %}
 	{% elseif count_message[post.user] >= 500 and count_message[post.user] < 1000 %}
 		{% set stars = 4 %}
-	{% elseif count_message[post.user] >= 1000 %}
+	{% elseif count_message[post.user] >= 1000 and count_message[post.user] < 2500 %}
 		{% set stars = 5 %}
+	{% elseif count_message[post.user] >= 2500 %}
+		{% set stars = 6 %}
 	{% endif %}
 
 	{% set post_date = post.created|date_modify("+15 minute")|date("d.m.Y H:i:s") %}

@@ -150,9 +150,11 @@ app_admin_upload_delete:
         id: '\d+'
 
 app_admin_files:
-    path:     /adminpanel/files
-    defaults: { _controller:AppAdminBundle:Admin:files }
+    path:     /adminpanel/files/{page}
+    defaults: { _controller:AppAdminBundle:Admin:files, page: 1 }
     methods: [GET|POST]
+    requirements:
+        page: '\d+'
 
 app_admin_upload:
     path:     /adminpanel/upload

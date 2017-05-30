@@ -30,7 +30,11 @@ class ModeAdminTextExtension extends \Twig_Extension
 		$message = preg_replace($patternB, "<span class='h3'>$1</span>", $message);	
 
 		$patternB = "/\[red\](.*?)\[\/red\]/s";
-		$message = preg_replace($patternB, "<span class='red'>$1</span>", $message);				
+		$message = preg_replace($patternB, "<span class='red'>$1</span>", $message);
+
+
+		$patternB = "/\[img\](.*?)\[\/img\]/s";
+		$message = preg_replace($patternB, '<img class="content-img" src="$1">', $message);	
 
 		return $message;
 	}

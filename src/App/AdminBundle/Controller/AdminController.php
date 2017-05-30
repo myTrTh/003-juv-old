@@ -18,6 +18,7 @@ use App\GuestbookBundle\Entity\Champion;
 use App\GuestbookBundle\Form\ChampionType;
 use App\AdminBundle\Entity\Upload;
 use App\AdminBundle\Form\UploadType;
+use App\AdminBundle\Form\FilesType;
 use App\TournamentBundle\Form\LogoType;
 use App\TournamentBundle\Form\StarttournamentType;
 use App\TournamentBundle\Form\NameType;
@@ -1889,17 +1890,18 @@ class AdminController extends Controller
                   'formimage' => $formimage->createView(), 'formstatus' => $formstatus->createView()));
     }
 
-    public function filesAction() {
+    public function filesAction($page) {
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
         }
 
         $upload = new Upload();
-        $form = $this->createForm(UploadType::class, $upload);
+        $form = $this->createForm(FilesType::class, $upload);
 
-        $folder = "files";
+        $folder = "upload";
         $request = Request::createFromGlobals();
         $form->handleRequest($request);
+
 
         if($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
@@ -1910,9 +1912,9 @@ class AdminController extends Controller
             if($user)
                 $userId = $user->getId();
             else
-                return false;
+                return false;          
 
-            $fileName = $this->get('app.image_uploader')->image_upload($file, 'public/images/custom/'.$folder, 50000, 500, 500);
+            $fileName = $this->get('app.image_uploader')->image_upload($file, 'public/images/'.$folder, 200000, 1500, 1500);
 
             if($fileName)
             {
@@ -1924,18 +1926,22 @@ class AdminController extends Controller
                 $em->persist($upload);
                 $em->flush();
 
-                return $this->redirect($this->generateUrl('app_admin_upload'));
+                return $this->redirect($this->generateUrl('app_admin_files'));
             }
 
 
         }
 
+        $posts = 10;
+
         $repository = $this->getDoctrine()->getRepository('AppAdminBundle:Upload');
-        $images = $repository->show_upload();
+        $img = $repository->get_files("upload", $page, $posts);
+        $images = $img[0];
+        $countpage = $img[1];
 
         return $this->render('AppAdminBundle:Admin:files.html.twig',
                         array('form' => $form->createView(),
-                              'images' => $images));
+                              'images' => $images, 'countpage' => $countpage, 'page' => $page));
     }
 
 }
