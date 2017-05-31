@@ -156,5 +156,21 @@ class UserscoredRepository extends \Doctrine\ORM\EntityRepository
 
 		return $users;
 
+	}
+
+	public function check_score($idfore, $tr, $tour, $userId) {
+
+		$dql = "SELECT u.idfore FROM AppTournamentBundle:Userscored u
+				WHERE u.tr = :tr AND u.tour = :tour AND u.user = :user AND u.idfore = :fore";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr)
+					  ->SetParameter("tour", $tour)
+					  ->SetParameter("user", $userId)
+					  ->SetParameter("fore", $idfore);
+
+		$result = $query->execute();
+
+		return $result;
 	}	
 }

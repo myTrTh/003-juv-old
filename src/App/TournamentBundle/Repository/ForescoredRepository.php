@@ -41,7 +41,7 @@ class ForescoredRepository extends \Doctrine\ORM\EntityRepository
 			$id = $result[$i]['id'];
 			$player = $result[$i]['player'];
 
-			$results[$player] = $id;
+			$results[] = $id;
 		}
 
 		return $results;

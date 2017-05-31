@@ -283,7 +283,7 @@ class Usercast
     }
 
      /**
-     * @ORM\PreUpdate
+     * Set updated
      */
     public function setUpdated()
     {

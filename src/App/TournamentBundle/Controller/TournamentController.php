@@ -244,11 +244,9 @@ class TournamentController extends Controller
                 for($i=0;$i<count($idfore);$i++) {
                     $idfore[$i] = (int) $idfore[$i];
 
-                    $cast = $this->getDoctrine()->getRepository('AppTournamentBundle:Usercast')->check_score($idfore[$i], $tr, $tour, $userId);
+                    $usercast = $this->getDoctrine()->getRepository('AppTournamentBundle:Usercast')->findOneBy(array('idfore' => $idfore[$i], 'user' => $userId, 'tr' => $tr, 'tour' => $tour));
 
-                    if($cast) {
-
-                        $usercast = $this->getDoctrine()->getRepository('AppTournamentBundle:Usercast')->findOneBy(array('idfore' => $idfore[$i], 'user' => $userId, 'tr' => $tr, 'tour' => $tour));
+                    if($usercast) {
 
                         $forecastinfo = $this->getDoctrine()->getRepository('AppTournamentBundle:Forecast')->get_cast_info($idfore[$i]);
 
@@ -275,6 +273,7 @@ class TournamentController extends Controller
                                 $usercast->setTour($tour);
                                 $usercast->setResult1($r1[$i]);
                                 $usercast->setResult2($r2[$i]);
+                                $usercast->setUpdated();
 
                                 $em->persist($usercast);
                                 $how += 1;
@@ -286,15 +285,15 @@ class TournamentController extends Controller
 
                         if($r1[$i] != "" and $r2[$i] != "") {
                         
-                            $usercast = new Usercast();
-                            $usercast->setIdfore($idfore[$i]);
-                            $usercast->setUser($userId);
-                            $usercast->setTr($tr);
-                            $usercast->setTour($tour);
-                            $usercast->setResult1($r1[$i]);
-                            $usercast->setResult2($r2[$i]);
+                            $newusercast = new Usercast();
+                            $newusercast->setIdfore($idfore[$i]);
+                            $newusercast->setUser($userId);
+                            $newusercast->setTr($tr);
+                            $newusercast->setTour($tour);
+                            $newusercast->setResult1($r1[$i]);
+                            $newusercast->setResult2($r2[$i]);
 
-                            $em->persist($usercast);
+                            $em->persist($newusercast);
                             $how += 1;
                         }
 
@@ -318,44 +317,61 @@ class TournamentController extends Controller
                 $second = $request->request->get('second');
                 $three = $request->request->get('three');
 
-                $oldresult = $this->getDoctrine()->getRepository('AppTournamentBundle:Userscored')->findBy(array(
-                    'tr' => $tr, 'tour' => $tour, 'user' => $userId));
-
                 $em = $this->getDoctrine()->getManager();
-
-                if(!empty($oldresult)) {
-
-                    for($i=0;$i<count($oldresult);$i++) {
-                        $em->remove($oldresult[$i]);
-                    }
-
-                    $em->flush();
-
-                }
 
                 $idfore = $this->getDoctrine()->getRepository('AppTournamentBundle:Forescored')->get_forescored_id($forebridge);
 
-                for($i=0;$i<count($player);$i++) {
+                for($i=0;$i<count($idfore);$i++) {
+                    $idfore[$i] = (int) $idfore[$i];
 
-                    $idplayer = $player[$i];
+                    $score = $this->getDoctrine()->getRepository('AppTournamentBundle:Userscored')->findOneBy(array(
+                            'tr' => $tr, 'tour' => $tour, 'user' => $userId, 'idfore' => $idfore[$i]));
 
-                    $score = new Userscored();
-                    $score->setTr($tr);
-                    $score->setTour($tour);
-                    $score->setUser($userId);
-                    $score->setPlayer($idplayer);
-                    $score->setFirst($first[$i]);
-                    $score->setSecond($second[$i]);
-                    $score->setThree($three[$i]);
-                    $score->setScore(0);
-                    $score->setIdfore($idfore[$idplayer]);
-                    $em->persist($score);
+                    print "<pre>";
+                    print_r($score);
+                    print "</pre>";
+
+                    if($score) {
+
+                        // for($i=0;$i<count($player);$i++) {
+
+                        //     $idplayer = $player[$i];
+
+                        //     $score->setFirst($first[$i]);
+                        //     $score->setSecond($second[$i]);
+                        //     $score->setThree($three[$i]);
+                        //     $score->setUpdated();                
+                        //     $em->persist($score);
+                        // }
+
+
+
+                        $em->flush();
+
+                    } else {
+
+                        for($i=0;$i<count($player);$i++) {
+
+                            $idplayer = $player[$i];
+
+                            $newscore = new Userscored();
+                            $newscore->setTr($tr);
+                            $newscore->setTour($tour);
+                            $newscore->setUser($userId);
+                            $newscore->setPlayer($idplayer);
+                            $newscore->setFirst($first[$i]);
+                            $newscore->setSecond($second[$i]);
+                            $newscore->setThree($three[$i]);
+                            $newscore->setScore(0);
+                            $newscore->setIdfore($idfore[$i]);
+                            $em->persist($newscore);
+                        }
+
+                        $em->flush();
+                    }
                 }
-
-                $em->flush();               
-
             }
-        }                
+        }
 
 
         if(empty($tr))

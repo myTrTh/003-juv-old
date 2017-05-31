@@ -321,7 +321,7 @@ class Userscored
     }
 
      /**
-     * @ORM\PreUpdate
+     * Set updated
      */
     public function setUpdated()
     {
