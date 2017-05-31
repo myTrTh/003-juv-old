@@ -42,7 +42,7 @@
 			<td><img class='adm-img' src="/public/images/custom/achive/{{ achive.image }}"> </td>
 			<td><strong>{{ achive.username }}</strong></td>
 			<td>{{ achive.description }} 
-				<i title='Удалить' type="button" class="fa fa-close delete-center" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/delete/Achive/{{ achive.id }}'"></i></td>
+				<i title='Удалить' type="button" class="fa fa-close delete-center" data-dismiss="alert" aria-hidden="true" onclick="confirm('Действительно удалить файл?') ? location.href='/adminpanel/delete/Achive/{{ achive.id }}' : false "></i></td>
 		</tr>
 	{% endfor %}
 	</table>

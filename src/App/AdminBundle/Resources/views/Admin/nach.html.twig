@@ -32,7 +32,7 @@
 	{% for nach in nachs %}
 		<div class="panel">
 		  <h2>{{ nach.number }} <span class='glyphicon glyphicon-list-alt'></span> {{ nach.title }}
-		  	<i title='Удалить' type="button" class="fa fa-close delete-center" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/delete/Nach/{{ nach.id }}'"></i></h2>
+		  	<i title='Удалить' type="button" class="fa fa-close delete-center" data-dismiss="alert" aria-hidden="true" onclick="confirm('Действительно удалить?') ? location.href='/adminpanel/delete/Nach/{{ nach.id }}' : false"></i></h2>
 		  <div class="justify">
 			{{ replace_text(adminreplace_text(nach.description))|raw|nl2br }}
 		  </div>

@@ -45,7 +45,7 @@
 			<td><img class='adm-img' src="/public/images/custom/cup/{{ champion.image }}"> </td>
 			<td>{{ champion.year }}</td>
 			<td><strong>{{ champion.username }}</strong></td>
-			<td>{{ champion.description }} <i title='Удалить' type="button" class="fa fa-close delete-center" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/delete/Champion/{{ champion.id }}'">
+			<td>{{ champion.description }} <i title='Удалить' type="button" class="fa fa-close delete-center" data-dismiss="alert" aria-hidden="true" onclick="confirm('Действительно удалить?') ? location.href='/adminpanel/delete/Champion/{{ champion.id }}' : false">
 			</i></td>
 		</tr>
 	{% endfor %}

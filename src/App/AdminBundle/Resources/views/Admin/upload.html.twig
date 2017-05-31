@@ -25,7 +25,7 @@
 		{% for img in images.logo %}
 			<div>
 				<img src="/public/images/custom/logo/{{ img.1 }}">
-				<i type="button" title='Удалить изображение' class="fa fa-close cursor" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/upload/delete/{{ img.0 }}'"></i>
+				<i type="button" title='Удалить изображение' class="fa fa-close cursor" data-dismiss="alert" aria-hidden="true" onclick="confirm('Действительно удалить?') ? location.href='/adminpanel/upload/delete/{{ img.0 }}' : false"></i>
 			</div>
 		{% endfor %}
 		</div>

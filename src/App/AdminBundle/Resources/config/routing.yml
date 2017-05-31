@@ -132,6 +132,13 @@ app_admin_delete:
         content: Number|Nach|Achive|Champion
         numb: '\d+'
 
+app_admin_filedelete:
+    path:     /adminpanel/filedelete/{id}
+    defaults: { _controller: AppAdminBundle:Admin:filedelete, id: 0 }
+    methods: [GET|POST]
+    requirements:
+        id: '\d+'        
+
 app_admin_numbers:
     path:     /adminpanel/numbers
     defaults: { _controller: AppAdminBundle:Admin:numbers }

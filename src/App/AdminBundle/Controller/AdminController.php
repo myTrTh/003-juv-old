@@ -340,6 +340,28 @@ class AdminController extends Controller
             return $this->redirect($this->generateUrl('app_admin_champions'));
     }    
 
+    public function filedeleteAction($id)
+    {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if($id){
+            $repository = $this->getDoctrine()->getRepository('AppAdminBundle:Upload');
+            $file = $repository->findOneById($id);
+
+            if($file){
+                $em = $this->getDoctrine()->getManager();
+                $em->remove($file);
+                $em->flush();
+
+                $this->get('app.image_uploader')->image_delete($file->getImage(), 'public/images/upload/');
+            }
+        }
+
+        return $this->redirect($this->generateUrl('app_admin_files'));
+    }        
+
     public function nachAction(){
         if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();

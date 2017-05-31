@@ -20,6 +20,7 @@
 		<div>
 			<div class='rep-image'>
 				<a target="_blank" href="http://juvepro.ru/public/images/upload/{{ image.image }}"><img src='/public/images/upload/{{ image.image }}'></a>
+				<i title='Удалить' type="button" class="fa fa-close delete-center" data-dismiss="alert" aria-hidden="true" onclick="confirm('Действительно удалить файл?') ? location.href='/adminpanel/filedelete/{{ image.id }}' : false"></i>
 			</div>
 			<div>
 				<input class='select-text' type='text' value='http://juvepro.ru/public/images/upload/{{ image.image }}'>

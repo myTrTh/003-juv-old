@@ -31,7 +31,7 @@
 {% for number in number_users %}
 	<div><span>{{ number.number }}</span> {{ number.username }}
 		{# {{ path('app_admin_deletenumber', {'numb': number.number} ) }} #}
-			<i type="button" title='Удалить' class="fa fa-close delete-center" data-dismiss="alert" aria-hidden="true" onclick="location.href='/adminpanel/delete/Number/{{ number.id }}'"></i>
+			<i type="button" title='Удалить' class="fa fa-close delete-center" data-dismiss="alert" aria-hidden="true" onclick="confirm('Действительно удалить?') ? location.href='/adminpanel/delete/Number/{{ number.id }}' : false"></i>
 	</div>
 {% endfor %}
 </div>
