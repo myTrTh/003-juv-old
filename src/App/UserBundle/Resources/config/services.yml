@@ -27,12 +27,13 @@ services:
           - { name: twig.extension }
     twig.extension.mode_text:
         class: App\UserBundle\Twig\ModeTextExtension
-        arguments: ['@twig.extension.mode_date']
+        arguments: ['@twig.extension.mode_date', '@app.text_mode']
         public: true
         tags:
           - { name: twig.extension }
     twig.extension.mode_admintext:
         class: App\UserBundle\Twig\ModeAdminTextExtension
+        arguments: ['@app.admintext_mode']        
         public: true
         tags:
           - { name: twig.extension }                  

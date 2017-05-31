@@ -1,41 +1,23 @@
 <?php
 
 namespace App\UserBundle\Twig;
+use App\UserBundle\Services\admintextService;
 
 class ModeAdminTextExtension extends \Twig_Extension
 {
-	public function getName()
-	{
-		return 'mode_admintext';
+	protected $service;
+
+	public function __construct(admintextService $service){
+		$this->service = $service;
+	}	
+
+	public function getFunctions() {
+		return array(
+			'adminreplace_text' => new \Twig_Function_Method($this, 'adminreplace_text')
+		);
 	}
 
-  public function getFunctions()
-  {
-      $function = function($message) {
-          $result = $this->adminreplace_text($message);
-          return $result;
-      };
-      return array(
-          new \Twig_SimpleFunction('adminreplace_text', $function),
-      );
-  }
-
-
-	public function adminreplace_text($message){
-		// bb tag for admin: rule and attention
-		$patternB = "/\[h1\](.*?)\[\/h1\]/s";
-		$message = preg_replace($patternB, "<span class='h2'>$1</span>", $message);
-		
-		$patternB = "/\[h2\](.*?)\[\/h2\]/s";
-		$message = preg_replace($patternB, "<span class='h3'>$1</span>", $message);	
-
-		$patternB = "/\[red\](.*?)\[\/red\]/s";
-		$message = preg_replace($patternB, "<span class='red'>$1</span>", $message);
-
-
-		$patternB = "/\[img\](.*?)\[\/img\]/s";
-		$message = preg_replace($patternB, '<img class="content-img" src="$1">', $message);	
-
-		return $message;
+	public function adminreplace_text($message) {
+		return $this->service->adminreplace_text($message);
 	}
 }

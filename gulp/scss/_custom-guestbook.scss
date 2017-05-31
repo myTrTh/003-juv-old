@@ -236,11 +236,11 @@ img.smile {
 }
 
 .like {
-	margin-right: 10px;
+	margin-right: 5px;
 	display: inline-block;
-	text-align: center;
+	text-align: right;
 	cursor: pointer;
-	width: 33px;
+	width: 40px;
 	color: #ccc;
 	font-size: .9rem;
 }
@@ -440,8 +440,4 @@ img.smile {
 
 .id-show {
 	padding-right: .1rem;
-}
-
-.post-down {
-	margin-right: 0 !important;
 }
