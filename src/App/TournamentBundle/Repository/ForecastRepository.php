@@ -77,6 +77,7 @@ class ForecastRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	public function get_cast_info($idfore) {
+
 		$dql = "SELECT f.timer FROM AppTournamentBundle:Forecast f
 				WHERE f.id = :id";
 
@@ -104,4 +105,17 @@ class ForecastRepository extends \Doctrine\ORM\EntityRepository
 		else
 			return 1;
 	}
+
+	public function get_scored_info($forebridge) {
+		$dql = "SELECT f.timer FROM AppTournamentBundle:Forecast f
+				WHERE f.hash = :hash";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("hash", $forebridge);
+
+		$result = $query->execute();
+
+		return $result;
+	}
+
 }

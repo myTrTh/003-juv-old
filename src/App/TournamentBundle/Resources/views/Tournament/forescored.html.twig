@@ -40,10 +40,10 @@
 		{% endif %}
 		{{ fore.0.team2 }}
 	</h3>
-	<div class='activehow'>Действия: <span id='howscored'>{{ how }}</span>/7</div>
+	<div class='activehow'>Действия: <span id='howscored'>{{ howactive }}</span>/7</div>
 	<br>
 
-
+<div class='ifscore'>{% if how > 0 %} Прогноз внесен  {% endif %}</div>
 <form method='post'>
 <table class='table-showgame'>
 	<tr>

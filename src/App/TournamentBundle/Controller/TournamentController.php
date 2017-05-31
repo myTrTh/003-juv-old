@@ -233,6 +233,12 @@ class TournamentController extends Controller
             if($request->request->has('set_score')) {
                 
                 $tr = $request->request->get('tr');
+
+                // check user in tournament
+                $inuser = $this->getDoctrine()->getRepository('AppTournamentBundle:Tournamentusers')->get_member($tr, $userId);
+                if(!$inuser)
+                    throw $this->createAccessDeniedException();
+
                 $tour = $request->request->get('tour');
 
                 $idfore = $request->request->get('id');
@@ -305,12 +311,21 @@ class TournamentController extends Controller
         }
 
         # add forescored
+        $show = 0;      
         if($request->isMethod("POST")) {
             if($request->request->has('set_forescored')) {
                 $tr = $request->request->get('tr');
+
+                // check user in tournament
+                $inuser = $this->getDoctrine()->getRepository('AppTournamentBundle:Tournamentusers')->get_member($tr, $userId);
+                if(!$inuser)
+                    throw $this->createAccessDeniedException();
+
                 $tour = $request->request->get('tour');
 
                 $forebridge = $this->getDoctrine()->getRepository('AppTournamentBundle:Forebridge')->getForeBridge($tr, $tour);
+
+                $forecastinfo = $this->getDoctrine()->getRepository('AppTournamentBundle:Forecast')->get_scored_info($forebridge);
 
                 $player = $request->request->get('player');
                 $first = $request->request->get('first');
@@ -321,32 +336,33 @@ class TournamentController extends Controller
 
                 $idfore = $this->getDoctrine()->getRepository('AppTournamentBundle:Forescored')->get_forescored_id($forebridge);
 
-                for($i=0;$i<count($idfore);$i++) {
-                    $idfore[$i] = (int) $idfore[$i];
+                for($i=0;$i<count($player);$i++) {
 
                     $score = $this->getDoctrine()->getRepository('AppTournamentBundle:Userscored')->findOneBy(array(
-                            'tr' => $tr, 'tour' => $tour, 'user' => $userId, 'idfore' => $idfore[$i]));
-
-                    print "<pre>";
-                    print_r($score);
-                    print "</pre>";
+                            'tr' => $tr, 'tour' => $tour, 'user' => $userId, 'player' => $player[$i]));
 
                     if($score) {
 
-                        // for($i=0;$i<count($player);$i++) {
+                        $now = new \DateTime();
+                        $timer = $forecastinfo[0]['timer'];
+                        if(strtotime($now->format('d.m.Y H:i')) < strtotime($timer->format('d.m.Y H:i'))) {
 
-                        //     $idplayer = $player[$i];
+                            $f = $score->getFirst();
+                            $s = $score->getSecond();
+                            $t = $score->getThree();
 
-                        //     $score->setFirst($first[$i]);
-                        //     $score->setSecond($second[$i]);
-                        //     $score->setThree($three[$i]);
-                        //     $score->setUpdated();                
-                        //     $em->persist($score);
-                        // }
+                            if(($first[$i] != $f or $second[$i] != $s or $three[$i] != $t)) {
 
+                                $idplayer = $player[$i];
+                                $score->setFirst($first[$i]);
+                                $score->setSecond($second[$i]);
+                                $score->setThree($three[$i]);
+                                $score->setUpdated();
+                                $em->persist($score);
+                                $show += 1;
 
-
-                        $em->flush();
+                            }
+                        }
 
                     } else {
 
@@ -363,10 +379,13 @@ class TournamentController extends Controller
                             $newscore->setSecond($second[$i]);
                             $newscore->setThree($three[$i]);
                             $newscore->setScore(0);
-                            $newscore->setIdfore($idfore[$i]);
+                            $newscore->setIdfore($idfore[$idplayer]);
                             $em->persist($newscore);
+                            $show += 1;                            
                         }
 
+                    }
+                    if($show > 0) {
                         $em->flush();
                     }
                 }
@@ -419,7 +438,7 @@ class TournamentController extends Controller
             }            
 
             return $this->render('AppTournamentBundle:Tournament:forescored.html.twig',
-                array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $scored, 'fore' => $fore, 'preset' => $preset, 'how' => $howactive));
+                array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $scored, 'fore' => $fore, 'preset' => $preset, 'how' => $show, 'howactive' => $howactive));
         }
     }
 
