@@ -14,14 +14,6 @@
                     <value>Profile</value>
                 </option>
             </constraint>
-            <constraint name="Regex">
-                <option name="pattern">/^[0-9a-zA-Z_а-яА-Я]+$/u</option>
-                <option name="message">Логин может состоять из букв латинского алфавита и цифр</option>
-                <option name="groups">
-                    <value>Registration</value>
-                    <value>Profile</value>
-                </option>
-            </constraint>
             <constraint name="Length">
                 <option name="min">3</option>
                 <option name="minMessage">fos_user.username.short</option>
