@@ -6,13 +6,27 @@
 
 {% block content %}
 
-	{% if tournaments is empty %}
-		<div class='h4'>ТУРНИРОВ НЕТ..</div>
+	{% set page_navigation = '/'~nav~'s' %}
+	{% if nav == 'archive' %}
+		<div class='archive-nav'>
+		{% for years in tourslist %}
+			{% set preyear = years.year - 1 %}
+				{% if years.year != page %}
+					<a href="{{ path('app_tournament_archives', {'page': years.year}) }}">{{ preyear }}/{{ years.year }}</a>
+				{% else %}
+					<span>{{ preyear }}/{{ years.year }}</span>
+				{% endif %}
+		{% endfor %}
+		</div>
+		{# page navigation #}
+	{% else %}
+		{# page navigation #}
+		{% include 'pagenavigation.html.twig' %}
 	{% endif %}
 
-	{# page navigation #}
-	{% set page_navigation = '/'~nav~'s' %}
-	{% include 'pagenavigation.html.twig' %}
+	{% if tournaments is empty %}
+		<div class='h4'>ТУРНИРОВ НЕТ..</div>
+	{% endif %}	
 
 	<table class='tr-views'>
 	{% for tournament in tournaments %}
@@ -33,7 +47,11 @@
 		</tr>
 	{% endfor %}
 	</table>
-	{# page navigation #}
-	{% include 'pagenavigation.html.twig' %}	
+	{% if nav == 'archive' %}
+
+	{% else %}
+		{# page navigation #}
+		{% include 'pagenavigation.html.twig' %}
+	{% endif %}
 
 {% endblock %}

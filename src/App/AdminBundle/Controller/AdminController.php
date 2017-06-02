@@ -630,6 +630,7 @@ class AdminController extends Controller
 
                 $tr = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($tournament);
                 $tr->setStatus(2);
+                $tr->setCompleted();
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($tr);
@@ -643,6 +644,7 @@ class AdminController extends Controller
 
                 $tr = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($tournament);
                 $tr->setStatus(0);
+                $tr->setCompleted();                
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($tr);

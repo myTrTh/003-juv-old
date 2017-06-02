@@ -43,14 +43,21 @@ class TournamentController extends Controller
         $status = 2;
         $nav = 'archive';
 
-        $result = $this->listAction($page, $status);
+        $tourslist = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->get_tours_list();
 
-        $tournaments = $result[0];
-        $count = $result[1];
+        if(!$page) {
+            $p = max($tourslist);
+            $page = $p['year'];
+        }
+
+        $repository = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament");
+        $tournaments = $repository->show_tournaments_archives($page, $status);
+
+        $count = 0;
 
         return $this->render('AppTournamentBundle:Tournament:list.html.twig',
             array("tournaments" => $tournaments, "countpage" => $count, "nav" => $nav,
-                  "page" => $page));
+                  "page" => $page, "tourslist" => $tourslist));
     }
 
     public function listAction($page, $status) {

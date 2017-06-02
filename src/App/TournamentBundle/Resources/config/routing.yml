@@ -58,7 +58,7 @@ app_tournament_list:
 
 app_tournament_archives:
     path:     /archives/{page}
-    defaults: { _controller: AppTournamentBundle:Tournament:archives, page: 1 }
+    defaults: { _controller: AppTournamentBundle:Tournament:archives, page: 0 }
     requirements:
         pages: '\d+'        
 

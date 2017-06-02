@@ -58,6 +58,13 @@ class Tournament
     private $created;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="completed", type="datetime", nullable=true)
+     */
+    private $completed;    
+
+    /**
      * @var string
      *
      * @ORM\Column(name="image", type="string", length=255, nullable=true)
@@ -195,6 +202,26 @@ class Tournament
     {
         return $this->created;
     }
+
+    /**
+     * Set completed
+     *
+     * @return \DateTime
+     */
+    public function setCompleted()
+    {
+        $this->completed = new \DateTime();
+    }   
+
+    /**
+     * Get completed
+     *
+     * @return \DateTime
+     */
+    public function getCompleted()
+    {
+        return $this->completed;
+    }    
 
     /**
      * Set image

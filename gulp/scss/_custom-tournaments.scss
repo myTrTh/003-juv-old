@@ -671,3 +671,17 @@
 		width: 70px;
 	}
 }
+
+.archive-nav {
+	font-size: 1.3rem;
+	font-family: $font_header;
+	margin-bottom: 30px;
+	vertical-align: middle;
+	& a {
+		margin-right: 10px;
+		color: #657a88;
+	}
+	& span {
+		font-size: 2rem;
+	}
+}

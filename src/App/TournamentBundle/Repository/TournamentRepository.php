@@ -40,6 +40,20 @@ class TournamentRepository extends \Doctrine\ORM\EntityRepository
 	    return $append;
 	}
 
+	public function show_tournaments_archives($page, $status) {
+
+        $em = $this->getEntityManager();
+
+		$sql = "SELECT id, name, image, status
+				FROM tournaments
+				WHERE status = 2 and DATE_FORMAT(completed, '%Y') = ".$page." ORDER BY completed DESC";        		
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+		return $result;	
+	}
+
 	public function show_tournaments_list($page, $status) {
 	    $list = $page - 1;
 	    $how = 10;
@@ -128,6 +142,20 @@ class TournamentRepository extends \Doctrine\ORM\EntityRepository
 			return 1;
 		else
 			return 0;
+	}
+
+	public function get_tours_list() {
+        $em = $this->getEntityManager();
+
+        $sql = "SELECT DATE_FORMAT(completed, '%Y') as year FROM tournaments 
+        		WHERE completed is not null and status = 2
+        		GROUP BY DATE_FORMAT(completed, '%Y')";
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $result = $stmt->fetchAll();
+
+        arsort($result);
+		return $result;		
 	}
 
 }
