@@ -24,11 +24,19 @@
 				{{ fore.team1 }}
 			</td>
 			<td class='show-table-result'>
-				<input type='hidden' name='id[]' value='{{ fore.id }}'>
-				<input type='text' pattern='[0-9]+' class='extra-small inline' name='r1[]' value="{% if fore.result1 is defined %}{{ fore.result1 }}{% endif %}">
+				{% if fore.result1 is not null %}
+					<input type='text' pattern='[0-9]+' class='extra-small inline' disabled="disabled" name='r1[]' value="{{ fore.result1 }}">
+				{% else %}
+					<input type='hidden' name='id[]' value='{{ fore.id }}'>
+					<input type='text' pattern='[0-9]+' class='extra-small inline' name='r1[]'>
+				{% endif %}
 			</td>
 			<td class='show-table-result'>
-				<input type='text' pattern='[0-9]' maxlength="1" class='extra-small inline' name='r2[]' value="{% if fore.result2 is defined %}{{ fore.result2 }}{% endif %}">
+				{% if fore.result2 is not null %}
+					<input type='text' pattern='[0-9]+' class='extra-small inline' disabled="disabled" name='r2[]' value="{{ fore.result2 }}">
+				{% else %}
+					<input type='text' pattern='[0-9]+' class='extra-small inline' name='r2[]'>
+				{% endif %}
 			</td>
 			<td class='show-team'>
 				{{ fore.team2 }}
@@ -36,8 +44,10 @@
 	{% endfor %}
 	</table>
 	<br>
+	{% if tourstatus != 2 %}
 	<input type='checkbox' name='fore_end' value='1'> Окончательно рассчитать тур<br><br>
 	<input type='submit' class='button button-main' name='set_fore' value='Отправить'>
+	{% endif %}
 	</form>
 
 {% endblock %}

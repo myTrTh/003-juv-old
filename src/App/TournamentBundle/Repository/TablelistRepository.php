@@ -73,28 +73,46 @@ class TablelistRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	public function get_tour_status($tr, $tour) {
-		$dql = "SELECT t.game FROM AppTournamentBundle:Tablelist t
-				WHERE t.tr = :tr AND t.tour = :tour";
+		$dql = "SELECT t.id FROM AppTournamentBundle:Tablelist t
+				WHERE t.tr = :tr AND t.tour = :tour AND t.game = 1";
 
 		$query = $this->getEntityManager()->createQuery($dql)
 					  ->SetParameter("tr", $tr)
 					  ->SetParameter("tour", $tour)
 					  ->SetMaxResults(1);
 
-		$result = $query->execute();
+		$one = $query->execute();
 
 
-		if(empty($result)) {
-			$status = 0;
-		} else {
-			if($result[0]['game'] == 0) {
-				$status = 1;
-			} else {
-				$status = 2;
-			}
+		$dql = "SELECT t.id FROM AppTournamentBundle:Tablelist t
+				WHERE t.tr = :tr AND t.tour = :tour AND t.game = 0";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr)
+					  ->SetParameter("tour", $tour)
+					  ->SetMaxResults(1);
+
+		$null = $query->execute();
+
+		if(empty($one) and empty($null)) {
+			print "0";
+			return 0;
 		}
 
-		return $status;
+		if(empty($one) and !empty($null)) {
+			print "1";
+			return 1;
+		}
+
+		if(!empty($one) and !empty($null)) {
+			print "1";			
+			return 1;
+		}
+
+		if(!empty($one) and empty($null)) {
+			print "2";			
+			return 2;
+		}
 
 	}
 

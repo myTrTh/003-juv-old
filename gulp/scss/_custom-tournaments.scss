@@ -685,3 +685,8 @@
 		font-size: 2rem;
 	}
 }
+
+input[type="text"]:disabled{
+	background-color:gold;
+	border: none;
+}

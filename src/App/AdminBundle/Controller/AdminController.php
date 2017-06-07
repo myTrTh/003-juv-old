@@ -1271,6 +1271,8 @@ class AdminController extends Controller
         if($tour == 0)
             $tour = 1;
 
+        $tourstatus = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_tour_status($tournament, $tour);
+
         $tr = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($tournament);
 
         $rep_calendar = $this->getDoctrine()->getRepository("AppTournamentBundle:Calendar");
@@ -1408,6 +1410,7 @@ class AdminController extends Controller
                 array("calendar" => $calendar,
                       "tournament" => $tr, "tour" => $tour,
                       "printtour" => $printtour,
+                      "tourstatus" => $tourstatus,
                       "off" => $offstatus,
                       "calendar" => $calendar,
                       "playoff" => $playoff_name,                      
@@ -1495,11 +1498,13 @@ class AdminController extends Controller
 
                 $em = $this->getDoctrine()->getManager();                
 
+
                 for($i=0;$i<count($idfore);$i++) {
                     $idfore[$i] = (int) $idfore[$i];
 
                     $forecast = $this->getDoctrine()->getRepository('AppTournamentBundle:Forecast')->find($idfore[$i]);
                     $hash = $forecast->getHash();
+
                     if($r1[$i] !== "" or $r2[$i] !== "") {
                         $r1[$i] = (int) $r1[$i];
                         $r2[$i] = (int) $r2[$i];
@@ -1563,13 +1568,15 @@ class AdminController extends Controller
             $fore = 0;
         }
 
+        $tourstatus = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_tour_status($tournament, $tour);
+
         if($tournamentshow['types'] == 1) {
             return $this->render('AppAdminBundle:Tournament:tourcompleted.html.twig',
-                array('tour' => $tour, 'tournament' => $tournamentshow, "forecast" => $fore));
+                array('tour' => $tour, 'tournament' => $tournamentshow, "forecast" => $fore, "tourstatus" => $tourstatus));
         } else if ($tournamentshow['types'] == 2) {
 
             return $this->render('AppAdminBundle:Tournament:scoredcompleted.html.twig',
-                array('tour' => $tour, 'tournament' => $tournamentshow, "forecast" => $fore, "scored" => $scored));
+                array('tour' => $tour, 'tournament' => $tournamentshow, "forecast" => $fore, "scored" => $scored, "tourstatus" => $tourstatus));
         }
     }    
 

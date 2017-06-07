@@ -118,4 +118,39 @@ class ForecastRepository extends \Doctrine\ORM\EntityRepository
 		return $result;
 	}
 
+	public function get_tour_status($tr, $tour) {
+		$dql = "SELECT f.hash FROM AppTournamentBundle:Forebridge f
+				WHERE f.tr = :tr AND f.tour = :tour";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("tr", $tr)
+					  ->SetParameter("tour", $tour)
+					  ->SetMaxResults(1);
+
+		$result = $query->execute();
+
+		if(empty($result)) {
+			$status = 0;
+		} else {
+
+			$dql = "SELECT f.id FROM AppTournamentBundle:Forecast f
+					WHERE f.hash = :hash AND f.result1 is null";
+
+			$query = $this->getEntityManager()->createQuery($dql)
+						  ->SetParameter("hash", $result[0]['hash'])
+						  ->SetMaxResults(1);
+
+			$null = $query->execute();			
+
+			if(!empty($null))
+				$status = 1;
+			else
+				$status = 2;
+
+		}
+
+		return $status;
+
+	}	
+
 }

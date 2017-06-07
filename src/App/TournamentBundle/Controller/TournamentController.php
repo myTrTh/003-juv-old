@@ -108,7 +108,7 @@ class TournamentController extends Controller
             if($tour == 0)
                 $tour = 1;            
 
-            $tourstatus = $this->getDoctrine()->getRepository("AppTournamentBundle:Tablelist")->get_tour_status($id, $tour);
+            $tourstatus = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_tour_status($id, $tour);
 
             $info = $tournament->getInfo();
             $schema = $info['schema'];

@@ -53,7 +53,9 @@
 	</form>
 
 	<br>
-	<a class='nostyle bold' href='{{ path('app_admin_tour_completed', {'tournament': tournament.id, 'tour': tour}) }}'>ПРОСТАВИТЬ РЕЗУЛЬТАТЫ ТУРА</a>
+	{% if tourstatus != 2 %}
+		<a class='nostyle bold' href='{{ path('app_admin_tour_completed', {'tournament': tournament.id, 'tour': tour}) }}'>ПРОСТАВИТЬ РЕЗУЛЬТАТЫ ТУРА</a>
+	{% endif %}
 	<br><hr><br>
 {% endif %}
 {% if forecast != 0 and tournament.types == 2 %}
