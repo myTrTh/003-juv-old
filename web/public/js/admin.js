@@ -38,7 +38,16 @@ $(function() {
 			type: "POST",
 			dataType: "json",
 			success: function(data){
-
+				if(data == 1) {
+					$('#panel' + user).removeClass('background-warning');
+					$('#panel' + user).removeClass('background-danger');
+				} else if(data == 2) {
+					$('#panel' + user).removeClass('background-danger');
+					$('#panel' + user).addClass('background-warning')
+				} else if(data > 2) {
+					$('#panel' + user).removeClass('background-warning');
+					$('#panel' + user).addClass('background-danger')
+				}
 			}
 		})
 	})
@@ -59,9 +68,10 @@ $(function(){
 			url: '/ajax/adminpanel/setban',
 			type: 'POST',
 			data: data,
-			// dataType: 'json',
 			success: function() {
 				form.children('input[type="hidden"]').val(role);
+				console.log("hello");
+				console.log(role);
 				if(role == 'ROLE_BANNED_0') {
 					$('#panel' + id).removeClass('background-warning');
 					$('#panel' + id).removeClass('background-danger');

@@ -8,6 +8,8 @@
 <a class='link-back' href='{{ path("app_admin_headteams") }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
 <br>
 
+{% if is_granted('ROLE_TOURNAMENTS') %}
+
 {{ form_start(form) }}
 ИМЯ<br>
 {{ form_widget(form.first, {'attr': {'class': 'middle'}}) }}
@@ -70,6 +72,10 @@
 </tr>
 {% endfor %}
 </table>
+{% endif %}
+
+{% else %}
+		Вам закрыт доступ в этот раздел
 {% endif %}
 
 {% endblock %}

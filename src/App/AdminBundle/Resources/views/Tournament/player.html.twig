@@ -8,6 +8,8 @@
 <a class='link-back' href='{{ path("app_admin_team", {'team': team}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
 <br>
 
+{% if is_granted('ROLE_TOURNAMENTS') %}
+
 {% if player.status is defined and player.status == 1 %}
 	{% if image is not empty %}
 		<img src="/public/images/players/{{ image }}">
@@ -49,6 +51,10 @@
 	{% endif %}
 	<br>
 	Футболист удален из списка команды
+{% endif %}
+
+{% else %}
+		Вам закрыт доступ в этот раздел
 {% endif %}
 
 {% endblock %}

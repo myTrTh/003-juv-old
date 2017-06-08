@@ -6,7 +6,9 @@
 
 {% block lowbody %}
 <a class='link-back' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
-<br><br>
+<br>
+
+{% if access == 3 or (access == 2 and is_granted('ROLE_TOURNAMENTS')) %}
 
 {# tours list #}
 <div class='tourlist'>
@@ -81,6 +83,10 @@
 {% if forecast == 0 %}
 	<br>
 	<a class='nostyle' href="{{ path('app_admin_addtours', {"tournament": tournament.id, 'tour': tour}) }}"><i class='fa fa-mail-forward'></i> Добавить тур из другого турнира</a>
+{% endif %}
+
+{% else %}
+		Вам закрыт доступ в этот раздел
 {% endif %}
 
 {% endblock %}

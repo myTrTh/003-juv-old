@@ -63,11 +63,6 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class AdminController extends Controller
 {
-	private $ban_status;
-
-	public function __construct() {
-		$this->ban_status = ['ROLE_BANNED_0', 'ROLE_BANNED_1', 'ROLE_BANNED_2'];
-	}
 
     public function usersAction()
     {
@@ -121,41 +116,6 @@ class AdminController extends Controller
 
     }
 
-    public function setbanAction(Request $request) {
-    	/* if no admin */
-	    if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-	        throw $this->createAccessDeniedException();
-	    }
-
-	    /* if no user */
-        $user = $this->getUser();
-        if($user)
-            $userId = $user->getId();
-
-        if($request->request->get('id') && $request->request->get('role') && $request->request->get('old'))
-        {
-            $id = (int) $request->request->get('id');
-            $role = trim($request->request->get('role'));
-            $old = trim($request->request->get('old'));
-
-            /* real role check */
-            if(!in_array($role, $this->ban_status))
-            	return false;
-
-            /* old role check */
-            if(!in_array($old, $this->ban_status))
-            	return false;
-
-			$userManager = $this->get('fos_user.user_manager');
-			$user_role = $userManager->findUserBy(array('id' => $id));
-
-            $user_role->removeRole($old);
-            $user_role->addRole($role);
-            $userManager->updateUser($user_role);
-
-            return new Response(json_encode(1));
-    	}
-    }    
 
     public function contentAction($type)
     {
@@ -743,7 +703,7 @@ class AdminController extends Controller
 
     public function createAction() {
         /* if no admin */
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_TOURNAMENTS')) {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
         }
 
@@ -760,6 +720,11 @@ class AdminController extends Controller
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_TOURNAMENTS')) {
+                throw $this->createAccessDeniedException();
+            }
+
             $data = $form->getData();
 
             $name = strip_tags($data->getName());
@@ -945,6 +910,10 @@ class AdminController extends Controller
 
     public function replaceusersAction($tournament) {
 
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         /* if no user */
         $user = $this->getUser();
         if($user)
@@ -979,6 +948,11 @@ class AdminController extends Controller
 
             $request = Request::createFromGlobals();
             if($request->isMethod("POST")) {
+
+                if (!$this->get('security.authorization_checker')->isGranted('ROLE_TOURNAMENTS')) {
+                    throw $this->createAccessDeniedException();
+                }
+
                 $form->handleRequest($request);
 
                 if($form->get('save')->isClicked()) {
@@ -1071,8 +1045,8 @@ class AdminController extends Controller
         else
             $access = 0; 
         
-                return $this->render('AppAdminBundle:Tournament:replace.html.twig',
-                    array("tournament" => $tournamentshow,
+        return $this->render('AppAdminBundle:Tournament:replace.html.twig',
+            array("tournament" => $tournamentshow,
                           "users" => $users,
                           "newusers" => $newusers, 'access' => $access
                           ));
@@ -1169,6 +1143,10 @@ class AdminController extends Controller
 
     public function completedAction($tournament) {
 
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         /* if no user */
         $user = $this->getUser();
         if($user)
@@ -1201,6 +1179,11 @@ class AdminController extends Controller
             $form->handleRequest($request);
 
             if($form->get('create_tournament')->isClicked()) {
+
+                if (!$this->get('security.authorization_checker')->isGranted('ROLE_TOURNAMENTS')) {
+                    throw $this->createAccessDeniedException();
+                }
+
                 $data = $form->getData();
 
                 $schema = (int) $data['schema'];
@@ -1317,15 +1300,9 @@ class AdminController extends Controller
             }
         }
 
-        if($tournamentshow['access']['creator'] == $userId  or in_array($userId, $tournamentshow['access']['partner'])) {
-
-            return $this->render('AppAdminBundle:Tournament:completed.html.twig',
-                    array("tournament" => $tournamentshow,
-                          "form" => $form->createView()));
-        } else {
-            throw $this->createAccessDeniedException();
-            
-        }
+        return $this->render('AppAdminBundle:Tournament:completed.html.twig',
+            array("tournament" => $tournamentshow,
+                  "form" => $form->createView()));
     }    
 
     public function toursAction($tournament, $tour, Request $request) {
@@ -1861,7 +1838,7 @@ class AdminController extends Controller
             else if(in_array($userId, $tournamentshow['access']['assistant']))
                 $access = 1;
             else
-                $access = 0; 
+                $access = 0;
 
         return $this->render('AppAdminBundle:Tournament:headteam.html.twig', 
             array('team' => $team, 'form' => $form->createView(), 'tournament' => $tournamentshow, 'access' => $access));
@@ -1884,6 +1861,11 @@ class AdminController extends Controller
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_TOURNAMENTS')) {
+                throw $this->createAccessDeniedException();
+            }
+
             $data = $form->getData();
 
             $team = trim($data->getName());
@@ -1925,6 +1907,10 @@ class AdminController extends Controller
 
     public function teamAction($team) {
 
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $info = $this->getDoctrine()->getRepository('AppTournamentBundle:Headteam')->get_team($team);
 
         $players = $this->getDoctrine()->getRepository('AppTournamentBundle:Player')->get_players($team);
@@ -1962,6 +1948,10 @@ class AdminController extends Controller
 
     public function playerAction($team, $player, Request $request) {
 
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $footballer = $this->getDoctrine()->getRepository('AppTournamentBundle:Player')->find($player);
 
         if(empty($footballer))
@@ -1978,6 +1968,11 @@ class AdminController extends Controller
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_TOURNAMENTS')) {
+                throw $this->createAccessDeniedException();
+            }
+
             $em = $this->getDoctrine()->getManager();
             $footballer->setFirst(mb_strtolower($pl->getFirst()));
             $footballer->setSecond(mb_strtolower($pl->getSecond()));
@@ -2125,13 +2120,13 @@ class AdminController extends Controller
             if($st == 'rat') {
                 $newstatus = 'ROLE_RATE';
 
-                if(!in_array('ROLE_MANAGER', $headroles))
+                if(!in_array('ROLE_MANAGER', $headroles) or !in_array('ROLE_SUPER_ADMIN', $headroles))
                     return new Response(json_encode(0));
 
             } else if($st == 'gue') {
                 $newstatus = 'ROLE_GUESTBOOK';
 
-                if(!in_array('ROLE_MANAGER', $headroles))
+                if(!in_array('ROLE_MANAGER', $headroles) or !in_array('ROLE_SUPER_ADMIN', $headroles))
                     return new Response(json_encode(0));
 
             } else if($st == 'man') {
@@ -2206,9 +2201,15 @@ class AdminController extends Controller
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($user_with_role);
-            $em->flush();           
+            $em->flush();
 
-            return new Response(json_encode(1));
+            $cl = 1;
+            if(!in_array('ROLE_RATE', $user_role))
+                $cl += 1;
+            if(!in_array('ROLE_GUESTBOOK', $user_role))
+                $cl += 2;
+
+            return new Response(json_encode($cl));
         }        
 
     }    

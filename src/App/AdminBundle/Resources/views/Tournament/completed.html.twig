@@ -6,7 +6,9 @@
 
 {% block lowbody %}
 <a class='link-back' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
-<br><br>
+<br>
+
+{% if is_granted('ROLE_TOURNAMENTS') %}
 
 {{ form_start(form) }}
 
@@ -39,5 +41,9 @@
 
 {{ form_rest(form) }}
 {{ form_end(form) }}
+
+{% else %}
+		Вам закрыт доступ в этот раздел
+{% endif %}
 
 {% endblock %}

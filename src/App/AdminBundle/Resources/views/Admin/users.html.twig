@@ -16,38 +16,56 @@
 			{% if 'ROLE_TOURNAMENTS' in roles[user.user] %} {% set access6 = 1 %} {% else %} {% set access6 = 0 %} {% endif %}
 			{% if 'ROLE_TOURS' in roles[user.user] %} {% set access7 = 1 %} {% else %} {% set access7 = 0 %} {% endif %}
 
+			{% if access1 == false %}
+				{% set class = 'background-warning' %}
+			{% endif %}
+			{% if access2 == false %}
+				{% set class = 'background-danger' %}			
+			{% endif %}
+			{% if access1 == true and access2 == true %}
+				{% set class = '' %}
+			{% endif %}
+
 			<div class='users-panel'>
-				<div id='panel{{ user.user }}' class='users-panel-info'>
+				<div id='panel{{ user.user }}' class='users-panel-info {{ class }}'>
 					<span  class='panel-with-user'>{{ user.username }}</span> <span>{{ replace_date(user.lastActivity) }}</span>
+					<span class='red'>
+					{% if is_granted('ROLE_SUPER_ADMIN') %}
+						{% if access3 == true %}M{% endif %}
+						{% if access4 == true %}S{% endif %}
+						{% if access5 == true %}A{% endif %}
+						{% if access6 == true %}TR{% endif %}
+						{% if access7 == true %}T{% endif %}
+					{% endif %}
+					</span>
 				</div>
 				<div class='users-panel-body'>
 					<strong><a href='{{ path('app_user_show', {'id': user.user}) }}'>Перейти в профиль</a></strong>
-					{% if is_granted('ROLE_MANAGER') %}
 					<br><br>
 					<form name="form" id="form{{ user.user }}" method="post">
+					{% if is_granted('ROLE_MANAGER') %}
 						<strong>ПРИВИЛЕГИИ:</strong><br><br>
 						<input {% if access1 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="rat{{ user.user }}"/>
 						<label for="rat{{ user.user }}">RATE</label><br><br>
 						<input  {% if access2 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="gue{{ user.user }}"/>
 						<label for="gue{{ user.user }}">GUESTBOOK</label><br><br>
+					{% endif %}
+					{% if is_granted('ROLE_SUPER_ADMIN') %}
+						<input  {% if access3 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="man{{ user.user }}"/>
+						<label for="man{{ user.user }}">MANAGER</label><br><br>					
+						<input  {% if access4 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="stu{{ user.user }}"/>
+						<label for="stu{{ user.user }}">STUFF</label><br><br>
+						<input  {% if access5 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="adm{{ user.user }}"/>
+						<label for="adm{{ user.user }}">ADMINBOOK</label><br><br>
+						<input  {% if access6 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="trn{{ user.user }}"/>
+						<label for="trn{{ user.user }}">TOURNAMENTS</label><br><br>
+						<input  {% if access7 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="tou{{ user.user }}"/>
+						<label for="tou{{ user.user }}">TOURS</label>
 
-						{% if is_granted('ROLE_SUPER_ADMIN') %}
-							<input  {% if access3 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="man{{ user.user }}"/>
-							<label for="man{{ user.user }}">MANAGER</label><br><br>					
-							<input  {% if access4 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="stu{{ user.user }}"/>
-							<label for="stu{{ user.user }}">STUFF</label><br><br>
-							<input  {% if access5 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="adm{{ user.user }}"/>
-							<label for="adm{{ user.user }}">ADMINBOOK</label><br><br>
-							<input  {% if access6 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="trn{{ user.user }}"/>
-							<label for="trn{{ user.user }}">TOURNAMENTS</label><br><br>
-							<input  {% if access7 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="tou{{ user.user }}"/>
-							<label for="tou{{ user.user }}">TOURS</label>
-
-							<br><br>
-							<strong>IP:</strong> {{ user.ip }}<br>
-							<strong>UA:</strong> {{ user.userAgent }}<br>
-							<strong>Last Page:</strong> {{ user.lastPage }}<br>
-						{% endif %}
+						<br><br>
+						<strong>IP:</strong> {{ user.ip }}<br>
+						<strong>UA:</strong> {{ user.userAgent }}<br>
+						<strong>Last Page:</strong> {{ user.lastPage }}<br>
 					{% endif %}
 					</form>
 				</div>

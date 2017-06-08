@@ -8,6 +8,7 @@
 <a class='link-back' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
 <br>
 
+{% if access == 3 or (access == 2 and is_granted('ROLE_TOURNAMENTS')) %}
 	{# show flash info #}
 	{% include 'flashbug.html.twig' %}
 <h4>ПОДАЛИ ЗАЯВКИ</h4>
@@ -43,6 +44,10 @@
 <div class='but'>{{ form_widget(form.save, {"attr": {"class": "button button-main"}}) }}</div>
 {{ form_rest(form) }}
 {{ form_end(form) }}
+{% endif %}
+
+{% else %}
+		Вам закрыт доступ в этот раздел
 {% endif %}
 
 {% endblock %}
