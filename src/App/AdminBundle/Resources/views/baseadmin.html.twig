@@ -10,14 +10,16 @@
 
 {% block content %}
 <ul class='admin-menu'>
-	<li><a class='nostyle' href='{{ path('app_admin_users') }}'>Пользователи</a></li>
+		<li><a class='nostyle' href='{{ path('app_admin_users') }}'>Пользователи</a></li>
+	{% if is_granted('ROLE_ADMINBOOK') %}	
 	<li><a class='nostyle' href='{{ path('app_admin_guestbook') }}'>
 		Штаб
         {% if notification_adminbook is defined and notification_adminbook|length > 0 %} 
 			<span class='normal little'><i class='fa fa-bell-o'></i> {{ notification_adminbook|length }}
         {% endif %}
 	</a></li>
-	{% if is_granted('ROLE_MODERATE') %}
+	{% endif %}
+	{% if is_granted('ROLE_STUFF') %}
 		<li><a class='nostyle' href='{{ path('app_admin_content') }}'>Контент</a></li>
 		<li><a class='nostyle' href='{{ path('app_admin_upload') }}'>Загрузка</a></li>
 		<li><a class='nostyle' href='{{ path('app_admin_files') }}'>Хранилище</a></li>
@@ -25,9 +27,9 @@
 		<li><a class='nostyle' href='{{ path('app_admin_nach') }}'>Нахи</a></li>
 		<li><a class='nostyle' href='{{ path('app_admin_achives') }}'>Нашивки</a></li>
 		<li><a class='nostyle' href='{{ path('app_admin_champions') }}'>Чемпионы</a></li>
-		<li><a class='nostyle' href='{{ path('app_admin_tournaments') }}'>Турниры</a></li>
 	{% endif %}
-	{% if is_granted('ROLE_ADMIN') %}
+	{% if is_granted('ROLE_TOURNAMENTS') or is_granted('ROLE_TOURS') %}
+		<li><a class='nostyle' href='{{ path('app_admin_tournaments') }}'>Турниры</a></li>
 		<li><a class='nostyle' href='{{ path('app_admin_headteams') }}'>Команды</a></li>
 	{% endif %}
 </ul>

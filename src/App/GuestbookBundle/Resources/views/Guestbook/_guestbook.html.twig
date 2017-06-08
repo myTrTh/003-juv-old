@@ -60,12 +60,12 @@
 				</div>
 				<div class='post-header-id'>
 					<div>
-					{% if is_granted('ROLE_VERIFIED_USER') and order_quote == 1 %}
+					{% if is_granted('ROLE_GUESTBOOK') and order_quote == 1 %}
 						<span class='quote'>QUOTE</span>
 					{% endif %}
 					</div>
 					<div class='id-show'>
-					{% if is_granted('ROLE_ADMIN') and order_delete == 1 %}
+					{% if is_granted('ROLE_MANAGER') and order_delete == 1 %}
 						#<a onclick='return confirm("Действительно удалить сообщение?")' class='nostyle' href='{{ path('app_guestbook_delete', {'post': post.id }) }}'>{{ post.id }}</a>
 					{% else %}
 						#{{ post.id }}
@@ -180,7 +180,7 @@
 					<div class='rate-panel'>
 					{% if order_rate == 1 %}
 						<div id='u{{ post.id }}' class='tumbler like post-up'>
-						{% if is_granted('ROLE_BANNED_0') and app.user.id is defined and app.user.id != post.user and rate_access == 1 and rate_message[post.id]['allow'] == 0 %}
+						{% if is_granted('ROLE_RATE') and app.user.id is defined and app.user.id != post.user and rate_access == 1 and rate_message[post.id]['allow'] == 0 %}
 							<i class='fa fa-thumbs-o-up'></i>
 						{% endif %}
 						</div>
@@ -194,7 +194,7 @@
 							{% endif %}
 						</div>
 						<div id='d{{ post.id }}' class='tumbler like post-down'>
-						{% if is_granted('ROLE_BANNED_0') and app.user.id is defined and app.user.id != post.user and rate_access == 1 and rate_message[post.id]['allow'] == 0 %}
+						{% if is_granted('ROLE_RATE') and app.user.id is defined and app.user.id != post.user and rate_access == 1 and rate_message[post.id]['allow'] == 0 %}
 							<i class='fa fa-thumbs-o-down'></i>
 						{% endif %}
 						</div>

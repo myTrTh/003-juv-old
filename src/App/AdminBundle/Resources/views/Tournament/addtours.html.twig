@@ -6,7 +6,9 @@
 
 {% block lowbody %}
 <a class='link-back' href='{{ path("app_admin_tours", {"tournament": tournament.id, 'tour': tour}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
-<br><br>
+<br>
+
+{% if access == 3 or (access > 0 and (is_granted('ROLE_TOURNAMENTS') or is_granted('ROLE_TOURS'))) %}
 
 <h4>СПИСОК ДОСТУПНЫХ ТУРОВ</h4>
 
@@ -31,5 +33,9 @@
 		</form>		
 		</div>
 	{% endfor %}
+
+{% else %}
+		Вам закрыт доступ в этот раздел
+{% endif %}
 
 {% endblock %}

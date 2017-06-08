@@ -6,31 +6,33 @@
 
 {% block lowbody %}
 
-{% if is_granted('ROLE_ADMIN') %}
+{% if is_granted('ROLE_TOURNAMENTS') %}
 
-<a class='link-back' href='{{ path("app_admin_tournaments") }}'><i class='fa fa-arrow-left'></i> К СПИСКУ ТУРНИРОВ</a>
-<br><br>
+	<a class='link-back' href='{{ path("app_admin_tournaments") }}'><i class='fa fa-arrow-left'></i> К СПИСКУ ТУРНИРОВ</a>
+	<br><br>
 
-{{ form_start(form) }}
-НАЗВАНИЕ ТУРНИРА<br>
-{{ form_widget(form.name, {'attr': {'class': 'middle', 'placeholder': 'Название турнира'}} ) }}
-	{# show flash info #}
-	{% include 'flashbug.html.twig' %}
-{{ form_errors(form.name) }}
-<br>
-<div class='bold'>{{ form_label(form.types) }}</div>
-{% for types in form.types %}
-{{ form_widget(types) }} {{ types.vars['label'] }} <br>
-{% endfor %}
-{{ form_errors(form.types) }}
-<br>
-<br>
-<div>
-    <input class='button button-main' type="submit" value="Создать" />
-</div>
+	{{ form_start(form) }}
+	НАЗВАНИЕ ТУРНИРА<br>
+	{{ form_widget(form.name, {'attr': {'class': 'middle', 'placeholder': 'Название турнира'}} ) }}
+		{# show flash info #}
+		{% include 'flashbug.html.twig' %}
+	{{ form_errors(form.name) }}
+	<br>
+	<div class='bold'>{{ form_label(form.types) }}</div>
+	{% for types in form.types %}
+	{{ form_widget(types) }} {{ types.vars['label'] }} <br>
+	{% endfor %}
+	{{ form_errors(form.types) }}
+	<br>
+	<br>
+	<div>
+	    <input class='button button-main' type="submit" value="Создать" />
+	</div>
 
-{{ form_end(form) }}
+	{{ form_end(form) }}
 
+{% else %}
+		Вам закрыт доступ в этот раздел
 {% endif %}
 
 {% endblock %}

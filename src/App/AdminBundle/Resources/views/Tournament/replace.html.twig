@@ -9,6 +9,9 @@
 <br>
 
 <h4>УЧАСТНИКИ ТУРНИРА</h4>
+
+{% if access == 3 or (access == 2 and is_granted('ROLE_TOURNAMENTS')) %}
+	
 <form method='post'>
 <div class='users-area'>
 {% for user in users %}
@@ -26,34 +29,9 @@
 	{% include 'flashbug.html.twig' %}
 <input type='submit' class='button button-main' name='replace_user' value='Заменить'>
 </form>
-{# {% if tournament.info.schema is defined %}
-<span class='info'>(Нажмите на пользователя, чтобы выбрать его)</span>
+
+{% else %}
+		Вам закрыт доступ в этот раздел
 {% endif %}
-<div class='area preusers'>
-{% for user in preusers %}
-	<div id='u{{ user.user }}' class='preteam'>{{ user.username }}</div>
-{% endfor %}
-</div>
-
-{% if tournament.info.schema is defined %}
-<div id='schema' class='hidden'>{{ tournament.info.schema }}</div>
-<div id='groupoff' class='hidden'>0</div>
-{% if tournament.info.schema == 3 %}
-<div id='groups' class='hidden'>{{ tournament.info.usergroups }}</div>	
-{% endif %}
-<h4>ВЫБРАТЬ</h4>
-
-<div class='area tournament-user'></div>
-
-<br>
-Выбрано: <span class='allow'></span><br>
-Требуется: <span class='all'>{{ tournament.info.users }}</span>
-<br><br>
-{{ form_start(form) }}
-<div class='form-hidden'>{{ form_widget(form.user) }}</div>
-{{ form_widget(form.save, {"attr": {"class": "button button-main"}}) }}
-{{ form_rest(form) }}
-{{ form_end(form) }}
-{% endif %} #}
 
 {% endblock %}

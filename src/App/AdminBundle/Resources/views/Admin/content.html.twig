@@ -17,6 +17,8 @@
 
 {% block lowbody %}
 
+	{% if is_granted('ROLE_STUFF') %}
+
 	{% if content.description is empty %}
 
 		{% set info = "" %}
@@ -36,5 +38,9 @@
 	    <input class='button button-main' type="submit" value="Изменить" />
 	</div>	
 	{{ form_end(form) }}
+
+	{% else %}
+		Вам закрыт доступ в этот раздел
+	{% endif %}
 
 {% endblock %}

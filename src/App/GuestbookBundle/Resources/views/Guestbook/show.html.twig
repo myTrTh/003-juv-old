@@ -15,19 +15,17 @@
 {% endif %}
 	{# attention end #}
 
-{% if is_granted('ROLE_VERIFIED_USER') %}
+{% if is_granted('ROLE_GUESTBOOK') %}
 	{% set adminbb = 0 %}	
 	{% include 'bbcode.html.twig' %}
 	{{ form_start(form, {'action': path('app_guestbook_show')}) }}
 	{{ form_widget(form.message) }}
 
-	{# show flash info #}
-	{% include 'flashbug.html.twig' %}
-
 	{{ form_widget(form.save, {'attr': {'class': 'button button-main'}}) }}
 	{{ form_end(form) }}
 {% endif %}
-
+	{# show flash info #}
+	{% include 'flashbug.html.twig' %}
 <br>
 
 

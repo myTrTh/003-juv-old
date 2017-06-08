@@ -6,45 +6,53 @@
 
 {% block lowbody %}
 
-{% for user in users %}
+		{% for user in users %}
 
-	{% set val0 = 'ROLE_BANNED_0' %}
-	{% set val1 = 'ROLE_BANNED_1' %}
-	{% set val2 = 'ROLE_BANNED_2' %}
+			{% if 'ROLE_RATE' in roles[user.user] %} {% set access1 = 1 %} {% else %} {% set access1 = 0 %} {% endif %}
+			{% if 'ROLE_GUESTBOOK' in roles[user.user] %} {% set access2 = 1 %} {% else %} {% set access2 = 0 %} {% endif %}
+			{% if 'ROLE_MANAGER' in roles[user.user] %} {% set access3 = 1 %} {% else %} {% set access3 = 0 %} {% endif %}
+			{% if 'ROLE_STUFF' in roles[user.user] %} {% set access4 = 1 %} {% else %} {% set access4 = 0 %} {% endif %}
+			{% if 'ROLE_ADMINBOOK' in roles[user.user] %} {% set access5 = 1 %} {% else %} {% set access5 = 0 %} {% endif %}
+			{% if 'ROLE_TOURNAMENTS' in roles[user.user] %} {% set access6 = 1 %} {% else %} {% set access6 = 0 %} {% endif %}
+			{% if 'ROLE_TOURS' in roles[user.user] %} {% set access7 = 1 %} {% else %} {% set access7 = 0 %} {% endif %}
 
-	{% if roles[user.user] == val1 %}
-		{% set class = 'background-warning' %}
-	{% elseif roles[user.user] == val2 %}
-		{% set class = 'background-danger' %}			
-	{% else %}
-		{% set class = '' %}
-	{% endif %}
+			<div class='users-panel'>
+				<div id='panel{{ user.user }}' class='users-panel-info'>
+					<span  class='panel-with-user'>{{ user.username }}</span> <span>{{ replace_date(user.lastActivity) }}</span>
+				</div>
+				<div class='users-panel-body'>
+					<strong><a href='{{ path('app_user_show', {'id': user.user}) }}'>Перейти в профиль</a></strong>
+					{% if is_granted('ROLE_MANAGER') %}
+					<br><br>
+					<form name="form" id="form{{ user.user }}" method="post">
+						<strong>ПРИВИЛЕГИИ:</strong><br><br>
+						<input {% if access1 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="rat{{ user.user }}"/>
+						<label for="rat{{ user.user }}">RATE</label><br><br>
+						<input  {% if access2 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="gue{{ user.user }}"/>
+						<label for="gue{{ user.user }}">GUESTBOOK</label><br><br>
 
+						{% if is_granted('ROLE_SUPER_ADMIN') %}
+							<input  {% if access3 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="man{{ user.user }}"/>
+							<label for="man{{ user.user }}">MANAGER</label><br><br>					
+							<input  {% if access4 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="stu{{ user.user }}"/>
+							<label for="stu{{ user.user }}">STUFF</label><br><br>
+							<input  {% if access5 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="adm{{ user.user }}"/>
+							<label for="adm{{ user.user }}">ADMINBOOK</label><br><br>
+							<input  {% if access6 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="trn{{ user.user }}"/>
+							<label for="trn{{ user.user }}">TOURNAMENTS</label><br><br>
+							<input  {% if access7 == 1 %}  checked='checked' {% endif %}  type="checkbox" class="checkbox user-access" id="tou{{ user.user }}"/>
+							<label for="tou{{ user.user }}">TOURS</label>
 
-	<div class='users-panel'>
-		<div id='panel{{ user.user }}' class='users-panel-info  {{ class }}'>
-			<span  class='panel-with-user'>{{ user.username }}</span> <span>{{ replace_date(user.lastActivity) }}</span>
-		</div>
-		<div class='users-panel-body'>
-			<strong><a href='{{ path('app_user_show', {'id': user.user}) }}'>Перейти в профиль</a></strong><br><br>
-			<strong>Бан-статус</strong>
-			<form name="form" id="form{{ user.user }}" method="post">
-				<input type='hidden' name='old_role' value='{{ roles[user.user] }}'>
-				<input type='radio' class='nomargin' name='status' id='form-status{{ user.user }}' value='{{ val0 }}' {% if val0 == roles[user.user] %} checked='checked' {% endif %}> Без ограничений<br>
-				<input type='radio' name='status' class='nomargin' id='form-status{{ user.user }}' value='{{ val1 }}' {% if val1 == roles[user.user] %} checked='checked' {% endif %}> Запрещено ставить +/-<br>
-				<input type='radio' class='nomargin' name='status' id='form-status{{ user.user }}' value='{{ val2 }}' {% if val2 == roles[user.user] %} checked='checked' {% endif %}> Запрещено писать сообщения<br>
-			    <span id='send{{ user.user }}' class='send_group button button-main'>Установить</span>
-			</form>
+							<br><br>
+							<strong>IP:</strong> {{ user.ip }}<br>
+							<strong>UA:</strong> {{ user.userAgent }}<br>
+							<strong>Last Page:</strong> {{ user.lastPage }}<br>
+						{% endif %}
+					{% endif %}
+					</form>
+				</div>
+			</div>
 
-			{% if is_granted('ROLE_SUPER_ADMIN') %}
-				<br><br>
-				<strong>IP:</strong> {{ user.ip }}<br>
-				<strong>UA:</strong> {{ user.userAgent }}<br>
-				<strong>Last Page:</strong> {{ user.lastPage }}<br>
-			{% endif %}
-		</div>
-	</div>
-
-{% endfor %}
+		{% endfor %}
 
 {% endblock %}

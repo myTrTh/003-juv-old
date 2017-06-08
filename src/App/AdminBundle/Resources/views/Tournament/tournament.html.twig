@@ -8,7 +8,7 @@
 <a class='link-back' href='{{ path("app_admin_tournaments") }}'><i class='fa fa-arrow-left'></i> К СПИСКУ ТУРНИРОВ</a>
 <br><br>
 
-{% if access >= 1 %}
+{% if access == 3 or (access >= 1 and (is_granted('ROLE_TOURNAMENTS') or is_granted('ROLE_TOURS'))) %}
 	{% if tournament.status == 1 and (tournament.types == 1 or (tournament.types == 2 and headteam != 0)) %}
 	<a class='nostyle' href="{{ path("app_admin_tours", {"tournament": tournament.id}) }}"><h3><span class='alert alert-warning'> ДОБАВИТЬ / РЕДАКТИРОВАТЬ ТУР</span></h3></a>
 	<br>
@@ -26,7 +26,7 @@
 	{% endif %}
 {% endif %}
 
-{% if access == 2 %}
+{% if access == 3 or (access == 2 and is_granted('ROLE_TOURNAMENTS')) %}
 	<h4>НАЗВАНИЕ ТУРНИРА</h4>
 	{{ form_start(form_name) }}
 
@@ -92,9 +92,16 @@
 	{{ form_rest(form_delete) }}
 	{{ form_end(form_delete) }}
 
-{% elseif access == 0 %}
+{% endif %}
 
-Вам закрыт доступ к этому турниру
+{% if access == 0 %}
+		Вам закрыт доступ в этот раздел
+{% endif %}
+
+{% if access > 0 and access < 3 %}
+	{% if not is_granted('ROLE_TOURNAMENS') and not is_granted('ROLE_TOURS') %}
+		Вам закрыт доступ в этот раздел
+	{% endif %}
 {% endif %}
 
 {% endblock %}

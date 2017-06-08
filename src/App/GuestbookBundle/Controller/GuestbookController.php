@@ -49,12 +49,18 @@ class GuestbookController extends Controller
 
             if($form->isValid()) {
 
+                if ($this->class == 'Adminbook') {
+
+                    if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMINBOOK'))
+                        throw $this->createAccessDeniedException();
+                }
+
                 /* if not user */
                 if(!$userId)
                     return $this->redirect($this->generateUrl('fos_user_security_login'));
 
                 /* if banned user */
-    	        if ($this->get('security.authorization_checker')->isGranted('ROLE_BANNED_2')) {
+    	        if (!$this->get('security.authorization_checker')->isGranted('ROLE_GUESTBOOK')) {
                     $this->get('session')->getFlashBag()->add('error', 'Вам запрещено писать сообщения на неопределенный срок. Приносим свои извинения.');
                     return $this->redirect($this->generateUrl($this->url));
                 }
@@ -243,7 +249,7 @@ class GuestbookController extends Controller
 
     public function rankingAction(Request $request)
     {
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_BANNED_0')) {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_RATE')) {
             return false;
         } 
 

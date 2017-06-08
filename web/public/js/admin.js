@@ -23,6 +23,27 @@ $(function(){
 	})
 })
 
+/* switch access tournament */
+$(function() {
+	$('.user-access').on('click', function() {
+		var rowuser = $(this).attr('id');
+		var user = rowuser.substr(3);
+		var st = rowuser.substr(0, 3);
+		var status = $(this).prop('checked');
+		var senddata = 'user='+escape(user)+'&status='+escape(status)+'&st='+escape(st);
+		$.ajaxSetup({cache: false}); 
+		$.ajax({
+			url: "/access/access",
+			data: senddata,
+			type: "POST",
+			dataType: "json",
+			success: function(data){
+
+			}
+		})
+	})
+})
+
 /* set users role */
 $(function(){
 	$('.send_group').on('click', function(){

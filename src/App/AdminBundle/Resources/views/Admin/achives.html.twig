@@ -6,6 +6,8 @@
 
 {% block lowbody %}
 
+	{% if is_granted('ROLE_STUFF') %}
+
 	{{ form_start(form) }}
 	<br>
 	{{ form_widget(form.user, {'attr': {'class': 'form-control', 'placeholder': 'Пользователь'}} ) }}
@@ -46,5 +48,9 @@
 		</tr>
 	{% endfor %}
 	</table>
+
+{% else %}
+		Вам закрыт доступ в этот раздел
+{% endif %}
 
 {% endblock %}

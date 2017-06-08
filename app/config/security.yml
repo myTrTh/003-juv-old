@@ -6,8 +6,7 @@ security:
         FOS\UserBundle\Model\UserInterface: bcrypt
 
     role_hierarchy:
-        ROLE_MODERATE: ROLE_VERIFIED_USER
-        ROLE_ADMIN: ROLE_MODERATE
+        ROLE_ADMIN: ROLE_VERIFIED_USER
         ROLE_SUPER_ADMIN: ROLE_ADMIN
 
     # http://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
@@ -46,4 +45,4 @@ security:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/adminpanel/, role: ROLE_MODERATE }
+        - { path: ^/adminpanel/, role: ROLE_ADMIN }

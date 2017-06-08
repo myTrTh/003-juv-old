@@ -6,31 +6,37 @@
 
 {% block lowbody %}
 <a class='link-back' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
-<br><br>
+<br>
+
 <h4>Управление доступом</h4>
 <br>
-<div class='hidden' id='trid'>{{ tournament.id }}</div>
-<table class='access-admins'>
-	<tr>
-		<td>ПОЛНЫЙ ДОСТУП</td>
-		<td>УПРАВЛЕНИЕ ТУРАМИ</td>
-	</tr>
-	<tr>
-		<td>
-{% for partner in partners %}
+{% if access == 3 %}
+	<div class='hidden' id='trid'>{{ tournament.id }}</div>
+	<table class='access-admins'>
+		<tr>
+			<td>ПОЛНЫЙ ДОСТУП</td>
+			<td>УПРАВЛЕНИЕ ТУРАМИ</td>
+		</tr>
+		<tr>
+			<td>
+	{% for partner in partners %}
 
-		<input {% if partner.access == 1 %} checked='checked' {% endif %} type="checkbox" class="checkbox tournament-access" id="p{{ partner.id }}"/>
-		<label for="p{{ partner.id }}">{{ partner.username }}</label><br><br>
-{% endfor %}
-		</td>
-		<td>
-{% for assistant in assistants %}
+			<input {% if partner.access == 1 %} checked='checked' {% endif %} type="checkbox" class="checkbox tournament-access" id="p{{ partner.id }}"/>
+			<label for="p{{ partner.id }}">{{ partner.username }}</label><br><br>
+	{% endfor %}
+			</td>
+			<td>
+	{% for assistant in assistants %}
 
-		<input {% if assistant.access == 1 %} checked='checked' {% endif %} type="checkbox" class="checkbox tournament-access" id="a{{ assistant.id }}"/>
-		<label for="a{{ assistant.id }}">{{ assistant.username }}</label><br><br>
-{% endfor %}
-		</td>		
-	</tr>
-</table>
+			<input {% if assistant.access == 1 %} checked='checked' {% endif %} type="checkbox" class="checkbox tournament-access" id="a{{ assistant.id }}"/>
+			<label for="a{{ assistant.id }}">{{ assistant.username }}</label><br><br>
+	{% endfor %}
+			</td>		
+		</tr>
+	</table>
+
+{% else %}
+		Вам закрыт доступ в этот раздел
+{% endif %}
 
 {% endblock %}

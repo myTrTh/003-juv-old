@@ -6,6 +6,8 @@
 
 {% block lowbody %}
 
+{% if is_granted('ROLE_STUFF') %}
+
 	{{ form_start(form, {'method': 'post', 'attr': {'class': 'file_display_none'} }) }}
 	{{ form_widget(form.title, {'attr': {'class': 'form-control', 'placeholder': 'Заголовок'}} ) }}
 	{{ form_errors(form.title) }}
@@ -38,5 +40,9 @@
 		  </div>
 		</div>
 	{% endfor %}
+
+{% else %}
+		Вам закрыт доступ в этот раздел
+{% endif %}
 
 {% endblock %}

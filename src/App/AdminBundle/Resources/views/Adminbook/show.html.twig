@@ -6,7 +6,7 @@
 
 {% block lowbody %}
 
-{% if is_granted('ROLE_ADMIN') %}
+{% if is_granted('ROLE_ADMINBOOK') %}
 	{% set adminbb = 0 %}
 	{% include 'bbcode.html.twig' %}
 	{{ form_start(form, {'action': path('app_admin_guestbook')}) }}
@@ -17,7 +17,6 @@
 	
 	{{ form_widget(form.save, {'attr': {'class': 'button button-main'}}) }}
 	{{ form_end(form) }}
-{% endif %}
 
 <br>
 
@@ -43,4 +42,7 @@
 
 {% include 'pagenavigation.html.twig' %}
 
+{% else %}
+		Вам закрыт доступ в этот раздел
+{% endif %}
 {% endblock %}

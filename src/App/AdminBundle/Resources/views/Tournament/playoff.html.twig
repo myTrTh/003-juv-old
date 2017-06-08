@@ -8,6 +8,8 @@
 <a class='link-back' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
 <br>
 
+{% if access == 3 or (access > 0 and (is_granted('ROLE_TOURNAMENTS') or is_granted('ROLE_TOURS'))) %}
+
 {% if tournament.info.schema is defined and tournament.info.schema != 3 and tournament.info.schema != 2 %}
 <p>Для этого турнира не доступно добавление плей-офф</p>
 {% else %}
@@ -44,6 +46,10 @@
 {{ form_end(form) }}
 {% endif %}
 
+{% endif %}
+
+{% else %}
+		Вам закрыт доступ в этот раздел
 {% endif %}
 
 {% endblock %}

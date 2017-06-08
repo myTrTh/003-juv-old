@@ -5,6 +5,9 @@
 {% block lowheader %} Хранилище {% endblock %}
 
 {% block lowbody %}
+
+{% if is_granted('ROLE_STUFF') %}
+
 	{{ form_start(form) }}
 	<i class="fa fa-folder-open-o in-file"></i><span class="in-file-text">Выберите изображение...</span>
 	<div class="file-style middle">
@@ -32,5 +35,9 @@
 {# page navigation #}
 {% set page_navigation = '/adminpanel/files' %}
 {% include 'pagenavigation.html.twig' %}	
+
+{% else %}
+		Вам закрыт доступ в этот раздел
+{% endif %}
 
 {% endblock %}

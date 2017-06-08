@@ -6,6 +6,8 @@
 
 {% block lowbody %}
 
+{% if is_granted('ROLE_STUFF') %}
+
 {{ form_start(form) }}
 {# {{ form_label(form.number) }} #}
 {{ form_widget(form.number, 	{ 'attr': {'class': 'form-control form-short', 'placeholder': 'Номер' } } ) }}
@@ -35,4 +37,9 @@
 	</div>
 {% endfor %}
 </div>
+
+{% else %}
+		Вам закрыт доступ в этот раздел
+{% endif %}
+
 {% endblock %}

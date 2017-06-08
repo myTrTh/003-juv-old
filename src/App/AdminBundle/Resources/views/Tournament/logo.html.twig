@@ -6,9 +6,12 @@
 
 {% block lowbody %}
 <a class='link-back' href='{{ path("app_admin_tournament", {"tournament": tournament.id}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
-<br><br>
+<br>
 
 <H4>ТЕКУЩИЙ ЛОГОТИП</H4>
+
+{% if access == 3 or (access == 2 and is_granted('ROLE_TOURNAMENTS')) %}
+
 {% if tournament.image is not null %}
 	<img class='tournament-img' src='/public/images/custom/logo/{{ tournament.image }}'>
 {% else %}
@@ -32,5 +35,9 @@
 	    <input class='button button-main' type="submit" value="Установить" />
 	</div>	
 {{ form_end(form) }}
+
+{% else %}
+		Вам закрыт доступ в этот раздел
+{% endif %}
 
 {% endblock %}

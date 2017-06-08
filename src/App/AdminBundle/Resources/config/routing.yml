@@ -69,6 +69,10 @@ app_admin_access_set:
     path:     /access/set
     defaults: {_controller: AppAdminBundle:Admin:setaccess }
 
+app_admin_access_access:
+    path:     /access/access
+    defaults: {_controller: AppAdminBundle:Admin:roles }    
+
 app_admin_replaceuser:
     path:     /adminpanel/tournament/{tournament}/users
     defaults: { _controller: AppAdminBundle:Admin:replaceusers, tournament: 0 }

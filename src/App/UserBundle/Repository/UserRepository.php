@@ -48,7 +48,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
 
         for($i=0;$i<count($result);$i++) {
         	$id = $result[$i]['id'];
-        	$ban = $result[$i]['roles'][1];
+        	$ban = $result[$i]['roles'];
 
         	$roles[$id] = $ban;
         }
@@ -80,7 +80,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         return $result;
     }    
 
-    public function get_admins($assistant, $userId ) {
+    public function get_admins($type, $assistant, $userId ) {
 
         $dql = "SELECT u.id, u.username, u.roles FROM AppUserBundle:User u 
         WHERE u.id != :author ORDER BY u.username ASC";
@@ -90,13 +90,18 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         $result = $query->execute();
 
         $results = [];
-        $admins_role = ['ROLE_MODERATE', 'ROLE_ADMIN', 'ROLE_SUPER_ADMIN'];
+
+        if($type == 'partner')
+            $needle = 'ROLE_TOURNAMENTS';
+        else if($type == 'assistant')
+            $needle = 'ROLE_TOURS';
+
         for($i=0;$i<count($result);$i++) {
             $id = $result[$i]['id'];
             $username = $result[$i]['username'];
             $roles = $result[$i]['roles'];
 
-            if(!in_array('ROLE_VERIFIED_USER', $roles)) {
+            if(in_array($needle, $roles)) {
                 if(in_array($id, $assistant))
                     $access = 1;
                 else
@@ -105,6 +110,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
                 $results[] = ['id' => $id, 'username' => $username, 'access' => $access];
             }
         }
+
         return $results;
     }
 

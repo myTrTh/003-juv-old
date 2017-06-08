@@ -29,7 +29,7 @@ class User extends BaseUser
      *
      * @ORM\Column(name="created", type="datetime")
      */
-    private $created;
+    private $created; 
 
     /**
      * @ORM\Column(name="image", type="string", length=255, nullable=true)
@@ -57,7 +57,7 @@ class User extends BaseUser
         parent::__construct();
 
         # set default role and default ban status
-        $this->roles = array('ROLE_VERIFIED_USER', 'ROLE_BANNED_0');
+        $this->roles = array('ROLE_VERIFIED_USER', 'ROLE_RATE', 'ROLE_GUESTBOOK');
         $this->options = serialize(array('timezone' => 100, 'notification' => array('notification_guestbook' => false, 'notification_vote' => true)));
     }
 

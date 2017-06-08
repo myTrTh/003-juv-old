@@ -1,5 +1,20 @@
 <?php
 
+// ROLE_RATE
+// возможность ставить +/-
+// ROLE_GUESTBOOK
+// возможность писать сообщения, редактировать и цитировать
+// ROLE_MANAGER
+// возможность удалять сообщения, давать привилегии RATE и GUESTBOOK другим пользователям
+// ROLE_STUFF
+// управление контентом, загрузками, хранилищем, номерами, нахами, нашивками и чемпионами
+// ROLE_ADMINBOOK
+// доступ к гостевой админов
+// ROLE_TOURNAMENTS
+// доступ к созданию турниров
+// ROLE_TOURS
+// доступ к редактированию туров
+
 namespace App\AdminBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -56,6 +71,7 @@ class AdminController extends Controller
 
     public function usersAction()
     {
+
         $user = $this->getUser();
         if($user) {
             $userId = $user->getId();
@@ -75,7 +91,7 @@ class AdminController extends Controller
     public function deleteguestbookAction($id_message, Request $request) {
         
         /* if no admin */
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_MODERATE')) {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_MANAGER')) {
 	        throw $this->createAccessDeniedException();
         }
 
@@ -107,7 +123,7 @@ class AdminController extends Controller
 
     public function setbanAction(Request $request) {
     	/* if no admin */
-	    if (!$this->get('security.authorization_checker')->isGranted('ROLE_MODERATE')) {
+	    if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 	        throw $this->createAccessDeniedException();
 	    }
 
@@ -143,7 +159,7 @@ class AdminController extends Controller
 
     public function contentAction($type)
     {
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_MODERATE')) {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
         }
 
@@ -157,6 +173,10 @@ class AdminController extends Controller
 
         if($form->isSubmitted() && $form->isValid())
         {
+
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_STUFF')) {
+                throw $this->createAccessDeniedException();
+            }
 
             $user = $this->getUser();
             if($user)
@@ -199,6 +219,11 @@ class AdminController extends Controller
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_STUFF')) {
+                throw $this->createAccessDeniedException();
+            }
+
             $data = $form->getData();
 
             $file = $data->getImage();
@@ -237,6 +262,11 @@ class AdminController extends Controller
     }
 
     public function deleteuploadAction($id) {
+
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_STUFF')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $repository = $this->getDoctrine()->getRepository('AppAdminBundle:Upload');
         $image = $repository->get_upload($id);
 
@@ -275,6 +305,10 @@ class AdminController extends Controller
 
         if($form->isSubmitted() && $form->isValid())
         {
+
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_STUFF')) {
+                throw $this->createAccessDeniedException();
+            }            
 
             $user = $this->getUser();
             if($user)
@@ -316,7 +350,7 @@ class AdminController extends Controller
 
     public function deleteAction($content, $numb)
     {
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_STUFF')) {
             throw $this->createAccessDeniedException();
         }
 
@@ -342,7 +376,7 @@ class AdminController extends Controller
 
     public function filedeleteAction($id)
     {
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_STUFF')) {
             throw $this->createAccessDeniedException();
         }
 
@@ -377,6 +411,10 @@ class AdminController extends Controller
 
         if($form->isSubmitted() && $form->isValid())
         {
+
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_STUFF')) {
+                throw $this->createAccessDeniedException();
+            }            
 
             $user = $this->getUser();
             if($user)
@@ -442,6 +480,11 @@ class AdminController extends Controller
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_STUFF')) {
+                throw $this->createAccessDeniedException();
+            }
+
             $data = $form->getData();
             $id_user = $data['user'];
             $description = $data['description'];
@@ -498,6 +541,11 @@ class AdminController extends Controller
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid()) {
+
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_STUFF')) {
+                throw $this->createAccessDeniedException();
+            }
+
             $data = $form->getData();
             $id_user = $data['user'];
             $year = $data['year'];
@@ -532,6 +580,11 @@ class AdminController extends Controller
     }    
 
     public function tournamentsAction($page) {
+
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
         $status = 1;
 
         $result = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournaments_list($page, $status);
@@ -546,7 +599,7 @@ class AdminController extends Controller
     public function tournamentAction($tournament) {
 
         /* if no admin */
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_MODERATE')) {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
         }
 
@@ -660,7 +713,9 @@ class AdminController extends Controller
         if(empty($tr))
             return $this->redirect($this->generateUrl("app_admin_tournaments"));
 
-        if($userId == $tr['access']['creator'] or in_array($userId, $tr['access']['partner']))
+        if($userId == $tr['access']['creator'])
+            $access = 3;
+        else if(in_array($userId, $tr['access']['partner']))
             $access = 2;
         else if(in_array($userId, $tr['access']['assistant']))
             $access = 1;
@@ -688,7 +743,7 @@ class AdminController extends Controller
 
     public function createAction() {
         /* if no admin */
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_TOURNAMENTS')) {
             throw $this->createAccessDeniedException();
         }
 
@@ -740,7 +795,7 @@ class AdminController extends Controller
 
     public function logotypeAction($tournament) {
         /* if no admin */
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_MODERATE')) {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
         }
 
@@ -789,17 +844,21 @@ class AdminController extends Controller
 
         $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tournament);
 
-        if($tournamentshow['access']['creator'] == $userId  or in_array($userId, $tournamentshow['access']['partner'])) {
-            return $this->render('AppAdminBundle:Tournament:logo.html.twig',
-            array('form' => $form->createView(), 'tournament' => $tournamentshow));            
-        } else {
-            throw $this->createAccessDeniedException();
-        }
+
+        if($tournamentshow['access']['creator'] == $userId)
+            $access = 3;
+        else if(in_array($userId, $tournamentshow['access']['partner']))
+            $access = 2;
+        else
+            $access = 0; 
+
+        return $this->render('AppAdminBundle:Tournament:logo.html.twig',
+            array('form' => $form->createView(), 'tournament' => $tournamentshow, 'access' => $access));
     }    
 
     public function teamsAction($tournament) {
         /* if no admin */
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_MODERATE')) {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
         }
 
@@ -851,18 +910,23 @@ class AdminController extends Controller
 
         $teams = $this->getDoctrine()->getRepository("AppTournamentBundle:Team")->getTeams($tournament);
 
-        if($tournamentshow['access']['creator'] == $userId  or in_array($userId, $tournamentshow['access']['partner'])) {
-            return $this->render('AppAdminBundle:Tournament:teams.html.twig',
+        if($tournamentshow['access']['creator'] == $userId)
+            $access = 3;
+        else if(in_array($userId, $tournamentshow['access']['partner']))
+            $access = 2;
+        else
+            $access = 0; 
+
+
+        return $this->render('AppAdminBundle:Tournament:teams.html.twig',
                 array('form' => $form->createView(), 'teams' => $teams,
-                'tournament' => $tournamentshow));            
-        } else {
-            throw $this->createAccessDeniedException();        
-        }
+                'tournament' => $tournamentshow, 'access' => $access));
+
     }
 
     public function deleteteamAction($tournament, $numb)
     {
-        if (!$this->get('security.authorization_checker')->isGranted('ROLE_MODERATE')) {
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException();
         }
 
@@ -960,14 +1024,17 @@ class AdminController extends Controller
                 }
             }
 
-            if($tournamentshow['access']['creator'] == $userId  or in_array($userId, $tournamentshow['access']['partner'])) {
-                return $this->render('AppAdminBundle:Tournament:preliminaryusers.html.twig',
+        if($tournamentshow['access']['creator'] == $userId)
+            $access = 3;
+        else if(in_array($userId, $tournamentshow['access']['partner']))
+            $access = 2;
+        else
+            $access = 0; 
+
+            return $this->render('AppAdminBundle:Tournament:preliminaryusers.html.twig',
                         array("tournament" => $tournamentshow,
                               "preusers" => $preusers,
-                              "form" => $form->createView()));
-            } else {
-                throw $this->createAccessDeniedException();
-            }
+                              "form" => $form->createView(), 'access' => $access));
 
         } else if($tournamentshow['status'] == 1) {
 
@@ -997,19 +1064,26 @@ class AdminController extends Controller
             
             $newusers = $this->getDoctrine()->getRepository('AppTournamentBundle:Tournamentusers')->users_without_tournament($tournament);
 
-            if($tournamentshow['access']['creator'] == $userId  or in_array($userId, $tournamentshow['access']['partner'])) {            
+        if($tournamentshow['access']['creator'] == $userId)
+            $access = 3;
+        else if(in_array($userId, $tournamentshow['access']['partner']))
+            $access = 2;
+        else
+            $access = 0; 
+        
                 return $this->render('AppAdminBundle:Tournament:replace.html.twig',
                     array("tournament" => $tournamentshow,
                           "users" => $users,
-                          "newusers" => $newusers
+                          "newusers" => $newusers, 'access' => $access
                           ));
-            } else {
-                throw $this->createAccessDeniedException();
-            }
         }
     }
 
     public function accessAction($tournament) {
+
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         /* if no user */
         $user = $this->getUser();
@@ -1023,14 +1097,16 @@ class AdminController extends Controller
 
         $tournamentshow = $repository->show_tournament_for_admin($tournament);
 
-        $partner = $admin_repository->get_admins($tournamentshow['access']['partner'], $userId);
-        $assistant = $admin_repository->get_admins($tournamentshow['access']['assistant'], $userId);
+        $partner = $admin_repository->get_admins("partner", $tournamentshow['access']['partner'], $userId);
+        $assistant = $admin_repository->get_admins("assistant", $tournamentshow['access']['assistant'], $userId);
 
-        if($tournamentshow['access']['creator'] != $userId)
-            throw $this->createAccessDeniedException();
+        if($tournamentshow['access']['creator'] == $userId)
+            $access = 3;
+        else
+            $access = 0;
 
             return $this->render('AppAdminBundle:Tournament:access.html.twig',
-                array('tournament' => $tournamentshow, 'assistants' => $assistant, 'partners' => $partner));
+                array('tournament' => $tournamentshow, 'assistants' => $assistant, 'partners' => $partner, 'access' => $access));
     }
 
     public function setaccessAction(Request $request) {
@@ -1253,17 +1329,17 @@ class AdminController extends Controller
     }    
 
     public function toursAction($tournament, $tour, Request $request) {
+
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
+
         $user = $this->getUser();
         if($user)
             $userId = $user->getId();
 
         $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tournament);
-
-
-        if($tournamentshow['access']['creator'] != $userId)
-            if(!in_array($userId, $tournamentshow['access']['partner']))
-                if(!in_array($userId, $tournamentshow['access']['assistant']))
-                    throw $this->createAccessDeniedException();
 
         if($tour == 0)
             $tour = $this->getDoctrine()->getRepository("AppTournamentBundle:Tablelist")->get_actual_tour($tournament);
@@ -1406,13 +1482,22 @@ class AdminController extends Controller
 
         $offstatus = $this->getDoctrine()->getRepository('AppTournamentBundle:Calendar')->get_off_status($tr, $tour);
 
+           if($tournamentshow['access']['creator'] == $userId)
+                $access = 3;
+            else if(in_array($userId, $tournamentshow['access']['partner']))
+                $access = 2;
+            else if(in_array($userId, $tournamentshow['access']['assistant']))
+                $access = 1;
+            else
+                $access = 0; 
+
         return $this->render("AppAdminBundle:Tournament:tours.html.twig",
                 array("calendar" => $calendar,
                       "tournament" => $tr, "tour" => $tour,
                       "printtour" => $printtour,
                       "tourstatus" => $tourstatus,
                       "off" => $offstatus,
-                      "calendar" => $calendar,
+                      "calendar" => $calendar, "access" => $access,
                       "playoff" => $playoff_name,                      
                       "forecast" => $fore, 'teams' => $teams));
     }    
@@ -1424,10 +1509,9 @@ class AdminController extends Controller
 
         $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tournament);
 
-        if($tournamentshow['access']['creator'] != $userId)
-            if(!in_array($userId, $tournamentshow['access']['partner']))
-                if(!in_array($userId, $tournamentshow['access']['assistant']))
-                    throw $this->createAccessDeniedException();
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         if($tour == 0)
             $tour = 1;
@@ -1466,8 +1550,17 @@ class AdminController extends Controller
 
         $forecast = $this->getDoctrine()->getRepository('AppTournamentBundle:Forecast')->getActiveTours($tournamentshow['types']);
 
+           if($tournamentshow['access']['creator'] == $userId)
+                $access = 3;
+            else if(in_array($userId, $tournamentshow['access']['partner']))
+                $access = 2;
+            else if(in_array($userId, $tournamentshow['access']['assistant']))
+                $access = 1;
+            else
+                $access = 0; 
+
         return $this->render("AppAdminBundle:Tournament:addtours.html.twig", array(
-                "tournament" => $tournamentshow, "forecast" => $forecast, "tour" => $tour
+                "tournament" => $tournamentshow, "forecast" => $forecast, "tour" => $tour, 'access' => $access
             ));        
     }
 
@@ -1479,10 +1572,9 @@ class AdminController extends Controller
 
         $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tournament);
 
-        if($tournamentshow['access']['creator'] != $userId)
-            if(!in_array($userId, $tournamentshow['access']['partner']))
-                if(!in_array($userId, $tournamentshow['access']['assistant']))
-                    throw $this->createAccessDeniedException();
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         if($tour == 0)
             $tour = 1;
@@ -1570,17 +1662,30 @@ class AdminController extends Controller
 
         $tourstatus = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_tour_status($tournament, $tour);
 
+           if($tournamentshow['access']['creator'] == $userId)
+                $access = 3;
+            else if(in_array($userId, $tournamentshow['access']['partner']))
+                $access = 2;
+            else if(in_array($userId, $tournamentshow['access']['assistant']))
+                $access = 1;
+            else
+                $access = 0; 
+
         if($tournamentshow['types'] == 1) {
             return $this->render('AppAdminBundle:Tournament:tourcompleted.html.twig',
-                array('tour' => $tour, 'tournament' => $tournamentshow, "forecast" => $fore, "tourstatus" => $tourstatus));
+                array('tour' => $tour, 'tournament' => $tournamentshow, "forecast" => $fore, "tourstatus" => $tourstatus, 'access' => $access));
         } else if ($tournamentshow['types'] == 2) {
 
             return $this->render('AppAdminBundle:Tournament:scoredcompleted.html.twig',
-                array('tour' => $tour, 'tournament' => $tournamentshow, "forecast" => $fore, "scored" => $scored, "tourstatus" => $tourstatus));
+                array('tour' => $tour, 'tournament' => $tournamentshow, "forecast" => $fore, "scored" => $scored, "tourstatus" => $tourstatus, 'access' => $access));
         }
     }    
 
    public function playoffAction($tr, $tour) {
+
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
 
         $user = $this->getUser();
         if($user)
@@ -1588,10 +1693,6 @@ class AdminController extends Controller
 
         $tournamentshow = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->show_tournament_for_admin($tr);
 
-        if($tournamentshow['access']['creator'] != $userId)
-            if(!in_array($userId, $tournamentshow['access']['partner']))
-                if(!in_array($userId, $tournamentshow['access']['assistant']))
-                    throw $this->createAccessDeniedException();
 
         $tournament = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->find($tr);
 
@@ -1683,9 +1784,18 @@ class AdminController extends Controller
 
             $playtours = $this->getDoctrine()->getRepository('AppTournamentBundle:Calendar')->get_tours_with_playoff($tr);
 
+           if($tournamentshow['access']['creator'] == $userId)
+                $access = 3;
+            else if(in_array($userId, $tournamentshow['access']['partner']))
+                $access = 2;
+            else if(in_array($userId, $tournamentshow['access']['assistant']))
+                $access = 1;
+            else
+                $access = 0; 
+
             return $this->render('AppAdminBundle:Tournament:playoff.html.twig',
                 array("tournament" => $tournamentshow, "preusers" => $preusers,
-                          "form" => $form->createView()));
+                          "form" => $form->createView(), 'access' => $access));
 
     }    
 
@@ -1744,8 +1854,17 @@ class AdminController extends Controller
                 return $this->redirect($this->generateUrl("app_admin_headteam", array("tr" => $tr)));
         }        
 
+           if($tournamentshow['access']['creator'] == $userId)
+                $access = 3;
+            else if(in_array($userId, $tournamentshow['access']['partner']))
+                $access = 2;
+            else if(in_array($userId, $tournamentshow['access']['assistant']))
+                $access = 1;
+            else
+                $access = 0; 
+
         return $this->render('AppAdminBundle:Tournament:headteam.html.twig', 
-            array('team' => $team, 'form' => $form->createView(), 'tournament' => $tournamentshow));
+            array('team' => $team, 'form' => $form->createView(), 'tournament' => $tournamentshow, 'access' => $access));
     }
 
     public function headteamsAction() {
@@ -1935,6 +2054,11 @@ class AdminController extends Controller
 
 
         if($form->isSubmitted() && $form->isValid()) {
+
+            if (!$this->get('security.authorization_checker')->isGranted('ROLE_STUFF')) {
+                throw $this->createAccessDeniedException();
+            }
+
             $data = $form->getData();
 
             $file = $data->getImage();
@@ -1974,5 +2098,119 @@ class AdminController extends Controller
                         array('form' => $form->createView(),
                               'images' => $images, 'countpage' => $countpage, 'page' => $page));
     }
+
+    public function rolesAction(Request $request) {
+
+        /* if no admin */
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            throw $this->createAccessDeniedException();
+        }
+
+        /* if no user */
+        $user = $this->getUser();
+        if($user)
+            $userId = $user->getId();
+        else
+            throw $this->createAccessDeniedException();
+
+        if($request->request->get('user') && $request->request->get('status') && $request->request->get('st'))
+        {
+            $accessuser = (int) $request->request->get('user');
+            $status = $request->request->get('status');
+            $st = $request->request->get('st');
+
+            $headroles = $user->getRoles();
+
+            // Разбираем роли
+            if($st == 'rat') {
+                $newstatus = 'ROLE_RATE';
+
+                if(!in_array('ROLE_MANAGER', $headroles))
+                    return new Response(json_encode(0));
+
+            } else if($st == 'gue') {
+                $newstatus = 'ROLE_GUESTBOOK';
+
+                if(!in_array('ROLE_MANAGER', $headroles))
+                    return new Response(json_encode(0));
+
+            } else if($st == 'man') {
+                $newstatus = 'ROLE_MANAGER';
+
+                if(!in_array('ROLE_SUPER_ADMIN', $headroles))
+                    return new Response(json_encode(0));
+
+            } else if($st == 'stu') {
+                $newstatus = 'ROLE_STUFF';
+
+                if(!in_array('ROLE_SUPER_ADMIN', $headroles))
+                    return new Response(json_encode(0));
+
+            } else if($st == 'adm') {
+                $newstatus = 'ROLE_ADMINBOOK';
+
+                if(!in_array('ROLE_SUPER_ADMIN', $headroles))
+                    return new Response(json_encode(0));
+
+            } else if($st == 'trn') {
+                $newstatus = 'ROLE_TOURNAMENTS';
+
+                if(!in_array('ROLE_SUPER_ADMIN', $headroles))
+                    return new Response(json_encode(0));
+
+            } else if($st == 'tou') {
+                $newstatus = 'ROLE_TOURS';
+
+                if(!in_array('ROLE_SUPER_ADMIN', $headroles))
+                    return new Response(json_encode(0));
+
+            } else {
+                return new Response(json_encode(0));
+            }
+
+            $adminstatus = ['ROLE_MANAGER', 'ROLE_STUFF', 'ROLE_ADMINBOOK', 'ROLE_TOURNAMENTS', 'ROLE_TOURS'];
+
+            $user_with_role = $this->getDoctrine()->getRepository('AppUserBundle:User')->find($accessuser);
+            $user_role = $user_with_role->getRoles();
+
+            if($status == 'true') {
+
+                if(!in_array($newstatus, $user_role))
+                    $user_role[] = $newstatus;
+
+            } else if($status == 'false') {
+
+                if(($key = array_search($newstatus, $user_role)) == true)
+                    unset($user_role[$key]);
+            }          
+
+            // УБИРАЕМ ИЛИ ДОБАВЛЯЕМ СТАТУС АДМИНА 
+            if(array_intersect($adminstatus, $user_role)) {
+
+                if(!in_array("ROLE_ADMIN", $user_role))
+                    $user_role[] = "ROLE_ADMIN";
+
+                if(($key = array_search("ROLE_VERIFIED_USER", $user_role)) == true)
+                    unset($user_role[$key]);
+
+            } else {
+
+                if(!in_array("ROLE_VERIFIED_USER", $user_role))
+                    $user_role[] = "ROLE_VERIFIED_USER";
+
+                if(($key = array_search("ROLE_ADMIN", $user_role)) == true)
+                    unset($user_role[$key]);
+            }
+
+            $user_with_role->setRoles($user_role);
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($user_with_role);
+            $em->flush();           
+
+            return new Response(json_encode(1));
+        }        
+
+    }    
 
 }

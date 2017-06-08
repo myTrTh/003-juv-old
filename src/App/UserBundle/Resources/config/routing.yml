@@ -19,6 +19,10 @@ fos_user_user_show:
     path:     /profile/
     defaults: { _controller: AppUserBundle:Profile:show }
 
+for_user_group:
+    resource: "@FOSUserBundle/Resources/config/routing/group.xml"
+    prefix: /group
+
 app_user_show:
     path:     /user/{id}
     defaults: { _controller: AppUserBundle:User:show, id: 0 }

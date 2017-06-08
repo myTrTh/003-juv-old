@@ -5,10 +5,13 @@
 {% block lowheader %} Турниры {% endblock %}
 
 {% block lowbody %}
-	{% if is_granted('ROLE_ADMIN') %}
+
+{% if is_granted('ROLE_TOURNAMENTS') or is_granted('ROLE_TOURS') %}
+
+	{% if is_granted('ROLE_TOURNAMENTS') %}
 		<a class='nostyle' href='{{ path('app_admin_create') }}'>+ СОЗДАТЬ ТУРНИР</a>
+		<br><br>
 	{% endif %}
-	<br><br>
 
 	{% if tournaments is empty %}
 		<br><br>
@@ -38,5 +41,9 @@
 
 	{# page navigation #}
 	{% include 'pagenavigation.html.twig' %}	
+
+{% else %}
+		Вам закрыт доступ в этот раздел
+{% endif %}
 
 {% endblock %}

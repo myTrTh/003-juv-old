@@ -6,6 +6,8 @@
 
 {% block lowbody %}
 
+{% if is_granted('ROLE_STUFF') %}
+
 	{{ form_start(form) }}
 	{{ form_widget(form.folder[0]) }} Лого турнира<br>
 	{{ form_widget(form.folder[1]) }} Нашивка пользователя в гостевой<br>
@@ -53,5 +55,9 @@
 			</div>
 		{% endfor %}
 		</div>
-	{% endif %}		
+	{% endif %}
+
+{% else %}
+		Вам закрыт доступ в этот раздел
+{% endif %}
 {% endblock %}
