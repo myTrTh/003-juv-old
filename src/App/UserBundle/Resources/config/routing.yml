@@ -30,11 +30,11 @@ app_user_show:
         id: '\d+'
 
 app_user_list:
-    path:     /users/{page}/{sort}
-    defaults: { _controller: AppUserBundle:User:list, page: 1, sort: alpha_asc }
+    path:     /users/{sort}/{page}
+    defaults: { _controller: AppUserBundle:User:list, sort: alpha_asc, page: 1 }
     requirements:
-        page: '\d+'
         sort: 'alpha_asc|alpha_desc|since_asc|since_desc'
+        page: '\d+'
 
 app_user_notification:
     path:     /notification/set

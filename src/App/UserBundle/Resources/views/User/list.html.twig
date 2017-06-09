@@ -64,19 +64,13 @@
 				{% endfor %}
 			{% endif %}
 		</div>
-{# 	{{ user.username }} <br>
-
-	{% if achives[user.id] is defined %}
-		{% spaceless %}						
-			{% for achive in achives[user.id] %}
-				<img title="{{ achive.1 }}" class='book-achive' src="/public/images/custom/achive/{{ achive.0 }}">
-			{% endfor %}
-		{% endspaceless %}
-	{% endif %}
-	<br> #}
 	</div>
 	{% endfor %}
 
 </div>
+
+{# page navigation #}
+{% set page_navigation = '/users/'~sort %}
+{% include 'pagenavigation.html.twig' %}
 
 {% endblock %}

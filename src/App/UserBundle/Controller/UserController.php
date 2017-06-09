@@ -46,7 +46,10 @@ class UserController extends Controller
     public function listAction($page, $sort) {
 
         $repository = $this->getDoctrine()->getRepository('AppUserBundle:User');
-        $users = $repository->show_all_users($page, $sort);
+        $result = $repository->show_all_users($page, $sort);
+
+        $users = $result['users'];
+        $countpage = $result['countpage'];
 
         $repository_achives = $this->getDoctrine()->getRepository('AppGuestbookBundle:Achive');
         $achives = $repository_achives->achives_for_guestbook();
@@ -58,6 +61,8 @@ class UserController extends Controller
         	array("users" => $users,
                   "achives" => $achives,
                   "numbers" => $numbers,
+                  "page" => $page,
+                  "countpage" => $countpage,
                   "sort" => $sort
                   ));
     }

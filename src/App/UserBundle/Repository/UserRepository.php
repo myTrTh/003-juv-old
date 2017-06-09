@@ -23,6 +23,11 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         else if ($sort == 'since_desc')
             $orber_by = "id DESC";
 
+        $list = $page - 1;
+        $how = 50;
+        if($list > 0)
+            $list = $list * $how;
+
         $dql = 'SELECT u.id, u.username, u.email, u.image, n.number, u.created
             FROM AppUserBundle:User u
             LEFT JOIN AppGuestbookBundle:Number n
@@ -30,7 +35,9 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
             WHERE u.enabled = 1
             ORDER BY u.'.$orber_by;
 
-        $query = $this->getEntityManager()->createQuery($dql);
+        $query = $this->getEntityManager()->createQuery($dql)
+                ->SetFirstResult($list)
+                ->SetMaxResults($how);        
 
         $result = $query->execute();
 
@@ -47,7 +54,16 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
             }
         }
 
-        return $result;
+        $pagedql = 'SELECT count(u) FROM AppUserBundle:User u';
+        $pagequery = $this->getEntityManager()->createQuery($pagedql);
+
+        $rowcountpage = $pagequery->execute();
+        $countpage = ceil($rowcountpage[0][1]/$how);
+
+        $res['users'] = $result;
+        $res['countpage'] = $countpage;
+
+        return $res;
     }       
 
 	public function show_roles() {
