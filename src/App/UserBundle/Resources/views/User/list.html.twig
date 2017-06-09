@@ -31,13 +31,22 @@
 <div class="container-users">
 
 	{% for user in users %}
+
+		{% if user.resize == 0 %}
+			{% set class = 'photo-height-big' %}
+		{% else %}
+			{% set class = 'photo-width-big' %}
+		{% endif %}	
+
 	<div class="board-user">
-		<div>
+		<div class='div-classifica-img'>
+			<div>
 			{% if user.image is not null %}
-				<img src="/public/images/users/{{ user.image }}"><br>
+				<img class="{{ class }}" src="/public/images/users/{{ user.image }}"><br>
 			{% else %}
-				<img src="/public/images/interface/no_photo.png"><br>				
+				<img class="{{ class }}" src="/public/images/interface/no_photo.png"><br>				
 			{% endif %}
+			</div>
 		</div>
 		<div>
 			<a class='nostyle' href='{{ path('app_user_show', {'id': user.id}) }}'><span>{{ user.username }}</span></a><br>

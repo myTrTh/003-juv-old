@@ -96,3 +96,31 @@
     max-height: 25px !important;
     padding: 0 !important;
 }
+
+.div-classifica-img {
+    width: 50px !important;
+    height: 50px !important;
+    padding: 0 !important;
+    margin: 10px;
+    display: block;
+    overflow: hidden;
+    & div {
+        width: 50px !important;
+        height: 50px !important;
+        border-radius: 25px;
+        z-index: 999;
+        overflow: hidden;
+    }
+}
+
+.photo-width-big {
+    height: 50px !important;
+    vertical-align: middle;
+    padding: 0 !important;
+}
+
+.photo-height-big {
+    width: 50px !important;
+    vertical-align: middle;
+    padding: 0 !important;
+}

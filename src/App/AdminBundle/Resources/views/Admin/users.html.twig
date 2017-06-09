@@ -31,11 +31,7 @@
 					<span  class='panel-with-user'>{{ user.username }}</span> <span>{{ replace_date(user.lastActivity) }}</span>
 					<span class='red'>
 					{% if is_granted('ROLE_SUPER_ADMIN') %}
-						{% if access3 == true %}M{% endif %}
-						{% if access4 == true %}S{% endif %}
-						{% if access5 == true %}A{% endif %}
-						{% if access6 == true %}TR{% endif %}
-						{% if access7 == true %}T{% endif %}
+						{% if access3 == true %}M{% endif %}{% if access4 == true %}S{% endif %}{% if access5 == true %}A{% endif %}{% if access6 == true %}T{% endif %}{% if access7 == true %}R{% endif %}
 					{% endif %}
 					</span>
 				</div>
