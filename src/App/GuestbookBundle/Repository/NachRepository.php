@@ -14,7 +14,7 @@ class NachRepository extends \Doctrine\ORM\EntityRepository
 {
 	public function order_nach($number){
 		$dql = "SELECT n FROM AppGuestbookBundle:Nach n
-			WHERE n.number = :nach";
+			WHERE n.number = :nach AND n.status = 1";
 
 		$query = $this->getEntityManager()->createQuery($dql)
 			->SetParameter('nach', $number);
@@ -24,7 +24,7 @@ class NachRepository extends \Doctrine\ORM\EntityRepository
 	}
 
 	public function show_nach(){
-		$dql = "SELECT n FROM AppGuestbookBundle:Nach n
+		$dql = "SELECT n FROM AppGuestbookBundle:Nach n WHERE n.status = 1
 		ORDER BY n.number DESC";
 
 		$query = $this->getEntityManager()->createQuery($dql);
@@ -40,6 +40,7 @@ class NachRepository extends \Doctrine\ORM\EntityRepository
 				WHERE n.number = g.id
 				INNER JOIN AppUserBundle:User u
 				WHERE u.id = g.user
+				WHERE n.status = 1
 				ORDER BY n.number ASC";
 
 		$query = $this->getEntityManager()->createQuery($dql);

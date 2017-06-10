@@ -16,6 +16,7 @@ class AchiveRepository extends \Doctrine\ORM\EntityRepository
 		WHERE u.id = a.user
 		INNER JOIN AppAdminBundle:Upload up
 		WHERE up.id = a.image
+		WHERE a.status = 1
 		ORDER BY a.id DESC";
 
 		$query = $this->getEntityManager()->createQuery($dql);
@@ -28,7 +29,8 @@ class AchiveRepository extends \Doctrine\ORM\EntityRepository
 		$dql = "SELECT a.user, u.image, a.description
 		FROM AppGuestbookBundle:Achive a
 		INNER JOIN AppAdminBundle:Upload u
-		WHERE a.image = u.id";
+		WHERE a.image = u.id
+		WHERE a.status = 1";
 
 		$query = $this->getEntityManager()->createQuery($dql);
 

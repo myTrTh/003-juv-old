@@ -57,6 +57,12 @@ class Number
      */
     private $author;
 
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="status", type="boolean")
+     */
+    private $status;
 
     /**
      * Get id
@@ -157,4 +163,28 @@ class Number
     {
         return $this->author;
     }
+
+/**
+     * Set status
+     *
+     * @param boolean $status
+     *
+     * @return Guestbook
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return bool
+     */
+    public function getStatus()
+    {
+        return $this->status;
+    }    
 }

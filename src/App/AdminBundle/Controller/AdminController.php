@@ -232,8 +232,7 @@ class AdminController extends Controller
 
         if($image) {
 
-            // $order = $repository->order($id);
-            $order = 0;
+            $order = $repository->order_img($id, $image);
 
             if($order) {
                 $repository->update_image_status($id, 0);
@@ -290,6 +289,7 @@ class AdminController extends Controller
                 $number->setUser($user_id);
                 $number->setNumber($number_id);
                 $number->setAuthor($userId);
+                $number->setStatus(1);
                 $em->persist($number);
                 $em->flush();
             } else {
@@ -318,8 +318,10 @@ class AdminController extends Controller
             $repository = $this->getDoctrine()->getRepository('AppGuestbookBundle:'.$content);
             $number = $repository->findOneById($numb);
             if($number){
+
                 $em = $this->getDoctrine()->getManager();
-                $em->remove($number);
+                $number->setStatus(0);
+                $em->persist($number);
                 $em->flush();
             }
         }
@@ -398,6 +400,7 @@ class AdminController extends Controller
                 $nach->setDescription($description);
                 $nach->setNumber($number_id);
                 $nach->setAuthor($userId);
+                $nach->setStatus(1);
                 $em->persist($nach);
                 $em->flush();
             } else {
@@ -463,6 +466,7 @@ class AdminController extends Controller
             $achive->setDescription($description);
             $achive->setImage($image);
             $achive->setAuthor($userId);
+            $achive->setStatus(1);
             $em->persist($achive);
             $em->flush();
 
@@ -526,6 +530,7 @@ class AdminController extends Controller
             $champion->setDescription($description);
             $champion->setImage($image);
             $champion->setAuthor($userId);
+            $champion->setStatus(1);
             $em->persist($champion);
             $em->flush();
 

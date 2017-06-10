@@ -12,7 +12,7 @@ class NumberRepository extends \Doctrine\ORM\EntityRepository
 {
 	public function get_numbers($user_id, $number){
 		$dql = "SELECT n FROM AppGuestbookBundle:Number n
-			WHERE n.user = :user OR n.number = :number";
+			WHERE (n.user = :user OR n.number = :number) AND n.status = 1";
 
 		$query = $this->getEntityManager()->createQuery($dql)
 			->SetParameter('user', $user_id)
@@ -22,23 +22,10 @@ class NumberRepository extends \Doctrine\ORM\EntityRepository
 		return $result;
 	}
 
-	// public function show_numbers(){
-	// 	$dql = "SELECT n.id, n.number, n.user, u.username
-	// 	FROM AppGuestbookBundle:Number n
-	// 	INNER JOIN AppUserBundle:User u
-	// 	WHERE u.id = n.user
-	// 	ORDER BY n.number ASC";
-
-	// 	$query = $this->getEntityManager()->createQuery($dql);
-
-	// 	$result = $query->execute();
-
-	// 	return $result;
-	// }	
 
 	public function show_numbers(){
 		$dql = "SELECT n.number, n.user
-		FROM AppGuestbookBundle:Number n";
+		FROM AppGuestbookBundle:Number n WHERE n.status = 1";
 
 		$query = $this->getEntityManager()->createQuery($dql);
 
@@ -59,6 +46,7 @@ class NumberRepository extends \Doctrine\ORM\EntityRepository
 		FROM AppGuestbookBundle:Number n
 		INNER JOIN AppUserBundle:User u
 		WHERE u.id = n.user
+		WHERE n.status = 1
 		ORDER BY n.number ASC
 		";
 
@@ -81,7 +69,7 @@ class NumberRepository extends \Doctrine\ORM\EntityRepository
 	public function number_for_user($id){
 		$dql = "SELECT n.number
 		FROM AppGuestbookBundle:Number n
-		WHERE n.user = :id";
+		WHERE n.user = :id AND n.status = 1";
 
 		$query = $this->getEntityManager()->createQuery($dql)
 			->SetParameter("id", $id);

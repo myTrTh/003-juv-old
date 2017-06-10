@@ -144,4 +144,34 @@ class UploadRepository extends \Doctrine\ORM\EntityRepository
 		$query->execute();
 
 	}
+
+	public function order_img($id, $image) {
+
+		$type = $image['folder'];
+		$name = $image['image'];
+
+		if($type == 'logo') {
+			$bundle = 'AppTournamentBundle:Tournament i';
+		} else if ($type == 'cup') {
+			$bundle = 'AppGuestbookBundle:Champion i';
+			$name = $id;
+		} else if ($type == 'achive') {
+			$bundle = 'AppGuestbookBundle:Achive i';
+			$name = $id;
+		}
+
+		$dql = "SELECT i.id FROM ".$bundle."
+		WHERE i.image = :image";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+				->SetParameter('image', $name);
+
+		$result = $query->execute();
+
+		if(empty($result))
+			return 0;
+		else
+			return 1;
+
+	}
 }

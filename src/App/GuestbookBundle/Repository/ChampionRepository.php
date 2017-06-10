@@ -16,6 +16,7 @@ class ChampionRepository extends \Doctrine\ORM\EntityRepository
 		WHERE u.id = c.user
 		INNER JOIN AppAdminBundle:Upload up
 		WHERE up.id = c.image
+		WHERE c.status = 1
 		ORDER BY c.year DESC";
 
 		$query = $this->getEntityManager()->createQuery($dql);
@@ -29,7 +30,7 @@ class ChampionRepository extends \Doctrine\ORM\EntityRepository
 		FROM AppGuestbookBundle:Champion c
 		INNER JOIN AppAdminBundle:Upload u
 		WHERE u.id = c.image
-		WHERE c.user = :id
+		WHERE c.user = :id AND c.status = 1
 		ORDER BY c.year DESC";
 
 		$query = $this->getEntityManager()->createQuery($dql)
