@@ -15,11 +15,16 @@ class ModeDateExtension extends \Twig_Extension
         $this->token_storage = $token_storage;		
 	}
 
+    public function getName()
+    {
+        return 'ModeDateExtension';
+    }	
+
 	public function getFunctions() {
 		return array(
-			'replace_date' => new \Twig_Function_Method($this, 'replace_date'),
-			'utc_to_locale' => new \Twig_Function_Method($this, 'utc_to_locale'),
-			'locale_to_utc' => new \Twig_Function_Method($this, 'locale_to_utc'),
+            new \Twig_SimpleFunction('replace_date', array($this, 'replace_date')),
+            new \Twig_SimpleFunction('utc_to_locale', array($this, 'utc_to_locale')),
+            new \Twig_SimpleFunction('locale_to_utc', array($this, 'locale_to_utc'))
 		);
 	}
 

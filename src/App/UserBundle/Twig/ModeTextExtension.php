@@ -15,9 +15,14 @@ class ModeTextExtension extends \Twig_Extension
 		$this->service = $service;
 	}
 
+    public function getName()
+    {
+        return 'ModeTextExtension';
+    }	
+
 	public function getFunctions() {
 		return array(
-			'replace_text' => new \Twig_Function_Method($this, 'replace_text')
+            new \Twig_SimpleFunction('replace_text', array($this, 'replace_text'))			
 		);
 	}		
 	

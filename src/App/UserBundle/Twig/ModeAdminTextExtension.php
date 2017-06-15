@@ -11,9 +11,20 @@ class ModeAdminTextExtension extends \Twig_Extension
 		$this->service = $service;
 	}	
 
+    public function getName()
+    {
+        return 'ModeAdminTextExtension';
+    }
+
+	// public function getFunctions() {
+	// 	return array(
+	// 		'adminreplace_text' => new \Twig_Function_Method($this, 'adminreplace_text')
+	// 	);
+	// }
+
 	public function getFunctions() {
 		return array(
-			'adminreplace_text' => new \Twig_Function_Method($this, 'adminreplace_text')
+            new \Twig_SimpleFunction('adminreplace_text', array($this, 'adminreplace_text'))
 		);
 	}
 
