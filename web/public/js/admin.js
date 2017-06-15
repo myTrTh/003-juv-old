@@ -152,7 +152,7 @@ $(function() {
 			users.append(element);
 
 			if((how % 2) == 0)
-				users.append(" - ");
+				users.append("- ");
 			else
 				users.append("<br>");
 
@@ -192,20 +192,34 @@ $(function() {
 		$('.allow').html(endhow);
 		var all = $('.all').html();
 		var button = $('.but');
-		if($('#groups').html() == 0) {
+
+		if(schema == 1 || schema == 3) {
 			if(all == endhow) {
-				console.log('all ' + all + ' allow ' + endhow);
 				button.show();
 			}
 			else {
 				button.hide();
 			}
-		} else {
+		} else if (schema == 2) {
 			if(endhow == 2 || endhow == 4 || endhow == 8 || endhow == 16 || endhow == 32 || endhow == 64 || endhow == 128 || endhow == 256)
 				button.show();
 			else
 				button.hide();			
 		}
+		// if($('#groups').html() == 0) {
+		// 	if(all == endhow) {
+		// 		console.log('all ' + all + ' allow ' + endhow);
+		// 		button.show();
+		// 	}
+		// 	else {
+		// 		button.hide();
+		// 	}
+		// } else {
+		// 	if(endhow == 2 || endhow == 4 || endhow == 8 || endhow == 16 || endhow == 32 || endhow == 64 || endhow == 128 || endhow == 256)
+		// 		button.show();
+		// 	else
+		// 		button.hide();			
+		// }
 	});
 })
 
