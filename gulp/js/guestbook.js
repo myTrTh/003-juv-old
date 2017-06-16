@@ -80,15 +80,16 @@ $(function(){
 
 // spoiler
 $(function(){
-	$('.spoiler-name').on('click', function(){
-		var spoiler = $(this).parent();
-		$('.spoiler-body:first', spoiler).slideToggle(200);
+	$(document).on('click', '.spoiler-name', function() {	
+		var head = $(this).parent();
+		var spoiler = head.next();
+		spoiler.slideToggle(300);
 
-		var sign = $('.sign', spoiler).html();
+		var sign = $('.sign:first', head).html();
 		if(sign == '+')
-			$('.sign:first', spoiler).html('−');
+			$('.sign:first', head).html('−');
 		else
-			$('.sign:first', spoiler).html('+');		
+			$('.sign:first', head).html('+');		
 	});
 })
 

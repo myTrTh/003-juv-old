@@ -16,29 +16,50 @@ class textService {
 	public function replace_text($message){
 
 		// bb tag
-		$patternB = "/\[b\](.*?)\[\/b\]/s";
+		$patternB = "/\[b\](.*?)\[\/b\]/si";
 		$message = preg_replace($patternB, "<strong>$1</strong>", $message);
-		$patternB = "/\[i\](.*?)\[\/i\]/s";
+		$patternB = "/\[i\](.*?)\[\/i\]/si";
 		$message = preg_replace($patternB, "<em>$1</em>", $message);
-		$patternB = "/\[u\](.*?)\[\/u\]/s";
+		$patternB = "/\[u\](.*?)\[\/u\]/si";
 		$message = preg_replace($patternB, "<span class='bbunderline'>$1</span>", $message);
-		$patternB = "/\[s\](.*?)\[\/s\]/s";
+		$patternB = "/\[s\](.*?)\[\/s\]/si";
 		$message = preg_replace($patternB, "<del>$1</del>", $message);
-		$patternB = "/\[left\](.*?)\[\/left\]/s";
+		$patternB = "/\[left\](.*?)\[\/left\]/si";
 		$message = preg_replace($patternB, "<span class='left'>$1</span>", $message);
-		$patternB = "/\[right\](.*?)\[\/right\]/s";
+		$patternB = "/\[right\](.*?)\[\/right\]/si";
 		$message = preg_replace($patternB, "<span class='right'>$1</span>", $message);
-		$patternB = "/\[center\](.*?)\[\/center\]/s";
+		$patternB = "/\[center\](.*?)\[\/center\]/si";
 		$message = preg_replace($patternB, "<span class='center'>$1</span>", $message);
-		$patternB = "/post(?:\:|\/)([0-9]+)/s";
+		$patternB = "/post(?:\:|\/)([0-9]+)/si";
 		$message = preg_replace($patternB, "<a href='/post/$1'>post/$1</a>", $message);		
 
 		$how_spoiler = substr_count($message, "[spoiler");		
-		$patternB = "/\[spoiler\](.*?)\[\/spoiler\]/s";
-		for($i=0;$i<$how_spoiler;$i++)
-			$message = preg_replace($patternB, "<div class='spoiler'><span class='sign'>+</span><span class='spoiler-name'> спойлер</span><div class='spoiler-body'>$1</div></div>", $message);
+		$pattern_spoiler = "/\[spoiler\=*?([\s\S]+)?\]([\s\S]+)?\[\/spoiler\]/uiU";
+		for($i=0;$i<$how_spoiler;$i++) {
+			$message = preg_replace_callback($pattern_spoiler, function($matches) {
+				if($matches[1])
+					$head = $matches[1];
+				else
+					$head = 0;
+
+				if($matches[2])
+					$content = trim($matches[2]);
+				else
+					$content = "";
+
+				if($head === 0) {
+					$result = "<div class='spoiler'><span class='sign'>+</span><span class='spoiler-name'> спойлер</span></div><div class='spoiler-body'>".$content."</div>";
+				} else {
+					$result = "<div class='spoiler'><span class='sign'>+</span><span class='spoiler-name'> ".$head."</span></div><div class='spoiler-body'>".$content."</div>";
+				}
+
+				return $result;
+
+			}, $message);
+		}
+			// $message = preg_replace($patternB, "<div class='spoiler'><span class='sign'>+</span><span class='spoiler-name'> спойлер</span><div class='spoiler-body'>$1</div></div>", $message);
 	
-		$pattern_quote = "/(\[quote)(?:\ ?author=([a-zA-Z0-9а-яёА-ЯЁ\_\@]+))?(?:\ ?date=([a-zA-Zа-яёА-ЯЁ0-9\ \.\,\:]+))?(?:\ ?post=([0-9]+))?\]([\s\S]+)?(\[\/quote\])/sUu";
+		$pattern_quote = "/(\[quote)(?:\ ?author=([a-zA-Z0-9а-яёА-ЯЁ\_\@]+))?(?:\ ?date=([a-zA-Zа-яёА-ЯЁ0-9\ \.\,\:]+))?(?:\ ?post=([0-9]+))?\]([\s\S]+)?(\[\/quote\])/siuU";
 		$how_quote = substr_count($message, "[quote");
 		for($i=0;$i<$how_quote;$i++) {
 			$message = preg_replace_callback($pattern_quote, function($matches) {

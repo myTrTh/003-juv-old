@@ -50,6 +50,11 @@ img.smile {
 	margin: 0 3px;
 }
 
+.spoiler {
+	width: 100%;
+	display: inline-block
+}
+
 .sign, .spoiler-name {
 	font-weight: bold;
 	cursor: pointer;
@@ -58,9 +63,13 @@ img.smile {
 
 .spoiler-body {
 	display: none;
-	background: #ccc;
-	border-radius: 3px;
+	background: #e4e4e4;
+	border: solid 1px #ccc;
+	width: 100%;
+	float: right;
 	padding: 5px;
+	font-size: .9rem;
+	margin-bottom: 10px;
 }
 
 /* post */
