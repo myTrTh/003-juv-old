@@ -154,10 +154,12 @@ img.smile {
 .post-content-message {
 	padding: 0 10px;
 	line-height: 1.5;
-	word-break: break-all;
 	margin-bottom: 10px;
 	width: 100%;
 	overflow: hidden;
+	word-wrap: break-word;
+	word-break: break-all; /* для Opera и FireFox */
+	word-break: break-word; /* для Chrome */	
 }
 
 .post-content-old-quote {
@@ -290,7 +292,6 @@ img.smile {
 .bookquote {
 	padding: 10px 6px;
 	background: #f5f5f5;
-	word-break: break-word;
 	display: inline-block;
 	float: right;
 	border-radius: 0 7px 7px 0;
@@ -299,6 +300,9 @@ img.smile {
 	font-size: .8rem;
 	width: 100%;
 	color: $gray_main;
+	word-wrap: break-word;
+	word-break: break-all; /* для Opera и FireFox */
+	word-break: break-word; /* для Chrome */	
 }
 
 .quote-author {
