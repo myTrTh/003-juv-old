@@ -64,7 +64,7 @@ class NachRepository extends \Doctrine\ORM\EntityRepository
     public function get_nach(){
         $sql = "SELECT id, user 
         		FROM guestbook 
-        		WHERE id RLIKE '([1-9]+000$)'";
+        		WHERE id RLIKE '([0-9]+000$)'";
 
         $em = $this->getEntityManager();
         $stmt = $em->getConnection()->prepare($sql);
