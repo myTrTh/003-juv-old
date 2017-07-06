@@ -46,7 +46,10 @@ class TournamentController extends Controller
         $tourslist = $this->getDoctrine()->getRepository("AppTournamentBundle:Tournament")->get_tours_list();
 
         if(!$page) {
-            $p = max($tourslist);
+            if(empty($tourslist))
+                $p['year'] = 0;
+            else
+                $p = max($tourslist);
             $page = $p['year'];
         }
 
