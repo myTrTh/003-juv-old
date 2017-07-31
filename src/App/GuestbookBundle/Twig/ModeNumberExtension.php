@@ -24,12 +24,12 @@ class ModeNumberExtension extends \Twig_Extension
 	public function set_number($number)
 	{
     if($number < 10){
-      $shirt = "<img class='number-player' src='/public/images/numbers/".$number.".png'>";
+      $shirt = "<img class='number-player' src='/public/images/numbers/".$number."new.png'>";
     } else {
       $first = substr($number, 0, 1);
-      $shirt_first = "<img class='number-player' src='/public/images/numbers/".$first.".png'>";
+      $shirt_first = "<img class='number-player' src='/public/images/numbers/".$first."new.png'>";
       $second = substr($number, 1, 1);
-      $shirt_second = "<img class='number-player' src='/public/images/numbers/".$second.".png'>";
+      $shirt_second = "<img class='number-player' src='/public/images/numbers/".$second."new.png'>";
       $shirt = $shirt_first.$shirt_second;
     }
 		return $shirt; 
