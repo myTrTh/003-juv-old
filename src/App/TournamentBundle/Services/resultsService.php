@@ -199,7 +199,7 @@ class resultsService
 	}
 
 	// Расчет результатов по ПРОГРЕССИВНОЙ схеме
-	public function mathem($idfore, $r1, $r2) {
+	public function prog_mathem($idfore, $r1, $r2) {
 
 		// получаем все нужные idfore в таблице usercast
 		// просчитываем и записываем результаты
@@ -241,6 +241,44 @@ class resultsService
 
 		$this->em->flush();
 	}
+
+    // Расчет результатов для сезона 2017-2018
+    public function mathem($idfore, $r1, $r2) {
+
+        // получаем все нужные idfore в таблице usercast
+        // просчитываем и записываем результаты
+
+        $scores = $this->em->getRepository('AppTournamentBundle:Usercast')->get_scores($idfore);
+
+        for($i=0;$i<count($scores);$i++) {
+            $one = $this->annihilation(array($r1, $r2));
+
+            if(is_numeric($scores[$i]['result1']) and is_numeric($scores[$i]['result2'])) {
+                $two = $this->annihilation(array($scores[$i]['result1'], $scores[$i]['result2']));
+
+                if($one == $two){ 
+                    $result = 3;
+                } else if ($one[0] == $two[0] and $one[1] == $two[1]){ 
+                    $result = 2;
+                } else if ($one[0] == $two[0]){ 
+                    $result = 1;
+                } else { 
+                    $result = 0;
+                }
+
+            } else {
+                $result = 0;
+            }
+
+            $usercast = $this->em->getRepository('AppTournamentBundle:Usercast')->find($scores[$i]['id']);
+
+            $usercast->setBall($result);
+
+            $this->em->persist($usercast);
+        }
+
+        $this->em->flush();
+    }    
 
     // Расчет результатов по ПРОГРЕССИВНОЙ схеме
     public function OLDmathem($idfore, $r1, $r2) {
