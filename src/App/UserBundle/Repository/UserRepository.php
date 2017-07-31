@@ -31,7 +31,7 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
         $dql = 'SELECT u.id, u.username, u.email, u.image, n.number, u.created
             FROM AppUserBundle:User u
             LEFT JOIN AppGuestbookBundle:Number n
-            WHERE u.id = n.user
+            WHERE u.id = n.user AND n.status = 1
             WHERE u.enabled = 1
             ORDER BY u.'.$orber_by;
 
