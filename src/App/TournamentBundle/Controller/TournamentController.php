@@ -119,10 +119,13 @@ class TournamentController extends Controller
 
             $rep_calendar = $this->getDoctrine()->getRepository("AppTournamentBundle:Calendar");
             $showtour = $rep_calendar->get_tour($id, $tour, $schema);
+
             $calendar = $rep_calendar->get_calendar($id);
             $member = $rep_calendar->get_member($id, $tour, $userId);
 
             $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($id, $tour);
+
+            $timetour = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->getTimeTour($forebridge);
 
         if($forebridge) {
 
@@ -149,6 +152,7 @@ class TournamentController extends Controller
 
             $get_tour = $calendar[$tour];
             $info_about_tour = $this->get_info_about_tour($get_tour);
+
             $printtour = $info_about_tour['printtour'];
             $offstatus = $info_about_tour['offstatus'];
             $playoff_name = $info_about_tour['playoff'];
@@ -161,6 +165,7 @@ class TournamentController extends Controller
                          "nav" => $nav,
                          "printtour" => $printtour,
                          "offstatus" => $offstatus,
+                         "timetour" => $timetour,
                          "calendar" => $calendar,
                          "showtour" => $showtour,
                          "playoff" => $playoff_name,

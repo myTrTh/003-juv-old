@@ -21,6 +21,7 @@
 	<a class='link-back' href='{{ path("app_tournament_archives") }}'><i class='fa fa-arrow-left'></i> К СПИСКУ ТУРНИРОВ</a>
 {% endif %}
 <br>
+
 {# tours list #}
 <div class='tourlist'>
 {% for i in calendar %}
@@ -40,8 +41,10 @@
 	{% endif %}
 {% endfor %}
 </div>
-
 <div class='h3' id='tournumber'>{{ printtour.name }}</div>
+{% if timetour != 0 %}
+<span class='s08 darkgray bold'>{{ timetour|date('d.m.Y') }}</span>
+{% endif %}
 <div class="tourstatus">
 {% if nav == 'tournament' %}
 	{% if tourstatus == 0 %}

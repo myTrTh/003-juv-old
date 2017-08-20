@@ -153,4 +153,26 @@ class ForecastRepository extends \Doctrine\ORM\EntityRepository
 
 	}	
 
+	public function getTimeTour($forebridge)
+	{
+
+		if(!$forebridge)
+			return 0;
+
+		$dql = "SELECT min(f.timer) FROM AppTournamentBundle:Forecast f
+				WHERE f.hash = :hash";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("hash", $forebridge);
+
+		$result = $query->execute();
+
+		if($result)
+			$time = $result[0][1];
+		else
+			$time = 0;
+
+		return $time;
+	}
+
 }
