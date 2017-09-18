@@ -256,15 +256,7 @@ class resultsService
             if(is_numeric($scores[$i]['result1']) and is_numeric($scores[$i]['result2'])) {
                 $two = $this->annihilation(array($scores[$i]['result1'], $scores[$i]['result2']));
 
-                if($one == $two){ 
-                    $result = 3;
-                } else if ($one[0] == $two[0] and $one[1] == $two[1]){ 
-                    $result = 2;
-                } else if ($one[0] == $two[0]){ 
-                    $result = 1;
-                } else { 
-                    $result = 0;
-                }
+                $result = $this->processing($one, $two);
 
             } else {
                 $result = 0;
@@ -278,7 +270,23 @@ class resultsService
         }
 
         $this->em->flush();
-    }    
+    }
+
+    // Вычесление балла для сезона 2017-2018
+    public function processing($one, $two)
+    {
+        if($one == $two){ 
+            $result = 3;
+        } else if ($one[0] == $two[0] and $one[1] == $two[1]){ 
+            $result = 2;
+        } else if ($one[0] == $two[0]){ 
+            $result = 1;
+        } else { 
+            $result = 0;
+        }
+
+        return $result;
+    }
 
     // Расчет результатов по ПРОГРЕССИВНОЙ схеме
     public function OLDmathem($idfore, $r1, $r2) {
