@@ -54,13 +54,24 @@
 			</td>
 			<td class='show-team'>
 				{{ fore.team2 }}
-			</td>			
+			</td>
 	{% endfor %}
 	</table>
 	<br>
 	<input type='hidden' name='tr' value='{{ tournament.id }}'>
 	<input type='hidden' name='tour' value='{{ tour }}'>
+	<input type='hidden' name='playsign' value='{{ playsign }}'>
 	<input type='submit' class='button button-main' name='set_score' value='Отправить'>
 	</form>
+
+	{% if playsign == 1 %}
+		{% if date(firsttime) > date() %}
+			<br><hr>
+			Выберите бонус-матч. В случае ничейного результата, баллы за бонус-матч будут удвоенны для определения победителя.<br>
+			Выбор доступен до {{ firsttime|date('d.m.Y H:i') }}
+		{% else %}
+			Результат
+		{% endif %}
+	{% endif %}
 
 {% endblock %}

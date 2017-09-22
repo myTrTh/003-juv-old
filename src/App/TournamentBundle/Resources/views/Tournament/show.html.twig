@@ -226,12 +226,13 @@
 	</table>
 </div>
 {% endif %}
-
+	
 	{% if member == 1 and tourstatus == 1 %}
 		<br>
 		<form method='post' action='{{ path('app_tournament_tourset') }}'>
 			<input type='hidden' name='tr' value='{{ tournament.id }}'>
 			<input type='hidden' name='tour' value='{{ tour }}'>
+			<input type='hidden' name='playsign' value='{{ playsign }}'>
 			<input type='submit' class='button button-access' value='Сделать прогноз'>
 		</form>
 		<br>

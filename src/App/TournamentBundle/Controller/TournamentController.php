@@ -6,7 +6,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use App\TournamentBundle\Entity\Tournamentusers;
 use App\TournamentBundle\Entity\Usercast;
 use App\TournamentBundle\Entity\Userscored;
+use App\TournamentBundle\Entity\Bonus;
 use App\TournamentBundle\Form\PreliminaryType;
+use App\TournamentBundle\Form\BonusgameType;
 use Symfony\Component\HttpFoundation\Request;
 
 class TournamentController extends Controller
@@ -158,12 +160,15 @@ class TournamentController extends Controller
             $playoff_name = $info_about_tour['playoff'];
             $groups_name = $info_about_tour['groups'];
 
+            $playSign = $info_about_tour['offstatus'];
+
             return $this->render('AppTournamentBundle:Tournament:show.html.twig',
                    array("tournament" => $tournament,
                          "user" => $userId,
                          "tour" => $tour,
                          "nav" => $nav,
                          "printtour" => $printtour,
+                         'playsign' => $playSign,
                          "offstatus" => $offstatus,
                          "timetour" => $timetour,
                          "calendar" => $calendar,
@@ -235,6 +240,7 @@ class TournamentController extends Controller
 
         $tr = $request->request->get('tr');
         $tour = $request->request->get('tour');
+        $playsign = $request->request->get('playsign');
 
         $user = $this->getUser();
         if($user)
@@ -422,6 +428,16 @@ class TournamentController extends Controller
 
         $forebridge = $this->getDoctrine()->getRepository("AppTournamentBundle:Forebridge")->getForeBridge($tr, $tour);
 
+        // get time of the firts game in the tour
+        if($playsign == 1){
+            $firsttime = $this->getDoctrine()->getRepository('AppTournamentBundle:Forecast')->getTimeTour($forebridge);
+        } else {
+            $firsttime = 0;
+        }
+
+        $bonus = new Bonus();
+        $form_bonus = $this->createForm(BonusgameType::class, $bonus);
+
         if($tournament->getTypes() == 1) {
 
             if($forebridge) {
@@ -434,7 +450,7 @@ class TournamentController extends Controller
             }
 
             return $this->render('AppTournamentBundle:Tournament:forecast.html.twig',
-                array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $fore, 'preset' => $preset, 'how' => $how));
+                array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $fore, 'preset' => $preset, 'how' => $how, 'playsign' => $playsign, 'firsttime' => $firsttime));
 
         } else if ($tournament->getTypes() == 2) {
 
