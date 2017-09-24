@@ -11,6 +11,10 @@ use App\TournamentBundle\Form\PreliminaryType;
 use App\TournamentBundle\Form\BonusgameType;
 use Symfony\Component\HttpFoundation\Request;
 
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
 class TournamentController extends Controller
 {
     public function rulesAction() {
@@ -431,12 +435,49 @@ class TournamentController extends Controller
         // get time of the firts game in the tour
         if($playsign == 1){
             $firsttime = $this->getDoctrine()->getRepository('AppTournamentBundle:Forecast')->getTimeTour($forebridge);
+
         } else {
             $firsttime = 0;
         }
 
-        $bonus = new Bonus();
-        $form_bonus = $this->createForm(BonusgameType::class, $bonus);
+        $games = ['someteam1 vs someteam2' => 1,
+                  'someteam3 vs someteam4' => 2];
+
+        if($forebridge)
+            $games = $this->getDoctrine()->getRepository('AppTournamentBundle:Forecast')->getGames($forebridge);
+
+
+        # Get bonus game
+        $game_bonus = $this->getDoctrine()->getRepository('AppTournamentBundle:Bonus')->get_bonus($tr, $tour, $userId);
+
+        # Bonus game
+        $form_bonus = $this->createFormBuilder()
+                    ->add('games', ChoiceType::class, array('choices' => $games))
+                    ->add('save', SubmitType::class, array('label' => 'Выбрать'))
+                    ->getForm();
+
+        $form_bonus->handleRequest($request);
+        if($form_bonus->isValid() && $form_bonus->isSubmitted()){
+            $bonus_id = $form_bonus->getData();
+
+            if($bonus_id){
+                $check_bonus_game = $this->getDoctrine()->getRepository('AppTournamentBundle:Bonus')->check_bonus($tr, $tour, $userId);
+
+                if(!$check_bonus_game){
+
+                    $bonus = new Bonus();
+                    $bonus->setTr($tr);
+                    $bonus->setTour($tour);
+                    $bonus->setUser($userId);
+                    $bonus->setForeid($bonus_id['games']);
+
+                    $em = $this->getDoctrine()->getManager();
+                    $em->persist($bonus);
+                    $em->flush();
+
+                }
+            }
+        }
 
         if($tournament->getTypes() == 1) {
 
@@ -450,7 +491,7 @@ class TournamentController extends Controller
             }
 
             return $this->render('AppTournamentBundle:Tournament:forecast.html.twig',
-                array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $fore, 'preset' => $preset, 'how' => $how, 'playsign' => $playsign, 'firsttime' => $firsttime));
+                array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $fore, 'preset' => $preset, 'how' => $how, 'playsign' => $playsign, 'firsttime' => $firsttime, 'form_bonus' => $form_bonus->createView(), 'game_bonus' => $game_bonus));
 
         } else if ($tournament->getTypes() == 2) {
 

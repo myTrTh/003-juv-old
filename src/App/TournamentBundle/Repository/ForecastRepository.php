@@ -175,4 +175,24 @@ class ForecastRepository extends \Doctrine\ORM\EntityRepository
 		return $time;
 	}
 
+	public function getGames($forebridge)
+	{
+		$dql = "SELECT f.team1, f.team2, f.id FROM AppTournamentBundle:Forecast f
+				WHERE f.hash = :hash";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("hash", $forebridge);
+
+		$result = $query->execute();
+
+		$games = [];
+		foreach ($result as $k => $v){
+			$t = $v['team1']." - ".$v['team2'];
+			$i = $v['id'];
+			$games[$t] = $i;
+		}
+
+		return $games;
+	}
+
 }

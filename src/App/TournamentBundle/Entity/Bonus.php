@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="bonus")
  * @ORM\Entity(repositoryClass="App\TournamentBundle\Repository\BonusRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Bonus
 {
@@ -48,6 +49,13 @@ class Bonus
      * @ORM\Column(name="foreid", type="integer")
      */
     private $foreid;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="created", type="datetime")
+     */
+    private $created;
 
 
     /**
@@ -155,5 +163,23 @@ class Bonus
     {
         return $this->foreid;
     }
+
+     /**
+     * @ORM\PrePersist
+     */
+    public function setCreated()
+    {
+        $this->created = new \DateTime();
+    }  
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }    
 }
 

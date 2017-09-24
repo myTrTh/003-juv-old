@@ -10,4 +10,42 @@ namespace App\TournamentBundle\Repository;
  */
 class BonusRepository extends \Doctrine\ORM\EntityRepository
 {
+	public function check_bonus($tr, $tour, $userId)
+	{
+		$dql = "SELECT b.foreid FROM AppTournamentBundle:Bonus b
+				WHERE b.tr = :tr AND b.tour = :tour AND b.user = :user";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter('tr', $tr)
+					  ->SetParameter('tour', $tour)
+					  ->SetParameter('user', $userId);
+
+		$result = $query->execute();
+
+		if($result)
+			return $result[0]['foreid'];
+		else
+			return 0;
+	}
+
+	public function get_bonus($tr, $tour, $userId)
+	{
+		$bonus = $this->check_bonus($tr, $tour, $userId);
+
+		if($bonus){
+			$dql = "SELECT f.team1, f.team2 FROM AppTournamentBundle:Forecast f
+					WHERE f.id = :id";
+
+			$query = $this->getEntityManager()->createQuery($dql)
+						  ->SetParameter('id', $bonus);
+
+			$result = $query->execute();
+
+			if($result)
+				return $result[0]['team1']." - ".$result[0]['team2'];
+
+		} else {
+			return '';
+		}
+	}
 }
