@@ -167,9 +167,7 @@ class TournamentController extends Controller
             $playSign = $info_about_tour['offstatus'];
 
             if($playSign && $tourstatus){
-                $winnerInDraw = $this->get('app.results_tournament')->getDrawWinner($id, $tour, $showtour);
-            } else {
-                $winnerInDraw = 0;
+                $showtour[0] = $this->get('app.results_tournament')->getDrawWinner($id, $tour, $showtour[0]);
             }
 
             return $this->render('AppTournamentBundle:Tournament:show.html.twig',
@@ -183,7 +181,6 @@ class TournamentController extends Controller
                          "timetour" => $timetour,
                          "calendar" => $calendar,
                          "showtour" => $showtour,
-                         'winnerdraw' => $winnerInDraw,
                          "playoff" => $playoff_name,
                          "groups" => $groups_name,
                          "member" => $member,
@@ -533,14 +530,14 @@ class TournamentController extends Controller
         if($forebridge) {
             $fore = $this->getDoctrine()->getRepository("AppTournamentBundle:Forecast")->get_forecast($forebridge);
 
-            $presetuser1 = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($calendar_info[0]['user1'], $calendar_info[0]['tr'], $calendar_info[0]['tour']);
+            $presetuser1 = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($calendar_info[0]['uid1'], $calendar_info[0]['tr'], $calendar_info[0]['tour']);
 
             $sum1 = 0;
             foreach ($presetuser1 as $key) {
                 $sum1 += (int) $key['ball'];
             }
 
-            $presetuser2 = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($calendar_info[0]['user2'], $calendar_info[0]['tr'], $calendar_info[0]['tour']);
+            $presetuser2 = $this->getDoctrine()->getRepository("AppTournamentBundle:Usercast")->get_prescore($calendar_info[0]['uid2'], $calendar_info[0]['tr'], $calendar_info[0]['tour']);
 
             $sum2 = 0;
             foreach ($presetuser2 as $key) {
@@ -564,7 +561,7 @@ class TournamentController extends Controller
         else if ($tournament->getStatus() == 2)
             $nav = "archive";
 
-        $games = $this->getDoctrine()->getRepository('AppTournamentBundle:Calendar')->get_games_in_pair($calendar_info[0]['user1'], $calendar_info[0]['user2']);
+        $games = $this->getDoctrine()->getRepository('AppTournamentBundle:Calendar')->get_games_in_pair($calendar_info[0]['uid1'], $calendar_info[0]['uid2']);
 
             $get_tour = array('tour' => $calendar_info[0]['tour'], 'off' => $calendar_info[0]['off']);
             $info_about_tour = $this->get_info_about_tour($get_tour);
@@ -574,6 +571,10 @@ class TournamentController extends Controller
             $groups_name = $info_about_tour['groups'];
 
         if($calendar_info[0]['types'] == 1) {
+
+            if($calendar_info[0]['off'] > 0){
+                $calendar_info = $this->get('app.results_tournament')->getDrawWinner($calendar_info[0]['tr'], $calendar_info[0]['tour'], $calendar_info);
+            }
 
             return $this->render('AppTournamentBundle:Tournament:showgame.html.twig',
                 array('tournament' => $tournament, 'tour' => $calendar_info[0]['tour'],

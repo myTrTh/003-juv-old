@@ -52,8 +52,8 @@ class BonusRepository extends \Doctrine\ORM\EntityRepository
 	public function getAllBonusGame($tr, $tour)
 	{
 		$dql = "SELECT b.foreid, b.user, u.ball FROM AppTournamentBundle:Bonus b
-				INNER JOIN AppTournamentBundle:Usercast u
-				WHERE u.id = b.foreid
+				LEFT JOIN AppTournamentBundle:Usercast u
+				WHERE b.foreid = u.idfore AND b.user = u.user
 				WHERE b.tr = :tr AND b.tour = :tour";
 
 		$query = $this->getEntityManager()->createQuery($dql)
@@ -66,9 +66,9 @@ class BonusRepository extends \Doctrine\ORM\EntityRepository
 		foreach ($result as $user => $bonus) {
 			$us = $bonus['user'];
 			$bo = $bonus['foreid'];
-			$ball = (int) $bonus['ball'] * 2;
+			$ball = (int) $bonus['ball'];
 
-			$bonus_user[$us] = [$bo, $ball];
+			$bonus_user[$us] = ["fore" => $bo, "ball" => $ball];
 		}
 
 		return $bonus_user;

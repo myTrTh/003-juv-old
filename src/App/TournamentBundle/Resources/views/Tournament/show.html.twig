@@ -74,7 +74,9 @@
 				{% if game.uid1 != 0 %}
 					{# if draw #}
 				 	{% if tourstatus == 2 %}
-						*
+						{% if game.draw is defined and game.draw == game.uid1 %}
+							*
+						{% endif %}
 				 	{% endif %}
 				 <a class='nostyle hoverlinkteam' href='{{ path('app_user_show', {'id': game.uid1 }) }}'>{{ game.user1 }}</a>
 				{% else %}
@@ -123,8 +125,10 @@
 				{% if game.uid2 != 0 %}
 					<a class='nostyle hoverlinkteam' href='{{ path('app_user_show', {'id': game.uid2 }) }}'>{{ game.user2 }}</a>
 				 	{% if tourstatus == 2 %}
-					*
-				 	{% endif %}					
+						{% if game.draw is defined and game.draw == game.uid2 %}
+							*
+						{% endif %}
+				 	{% endif %}
 				{% else %}
 					unknown
 				{% endif %}

@@ -450,23 +450,39 @@ class resultsService
     {
         $result = $this->em->getRepository('AppTournamentBundle:Bonus')->getAllBonusGame($tr, $tour);
 
-        $show = $showtour[0];
-        for ($i = 0; $i<count($show); $i++) {
-            if ($show[$i]['result1'] == $show[$i]['result2']) {
-                $user1 = $show[$i]['uid1'];
-                $user2 = $show[$i]['uid2'];
+        for ($i = 0; $i<count($showtour); $i++) {
+            if ($showtour[$i]['result1'] == $showtour[$i]['result2']) {
+                $user1 = $showtour[$i]['uid1'];
+                $user2 = $showtour[$i]['uid2'];
 
-                if ($result[$user1][1] > $result[$user2][1]) {
-                    print "user1";
-                } else if ($result[$user1][1] < $result[$user2][1]) {
-                    print "user2";
+                if(isset($result[$user1]['ball']))
+                    $ball1 = $result[$user1]['ball'];
+                else
+                    $ball1 = 0;
+
+                if(isset($result[$user2]['ball']))
+                    $ball2 = $result[$user2]['ball'];
+                else
+                    $ball2 = 0;
+
+                // first step - bonus game
+                if ($ball1 > $ball2) {
+                    $showtour[$i]['draw'] = $user1;
+                    $showtour[$i]['drawstep'] = 1;
+                    $showtour[$i]['foreuser1'] = $result[$user1]['fore'];
+                    $showtour[$i]['foreuser2'] = $result[$user2]['fore'];
+                } else if ($ball1 < $ball2) {
+                    $showtour[$i]['draw'] = $user2;
+                    $showtour[$i]['drawstep'] = 1;
+                    $showtour[$i]['foreuser1'] = $result[$user1]['fore'];
+                    $showtour[$i]['foreuser2'] = $result[$user2]['fore'];
                 } else {
-                    print "draw";
+                    $showtour[$i]['drawstep'] = 2;
                 }
             }
         }
 
-        return $result;
+        return $showtour;
     }
 
 }

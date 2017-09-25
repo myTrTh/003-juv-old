@@ -24,10 +24,15 @@
 
 <table class='showgame'>
 	<tr>
-		<td><a class='nostyle' href='{{ path('app_user_show', {'id': calendar.0.user1 }) }}'>{{ calendar.0.login1 }}</a></td>
+		<td>
+			{% if calendar.0.draw is defined and calendar.0.draw == calendar.0.uid1 %} * {% endif %}
+			<a class='nostyle' href='{{ path('app_user_show', {'id': calendar.0.uid1 }) }}'>{{ calendar.0.login1 }}</a></td>
 		<td>{{ summ.0 }}</td>
 		<td>{{ summ.1 }}</td>
-		<td><a class='nostyle' href='{{ path('app_user_show', {'id': calendar.0.user2 }) }}'>{{ calendar.0.login2 }}</a></td>
+		<td>
+			<a class='nostyle' href='{{ path('app_user_show', {'id': calendar.0.uid2 }) }}'>{{ calendar.0.login2 }}</a>
+			{% if calendar.0.draw is defined and calendar.0.draw == calendar.0.uid2 %} * {% endif %}
+			</td>
 		<td>Матчи</td>
 	</tr>
 {% for fore in forecast %}
@@ -37,6 +42,9 @@
 				{% if preset1[fore.id].result1 is defined and preset1[fore.id].result2 is defined %}
 				{{ preset1[fore.id].result1 }}-{{ preset1[fore.id].result2 }}
 				{% endif %}
+					{% if calendar.0.foreuser1 is defined and calendar.0.foreuser1 == fore.id %}
+						<span class='gamestour normal s08'>(x2)</span>	
+					{% endif %}
 			</td>
 			<td>
 				{% if preset1[fore.id].ball is defined %} 
@@ -60,6 +68,9 @@
 				{% if preset2[fore.id].result1 is defined and preset2[fore.id].result2 is defined %}
 					{{ preset2[fore.id].result1 }}-{{ preset2[fore.id].result2 }}
 				{% endif %}
+						{% if calendar.0.foreuser2 is defined and calendar.0.foreuser2 == fore.id %}
+							<span class='gamestour normal s08'>(x2)</span>
+						{% endif %}
 			</td>			
 		{% else %}
 			<td></td>
@@ -73,6 +84,16 @@
 	</tr>
 {% endfor %}
 </table>
+{% endif %}
+
+{% if calendar.0.drawstep is defined %}
+<br>
+	{% if calendar.0.drawstep == 1 %}
+		<i>* Победитель определен с помощью бонус-матча.</i>
+	{% elseif calendar.0.drawstep == 2 %}
+		<i>Второй шаг</i>
+	{% endif %}
+<br>
 {% endif %}
 
 {% if games != 0 %}
