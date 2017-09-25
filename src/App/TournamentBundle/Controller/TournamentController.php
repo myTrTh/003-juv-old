@@ -166,6 +166,12 @@ class TournamentController extends Controller
 
             $playSign = $info_about_tour['offstatus'];
 
+            if($playSign && $tourstatus){
+                $winnerInDraw = $this->get('app.results_tournament')->getDrawWinner($id, $tour, $showtour);
+            } else {
+                $winnerInDraw = 0;
+            }
+
             return $this->render('AppTournamentBundle:Tournament:show.html.twig',
                    array("tournament" => $tournament,
                          "user" => $userId,
@@ -177,6 +183,7 @@ class TournamentController extends Controller
                          "timetour" => $timetour,
                          "calendar" => $calendar,
                          "showtour" => $showtour,
+                         'winnerdraw' => $winnerInDraw,
                          "playoff" => $playoff_name,
                          "groups" => $groups_name,
                          "member" => $member,
@@ -211,8 +218,6 @@ class TournamentController extends Controller
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($tournamentusers);
                     $em->flush();
-
-                    // return $this->redirect($this->generateUrl('app_tournament_show', array('id'=> $id)));
 
                 } else {
 
@@ -446,18 +451,15 @@ class TournamentController extends Controller
         if($forebridge)
             $games = $this->getDoctrine()->getRepository('AppTournamentBundle:Forecast')->getGames($forebridge);
 
-
-        # Get bonus game
-        $game_bonus = $this->getDoctrine()->getRepository('AppTournamentBundle:Bonus')->get_bonus($tr, $tour, $userId);
-
         # Bonus game
         $form_bonus = $this->createFormBuilder()
                     ->add('games', ChoiceType::class, array('choices' => $games))
                     ->add('save', SubmitType::class, array('label' => 'Выбрать'))
                     ->getForm();
 
+
         $form_bonus->handleRequest($request);
-        if($form_bonus->isValid() && $form_bonus->isSubmitted()){
+        if($form_bonus->isSubmitted() && $form_bonus->isValid()){
             $bonus_id = $form_bonus->getData();
 
             if($bonus_id){
@@ -475,9 +477,14 @@ class TournamentController extends Controller
                     $em->persist($bonus);
                     $em->flush();
 
+                    // return $this->redirectToRoute('app_tournament_tourset');
+
                 }
             }
-        }
+        }      
+
+        # Get bonus game
+        $game_bonus = $this->getDoctrine()->getRepository('AppTournamentBundle:Bonus')->get_bonus($tr, $tour, $userId);
 
         if($tournament->getTypes() == 1) {
 

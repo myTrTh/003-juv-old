@@ -65,25 +65,21 @@
 	</form>
 
 	{% if playsign == 1 %}
-		{% if date(firsttime) > date() %}
 			<br><hr>
+		{% if game_bonus != '' %}
+			<strong>Ваш бонус-матч: {{ game_bonus }}</strong>			
+		{% elseif date(firsttime) > date() %}
 			Выберите бонус-матч. В случае ничейного результата, баллы за бонус-матч будут удвоенны для определения победителя.<br>
-			Выбор доступен до {{ firsttime|date('d.m.Y H:i') }}
+			Выбор доступен до {{ utc_to_locale(firsttime)|date('d.m.Y H:i') }}
 			{{ form_start(form_bonus) }}
-			{% for gs in form_bonus %}
-				{{ form_row(gs, {'attr': {'class': 'middle'}}) }}
-			{% endfor %}
+			{{ form_widget(form_bonus.games, {'attr': {'class': 'middle'}}) }}
 			<input type='hidden' name='tr' value='{{ tournament.id }}'>
 			<input type='hidden' name='tour' value='{{ tour }}'>
-			<input type='hidden' name='playsign' value='{{ playsign }}'>			
+			<input type='hidden' name='playsign' value='{{ playsign }}'>
+			{{ form_widget(form_bonus.save, {'attr': {'class': 'button button-main'}}) }}
 			{{ form_end(form_bonus) }}
 		{% else %}
-			<br><hr>
-			{% if game_bonus == '' %}
-				<strong>Вы не выбрали бонус-матч</strong>
-			{% else %}
-				<strong>Ваш бонус-матч: {{ game_bonus }}</strong>
-			{% endif %}
+			<strong>Вы не выбрали бонус-матч</strong>
 		{% endif %}
 	{% endif %}
 

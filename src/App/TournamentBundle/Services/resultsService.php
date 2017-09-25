@@ -446,4 +446,27 @@ class resultsService
             }
     }
 
+    public function getDrawWinner($tr, $tour, $showtour)
+    {
+        $result = $this->em->getRepository('AppTournamentBundle:Bonus')->getAllBonusGame($tr, $tour);
+
+        $show = $showtour[0];
+        for ($i = 0; $i<count($show); $i++) {
+            if ($show[$i]['result1'] == $show[$i]['result2']) {
+                $user1 = $show[$i]['uid1'];
+                $user2 = $show[$i]['uid2'];
+
+                if ($result[$user1][1] > $result[$user2][1]) {
+                    print "user1";
+                } else if ($result[$user1][1] < $result[$user2][1]) {
+                    print "user2";
+                } else {
+                    print "draw";
+                }
+            }
+        }
+
+        return $result;
+    }
+
 }

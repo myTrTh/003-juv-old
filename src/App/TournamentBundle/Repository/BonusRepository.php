@@ -48,4 +48,29 @@ class BonusRepository extends \Doctrine\ORM\EntityRepository
 			return '';
 		}
 	}
+
+	public function getAllBonusGame($tr, $tour)
+	{
+		$dql = "SELECT b.foreid, b.user, u.ball FROM AppTournamentBundle:Bonus b
+				INNER JOIN AppTournamentBundle:Usercast u
+				WHERE u.id = b.foreid
+				WHERE b.tr = :tr AND b.tour = :tour";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter('tr', $tr)
+					  ->SetParameter('tour', $tour);
+
+		$result = $query->execute();
+
+		$bonus_user = [];
+		foreach ($result as $user => $bonus) {
+			$us = $bonus['user'];
+			$bo = $bonus['foreid'];
+			$ball = (int) $bonus['ball'] * 2;
+
+			$bonus_user[$us] = [$bo, $ball];
+		}
+
+		return $bonus_user;
+	}
 }
