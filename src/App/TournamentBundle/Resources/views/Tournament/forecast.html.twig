@@ -22,6 +22,7 @@
 	<table class='show-score'>
 	<div class='ifscore'>{% if how > 0 %} Прогноз внесен  {% endif %}</div>
 	{% for fore in forecast %}
+	{% if fore.added is null or (fore.added == 1 and drawstep is defined and drawstep == 3) %}
 		{% if date(fore.timer) > date() %}
 			{% set acc = 1 %}
 		{% else %}
@@ -55,6 +56,7 @@
 			<td class='show-team'>
 				{{ fore.team2 }}
 			</td>
+	{% endif %}
 	{% endfor %}
 	</table>
 	<br>

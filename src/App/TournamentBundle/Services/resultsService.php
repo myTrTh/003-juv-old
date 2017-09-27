@@ -455,6 +455,11 @@ class resultsService
                 $user1 = $showtour[$i]['uid1'];
                 $user2 = $showtour[$i]['uid2'];
 
+                print "<pre>";
+                // print_r($showtour[$i]['result1']);
+                // print_r($showtour[$i]['result2']);
+                print "</pre>";
+
                 if(isset($result[$user1]['ball']))
                     $ball1 = $result[$user1]['ball'];
                 else

@@ -82,13 +82,6 @@ class Forecast
     private $added;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="access", type="string", length=255, nullable=true)
-     */
-    private $access;
-
-    /**
      * Get id
      *
      * @return int
@@ -145,30 +138,6 @@ class Forecast
     {
         return $this->team1;
     }
-
-    /**
-     * Set access
-     *
-     * @param string $access
-     *
-     * @return Forecast
-     */
-    public function setAccess($access)
-    {
-        $this->team1 = $access;
-
-        return $this;
-    }
-
-    /**
-     * Get access
-     *
-     * @return string
-     */
-    public function getAccess()
-    {
-        return $this->access;
-    }    
 
     /**
      * Set team2

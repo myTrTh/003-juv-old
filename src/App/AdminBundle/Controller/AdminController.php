@@ -1394,6 +1394,9 @@ class AdminController extends Controller
                     $forecast->setTeam1($team1[$i]);
                     $forecast->setTeam2($team2[$i]);
                     $forecast->setTimer($date[$i]);
+                    if ($br) {
+                        $forecast->setAdded(1);
+                    }
                     $em->persist($forecast);
                 }
 
