@@ -75,6 +75,20 @@ class Forecast
 
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="added", type="integer", nullable=true)
+     */
+    private $added;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="access", type="string", length=255, nullable=true)
+     */
+    private $access;
+
+    /**
      * Get id
      *
      * @return int
@@ -133,6 +147,30 @@ class Forecast
     }
 
     /**
+     * Set access
+     *
+     * @param string $access
+     *
+     * @return Forecast
+     */
+    public function setAccess($access)
+    {
+        $this->team1 = $access;
+
+        return $this;
+    }
+
+    /**
+     * Get access
+     *
+     * @return string
+     */
+    public function getAccess()
+    {
+        return $this->access;
+    }    
+
+    /**
      * Set team2
      *
      * @param string $team2
@@ -154,6 +192,30 @@ class Forecast
     public function getTeam2()
     {
         return $this->team2;
+    }
+
+    /**
+     * Set added
+     *
+     * @param string $added
+     *
+     * @return Forecast
+     */
+    public function setAdded($added)
+    {
+        $this->added = $added;
+
+        return $this;
+    }
+
+    /**
+     * Get added
+     *
+     * @return string
+     */
+    public function getAdded()
+    {
+        return $this->added;
     }
 
     /**

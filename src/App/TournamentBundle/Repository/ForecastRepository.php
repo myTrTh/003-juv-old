@@ -195,4 +195,20 @@ class ForecastRepository extends \Doctrine\ORM\EntityRepository
 		return $games;
 	}
 
+	public function getAccuracy($forebridge, $user)
+	{
+		$dql = "SELECT count(f) FROM AppTournamentBundle:Forecast f
+				INNER JOIN AppTournamentBundle:Usercast u
+				WHERE u.idfore = f.id AND (f.result1 = u.result1 AND f.result2 = u.result2)
+				WHERE f.hash = :hash AND f.added is null AND u.user = :user";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter("hash", $forebridge)
+					  ->SetParameter("user", $user);
+
+		$result = $query->execute();
+
+		return $result[0][1];
+	}
+
 }

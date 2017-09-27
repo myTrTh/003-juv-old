@@ -477,7 +477,22 @@ class resultsService
                     $showtour[$i]['foreuser1'] = $result[$user1]['fore'];
                     $showtour[$i]['foreuser2'] = $result[$user2]['fore'];
                 } else {
-                    $showtour[$i]['drawstep'] = 2;
+
+                    $forebridge = $this->em->getRepository('AppTournamentBundle:Forebridge')->getForeBridge($tr, $tour);
+
+                    $accuracy1 = $this->em->getRepository('AppTournamentBundle:Forecast')->getAccuracy($forebridge, $user1);
+ 
+                    $accuracy2 = $this->em->getRepository('AppTournamentBundle:Forecast')->getAccuracy($forebridge, $user2);
+
+                    if ($accuracy1 > $accuracy2) {
+                        $showtour[$i]['draw'] = $user1;
+                        $showtour[$i]['drawstep'] = 2;
+                    } else if ($accuracy1 < $accuracy2) {
+                        $showtour[$i]['draw'] = $user2;
+                        $showtour[$i]['drawstep'] = 2;
+                    } else {
+                        $showtour[$i]['drawstep'] = 3;
+                    }
                 }
             }
         }
