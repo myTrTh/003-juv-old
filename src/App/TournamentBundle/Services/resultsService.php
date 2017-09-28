@@ -448,6 +448,7 @@ class resultsService
 
     public function getDrawWinner($tr, $tour, $showtour)
     {
+
         $result = $this->em->getRepository('AppTournamentBundle:Bonus')->getAllBonusGame($tr, $tour);
 
         for ($i = 0; $i<count($showtour); $i++) {

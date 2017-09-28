@@ -1352,6 +1352,7 @@ class AdminController extends Controller
                 $date = $request->request->get('date');
                 $team1 = $request->request->get('team1');
                 $team2 = $request->request->get('team2');
+                $added = $request->request->get('added');
 
                 if($forebridge) {
                     $hash = $forebridge;
@@ -1394,7 +1395,7 @@ class AdminController extends Controller
                     $forecast->setTeam1($team1[$i]);
                     $forecast->setTeam2($team2[$i]);
                     $forecast->setTimer($date[$i]);
-                    if ($br) {
+                    if ($added) {
                         $forecast->setAdded(1);
                     }
                     $em->persist($forecast);

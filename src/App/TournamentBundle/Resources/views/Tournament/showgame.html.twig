@@ -36,7 +36,11 @@
 		<td>Матчи</td>
 	</tr>
 {% for fore in forecast %}
+	{% if fore.added is null %}
 	<tr>
+	{% else %}
+	<tr class='secondgames'>
+	{% endif %}
 		{% if date(fore.timer) < date() %}
 			<td>
 				{% if preset1[fore.id].result1 is defined and preset1[fore.id].result2 is defined %}

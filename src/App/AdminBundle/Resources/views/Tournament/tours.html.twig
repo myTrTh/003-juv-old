@@ -95,6 +95,7 @@
 		{% elseif forecast != 0 and tournament.types == 2 %}
 
 		{% else %}
+			<input type='checkbox' name='added'> Для определения победителя в плей-офф <br>
 			<input class='button button-main' type='submit' name='create_score' value='Добавить'>
 		{% endif %}
 	</form>

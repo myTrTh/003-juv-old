@@ -411,4 +411,17 @@ class CalendarRepository extends \Doctrine\ORM\EntityRepository
 
 		return $chess;
 	}
+
+	public function getShowInfo($tr, $tour, $userId)
+	{
+		$dql = "SELECT c.user1 as uid1, c.user2 as uid2, c.result1, c.result2 FROM AppTournamentBundle:Calendar c
+				WHERE c.tr = :tr AND c.tour = :tour AND (c.user1 = :user OR c.user2 = :user)";
+
+		$query = $this->getEntityManager()->createQuery($dql)
+					  ->SetParameter(':tr', $tr)
+					  ->SetParameter(':tour', $tour)
+					  ->SetParameter(':user', $userId);
+
+		return $query->execute();
+	}
 }

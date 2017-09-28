@@ -17,12 +17,11 @@
 
 	<a class='link-back' href='{{ path("app_tournament_show", {'id': tournament.id, 'tour': tour}) }}'><i class='fa fa-arrow-left'></i> НАЗАД</a>
 		<br>
-
 	<form method='post'>
 	<table class='show-score'>
 	<div class='ifscore'>{% if how > 0 %} Прогноз внесен  {% endif %}</div>
 	{% for fore in forecast %}
-	{% if fore.added is null or (fore.added == 1 and drawstep is defined and drawstep == 3) %}
+	{% if fore.added is null or (fore.added == 1 and showtour.0.drawstep is defined and showtour.0.drawstep == 3) %}
 		{% if date(fore.timer) > date() %}
 			{% set acc = 1 %}
 		{% else %}

@@ -494,8 +494,12 @@ class TournamentController extends Controller
                 $preset = 0;
             }
 
+            $showtour = $this->getDoctrine()->getRepository('AppTournamentBundle:Calendar')->getShowInfo($tr, $tour, $userId);
+
+            $showtour = $this->get('app.results_tournament')->getDrawWinner($tr, $tour, $showtour);
+
             return $this->render('AppTournamentBundle:Tournament:forecast.html.twig',
-                array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $fore, 'preset' => $preset, 'how' => $how, 'playsign' => $playsign, 'firsttime' => $firsttime, 'form_bonus' => $form_bonus->createView(), 'game_bonus' => $game_bonus));
+                array('tr' => $tr, 'tour' => $tour, 'tournament' => $tournament, 'forecast' => $fore, 'preset' => $preset, 'how' => $how, 'playsign' => $playsign, 'showtour' => $showtour, 'firsttime' => $firsttime, 'form_bonus' => $form_bonus->createView(), 'game_bonus' => $game_bonus));
 
         } else if ($tournament->getTypes() == 2) {
 
