@@ -91,13 +91,15 @@
 {% endif %}
 
 {% if calendar.0.drawstep is defined %}
-<br>
 	{% if calendar.0.drawstep == 1 %}
+		<br>
 		<i>* Победитель определен с помощью бонус-матча.</i>
+		<br>
 	{% elseif calendar.0.drawstep == 2 %}
+		<br>
 		<i>* Победитель определен по большему количеству точно угаданных результатов матчей.</i>
+		<br>
 	{% endif %}
-<br>
 {% endif %}
 
 {% if games != 0 %}
