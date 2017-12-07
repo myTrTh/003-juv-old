@@ -222,6 +222,12 @@ li.brand {
 		width: 100%;
 		text-align: center;
 	}
+	& table td.header-first {
+		width: 20%;
+	}
+	& table td.header-second {
+		width: 80%;
+	}
 	& table td > img {
 		width: 100%;
 		max-width: 170px;
