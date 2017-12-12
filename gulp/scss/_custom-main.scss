@@ -221,16 +221,16 @@ li.brand {
 	& table {
 		width: 100%;
 		text-align: center;
+		margin-top: -2px;
 	}
-	& table td.header-first {
-		width: 20%;
-	}
-	& table td.header-second {
-		width: 80%;
+	& table td {
+		padding: 0;
+		width: 100%;
 	}
 	& table td > img {
 		width: 100%;
-		max-width: 170px;
+		max-width: 1200px;
+		max-height: 250px;
 	}
 }
 
