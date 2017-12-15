@@ -225,12 +225,14 @@ li.brand {
 	}
 	& table td {
 		padding: 0;
+		margin: 0;
 		width: 100%;
 	}
 	& table td > img {
 		width: 100%;
 		max-width: 1200px;
 		max-height: 250px;
+		margin-right: -4px;
 	}
 }
 
