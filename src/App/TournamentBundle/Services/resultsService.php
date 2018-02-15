@@ -452,14 +452,9 @@ class resultsService
         $result = $this->em->getRepository('AppTournamentBundle:Bonus')->getAllBonusGame($tr, $tour);
 
         for ($i = 0; $i<count($showtour); $i++) {
-            if ($showtour[$i]['result1'] == $showtour[$i]['result2']) {
+            if (isset($showtour[$i]['result1']) && isset($showtour[$i]['result2']) && $showtour[$i]['result1'] == $showtour[$i]['result2']) {
                 $user1 = $showtour[$i]['uid1'];
                 $user2 = $showtour[$i]['uid2'];
-
-                print "<pre>";
-                // print_r($showtour[$i]['result1']);
-                // print_r($showtour[$i]['result2']);
-                print "</pre>";
 
                 if(isset($result[$user1]['ball']))
                     $ball1 = $result[$user1]['ball'];
